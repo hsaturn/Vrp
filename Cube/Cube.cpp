@@ -171,15 +171,6 @@ void Cube::renderCube(float time)
 	glRotatef(angley, 0.0, 1.0, 0.0);
 	glRotatef(anglez, 0.0, 0.0, 1.0);
 
-	if (wait > 0)
-		wait--;
-	else {
-		angle++;
-		if (angle >= 360) angle = 0;
-		if ((angle % 90) == 0)
-			wait = 10;
-	}
-
 	//cout << "time_ms=" << ms << endl;
 	for (int i = 0; i < 6; i++) faces[i].update(this, time);
 	for (int i = 0; i < 6; i++) faces[i].render(this);
