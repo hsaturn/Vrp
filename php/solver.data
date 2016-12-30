@@ -1,0 +1,131 @@
+   # colors = T D L R F B
+
+  ===========================================================
+  CROIX SUR LA FACE DU HAUT
+  ===========================================================
+  TTTTTTTTT DDDDDDDDD LLLLLLLLL RRRRRRRRR FFFFFFFFF BBBBBBBBB
+
+  Arête mal orientée, on la descend simplement
+0 ....w....-.........-.........-.........-.w.......-......... f
+
+# 0 wwwwwwwww-.........-..b..b..b-..g..g..g-ooo......-rrr...... t'
+
+
+  Edges on 2nd
+0 ....w....-.........-.......w.-.........-...bb....-......... f              # edge from LF to TF
+0 ....w....-.........-.........-.......w.-....bb...-......... f'             # edge from RF to TF
+0 ....w....-.......w.-.........-.........-....b..b.-......... f2             # edge from DF to TF
+
+0 ....w....-.........-.b.......-.........-....b....-...w..... efe'           # edge from BL to TF
+0 ....w....-.........-.........-.b.......-....b....-.....w... e'f'e          # edge from BR to TF
+0 ....w....-.........-.w.......-.........-....b....-...b..... l2f            # edge from LB to TF
+0 ....w....-.........-.........-.w.......-....b....-.....b... r2f'           # edge from RB to TF
+
+  Edges at bottom
+0 ....w....-.....b...-.........-...w.....-....b....-......... md'm'          # edge from RD to TF
+0 ....w....-...b.....-...w.....-.........-....b....-......... mdm'           # edge from LD to TF
+0 ....w....-.b.......-.........-.........-....b....-.......w. dmdm'          # edge from BD to TF
+0 ....w....-.......b.-.........-.........-....b..w.-......... dmd'm'		 # edge from FB to TF
+
+0 ....w....-.....w...-.........-...b.....-....b....-......... d'f2           # edge from DR to TF
+0 ....w....-...w.....-...b.....-.........-....b....-......... dmd2m'         # edge from DL to TF
+0 ....w....-.w.......-.........-.........-....b....-.......b. d2f2
+
+0 .w..w....-.........-.......b.-.........-...wb....-......... b'mf'm'b       # edge from FL to TF complex
+0 ....w....-.........-.......b.-.........-...wb....-......... mf'm'          # edge from FL to TF
+0 .w..w....-.........-.........-.......b.-....bw...-......... bmfm'b'        # edge from FR to TF complex
+0 ....w....-.........-.........-.......b.-....bw...-......... mfm'           # edge from FR to TF
+
+  ===========================================================
+  PREMIERE COURONNE : LES COINS
+  ===========================================================
+  TTTTTTTTT DDDDDDDDD LLLLLLLLL RRRRRRRRR FFFFFFFFF BBBBBBBBB
+1 ....w...b-.........-.........-....o...w-..o.b....-......... r'd'rdr'd'r    # rotate corner TFR
+1 ....w...o-.........-.........-....o...b-..w.b....-......... r'drd'r'dr     # rotate corner TFR
+
+1 ....w...w-.........-....r....-........b-..r.b....-......... r'drld'l'      # corner TFR to corner TLF
+1 ....w.w..-.........-........b-....o....-o...b....-......... ld'l'r'dr      # corner TLF to TFR
+
+  Echange coins en diago
+1 ....w.w..-.........-........o-....o....-g........-....g.... lrd2l'r'       # corner TLF to TRB
+
+
+  Coins à déplacer en haut
+1 ....w.o..-.........-........w-....o....-b...b....-......... m'fm           # corner LTF to TRF
+1 ....w...r-.........-....r....-........w-..b.b....-......... m'f'm          # corner RTF to TLF
+1 ....w...b-.........-....r....-........r-..w.b....-......... r'drdf'd2f     # corner FTR to TFL
+1 ....w.b..-.........-........o-....o....-w...b....-......... ld'l'd'fd2f'   # corner FTL to TFR
+
+  TTTTTTTTT DDDDDDDDD LLLLLLLLL RRRRRRRRR FFFFFFFFF BBBBBBBBB
+  Coins à déplacer du bas vers le haut
+ 
+1 ....w....-......r..-......g..-....r....-....g.w..-......... d2fd'f'        # corner FDR to TRF
+1 ....w....-r........-w........-....r....-....g....-......g.. fd2'f'         # corner LDB to TRF
+1 ....w....-..r......-.........-g...r....-....g....-........w fd'f'			 # corner BDR to TRF
+1 ....w....-........r-.........-....r.w..-....g...g-......... dfd'f'         # corner RBF to TRF
+
+  Idem mais avec rotation du coin (couleur top = coin down)
+1 ....w....-........w-.........-....r.g..-....g...r-......... r'dr'fd2f'	 # corner DFR to TRF
+1 ....w....-......w..-......r..-....r....-....g.g..-......... dfd'f'r'd2r    # corner DFL to TRF
+1 ....w....-w........-g........-....r....-....g....-......r.. fdf'dfd'f'     # corner DLB to TRF
+1 ....w....-..w......-.........-r...r....-....g....-........g d'r'drfd2f'    # corner DRB to TRF
+
+  Idem 2nde rotation
+1 ....w....-........g-.........-....r.r..-....g...w-......... d'r'dr         # corner FRD to TRF
+1 ....w....-......g..-......w..-....r....-....g.r..-......... r'dr           # corner LFD to TRF
+1 ....w....-g........-r........-....r....-....g....-......w.. r'd2r          # corner LBD to TRF
+1 ....w....-..g......-.........-w...r....-....g....-........r dr'd2r         # corner RBD to TRF
+
+  ===========================================================
+  2EME COURONNE
+  ===========================================================
+  Remontée arête du bas vers la 2nd couronne
+2 .........-.......b.-....r....-.........-....b..r.-......... d2f'dfdld'l'
+2 .........-...b.....-...rr....-.........-....b....-......... d'f'dfdld'l'
+2 .........-.b.......-....r....-.........-....b....-.......r. f'dfdld'l'
+2 .........-.....b...-....r....-...r.....-....b....-......... df'dfdld'l'
+
+2 .........-.......r.-....r....-.........-....b..b.-......... dld'l'd'f'df
+2 .........-...r.....-...br....-.........-....b....-......... d2ld'l'd'f'df
+2 .........-.r.......-....r....-.........-....b....-.......b. d'ld'l'd'f'df
+2 .........-.....r...-....r....-...b.....-....b....-......... ld'l'd'f'df
+
+  Couronne 2, arête inversée à sa place, on descend l'arête
+  2 arêtes inversée échangée : on descend une arête
+2 .........-.........-.........-....r..g.-....gr...-......... r'drdfd'f'
+2 ggggggggg-wbwrbbbyb-rrrbrrowr-ooowoorwo-wwwowryby-yyyyyybob
+
+  ===========================================================
+  3 EME COURONNE
+  ===========================================================
+
+  TTTTTTTTT DDDDDDDDD LLLLLLLLL RRRRRRRRR FFFFFFFFF BBBBBBBBB
+
+3 .........-y...y....-r........-....g....-.........-....r.g.. d'
+3 .........-....y...y-.........-....g.r..-........g-....r.... d
+3 .........-....y.y..-......g..-....g....-......r..-....r.... d2
+
+3 .........-y.y.y.b.b-g...r.o.r-g...o.r.o-......y.y-......o.r l'd'lbd2b'l'dl          # swap 4 corners
+
+3 .........-....y.b.y-....r.o..-....o.b..-....b.y.r-......... r'd'rfdf'r'drd2         # swap corners front bottom 
+
+?
+3 .........-....y.y.y-....b.o..-....g.o..-....o.g.b-......... r'd'rfdf'r'drd2         # swap corners front bottom 
+
+3 .........-b...y.y..-y...r.r..-....o....-....b.b..-......o.. dr'd'rfdf'r'drd2
+3 .........-y.b.y....-b...r....-o...o....-....b....-......r.y d2r'd'rfdf'r'drd2
+3 .........-..y.y...b-....r....-r...o.y..-....b...o-........b d'r'd'rfdf'r'drd2
+
+3 .........-....y.r.o-....r.b..-....o.b..-....b.y.y-......... df'tfrtr'd'rt'r'f't'f   # orient corners front bottom
+3 .........-....y.b.b-....r.y..-....o.y..-....b.r.o-......... fd'bdlbl'f'lb'l'd'b'd   # orient corners front bottom
+3 .........-r...y...g-y...b....-....g.o..-....o...y-....r.b.. l'df'tfrtr'd'rt'r'f't'fl # orient corners FDR & BDL
+3 .........-r...y...b-g...r....-....o.y..-....b...o-....g.y.. l'fd'bdlbl'f'lb'l'd'b'dl # orient corners FDR & BDL
+3 .........-..g.y.r..-....r.b..-y...o....-....b.y..-....g...o rdf'tfrtr'd'rt'r'f't'fr' # orient corners FDL & BDR
+3 .........-..o.y.b..-....r.y..-g...o....-....b.r..-....g...y rfd'bdlbl'f'lb'l'd'b'dr' # orient corners FDL & BDR
+
+4 .........-...yyb.r.-...or....-...yo....-....b..y.-......... m'd'md2m'd'm				# permute & rotate 3 edges FD LD BD
+4 .........-...byy.o.-...yr....-...ro....-....b..y.-......... m'dmd2m'dm                # reverse of previous
+4 .........-....y....-.........-.........-.......y.-.......y. f'ef2e'e'f'd2fe'e'f2e'fd2 # permute 2 edges FD BD
+4 .........-...r...b.-...yr....-.........-....b..y.-......... f'r'l'el2'e'e'l'd2le'e'l2e'ld2rf # permute 2 edges FD LD
+
+4 .........-...yyy...-...gb....-...bg....-.........-......... mmtsst2sstmm # swap edges FD,BD & RD,LD  

@@ -1,0 +1,33 @@
+screen 450 250
+hud
+widget button stop    =10,=10  100,15 btn_back=#F808 "Stop"        btn_text=white : stack clear
+widget button reset   +0,+20   100,15 btn_back       "Reset"       btn_text       : reset
+widget button shuffle +0,+20   100,15 btn_back       "Shuffle"     btn_text       : shuffle
+widget button flat    +0,+20   100,15 btn_back       "Flat on/off" btn_text       : flat
+widget button back    +0,+20   100,15 btn_back       "Back on/off" bmv_text=white : backward
+
+widget button mv_b    =50,+20  15,15    bmv_back=#0FF8       "<"           btn_text      : move b
+widget button mv_mp   +16,+0   15,15    bmv_back       "^"           btn_text      : move m'
+widget button mv_bp   +16,+0   15,15    bmv_back       ">"           btn_text      : move b'
+
+widget button mv_msp  -38,+15  15,15    bmv_back       "<"           btn_text      : move s'
+widget button mv_ms   +24,+0   15,15    bmv_back       ">"           btn_text      : move s
+
+widget button mv_fb   -42,+15  15,15    bmv_back       "<"           btn_text      : move f'
+widget button mv_m    +16,+0   15,15    bmv_back       "v"           btn_text      : move m
+widget button mv_f    +16,+0   15,15    bmv_back       ">"           btn_text      : move f
+
+widget button mv_t      -32,+18   15,15    bmv_back       "<"           btn_text      : move t
+widget button mv_lp     +12,+0  15,15    bmv_back       "^"           btn_text      : move l'
+widget button mv_r      +16,+0   15,15    bmv_back       "^"           btn_text      : move r
+widget button mv_tp     +12,+0   15,15    bmv_back       ">"           btn_text      : move t'
+
+widget button mv_ep  -40,+15  15,15    bmv_back       "<"           btn_text      : move e'
+widget button mv_e   +34,+0   15,15    bmv_back       ">"           btn_text      : move e
+
+
+widget button mv_l     -34,+15    15,15    bmv_back       "v"           btn_text      : move l
+widget button mv_dp      +12,+0   15,15    bmv_back       "<"           btn_text     : move d'
+widget button mv_d       +10,+0   15,15    bmv_back       ">"           btn_text      : move d
+widget button mv_rp      +12,+0   15,15    bmv_back       "v"           btn_text      : move r'
+

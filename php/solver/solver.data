@@ -1,0 +1,38 @@
+   # colors = T D L R F B
+
+  TTTTTTTTT DDDDDDDDD LLLLLLLLL RRRRRRRRR FFFFFFFFF BBBBBBBBB
+1 
+1 ....w...b-.........-.........-....o...w-..o.b....-......... r'd'rdr'd'r    # rotate corner TFR
+1 ....w...o-.........-.........-....o...b-..w.b....-......... r'drd'r'dr     # rotate corner TFR
+1 ....w..b.-.........-.........-.........-.w..b....-......... md2m'dmd'm'    # orient facet  TF
+
+1 ....w....-.........-.......w.-.........-...bb....-......... e'f'ef         # edge from left middle to TF
+1 ....w....-.........-.........-.......w.-....bb...-......... efe'f'         # edge from right middle to TF
+1 ....w....-.........-.......b.-.........-...wb....-......... eefe'f'e'      # edge from FL to TF
+1 ....w....-.........-.........-.......b.-....bw...-......... e'e'f'efe      # edge from FR to TF
+
+1 ....w....-.........-.b.......-.........-....b....-...w..... f'efe'         # ok edge from BL to TF
+1 ....w....-.........-.........-.b.......-....b....-.....w... fe'f'e         # edge from BR to TF
+1 ....w....-.........-.........-.w.......-....b....-.....b... f'eefee        # edge from RB to TF
+1 ....w....-.........-.w.......-.........-....b....-...b..... feef'ee
+
+1 ....w....-.....b...-.........-...w.....-....b....-......... md'm'          # edge from right place edge TF
+1 ....w....-.b.......-.........-.........-....b....-.......w. dmdm'          # edge from Back to TF
+1 ....w....-...b.....-...w.....-.........-....b....-......... mdm'           # edge from left to TF
+1 ....w....-.......w.-.........-.........-....b..b.-......... md2m'          # edge reverse from front to TF
+1 ....w....-.....w...-.........-...b.....-....b....-......... d'md2m'        # edge reverse from right to TF
+1 ....w....-...w.....-...b.....-.........-....b....-......... dmd2m'         # edge reverse from left to TF
+
+  TTTTTTTTT DDDDDDDDD LLLLLLLLL RRRRRRRRR FFFFFFFFF BBBBBBBBB
+1 ....w...w-.........-....r....-........b-..r.b....-......... r'drld'l'      # corner TFR to corner TLF
+1 ....w.w..-.........-........b-....o....-o...b....-......... ld'l'r'dr      # corner TLF to TFR
+
+  Echange coins en diago
+1 ....w.w..-.........-........o-....o....-g........-....g.... lrd2l'r'       # corner TLF to TRB
+
+
+1 ....w.o..-.........-........w-....o....-b...b....-......... m'fm           # corner LTF to TRF
+1 ....w...r-.........-....r....-........w-..b.b....-......... m'f'm          # corner RTF to TLF
+1 ....w...b-.........-....r....-........r-..w.b....-......... r'drdf'd2f     # corner FTR to TFL
+1 ....w.b..-.........-........o-....o....-w...b....-......... ld'l'd'fd2f'   # corner FTL to TFR
+

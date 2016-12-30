@@ -1,0 +1,9 @@
+pattern 6t noreset
+pattern checker noreset
+pattern cube flfu'ruf2l2u'l'bd'b'l2u
+pattern cube3 F D F' D2 L' B' U L D R U L' F' U L U2
+pattern flowers eemmssU D' B F' R L' U D'
+pattern holes U D' B F' R L' U D'
+pattern stripes F U F R L2 B D' R D2 L D' B R2 L F U F
+pattern twisted F B' U F U F U L B L2 B' U F' L U L' B
+pattern zigzag R L B F R L B F R L B F

@@ -1,0 +1,1055 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="97">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df root="." name="0">
+      <df name="build">
+        <df name="core">
+          <in>ClipBoard.o</in>
+          <in>Help.o</in>
+          <in>Object.o</in>
+          <in>ObjectBuilder.o</in>
+          <in>Random.o</in>
+          <in>Range.o</in>
+          <in>Server.o</in>
+          <in>String.o</in>
+          <in>StringUtil.o</in>
+          <in>Vector3D.o</in>
+          <in>arcball.o</in>
+          <in>arcball_sample.o</in>
+          <in>imageloader.o</in>
+        </df>
+        <df name="Cube">
+          <in>Cube.o</in>
+          <in>Face.o</in>
+        </df>
+        <df name="genetic">
+          <in>AbstractCrossOver.o</in>
+          <in>AbstractGene.o</in>
+          <in>AbstractGeneticAlgo.o</in>
+          <in>AbstractIndividual.o</in>
+          <in>AbstractIndividualFactory.o</in>
+          <in>AdaptatorFunction.o</in>
+          <in>Gene.o</in>
+          <in>Population.o</in>
+          <in>Vector.o</in>
+        </df>
+        <df name="RedStone">
+          <df name="Blocks">
+            <in>Block.o</in>
+            <in>Solid.o</in>
+          </df>
+          <df name="Blocs">
+            <in>Bloc.o</in>
+            <in>Solid.o</in>
+          </df>
+          <in>Bloc.o</in>
+          <in>Coord.o</in>
+          <in>RedMap.o</in>
+          <in>RedStone.o</in>
+        </df>
+        <df name="renderer">
+          <df name="opengl">
+            <in>Background.o</in>
+            <in>Color.o</in>
+            <in>FontRenderer.o</in>
+            <in>Point.o</in>
+            <in>Widget.o</in>
+            <in>WidgetButton.o</in>
+            <in>WidgetConsole.o</in>
+            <in>texture.o</in>
+          </df>
+        </df>
+        <df name="Vrp">
+          <in>CrossOver.o</in>
+          <in>FitnessScore.o</in>
+          <in>Galaxy.o</in>
+          <in>GeneLink.o</in>
+          <in>GeneticVrp.o</in>
+          <in>Individual.o</in>
+          <in>IndividualFactory.o</in>
+          <in>Planet.o</in>
+          <in>Ring.o</in>
+          <in>SmartIndividual.o</in>
+          <in>Vrp.o</in>
+        </df>
+        <in>Color.o</in>
+        <in>Country.o</in>
+        <in>Cube.o</in>
+        <in>Face.o</in>
+        <in>FontRenderer.o</in>
+        <in>Object.o</in>
+        <in>Point.o</in>
+        <in>Random.o</in>
+        <in>Range.o</in>
+        <in>Server.o</in>
+        <in>StringUtil.o</in>
+        <in>Town.o</in>
+        <in>Widget.o</in>
+        <in>WidgetButton.o</in>
+        <in>WidgetConsole.o</in>
+        <in>imageloader.o</in>
+        <in>main.o</in>
+      </df>
+      <df name="core">
+        <in>ClipBoard.cpp</in>
+        <in>Help.cpp</in>
+        <in>Object.cpp</in>
+        <in>ObjectBuilder.cpp</in>
+        <in>Random.cpp</in>
+        <in>Range.cpp</in>
+        <in>Server.cpp</in>
+        <in>String.cpp</in>
+        <in>StringUtil.cpp</in>
+        <in>Vector3D.cpp</in>
+        <in>arcball.cpp</in>
+        <in>arcball_sample.cpp</in>
+        <in>imageloader.cpp</in>
+      </df>
+      <df name="Cube">
+        <in>Cube.cpp</in>
+        <in>Face.cpp</in>
+      </df>
+      <df name="genetic">
+        <in>AbstractCrossOver.cpp</in>
+        <in>AbstractGene.cpp</in>
+        <in>AbstractGeneticAlgo.cpp</in>
+        <in>AbstractIndividual.cpp</in>
+        <in>AbstractIndividualFactory.cpp</in>
+        <in>AdaptatorFunction.cpp</in>
+        <in>Gene.cpp</in>
+        <in>Population.cpp</in>
+        <in>Vector.cpp</in>
+      </df>
+      <df name="RedStone">
+        <df name="Blocks">
+          <in>Block.cpp</in>
+          <in>Solid.cpp</in>
+          <in>Torch.cpp</in>
+        </df>
+        <in>Coord.cpp</in>
+        <in>RedMap.cpp</in>
+        <in>RedStone.cpp</in>
+      </df>
+      <df name="renderer">
+        <df name="opengl">
+          <in>Background.cpp</in>
+          <in>Color.cpp</in>
+          <in>FontRenderer.cpp</in>
+          <in>Point.cpp</in>
+          <in>Widget.cpp</in>
+          <in>WidgetButton.cpp</in>
+          <in>WidgetConsole.cpp</in>
+          <in>texture.cpp</in>
+        </df>
+      </df>
+      <df name="Vrp">
+        <in>CrossOver.cpp</in>
+        <in>FitnessScore.cpp</in>
+        <in>Galaxy.cpp</in>
+        <in>GeneLink.cpp</in>
+        <in>GeneticVrp.cpp</in>
+        <in>Individual.cpp</in>
+        <in>IndividualFactory.cpp</in>
+        <in>Planet.cpp</in>
+        <in>Ring.cpp</in>
+        <in>SmartIndividual.cpp</in>
+        <in>Vrp.cpp</in>
+      </df>
+      <in>main.cpp</in>
+    </df>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+      <logicalFolder name="f2"
+                     displayName="New C++ Simple Test"
+                     projectFiles="true"
+                     kind="TEST">
+      </logicalFolder>
+      <logicalFolder name="f3"
+                     displayName="New CppUnit Test"
+                     projectFiles="true"
+                     kind="TEST">
+      </logicalFolder>
+      <logicalFolder name="f4"
+                     displayName="New CppUnit Test 1"
+                     projectFiles="true"
+                     kind="TEST">
+      </logicalFolder>
+      <logicalFolder name="f1"
+                     displayName="New CUnit Test"
+                     projectFiles="true"
+                     kind="TEST">
+      </logicalFolder>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
+  <sourceRootList>
+    <Elem>.</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>false</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <flagsDictionary>
+        <element flagsID="0" commonFlags="-std=c++0x"/>
+      </flagsDictionary>
+      <codeAssistance>
+      </codeAssistance>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>.</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f Makefile</buildCommand>
+          <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
+          <executablePath>vrp</executablePath>
+          <ccTool flags="0">
+          </ccTool>
+        </makeTool>
+        <preBuild>
+          <preBuildCommandWorkingDir>.</preBuildCommandWorkingDir>
+          <preBuildCommand></preBuildCommand>
+        </preBuild>
+      </makefileType>
+      <item path="Cube/Cube.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="Cube/Face.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="RedStone/Blocks/Block.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="RedStone/Blocks/Solid.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="RedStone/Blocks/Torch.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="RedStone/Coord.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <incDir>
+            <pElem>RedStone</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="RedStone/RedMap.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <incDir>
+            <pElem>RedStone</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="RedStone/RedStone.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <incDir>
+            <pElem>RedStone</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="Vrp/CrossOver.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="Vrp/FitnessScore.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="Vrp/Galaxy.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="Vrp/GeneLink.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="Vrp/GeneticVrp.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="Vrp/Individual.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="Vrp/IndividualFactory.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="Vrp/Planet.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="Vrp/Ring.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="Vrp/SmartIndividual.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="Vrp/Vrp.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/Color.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <incDir>
+            <pElem>genetic</pElem>
+            <pElem>core</pElem>
+            <pElem>renderer/opengl</pElem>
+            <pElem>glm</pElem>
+            <pElem>.</pElem>
+            <pElem>Vrp</pElem>
+            <pElem>Cube</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="build/Country.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <incDir>
+            <pElem>genetic</pElem>
+            <pElem>core</pElem>
+            <pElem>renderer/opengl</pElem>
+            <pElem>glm</pElem>
+            <pElem>.</pElem>
+            <pElem>Vrp</pElem>
+            <pElem>Cube</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="build/Cube.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <incDir>
+            <pElem>genetic</pElem>
+            <pElem>core</pElem>
+            <pElem>renderer/opengl</pElem>
+            <pElem>glm</pElem>
+            <pElem>.</pElem>
+            <pElem>Vrp</pElem>
+            <pElem>Cube</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="build/Cube/Cube.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/Cube/Face.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/Face.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <incDir>
+            <pElem>genetic</pElem>
+            <pElem>core</pElem>
+            <pElem>renderer/opengl</pElem>
+            <pElem>glm</pElem>
+            <pElem>.</pElem>
+            <pElem>Vrp</pElem>
+            <pElem>Cube</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="build/FontRenderer.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <incDir>
+            <pElem>genetic</pElem>
+            <pElem>core</pElem>
+            <pElem>renderer/opengl</pElem>
+            <pElem>glm</pElem>
+            <pElem>.</pElem>
+            <pElem>Vrp</pElem>
+            <pElem>Cube</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="build/Object.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <incDir>
+            <pElem>genetic</pElem>
+            <pElem>core</pElem>
+            <pElem>renderer/opengl</pElem>
+            <pElem>glm</pElem>
+            <pElem>.</pElem>
+            <pElem>Vrp</pElem>
+            <pElem>Cube</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="build/Point.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <incDir>
+            <pElem>genetic</pElem>
+            <pElem>core</pElem>
+            <pElem>renderer/opengl</pElem>
+            <pElem>glm</pElem>
+            <pElem>.</pElem>
+            <pElem>Vrp</pElem>
+            <pElem>Cube</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="build/Random.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <incDir>
+            <pElem>genetic</pElem>
+            <pElem>core</pElem>
+            <pElem>renderer/opengl</pElem>
+            <pElem>glm</pElem>
+            <pElem>.</pElem>
+            <pElem>Vrp</pElem>
+            <pElem>Cube</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="build/Range.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <incDir>
+            <pElem>genetic</pElem>
+            <pElem>core</pElem>
+            <pElem>renderer/opengl</pElem>
+            <pElem>glm</pElem>
+            <pElem>.</pElem>
+            <pElem>Vrp</pElem>
+            <pElem>Cube</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="build/RedStone/Bloc.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/RedStone/Blocks/Block.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/RedStone/Blocks/Solid.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/RedStone/Blocs/Bloc.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/RedStone/Blocs/Solid.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/RedStone/Coord.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/RedStone/RedMap.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/RedStone/RedStone.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/Server.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <incDir>
+            <pElem>genetic</pElem>
+            <pElem>core</pElem>
+            <pElem>renderer/opengl</pElem>
+            <pElem>glm</pElem>
+            <pElem>.</pElem>
+            <pElem>Vrp</pElem>
+            <pElem>Cube</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="build/StringUtil.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <incDir>
+            <pElem>genetic</pElem>
+            <pElem>core</pElem>
+            <pElem>renderer/opengl</pElem>
+            <pElem>glm</pElem>
+            <pElem>.</pElem>
+            <pElem>Vrp</pElem>
+            <pElem>Cube</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="build/Town.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <incDir>
+            <pElem>genetic</pElem>
+            <pElem>core</pElem>
+            <pElem>renderer/opengl</pElem>
+            <pElem>glm</pElem>
+            <pElem>.</pElem>
+            <pElem>Vrp</pElem>
+            <pElem>Cube</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="build/Vrp/CrossOver.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/Vrp/FitnessScore.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/Vrp/Galaxy.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/Vrp/GeneLink.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/Vrp/GeneticVrp.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/Vrp/Individual.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/Vrp/IndividualFactory.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/Vrp/Planet.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/Vrp/Ring.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/Vrp/SmartIndividual.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/Vrp/Vrp.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/Widget.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <incDir>
+            <pElem>genetic</pElem>
+            <pElem>core</pElem>
+            <pElem>renderer/opengl</pElem>
+            <pElem>glm</pElem>
+            <pElem>.</pElem>
+            <pElem>Vrp</pElem>
+            <pElem>Cube</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="build/WidgetButton.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <incDir>
+            <pElem>genetic</pElem>
+            <pElem>core</pElem>
+            <pElem>renderer/opengl</pElem>
+            <pElem>glm</pElem>
+            <pElem>.</pElem>
+            <pElem>Vrp</pElem>
+            <pElem>Cube</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="build/WidgetConsole.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <incDir>
+            <pElem>genetic</pElem>
+            <pElem>core</pElem>
+            <pElem>renderer/opengl</pElem>
+            <pElem>glm</pElem>
+            <pElem>.</pElem>
+            <pElem>Vrp</pElem>
+            <pElem>Cube</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="build/core/ClipBoard.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/core/Help.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/core/Object.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/core/ObjectBuilder.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/core/Random.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/core/Range.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/core/Server.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/core/String.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/core/StringUtil.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/core/Vector3D.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/core/arcball.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/core/arcball_sample.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/core/imageloader.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/genetic/AbstractCrossOver.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/genetic/AbstractGene.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/genetic/AbstractGeneticAlgo.o"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/genetic/AbstractIndividual.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/genetic/AbstractIndividualFactory.o"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/genetic/AdaptatorFunction.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/genetic/Gene.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/genetic/Population.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/genetic/Vector.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/imageloader.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <incDir>
+            <pElem>genetic</pElem>
+            <pElem>core</pElem>
+            <pElem>renderer/opengl</pElem>
+            <pElem>glm</pElem>
+            <pElem>.</pElem>
+            <pElem>Vrp</pElem>
+            <pElem>Cube</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="build/main.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="build/renderer/opengl/Background.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/renderer/opengl/Color.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/renderer/opengl/FontRenderer.o"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/renderer/opengl/Point.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/renderer/opengl/Widget.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/renderer/opengl/WidgetButton.o"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/renderer/opengl/WidgetConsole.o"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="build/renderer/opengl/texture.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="core/ClipBoard.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="core/Help.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="core/Object.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="core/ObjectBuilder.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="core/Random.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="core/Range.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="core/Server.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="core/String.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="core/StringUtil.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="core/Vector3D.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="core/arcball.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="core/arcball_sample.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="core/imageloader.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <folder path="0/Cube">
+        <ccTool>
+          <incDir>
+            <pElem>renderer/opengl</pElem>
+            <pElem>core</pElem>
+            <pElem>genetic</pElem>
+            <pElem>glm</pElem>
+            <pElem>/usr/include</pElem>
+            <pElem>Cube</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <folder path="0/RedStone">
+        <ccTool>
+          <incDir>
+            <pElem>renderer/opengl</pElem>
+            <pElem>core</pElem>
+            <pElem>genetic</pElem>
+            <pElem>glm</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <folder path="0/RedStone/Blocks">
+        <ccTool>
+          <incDir>
+            <pElem>RedStone/Blocks</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <folder path="0/Vrp">
+        <ccTool>
+          <incDir>
+            <pElem>renderer/opengl</pElem>
+            <pElem>core</pElem>
+            <pElem>genetic</pElem>
+            <pElem>glm</pElem>
+            <pElem>/usr/include</pElem>
+            <pElem>Vrp</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <folder path="0/build/Cube">
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <folder path="0/build/RedStone">
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <folder path="0/build/Vrp">
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <folder path="0/build/core">
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <folder path="0/build/genetic">
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <folder path="0/build/renderer">
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <folder path="0/core">
+        <ccTool>
+          <incDir>
+            <pElem>renderer/opengl</pElem>
+            <pElem>core</pElem>
+            <pElem>genetic</pElem>
+            <pElem>glm</pElem>
+            <pElem>/usr/include</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <folder path="0/genetic">
+        <ccTool>
+          <incDir>
+            <pElem>renderer/opengl</pElem>
+            <pElem>core</pElem>
+            <pElem>genetic</pElem>
+            <pElem>glm</pElem>
+            <pElem>/usr/include</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <folder path="0/renderer">
+        <ccTool>
+          <incDir>
+            <pElem>renderer/opengl</pElem>
+            <pElem>core</pElem>
+            <pElem>genetic</pElem>
+            <pElem>glm</pElem>
+            <pElem>/usr/include</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <folder path="TestFiles/f1">
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f1</output>
+          <linkerLibItems>
+            <linkerOptionItem>-lcunit</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
+      <folder path="TestFiles/f2">
+        <cTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </cTool>
+        <ccTool>
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f2</output>
+        </linkerTool>
+      </folder>
+      <folder path="TestFiles/f3">
+        <cTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </cTool>
+        <ccTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f3</output>
+          <linkerLibItems>
+            <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
+      <folder path="TestFiles/f4">
+        <cTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </cTool>
+        <ccTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f4</output>
+          <linkerLibItems>
+            <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
+      <item path="genetic/AbstractCrossOver.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="genetic/AbstractGene.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="genetic/AbstractGeneticAlgo.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="genetic/AbstractIndividual.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="genetic/AbstractIndividualFactory.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="genetic/AdaptatorFunction.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="genetic/Gene.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="genetic/Population.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="genetic/Vector.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="main.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <incDir>
+            <pElem>renderer/opengl</pElem>
+            <pElem>core</pElem>
+            <pElem>genetic</pElem>
+            <pElem>glm</pElem>
+            <pElem>/usr/include</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="renderer/opengl/Background.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="renderer/opengl/Color.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="renderer/opengl/FontRenderer.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="renderer/opengl/Point.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="renderer/opengl/Widget.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="renderer/opengl/WidgetButton.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="renderer/opengl/WidgetConsole.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="renderer/opengl/texture.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>

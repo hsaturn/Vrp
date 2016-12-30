@@ -1,0 +1,12 @@
+g++ -MMD -g -Iglm -Wall -I. -std=c++0x -g -c Cube.cpp -o build/Cube.o -pthread
+g++ -MMD -g -Iglm -Wall -I. -std=c++0x -g -c main.cpp -o build/main.o -pthread
+g++ -MMD -g -Iglm -Wall -I. -std=c++0x -g -c imageloader.cpp -o build/imageloader.o -pthread
+g++ -MMD -g -Iglm -Wall -I. -std=c++0x -g -c Color.cpp -o build/Color.o -pthread
+g++ -MMD -g -Iglm -Wall -I. -std=c++0x -g -c Face.cpp -o build/Face.o -pthread
+g++ -MMD -g -Iglm -Wall -I. -std=c++0x -g -c Server.cpp -o build/Server.o -pthread
+g++ -MMD -g -Iglm -Wall -I. -std=c++0x -g -c StringUtil.cpp -o build/StringUtil.o -pthread
+g++ -MMD -g -Iglm -Wall -I. -std=c++0x -g -c Widget.cpp -o build/Widget.o -pthread
+g++ -MMD -g -Iglm -Wall -I. -std=c++0x -g -c WidgetButton.cpp -o build/WidgetButton.o -pthread
+g++ -MMD -g -Iglm -Wall -I. -std=c++0x -g -c WidgetConsole.cpp -o build/WidgetConsole.o -pthread
+g++ -MMD -g -Iglm -Wall -I. -std=c++0x -g -c FontRenderer.cpp -o build/FontRenderer.o -pthread
+g++ -std=c++0x -g build/Cube.o build/main.o build/imageloader.o build/Color.o build/Face.o build/Server.o build/StringUtil.o build/Widget.o build/WidgetButton.o build/WidgetConsole.o build/FontRenderer.o -lSDL -lglut -lGL -lGLU -lGLEW -o cube_server -pthread
