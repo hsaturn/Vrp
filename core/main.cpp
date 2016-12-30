@@ -23,6 +23,8 @@
 #include "texture.hpp"
 #include "Vrp/Vrp.hpp"
 #include <ansi_colors.hpp>
+#include "core/arcball.h"
+#include "core/commands/cmd.hpp"
 
 #include "StringUtil.hpp"
 #include "Background.h"
@@ -33,6 +35,11 @@ int SCREEN_WIDTH = 200;
 int SCREEN_HEIGHT = 200;
 
 BackgroundStars background;
+
+const vec eye( 0.0f, 0.0f, -20.0f );
+const vec centre( 0.0f, 0.0f, 0.0f );
+const vec up( 0.0f, 1.0f, 0.0f );
+const float SPHERE_RADIUS = 5.0f;
 
 using namespace std;
 using namespace hwidgets;
@@ -51,20 +58,12 @@ struct thr_info
 
 list<thr_info*> exec_list;
 
-float back_x = 4.1;
-float back_y = 4.1;
-float back_z = 2.1;
-float back_s = 0.5;
+bool buttonDown = false;
 using namespace std;
 GLint cube_server;
 bool bAxis = false;
 Server* server;
-char presse;
-double x, y, xold, yold;
 GLuint program;
-double anglex = 0;
-double angley = 0;
-double anglez = 0;
 list<string> cmdQueue;
 glm::mat4 orient;
 float _anglex = 0;
@@ -82,27 +81,9 @@ GLuint yellow_textureId;
 GLuint orange_textureId;
 GLuint _displayListId_smallcube; //The OpenGL id of the display list
 //Makes the image into a texture, and returns the id of the texture
-long sizex = 600;
-long sizey = 600;
 bool resetTimer = true;
 
-const float flatx_org = 2.5;
-const float flaty_org = 4.8;
-const float flatz_org = 4.0;
-const float flats_org = 1.0;
-bool flat = true;
-float flatx = flatx_org;
-float flaty = flaty_org;
-float flatz = flatz_org;
-float flats = flats_org;
-
-const float cubex_org = 0.0;
-const float cubey_org = -0.8;
-const float cubez_org = 0.0;
 const float scale_org = 2.0;
-float cubex = cubex_org;
-float cubey = cubey_org;
-float cubez = cubez_org;
 float scale = scale_org;
 
 const float hudr_org = 1.0;
@@ -161,10 +142,12 @@ void exec(string& cmd)
 			{
 				t->thr->join();
 			}
+			else
+				exec_list.push_back(t);
 		}
 		catch (std::exception &e)
 		{
-			cerr << "THREAD " << e.what() << endl;
+			cerr << "THREAD EXCEPTION : " << e.what() << endl;
 		}
 	}
 }
@@ -206,7 +189,7 @@ void drawBackground2()
 	static GLint tt = 0;
 	if (tt == 0)
 	{
-		Image* image = loadBMP("background.bmp");
+		Image* image = loadBMP("textures/background.bmp");
 		tt = loadTexture(image);
 		delete image;
 	}
@@ -327,10 +310,14 @@ void handleResize(int w, int h)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(45.0, (double) w / (double) h, 1.0, 200);
-	gluLookAt(0.0f, 5.5f, 15.0f,
+	/*gluLookAt(0.0f, 5.5f, 15.0f,
 			0.0f, 0.0f, 0.0f,
-			0.0f, 1.0f, 0.0f);
-
+			0.0f, 1.0f, 0.0f);*/
+    gluLookAt(
+        eye.x, eye.y, eye.z,
+        centre.x, centre.y, centre.z,
+        up.x, up.y, up.z );	
+	arcball_setzoom( SPHERE_RADIUS, eye, up );
 	/* if (w <= h)
 	   glOrtho(-2.0, 2.0, -2.0 * (GLfloat) h / (GLfloat) w,
 	   2.0 * (GLfloat) h / (GLfloat) w, -1.0, 1.0);
@@ -340,7 +327,6 @@ void handleResize(int w, int h)
 	 */
 	/* set matrix mode to modelview */
 	glMatrixMode(GL_MODELVIEW);
-
 }
 
 void draw_smallcube()
@@ -528,21 +514,6 @@ void initRendering()
 
 }
 
-Face::Dir getDir(string& incoming, string& dir)
-{
-	dir = getWord(incoming);
-	if (dir == "top") return Face::TOP;
-	if (dir == "bottom") return Face::BOTTOM;
-	if (dir == "down") return Face::BOTTOM;
-	if (dir == "up") return Face::TOP;
-	if (dir == "left") return Face::LEFT;
-	if (dir == "right") return Face::RIGHT;
-	if (dir == "front") return Face::FRONT;
-	if (dir == "back") return Face::BACK;
-
-	return Face::NONE;
-}
-
 float getFloat(string& incoming)
 {
 	string f = getWord(incoming);
@@ -570,9 +541,8 @@ void onclose()
 	delete server;
 	server = 0;
 	for (auto it = exec_list.begin(); it != exec_list.end(); it++)
-	{
-		(*it)->thr->join();
-	}
+		if ((*it)->thr->joinable())
+			(*it)->thr->join();
 }
 
 void drawText(const char * message)
@@ -603,47 +573,26 @@ void widgetUpdate(int value)
 	drawScene();
 }
 
-void drawHud(bool a)
+void drawHud()
 {
-	const float g_rotate = 0; // rotation du texte
-	Color c(hudr, hudv, hudb);
-
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-	glLoadIdentity();
-	glOrtho(0.0, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0, -1.0, 10.0);
-	glMatrixMode(GL_MODELVIEW);
-	//glPushMatrix();        ----Not sure if I need this
-	glLoadIdentity();
-	glDisable(GL_CULL_FACE);
-
-	glClear(GL_DEPTH_BUFFER_BIT);
-
-	string state;
-
-	if (cube)
-	{
-		if (!cube->isValid())
-		{
-			c = Color::red;
-			state = "invalid";
-		}
-		else
-			state = "scrambled";
-		if (cube->isMade())
-		{
-			c = Color::green;
-			state = "solved";
-		}
-		if (lastState != state)
-		{
-			Widget::pushEvent("cube", state);
-			lastState = state;
-		}
-	}
-
 	if (hud)
 	{
+		const float g_rotate = 0; // rotation du hud (fonctionne mal a cause de mouseevent pas en adéquation)
+		Color c(hudr, hudv, hudb);
+
+		glMatrixMode(GL_PROJECTION);
+		glPushMatrix();
+		glLoadIdentity();
+		glOrtho(0.0, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0, -1.0, 10.0);
+		glMatrixMode(GL_MODELVIEW);
+		//glPushMatrix();        ----Not sure if I need this
+		glLoadIdentity();
+		glDisable(GL_CULL_FACE);
+
+		glClear(GL_DEPTH_BUFFER_BIT);
+		c.render();
+
+		/*
 		glBegin(GL_QUADS);
 		c.render(0.1);
 		glVertex2f(0, SCREEN_HEIGHT - 14);
@@ -651,28 +600,17 @@ void drawHud(bool a)
 		glVertex2f(SCREEN_WIDTH, SCREEN_HEIGHT);
 		glVertex2f(0, SCREEN_HEIGHT);
 		glEnd();
-		c.render();
+		*/
 
 		//glScalef(0.001, 0.001, 0.001);
 		glRotatef(g_rotate, 0, 0, 1.0);
 		glTranslatef(0, 0, 1.0);
 
 		glRasterPos2f(2, SCREEN_HEIGHT - 2);
-
-		// TODO Object::drawHud
-		stringstream buf;
-		if (cube)
-		{
-			buf << "Moves: " << cube->totalMoves();
-			buf << ", " << (cube->isValid() ? "valid" : "invalid");
-			if (cube->isMade()) buf << ", perfect";
-		}
-		if (cmdQueue.size())
-			buf << ", pgm size: " << cmdQueue.size();
-		else if (cube && cube->isReady())
-			buf << ", ready !";
-
-		drawText(buf.str().c_str());
+		glPushMatrix();
+		ObjectBuilder::renderHud();
+		glPopMatrix();
+		
 		glTranslatef(0, 0, -1.0);
 	}
 
@@ -700,9 +638,10 @@ void drawScene()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	background.render();
-	glTranslatef(cubex, cubey, cubez);
+//	glTranslatef( eye.x, eye.y, eye.z ); //glTranslatef(cubex, cubey, cubez);
+    arcball_rotate();
+//	glMultMatrixf(glm::value_ptr(orient));
 	
-	glMultMatrixf(glm::value_ptr(orient));
 	glScalef(scale, scale, scale);
 	glRotatef(_anglex, 1.0, 0.0, 0.0);
 	glRotatef(_angley, 0.0, 1.0, 0.0);
@@ -711,11 +650,6 @@ void drawScene()
 
 	if (bAxis)
 	{
-		glPushMatrix();
-
-		// apply rotations
-		// move the axes to the screen corner
-		// draw our axes
 		glBegin(GL_LINES);
 		// draw line for x axis
 		glColor3f(1.0, 0.0, 0.0); // X ROUGE
@@ -730,35 +664,10 @@ void drawScene()
 		glVertex3f(0.0, 0.0, 0.0);
 		glVertex3f(0.0, 0.0, 5.0);
 		glEnd();
-
-		glLoadIdentity();
-		glVertex3f(15, 0, 0);
-		glEnd();
-		glPopMatrix();
-	}
-
-	if (cube) cube->render(resetTimer);
-
-	if (backward)
-	{
-		glLoadIdentity();
-		glRotatef(180, 0.0, 1.0, 0.0);
-		//glMultMatrixf(glm::value_ptr(orient));
-		glTranslatef(back_x, back_y, back_z);
-		glScalef(back_s, back_s, back_s);
-		glRotatef(-10, 1.0, 1.0, 0.0);
-		if (cube) cube->render(resetTimer);
-	}
-	if (flat)
-	{
-		glLoadIdentity();
-		glTranslatef(flatx, flaty, flatz);
-		glScalef(flats, flats, flats);
-		if (cube) cube->renderFlat();
 	}
 
 	resetTimer = false;
-	drawHud(true);
+	drawHud();
 	glutSwapBuffers();
 }
 
@@ -836,18 +745,7 @@ void update(int value)
 
 			//if (StringUtil::match("[a-zA-Z]+[a-zA-Z0-9]*.[a-zA-Z]+[a-zA-Z0-9]+=", cmd))
 			
-			if (cmd=="match")
-			{
-				string s1=StringUtil::getWord(incoming);
-				string s2=StringUtil::getWord(incoming);
-				cout << Ansi::cyan() << "Match " << s1 << " / " << s2 << endl;
-				if (StringUtil::preg_match(s1,s2,false))
-					cout << Ansi::green() << "OK" << endl;
-				else
-					cout << Ansi::red() << "KO" << endl;
-				cout << Ansi::reset();
-			}
-			else if (StringUtil::preg_match("^[a-zA-Z]+[a-zA-Z0-9_]*\\.[a-zA-Z]+[a-zA-Z0-9_]*", cmd, false))
+			if (StringUtil::preg_match("^[a-zA-Z]+[a-zA-Z0-9_]*\\.[a-zA-Z]+[a-zA-Z0-9_]*", cmd, false))
 			{
 				cout << Ansi::cyan() << "MATCH" << endl;
 				string name=StringUtil::getWord(cmd, '.');
@@ -908,149 +806,9 @@ void update(int value)
 
 				server->send("");
 			}
-			else if (cmd == "algo")
-			{
-				static map<char, map<char, char>> face_rotate;
-
-				if (face_rotate.size() == 0)
-				{
-					map<char, char> faces;
-
-					faces['t'] = 'f';
-					faces['f'] = 'd';
-					faces['d'] = 'b';
-					faces['b'] = 't';
-					faces['e'] = 'S';
-					faces['s'] = 'e';
-					face_rotate['x'] = faces; // bug b'e'b2eeb't2beeb2ebt2
-
-					faces = map<char, char>();
-					faces['f'] = 'r';
-					faces['r'] = 'b';
-					faces['b'] = 'l';
-					faces['l'] = 'f';
-					face_rotate['y'] = faces;
-
-					faces = map<char, char>();
-					faces['t'] = 'r';
-					faces['r'] = 'd';
-					faces['d'] = 'l';
-					faces['l'] = 't';
-					face_rotate['z'] = faces;
-
-				}
-				cmd = getWord(incoming);
-				if (cmd == "rotate")
-				{
-					string axes = getWord(incoming);
-					string algo;
-					string new_algo = incoming;
-					while (algo.find(' ') != string::npos)
-						algo.erase(algo.find(' '), 1);
-
-					while (axes.length())
-					{
-						auto it = face_rotate.find(axes[0]);
-						axes.erase(0, 1);
-						if (it != face_rotate.end())
-						{
-							map<char, char> rotate = it->second;
-
-							algo = new_algo;
-							new_algo = "";
-							while (algo.length())
-							{
-								if (algo.length() == 0) break;
-
-								bool reverse = false;
-								char face = algo[0];
-								algo.erase(0, 1);
-
-								auto itr = rotate.find(face);
-
-								if (itr != rotate.end())
-								{
-									char newface = itr->second;
-									if (newface < 'Z')
-									{
-										newface |= 32;
-										reverse = true;
-									}
-									new_algo += newface;
-								}
-								else
-									new_algo += face;
-								while (algo[0] == '\'' || algo[0] == '2')
-								{
-									if (algo[0] == '\'')
-										reverse = !reverse;
-									else
-										new_algo += algo[0];
-									algo.erase(0, 1);
-								}
-								if (reverse) new_algo += '\'';
-							}
-						}
-					}
-					cout << "rotate = " << new_algo << endl;
-					server->send("#OK algo rotate=" + new_algo);
-				}
-				else
-					server->send("#KO algo, unknown subcommand " + cmd);
-			}
-			else if (cmd == "new")
-			{
-				string obj_class = StringUtil::getWord(incoming);
-				Object* object = ObjectBuilder::buildInstance(obj_class, incoming);
-
-				if (object)
-				{
-					server->send("#OK new " + obj_class + " : " + object->getName());
-				}
-				else
-					server->send("#KO new " + obj_class);
-			}
-			else if (cmd == "delete")
-			{
-				while (incoming.length())
-				{
-					string name(StringUtil::getWord(incoming));
-					if (ObjectBuilder::destroyInstance(name))
-						server->send("#OK " + name + " deleted.");
-					else
-						server->send("#KO no object with name " + name);
-				}
-			}
-			else if (cmd == "objects")
-			{
-				string list = "object list: ";
-				
-				server->send("#OK object list : " + ObjectBuilder::listAll());
-			}
 			else if (cmd == "var")
 			{
 				Widget::setVar(incoming);
-			}
-			else if (cmd == "widget")
-			{
-				try
-				{
-					Widget* widget = Widget::factory(incoming);
-					if (widget)
-						server->send("#OK widget");
-					else
-						server->send("#KO widget");
-				}
-				catch (const char* p)
-				{
-					cerr << "CATCH " << p << endl;
-					server->send(string("#KO widget ") + p);
-				}
-				catch (...)
-				{
-					cerr << "CATCH DURING WIDGET::FACTORY" << endl;
-					server->send("#KO widget exception");
-				}
 			}
 			else if (cmd == "scale")
 			{
@@ -1083,73 +841,10 @@ void update(int value)
 				buf << "#OK hud (" << (hud ? "ON" : "OFF") << ") (" << hudr << ", " << hudv << ", " << hudb << ")";
 				server->send(buf.str());
 			}
-			else if (cmd == "flat")
-			{
-				if (incoming.length())
-				{
-					if (incoming == "reset")
-					{
-						flatx = flatx_org;
-						flaty = flaty_org;
-						flatz = flatz_org;
-						flats = flats_org;
-					}
-					else
-					{
-						flatx = getFloat(incoming);
-						if (incoming.length()) flaty = getFloat(incoming);
-						if (incoming.length()) flatz = getFloat(incoming);
-						if (incoming.length()) flats = getFloat(incoming);
-					}
-					flat = true;
-				}
-				else
-				{
-					flat = !flat;
-				}
-				stringstream buf;
-				buf << "#OK flat (" << (flat ? "ON" : "OFF") << ") (" << flatx << ", " << flaty << ", " << flatz << ") scale=" << flats;
-				server->send(buf.str());
-			}
-			else if (cmd == "translate")
-			{
-				if (incoming.length())
-				{
-					if (incoming == "reset")
-					{
-						cubex = cubex_org;
-						cubey = cubey_org;
-						cubez = cubez_org;
-						scale = scale_org;
-					}
-					else
-					{
-						cubex = getFloat(incoming);
-						if (incoming.length()) cubey = getFloat(incoming);
-						if (incoming.length()) cubez = getFloat(incoming);
-						if (incoming.length()) scale = getFloat(incoming);
-					}
-				}
-				stringstream buf;
-				buf << "#OK translate (" << cubex << ", " << cubey << ", " << cubez << ") scale=" << scale;
-				server->send(buf.str());
-			}
 			else if (cmd == "axis")
 			{
 				bAxis = !bAxis;
 				server->send("#OK axis RGB=XYZ");
-			}
-			else if (cmd == "color")
-			{
-				string dir;
-				Face::Dir d = getDir(incoming, dir);
-
-				if (d != Face::NONE)
-				{
-					server->send("#OK " + cube->face(d)->get(4).name());
-				}
-				else
-					server->send("#KO invalid direction " + dir);
 			}
 			else if (cmd == "is_valid")
 			{
@@ -1178,25 +873,6 @@ void update(int value)
 						cmdQueue.push_front("@find y g r");
 					}
 				}
-			}
-			else if (cmd == "desc")
-			{
-				string dir;
-				Face::Dir d = getDir(incoming, dir);
-				if (d != Face::NONE)
-				{
-					string desc = cube->desc(d);
-					server->send("#OK desc=" + desc);
-				}
-				else
-					server->send("#KO desc");
-			}
-			else if (cmd == "is_made")
-			{
-				if (cube->isMade())
-					server->send("#OK is_made CUBE IS PERFECT !");
-				else
-					server->send("#KO is_made");
 			}
 			else if (cmd == "front")
 			{
@@ -1451,32 +1127,6 @@ void update(int value)
 				if (a == "y")
 					animy = getFloat(incoming);
 			}
-			else if (cmd == "backward" || cmd == "back")
-			{
-				if (incoming.length())
-				{
-					backward = true;
-					if (incoming == "reset")
-					{
-						back_x = 4.1;
-						back_y = 4.1;
-						back_z = 2.1;
-						back_s = 0.4;
-					}
-					else
-					{
-						back_x = getFloat(incoming);
-						if (incoming.length()) back_y = getFloat(incoming);
-						if (incoming.length()) back_z = getFloat(incoming);
-						if (incoming.length()) back_s = getFloat(incoming);
-					}
-				}
-				else
-					backward = !backward;
-				stringstream buf;
-				buf << setprecision(2) << "#OK backward=(" << back_x << ',' << back_y << ',' << back_z << ") scale=" << back_s;
-				server->send(buf.str());
-			}
 			else if (cmd == "quit")
 			{
 				cout << "QUIT !" << endl;
@@ -1501,48 +1151,6 @@ void update(int value)
 			{
 				run(incoming);
 			}
-			else if (cmd == "screen")
-			{
-				sizex = getFloat(incoming);
-				sizey = getFloat(incoming);
-				if (sizex < 100) sizex = 100;
-				if (sizey < 100) sizey = 100;
-				if (sizex > 4000) sizex = 4000;
-				if (sizey > 4000) sizey = 4000;
-				glutReshapeWindow(sizex, sizey);
-			}
-			else if (cmd == "rotate")
-			{
-				trim(incoming);
-
-				string invalid;
-				while (incoming.length())
-				{
-					string dir;
-					Face::Dir face = getDir(incoming, dir);
-					float angle = getFloat(incoming);
-
-					if (face != Face::NONE)
-					{
-						cube->rotate(face, angle);
-					}
-					else
-					{
-						bool clockwise = false;
-						if (angle < 0) clockwise = true;
-						if (dir == "x")
-							cube->rotatex(clockwise);
-						else if (dir == "y")
-							cube->rotatey(clockwise);
-						else if (dir == "z")
-							cube->rotatez(clockwise);
-						else
-							invalid += dir;
-					}
-				}
-				if (invalid.length())
-					server->send("#ERROR: Invalid direction [" + invalid + "]");
-			}
 			else if (cmd == "centers")
 			{
 				cmdQueue.push_back("find white");
@@ -1551,44 +1159,6 @@ void update(int value)
 				cmdQueue.push_back("find orange");
 				cmdQueue.push_back("find green");
 				cmdQueue.push_back("find red");
-			}
-			else if (cmd == "find")
-			{
-				const Color* c1 = getColor(incoming);
-				const Color* c2 = 0;
-				const Color* c3 = 0;
-				if (incoming.length()) c2 = getColor(incoming);
-				if (incoming.length()) c3 = getColor(incoming);
-
-				string where;
-
-				cout << "find " << c1 << " " << c2 << " " << c3 << endl;
-
-				if (c1 == 0)
-					server->send("#KO");
-				else if (c2 == 0)
-				{
-					where = cube->find(c1);
-				}
-				else if (c3 == 0)
-				{
-					where = cube->find(c1, c2);
-				}
-				else
-				{
-					where = cube->find(c1, c2, c3);
-				}
-				if (where.length())
-				{
-					cout << "found (" << where << ")" << endl;
-					server->send("#OK " + org + "=" + where);
-				}
-				else
-				{
-					cout << "not found !" << endl;
-					server->send("#KO " + org);
-				}
-				cout << "---------------" << endl;
 			}
 			else if (ObjectBuilder::execute(server, cmd, incoming, org))
 			{
@@ -1605,7 +1175,14 @@ void update(int value)
 				cmdQueue.push_front("@pattern " + cmd);
 			}
 			else
-				server->send("#KO Unknown command [" + cmd + "]");
+			{
+				if (core::cmd::execute(cmd, incoming, server))
+				{
+					cout << "COMMAND CORE::CMD OK" << endl;
+				}
+				else
+					server->send("#KO Unknown command [" + cmd + "]");
+			}
 		}
 	}
 
@@ -1623,26 +1200,25 @@ horrible:
 	glutTimerFunc(10, update, 0);
 }
 
-void mouse(int button, int state, int x, int y)
+void mouse_button(int button, int state, int x, int y)
 {
 	cout << "MOUSE " << button << '/' << state << endl;
-	GLdouble pix[20];
+	buttonDown = false;
 	/* si on appuie sur le bouton gauche */
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
-		presse = 1; /* le booleen presse passe a 1 (vrai) */
-		xold = x; /* on sauvegarde la position de la souris */
-		yold = y;
+		buttonDown = true;
+		cout << "JE START" << endl;
+		int invert_y = (SCREEN_HEIGHT - y) - 1; // OpenGL viewport coordinates are Cartesian
+		arcball_start(x,invert_y);
 	}
 	else
 	{
-		glReadPixels(x, y, 1, 1, GL_RED, GL_FLOAT, pix);
+		GLint pix[20];
+		glReadPixels(x/SCREEN_WIDTH, y/SCREEN_HEIGHT, 1, 1, GL_RED, GL_INT8_NV, pix);	// WAS GL_FLOAT
 
 		cout << "depth=" << pix[0] << "  ";
 	}
-	/* si on relache le bouton gauche */
-	if (button == GLUT_LEFT_BUTTON && state == GLUT_UP)
-		presse = 0; /* le booleen presse passe a 0 (faux) */
 
 	if (Widget::mouseButton(button, state, x, y) == 0 && (button == 4 || button == 3))
 	{
@@ -1654,81 +1230,39 @@ void mouse(int button, int state, int x, int y)
 	}
 }
 
-void mousemotion(int x, int y)
+/**
+ * Get a normalized vector from the center of the virtual ball O to a
+ * point P on the virtual ball surface, such that P is aligned on
+ * screen's (X,Y) coordinates.  If (X,Y) is too far away from the
+ * sphere, return the nearest point on the virtual ball surface.
+ */
+glm::vec3 get_arcball_vector(int x, int y) {
+  glm::vec3 P = glm::vec3(1.0*x/SCREEN_WIDTH*2 - 1.0,
+			  1.0*y/SCREEN_HEIGHT*2 - 1.0,
+			  0);
+  P.y = -P.y;
+  float OP_squared = P.x * P.x + P.y * P.y;
+  if (OP_squared <= 1*1)
+    P.z = sqrt(1*1 - OP_squared);  // Pythagore
+  else
+    P = glm::normalize(P);  // nearest point
+  return P;
+}
+
+void mouse_motion(int x, int y)
 {
-	Widget::mouseMotion(x, y);
-	if (presse) /* si le bouton gauche est presse */
+	if (buttonDown)
 	{
-		/* on modifie les angles de rotation de l'objet
-		   en fonction de la position actuelle de la souris et de la derniere
-		   position sauvegardee */
-
-		float dx = x - xold;
-		float dy = y - yold;
-		glm::vec3 axis_x(1, 0, 0);
-		glm::vec3 axis_y(0, 1, 0);
-		glm::vec3 axis_z(0, 0, 1);
-		glm::vec4 delta(dx, dy, 0, 1);
-
-		//delta = orient * delta;
-		
-		glm::mat4 delta_rot;
-		
-		delta_rot = glm::rotate(delta_rot, glm::radians(delta.x), axis_y);
-		delta_rot = glm::rotate(delta_rot, glm::radians(delta.y), axis_x);
-		
-		// orient *= delta_rot;
-		//orient = glm::rotate(orient, glm::radians(dy), axis_x);
-		
-		_anglex += dy;
-		_angley +=dx;
-		
-		glm::vec4 rot(dy,dx, 0,1 );
-		
-		glm::mat4 trans = glm::transpose(orient);
-		
-		rot = trans * rot;
-		
-		_anglex += rot.x;
-		_angley += rot.y;
-		
-		orient *= rot;
-		
-		
-		/*	glMatrixMode(GL_PROJECTION);
-			glLoadIdentity();
-			glMultMatrixf(glm::value_ptr(orient));
-		 */
-		/*
-		   cout << setprecision(2);
-		   cout << "Rotate x : " << dx << " : " << glm::radians(dx) << endl;
-		   cout << orient[0][0] << endl;
-		   float* ptr=glm::value_ptr(delta_rot);
-		   for(int row=0; row<4; row++)
-		   {
-		   cout << "[ ";
-		   for(int col=0; col<4; col++)
-		   {
-		   cout << *ptr++ << ' ';
-		   }
-		   cout << " ]" << endl;
-		   }
-		 */
-		/*
-		   angley = anglex+((xold-x)/3.0);
-		   anglez = angley+((yold-y)/3.0);
-		 */
-		// cout << "anglex=" << anglex << " angley=" << angley << endl;
-		glutPostRedisplay(); /* on demande un rafraichissement de l'affichage */
+		Widget::mouseMotion(x, y);
+		int invert_y = (SCREEN_HEIGHT - y) - 1;
+		arcball_move(x,invert_y);
 	}
-
-	xold = x; /* sauvegarde des valeurs courante de le position de la souris */
-	yold = y;
+	glutPostRedisplay();
 }
 
 void mousepassivemotion(int x, int y)
 {
-	mousemotion(x, y);
+	mouse_motion(x, y);
 }
 
 void fillPatterns()
@@ -1751,7 +1285,7 @@ int main(int argc, char** argv)
 {
 	//cmdQueue.push_back("rotate left 9000");
 	//cmdQueue.push_back("rotate x");
-
+	arcball_reset();
 	Widget::setCmdQueue(&cmdQueue);
 	reboot();
 
@@ -1766,7 +1300,7 @@ int main(int argc, char** argv)
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH | GLUT_MULTISAMPLE);
 	glEnable(GL_MULTISAMPLE_SGIS);
-	glutInitWindowSize(sizex, sizey);
+	glutInitWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	string sPort = toString(lPort);
 	glutCreateWindow((string("CS ") + sPort).c_str());
@@ -1775,8 +1309,8 @@ int main(int argc, char** argv)
 	glutDisplayFunc(drawScene);
 	glutKeyboardFunc(handleKeypress);
 	glutReshapeFunc(handleResize);
-	glutMouseFunc(mouse);
-	glutMotionFunc(mousemotion);
+	glutMouseFunc(mouse_button);
+	glutMotionFunc(mouse_motion);
 	glutPassiveMotionFunc(mousepassivemotion);
 	glutTimerFunc(25, update, 0);
 	atexit(onclose);

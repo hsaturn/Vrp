@@ -9,10 +9,12 @@
             <in>cmd.o</in>
             <in>delete.o</in>
             <in>dir.o</in>
+            <in>match.o</in>
             <in>new.o</in>
             <in>objects.o</in>
             <in>screen.o</in>
             <in>test.o</in>
+            <in>widget.o</in>
           </df>
           <in>ClipBoard.o</in>
           <in>Help.o</in>
@@ -27,8 +29,13 @@
           <in>arcball.o</in>
           <in>arcball_sample.o</in>
           <in>imageloader.o</in>
+          <in>main.o</in>
         </df>
         <df name="Cube">
+          <df name="commands">
+            <in>algo.o</in>
+            <in>rot.o</in>
+          </df>
           <in>Cube.o</in>
           <in>Face.o</in>
         </df>
@@ -47,6 +54,7 @@
           <df name="Blocks">
             <in>Block.o</in>
             <in>Solid.o</in>
+            <in>Torch.o</in>
           </df>
           <df name="Blocs">
             <in>Bloc.o</in>
@@ -112,6 +120,8 @@
           <in>delete.hpp</in>
           <in>dir.cpp</in>
           <in>dir.hpp</in>
+          <in>match.cpp</in>
+          <in>match.hpp</in>
           <in>new.cpp</in>
           <in>new.hpp</in>
           <in>objects.cpp</in>
@@ -120,6 +130,8 @@
           <in>screen.hpp</in>
           <in>test.cpp</in>
           <in>test.hpp</in>
+          <in>widget.cpp</in>
+          <in>widget.hpp</in>
         </df>
         <in>ClipBoard.cpp</in>
         <in>ClipBoard.h</in>
@@ -147,8 +159,13 @@
         <in>arcball_sample.cpp</in>
         <in>imageloader.cpp</in>
         <in>imageloader.h</in>
+        <in>main.cpp</in>
       </df>
       <df name="Cube">
+        <df name="commands">
+          <in>algo.cpp</in>
+          <in>algo.hpp</in>
+        </df>
         <in>Cube.cpp</in>
         <in>Cube.h</in>
         <in>Face.cpp</in>

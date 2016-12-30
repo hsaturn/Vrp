@@ -18,6 +18,6 @@ translate 0 0 0
 
 scale 0.6
 var quality=10
-new redmap
+# new redmap
 new cube
 axis
