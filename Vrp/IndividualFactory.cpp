@@ -16,6 +16,7 @@ IndividualFactory::IndividualFactory(
 	string galaxyName, string params)
 : mgalaxyName(galaxyName)
 {
+	cout << "Params = " << params << endl;
 	indType="random";
 	while(params.length())
 	{
@@ -23,6 +24,7 @@ IndividualFactory::IndividualFactory(
 		if (param=="smart")
 			indType="smart";
 	}
+	cout << "IND TYPE=" << indType << endl;
 }
 
 IndividualFactory::IndividualFactory(const IndividualFactory& orig) {

@@ -31,7 +31,7 @@ algo(0)
 	setVar("render_best", "1");
 	mgalaxyName = StringUtil::getWord(incoming);
 	solveParams = incoming;
-	cout << "New vrp, galaxy = " << mgalaxyName << endl;
+	cout << "New vrp on galaxy #" << mgalaxyName << " with solve params : " << solveParams << endl;
 }
 
 Galaxy* Vrp::galaxy()

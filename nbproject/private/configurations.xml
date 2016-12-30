@@ -165,6 +165,8 @@
         <df name="commands">
           <in>algo.cpp</in>
           <in>algo.hpp</in>
+          <in>rot.cpp</in>
+          <in>rot.hpp</in>
         </df>
         <in>Cube.cpp</in>
         <in>Cube.h</in>
@@ -536,6 +538,7 @@
         <in>Vrp.cpp</in>
         <in>Vrp.hpp</in>
       </df>
+      <in>README.md</in>
       <in>main.cpp</in>
       <in>t.cpp</in>
     </df>

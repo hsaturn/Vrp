@@ -423,14 +423,14 @@
         </ccTool>
       </item>
       <item path="Vrp/IndividualFactory.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="0">
+        <ccTool flags="1">
           <incDir>
-            <pElem>Vrp</pElem>
-            <pElem>genetic</pElem>
-            <pElem>core</pElem>
-            <pElem>glm/detail</pElem>
-            <pElem>glm</pElem>
             <pElem>renderer/opengl</pElem>
+            <pElem>core</pElem>
+            <pElem>genetic</pElem>
+            <pElem>glm</pElem>
+            <pElem>/usr/include</pElem>
+            <pElem>Vrp</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>
@@ -473,15 +473,14 @@
         </ccTool>
       </item>
       <item path="Vrp/Vrp.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="0">
+        <ccTool flags="1">
           <incDir>
+            <pElem>renderer/opengl</pElem>
             <pElem>core</pElem>
             <pElem>genetic</pElem>
-            <pElem>Vrp</pElem>
-            <pElem>renderer/opengl</pElem>
-            <pElem>glm/detail</pElem>
             <pElem>glm</pElem>
-            <pElem>/usr/include/GL</pElem>
+            <pElem>/usr/include</pElem>
+            <pElem>Vrp</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>
