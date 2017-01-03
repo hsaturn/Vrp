@@ -1,5 +1,5 @@
 OPT=-std=c++0x -g
-PARTS = core Cube Vrp genetic RedStone RedStone/Blocks core/commands Cube/commands
+PARTS = core Cube Vrp genetic RedStone RedStone/Blocks core/commands Cube/commands world world/Blocks
 RENDERER:=renderer/opengl
 	
 SRCE:= \

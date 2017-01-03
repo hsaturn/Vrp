@@ -19,5 +19,6 @@ translate 0 0 0
 scale 0.6
 var quality=10
 # new redmap
-new cube
+new world 100 100
+world.scale=10
 axis

@@ -90,6 +90,17 @@
           <in>SmartIndividual.o</in>
           <in>Vrp.o</in>
         </df>
+        <df name="world">
+          <df name="Blocks">
+            <in>Block.o</in>
+            <in>Solid.o</in>
+            <in>Torch.o</in>
+          </df>
+          <in>Coord.o</in>
+          <in>Map.o</in>
+          <in>RedStone.o</in>
+          <in>World.o</in>
+        </df>
         <in>ClipBoard.o</in>
         <in>Color.o</in>
         <in>Country.o</in>
@@ -537,6 +548,23 @@
         <in>SmartIndividual.hpp</in>
         <in>Vrp.cpp</in>
         <in>Vrp.hpp</in>
+      </df>
+      <df name="world">
+        <df name="Blocks">
+          <in>Block.cpp</in>
+          <in>Block.hpp</in>
+          <in>Solid.cpp</in>
+          <in>Solid.hpp</in>
+          <in>Torch.cpp</in>
+          <in>Torch.hpp</in>
+          <in>blocks.hpp</in>
+        </df>
+        <in>Coord.cpp</in>
+        <in>Coord.hpp</in>
+        <in>Map.cpp</in>
+        <in>Map.h</in>
+        <in>World.cpp</in>
+        <in>World.hpp</in>
       </df>
       <in>README.md</in>
       <in>main.cpp</in>
