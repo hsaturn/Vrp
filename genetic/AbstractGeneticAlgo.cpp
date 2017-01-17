@@ -45,7 +45,7 @@ namespace genetic
 	  if (actualPopulation) delete actualPopulation;
 	  actualPopulation = new Population();
 
-	  moIndividualFactory->build();
+	  moIndividualFactory->build();	// FIXME Et Sans ? Ca marche aussi (première crèpe (c) Arnaud)
 
 	  for (int i = miPopulationSize; i > 0; --i)
 	  {

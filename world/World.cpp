@@ -24,14 +24,18 @@ namespace World
 	{
 		int width = StringUtil::getLong(incoming);
 		int length = StringUtil::getLong(incoming);
+		float scale = StringUtil::getFloat(incoming);
 		
 		if (width<10) width=10;
-		if (width>100) width=100;
+		if (width>200) width=200;
 		if (length<10) length=10;
-		if (length>100) length=100;
+		if (length>200) length=200;
+		if (scale<-10) scale=-10;
+		if (scale>10) scale=10;
+		if (scale == 0) scale = 1.0f;
 		
-		m_map = new Map(width, length);
-		cerr << "WORLD " << endl;
+		m_map = new Map(width, length, scale);
+		cerr << "WORLD scale = " << scale << endl;
 	}
 	
 	World::~World()
@@ -50,6 +54,10 @@ namespace World
 		
 		if (cmd=="add")
 			bRet = true;
+		else if (cmd=="read")
+		{
+			m_map->readFile(incoming);
+		}
 		return bRet;
 	}
 	

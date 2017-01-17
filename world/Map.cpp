@@ -15,6 +15,7 @@
 #include "Map.h"
 #include <iostream>
 #include <iomanip>
+#include <fstream>
 
 using namespace std;
 
@@ -24,18 +25,48 @@ namespace World
 	#define H(x,y) (heights[(x)+(y)*width])
 	
 
-	Map::Map(int w, int l) 
+	Map::Map(int w, int l, float hscale) 
 		: width(w), length(l)
 	{
 		heights = new uint8_t[width*length];
-		for(int x=0; x<width; x++)
-			for(int y=0; y<length; y++)
-				H(x,y)=0;
+		resetMap();
 
 		for(int y=4; y<=6; y++)
 			for(int x=4; x<=6; x++)
 				H(x,y)=1;
 		H(5,5)=2;
+		
+		scale_h = hscale;
+		cout << "Map scale : " << scale_h << endl;
+	}
+	
+	void Map::resetMap()
+	{
+		for(int x=0; x<width; x++)
+			for(int y=0; y<length; y++)
+				H(x,y)=0;
+	}
+
+	bool Map::readFile(string incoming)
+	{
+		bool ret = false;
+		int row(0);
+		cout << "Reading map " << incoming << endl;
+		ifstream f(incoming);
+		while(f.good())
+		{
+			row++;
+			int x,y;
+			float z;
+			f >> x;
+			f >> y;
+			f >> z;
+			if (x>=0 && x<width && y>=0 && y<length)
+				H(x,length-y)=z;
+			else
+				cerr << "Invalid coord : " << x << ',' << y << " at row " << row << endl;
+		}
+		return ret;
 	}
 	
 	Map::~Map()
@@ -49,19 +80,31 @@ namespace World
 		float dx = 1.0f/width;
 		float dz = 1.0f/length;
 		float fz = -(length/2.0f)*dz;
-		static float dy = 0.05f; //1.0f/20.0f;
+		float dy = scale_h*(float)(dx+dz)/2; //1.0f/20.0f;
+		dy = 0.002;
 		//dy +=0.1;
 		Color::red.render();
+		const Color* color=0;
 				
 		for(int z=0; z<length-1; z++)
 		{
 			float fx = -(width/2)*dx;
 			for(int x=0; x<width-1; x++)
 			{
+				auto h = H(x,z);
 				float h1=H(x,z) * dy;
 				float h2=H(x+1,z) * dy;
 				float h3=H(x,z+1) * dy;
 				float h4=H(x+1,z+1) * dy;
+				
+				if (h1<=0 && h2<=0 && h3<=0 && h4<=0)
+					color = &Color::cyan;
+				else if (h>45)
+					color = &Color::white;
+				else if (h>15)
+					color = &Color::brown;
+				else
+					color = &Color::green;
 				
 				if (z==0 && x>7)
 				{
@@ -93,7 +136,7 @@ namespace World
 						glEnd();
 					}
 				}
-				else // B
+				else
 				{
 					glBegin(GL_TRIANGLE_STRIP);
 					glVertex3f(fx, h1 ,fz);
@@ -128,7 +171,7 @@ namespace World
 					glEnd();
 				}
 				fx += dx;
-				Color::green.render();
+				color->render();
 			}
 			fz += dz;
 		}

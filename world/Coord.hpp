@@ -48,7 +48,6 @@ private:
 	Type _y;
 	Type _z;
 	float key;
-	
 };
 
 }

@@ -15,6 +15,9 @@
 #define MAP_H
 
 #include <stdint.h>
+#include <string>
+
+using namespace std;
 
 namespace World {
 	
@@ -24,16 +27,20 @@ namespace World {
  */
 class Map {
 public:
-	Map(int w, int l);
+	Map(int w, int l, float height_scale = 1.0f);
 	~Map();
 	void render();		// Open Gl Rendering !
 	
+	bool readFile(string incoming);
+	
 private:
 	Map(const Map& orig);
+	void resetMap();
 
 private:
 	int width;
 	int length;
+	int scale_h;
 	
 	uint8_t* heights;	// height[w][h]
 };

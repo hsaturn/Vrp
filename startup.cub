@@ -1,5 +1,5 @@
 screen 200 200
-widget button stop    =10,=25  100,15 btn_back=#F808 "New galaxy" btn_text=white : new galaxy
+widget button stop    =10,=25  100,15 btn_back=#F808 "New galaxy" btn_text=white : world.read ouessant.txt
 widget button stop    +0,+20  100,15 btn_back=#F808 "New cube" btn_text=white : new cube
 widget button back    +0,+20   47,15 btn_back       "Back" btn_text       : backward
 widget button flat    +53,+0   47,15 btn_back       "Flat" btn_text       : flat
@@ -19,6 +19,7 @@ translate 0 0 0
 scale 0.6
 var quality=10
 # new redmap
-new world 100 100
+new world 205 205 0.1
 world.scale=10
+world.read ouessant.txt
 axis
