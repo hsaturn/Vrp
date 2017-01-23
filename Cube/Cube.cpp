@@ -43,7 +43,6 @@ void Cube::reset() {
 	slearn = "";
 	learn = false;
 
-
 	faces[Face::TOP].reset(Face::TOP, Color::white);
 	faces[Face::FRONT].reset(Face::FRONT, Color::blue);
 	faces[Face::LEFT].reset(Face::LEFT, Color::red);
