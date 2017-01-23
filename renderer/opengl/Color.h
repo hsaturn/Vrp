@@ -85,6 +85,7 @@ public:
 	static const Color cyan;
 	static const Color magenta;
 	static const Color dark_cyan;
+	static const Color dark_red;
 	static const Color dark_green;
 	static const Color brown;
 	

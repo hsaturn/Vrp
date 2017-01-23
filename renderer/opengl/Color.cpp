@@ -11,6 +11,7 @@ const Color Color::black		(0.0,0.0,0.0,"black");
 const Color Color::dark_gray	(0.2,0.2,0.2,"dark_gray");
 const Color Color::gray			(0.5,0.5,0.5,"gray");
 const Color Color::dark_cyan	(0.0,0.2,0.2,"dark_cyan");
+const Color Color::dark_red		(0.2,0.0,0.0,"dark_red");
 const Color Color::white		(1.0,1.0,0.8,"white");
 const Color Color::red			(1.0,0.0,0.0,"red");
 const Color Color::green		(0.0,1.0,0.0,"green");
@@ -31,6 +32,7 @@ const Color* Color::random()
 		colors.push_back(&dark_gray);
 		colors.push_back(&gray);
 		colors.push_back(&dark_cyan);
+		colors.push_back(&dark_red);
 		colors.push_back(&white);
 		colors.push_back(&red);
 		colors.push_back(&green);
