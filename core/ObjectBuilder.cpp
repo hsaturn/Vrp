@@ -75,8 +75,6 @@ void ObjectBuilder::help(Help& help)
 {
 	for (auto it : instances())
 		it.second->help(help);
-
-
 }
 
 bool ObjectBuilder::destroyInstance(const string& name)
