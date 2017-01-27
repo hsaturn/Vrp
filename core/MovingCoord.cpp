@@ -82,7 +82,7 @@ void MovingCoord::update()
 	
 	last=cur;
 	
-	if (target == value) return;
+//	if (target == value) return;
 	
 	float target_velocity;
 	
@@ -110,15 +110,6 @@ void MovingCoord::update()
 			velocity = target_velocity;
 	}
 	
-	dv = velocity * elapsed_seconds.count();
-	
-	if (value < target)
-	{
-		value += dv;
-	}
-	else
-	{
-		value += dv;
-	}
+	value += velocity * elapsed_seconds.count();
 }
 	

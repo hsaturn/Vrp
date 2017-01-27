@@ -36,17 +36,21 @@ namespace Colib {
 
 	void Bati::pilier(int x, int z) {
 		glBegin(GL_TRIANGLE_STRIP);
+		glNormal3i(0, 0, -1);
 		glVertex3i(x, 0, z);
 		glVertex3i(x, pcolib->getHeight(), z);
 		glVertex3i(x + BATI_THICK, 0, z);
 		glVertex3i(x + BATI_THICK, pcolib->getHeight(), z);
 
+		glNormal3i(1, 0, 0);
 		glVertex3i(x + BATI_THICK, 0, z + BATI_THICK);
 		glVertex3i(x + BATI_THICK, pcolib->getHeight(), z + BATI_THICK);
 
+		glNormal3i(0, 0, 1);
 		glVertex3i(x, 0, z + BATI_THICK);
 		glVertex3i(x, pcolib->getHeight(), z + BATI_THICK);
 
+		glNormal3i(-1, 0, 0);
 		glVertex3i(x, 0, z);
 		glVertex3i(x, pcolib->getHeight(), z);
 
@@ -97,17 +101,21 @@ namespace Colib {
 		int Z2 = pcolib->getLength()-BATI_THICK;
 		glBegin(GL_TRIANGLE_STRIP);
 		
+		glNormal3i(0, -1, 0);
 		glVertex3f(x, H, BATI_THICK);
 		glVertex3f(x, H, Z2);
 		glVertex3f(x+BATI_THICK, H, BATI_THICK);
 		glVertex3f(x+BATI_THICK, H, Z2);
 		
+		glNormal3i(1, 0, 0);
 		glVertex3f(x+BATI_THICK, H+BATI_THICK, BATI_THICK);
 		glVertex3f(x+BATI_THICK, H+BATI_THICK, Z2);
 		
+		glNormal3i(0, 1, 0);
 		glVertex3f(x, H+BATI_THICK, BATI_THICK);
 		glVertex3f(x, H+BATI_THICK, Z2);
 		
+		glNormal3i(-1, 0, 0);
 		glVertex3f(x, H, BATI_THICK);
 		glVertex3f(x, H, Z2);
 		

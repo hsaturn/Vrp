@@ -28,3 +28,6 @@ new colib 2 10 100
 light on
 
 axis
+
+ambient 0.5 0.5 0.5
+specular off

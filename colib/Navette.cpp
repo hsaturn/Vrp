@@ -32,33 +32,39 @@ namespace Colib
 		float Y = pbati->getTopHeight();
 		
 		Color::cyan.render();
-		glBegin(GL_TRIANGLE_STRIP);
 		
+		glBegin(GL_TRIANGLE_STRIP);
+		glNormal3i(0 ,-1, 0);	// Bottom rectangle
 		glVertex3f(pbati->getXLeft()-debord, Y, Z1);
 		glVertex3f(pbati->getXLeft()-debord, Y, Z1+NAV_LENGTH);
 		glVertex3f(pbati->getXRight()+debord, Y, Z1);
 		glVertex3f(pbati->getXRight()+debord, Y, Z1+NAV_LENGTH);
 		
+		glNormal3i(1 ,0, 0);	// Right rectangle
 		glVertex3f(pbati->getXRight()+debord, Y+NAV_HEIGHT, Z1);
 		glVertex3f(pbati->getXRight()+debord, Y+NAV_HEIGHT, Z1+NAV_LENGTH);
 		
+		glNormal3i(0, 1, 0);	// Top rectangle
 		glVertex3f(pbati->getXLeft()-debord, Y+NAV_HEIGHT, Z1);
 		glVertex3f(pbati->getXLeft()-debord, Y+NAV_HEIGHT, Z1+NAV_LENGTH);
 			
+		glNormal3i(-1, 0, 0);	// Left rectangle
 		glVertex3f(pbati->getXLeft()-debord, Y, Z1);
 		glVertex3f(pbati->getXLeft()-debord, Y, Z1+NAV_LENGTH);
-
-		Color::blue.render();
 		glEnd();
 		
+		Color::blue.render();
 		glBegin(GL_TRIANGLE_STRIP);
+		glNormal3i(0,0,-1);	// back rectangle
 		glVertex3f(pbati->getXRight()+debord, Y, Z1);
 		glVertex3f(pbati->getXLeft()-debord, Y, Z1);
 		glVertex3f(pbati->getXRight()+debord, Y+NAV_HEIGHT, Z1);
 		glVertex3f(pbati->getXLeft()-debord, Y+NAV_HEIGHT, Z1);
 		glEnd();
 		
+		Color::brown.render();
 		glBegin(GL_TRIANGLE_STRIP);
+		glNormal3i(0,0,1);	// front rectangle
 		glVertex3f(pbati->getXRight()+debord, Y, Z1+NAV_LENGTH);
 		glVertex3f(pbati->getXLeft()-debord, Y, Z1+NAV_LENGTH);
 		glVertex3f(pbati->getXRight()+debord, Y+NAV_HEIGHT, Z1+NAV_LENGTH);

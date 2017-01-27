@@ -57,6 +57,7 @@ namespace Colib
 	{
 		Color::dark_green.render();
 		glBegin(GL_TRIANGLE_FAN);
+		glNormal3i(0, 1, 0);
 		glVertex3f(0,-0.01,0);
 		glVertex3f(width,-0.01,0);
 		glVertex3f(width, -0.01, length);

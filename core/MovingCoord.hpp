@@ -21,7 +21,7 @@
 class MovingCoord
 {
 public:
-	MovingCoord(float f, float vmin=0, float vmax=10, float accel=1);
+	MovingCoord(float f=0, float min=0, float max=10, float accel=1);
 
 	operator float() const { return value; }
 	void setMinValue(float m) { min = m; }
@@ -48,6 +48,8 @@ public:
 	float getVelocity() const { return velocity; }
 	
 	void setPositionTolerance(float t) { position_tolerance = t; }
+	
+	float operator = (float f) { value = f; target = f; velocity = 0; return f; }
 	
 private:
 	

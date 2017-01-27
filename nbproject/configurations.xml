@@ -1123,11 +1123,13 @@
         </ccTool>
       </item>
       <item path="core/LightElement.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="0">
+        <ccTool flags="1">
           <incDir>
-            <pElem>core</pElem>
-            <pElem>/usr/include/GL</pElem>
             <pElem>renderer/opengl</pElem>
+            <pElem>core</pElem>
+            <pElem>genetic</pElem>
+            <pElem>glm</pElem>
+            <pElem>/usr/include</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>
@@ -1562,10 +1564,12 @@
         </ccTool>
       </item>
       <item path="renderer/opengl/Widget.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="0">
+        <ccTool flags="1">
           <incDir>
             <pElem>core</pElem>
-            <pElem>/usr/include/GL</pElem>
+            <pElem>genetic</pElem>
+            <pElem>glm</pElem>
+            <pElem>/usr/include</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>

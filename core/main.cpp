@@ -52,9 +52,8 @@ bool backward = true;
 
 // Lighting
 LightElement ambientColor(1.0f, 1.0f, 1.0f, 0.5f, false);
+LightElement specular(1.0f, 1.0f, 1.0f, 1.0f, false);
 Light light(5, 5, -3, 1, false);
-
-int MatSpec [4] = {1,1,1,1};
 
 long lastUpdateWidget = 0;
 
@@ -495,13 +494,12 @@ void initRendering()
 	//	float lpos[] = { 50, 50, 50, 0 };
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_COLOR_MATERIAL);
-	//glEnable(GL_NORMALIZE);
-	//glEnable(GL_COLOR_MATERIAL);
+	glEnable(GL_NORMALIZE);
 	glClearColor(0.0f, 0.0f, 0.1f, 1.0f);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	// glEnable(GL_BLEND);
+	// glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	return;
 
 	//Set up a display list for drawing a cube
@@ -633,29 +631,42 @@ void drawScene()
 	/*if (!server->running())
 	  exit(1);
 	 */
-	glMaterialiv(GL_FRONT_AND_BACK,GL_SPECULAR,MatSpec);
-	glMateriali(GL_FRONT_AND_BACK,GL_SHININESS,100);
+	glMateriali(GL_FRONT_AND_BACK,GL_SHININESS,10);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	background.render();
 //	glTranslatef( eye.x, eye.y, eye.z ); //glTranslatef(cubex, cubey, cubez);
 
+	if (light.render())
+		redisplayAsked = true;
+	
+	if (specular)
+		glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,specular.marray);
+	
 	if (ambientColor)
 		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor.marray);
 
-	
     arcball_rotate();
 //	glMultMatrixf(glm::value_ptr(orient));
 	
 	glScalef(scale, scale, scale);
-	light.render();
 	glRotatef(_anglex, 1.0, 0.0, 0.0);
 	glRotatef(_angley, 0.0, 1.0, 0.0);
 	
-	
 	//glUniformMatrix4fv(cube_server, 1, GL_FALSE, glm::value_ptr(orient));
 	redisplayAsked |= ObjectBuilder::render(false);
+	
+	{
+		static GLUquadricObj *quadric = 0;
+		Color::cyan.render();
+		if (quadric==0)
+		{
+			quadric = gluNewQuadric();
+			gluQuadricDrawStyle(quadric, GLU_FILL );
+		}
+		gluSphere( quadric , 2 , 36 , 18 );
+	}
 
 	if (bAxis)
 	{
@@ -957,15 +968,11 @@ void update(int value)
 				exec(incoming);
 			}
 			else if (cmd == "light")
-			{
 				server->send(light.read(cmd, incoming));
-				cmd = "";
-			}
 			else if (cmd == "ambient")
-			{
 				server->send(ambientColor.read(cmd, incoming));
-				cmd = "";
-			}
+			else if (cmd == "specular")
+				server->send(specular.read(cmd, incoming));
 			else if (cmd == "send")
 			{
 				cout << "SEND " << incoming << endl;

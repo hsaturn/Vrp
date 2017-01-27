@@ -15,6 +15,7 @@
 #include <sstream>
 #include "StringUtil.hpp"
 #include "Color.h"
+#include "MovingCoord.hpp"
 
 LightElement::LightElement(float x, float y, float z, float a, bool active)
 : mactive(active)
@@ -25,7 +26,7 @@ LightElement::LightElement(float x, float y, float z, float a, bool active)
 	marray[3] = a;
 }
 
-string LightElement::read(const string& cmd, string& incoming)
+string LightElement::read(string& cmd, string& incoming)
 {
 	stringstream s;
 	s << cmd << " : ";
@@ -44,7 +45,7 @@ string LightElement::read(const string& cmd, string& incoming)
 	else if (onoff.length())
 	{
 		cout << "ONOFF=(" << onoff << ")" << endl;
-		marray[0] = StringUtil::getFloat(onoff);
+		setValue(0, StringUtil::getFloat(onoff));
 		mactive = true;
 		s << "on";
 		if (onoff == "on")
@@ -53,13 +54,14 @@ string LightElement::read(const string& cmd, string& incoming)
 		{
 			int i=1;
 			while(i<4 && incoming.length())
-				marray[i++] = StringUtil::getFloat(incoming);
+				setValue(i++, StringUtil::getFloat(incoming));
 		}
 	}
 	s << " ";
 	for(int i=0; i<4; i++)
 		s << marray[i] << ' ';
 	cout << s.str() << endl;
+	cmd = "";
 	return s.str();
 }
 
@@ -68,8 +70,37 @@ void LightElement::translate(GLfloat dir)
 	glTranslatef(marray[0]*dir, marray[1]*dir, marray[2]*dir);
 }
 
-void Light::render()
+ Light::Light(float x, float y, float z, float a, bool active)
+	:
+	LightElement(x,y,z,a,active)
+ {
+	 dest = new MovingCoord[4];
+	 for(int i=0; i<4; i++)
+	 {
+		dest[i].setMinValue(-100);
+		dest[i].setMaxValue(100);
+		dest[i].setAccel(1);
+		dest[i].setMaxVelocityThreshold(5);
+		dest[i]=marray[i];
+	 }
+ }
+ 
+ Light::~Light()
+ {
+	 delete [] dest;
+ }
+
+bool Light::render()
 {
+	moving = false;
+	for(int i=0; i<4; i++)
+	{
+		dest[i].update();
+		if (!dest[i].targetReached())
+			moving = true;
+		marray[i] = dest[i];
+	}
+		
 	if (mactive)
 	{
 		static GLUquadricObj *quadric = 0;
@@ -82,17 +113,26 @@ void Light::render()
 		glEnable(GL_LIGHTING);
 		glEnable(GL_LIGHT0);
 		glLightfv(GL_LIGHT0,GL_POSITION,marray);
-		glLightf(GL_LIGHT0,GL_CONSTANT_ATTENUATION,.001f);
+		glLightf(GL_LIGHT0,GL_CONSTANT_ATTENUATION,.01f);
 		
 		Color::yellow.render();
 		//glBegin( GL_LINE_LOOP );/// don't workglPointSize( 0.0 );
 		translate(1);
-		gluSphere( quadric , 1 , 36 , 18 );
+		GLfloat full[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+		// glLightModelfv(GL_LIGHT_MODEL_AMBIENT, full);
+		gluSphere( quadric , 0.2 , 36 , 18 );
 		translate(-1);
-		
-		gluSphere( quadric , 1 , 36 , 18 );
 	}
 	else
 		glDisable(GL_LIGHTING);
-	
+
+	return moving;
+}
+
+void Light::setValue(int index, float f)
+{
+	cout << "SETTING VALUE " << index << " to " << f << endl;
+	moving = true;
+	dest[index].setTarget(f);
+	marray[index] = dest[index];
 }

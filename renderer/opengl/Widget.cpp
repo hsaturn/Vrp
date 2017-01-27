@@ -218,7 +218,8 @@ namespace hwidgets
 
 	long Widget::renderAll()
 	{
-		GLfloat normal[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+		GLfloat normal[4] = { 0.5f, 0.5f, 0.5f, 1.0f };
+		glDisable(GL_LIGHTING);
 		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, normal);
 		static auto t_start = std::chrono::high_resolution_clock::now(); 
 		auto t_now = std::chrono::high_resolution_clock::now();
