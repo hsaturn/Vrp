@@ -29,5 +29,5 @@ light on
 
 axis
 
-ambient 0.5 0.5 0.5
+ambient 0.2 0.2 0.2
 specular off
