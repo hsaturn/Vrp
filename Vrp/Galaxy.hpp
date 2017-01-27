@@ -55,7 +55,7 @@ public:
 	
 	int size() const { return mcont.size(); }
 	
-	virtual bool _execute(Server*, string cmd, string incoming, const string& org);
+	virtual bool _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);
 
 protected:
 	virtual bool _render(bool resetTimer);

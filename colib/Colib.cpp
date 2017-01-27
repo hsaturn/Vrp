@@ -66,7 +66,7 @@ namespace Colib
 		return bati->render();
 	}
 	
-	bool Colib::_execute(Server*, string cmd, string incoming, const string& org)
+	bool Colib::_execute(Server*, string cmd, string incoming, const string& org, CmdQueue&)
 	{
 		bool bRet = false;
 		

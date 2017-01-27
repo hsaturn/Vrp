@@ -50,12 +50,12 @@ Object* ObjectBuilder::getInstance(const string& name)
 	return 0;
 }
 
-bool ObjectBuilder::execute(Server* server, string cmd, string incoming, const string& org)
+bool ObjectBuilder::execute(Server* server, string cmd, string incoming, const string& org, CmdQueue& queue)
 {
 	bool bRet = false;
 
 	for (auto it : instances())
-		bRet = bRet || (it.second->execute(server, cmd, incoming, org));
+		bRet = bRet || (it.second->execute(server, cmd, incoming, org, queue));
 	return bRet;
 }
 

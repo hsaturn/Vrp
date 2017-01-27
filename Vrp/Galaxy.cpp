@@ -134,7 +134,7 @@ const Planet* Galaxy::getPlanet(const string& planetName) const
 	return 0;
 }
 
-bool Galaxy::_execute(Server* svr, string cmd, string incoming, const string& org) {
+bool Galaxy::_execute(Server* svr, string cmd, string incoming, const string& org, CmdQueue&) {
 	if (cmd == "distance") {
 		cout << "incoming distance (" << incoming << ")" << endl;
 		const Planet* p1 = getPlanet(StringUtil::getWord(incoming));

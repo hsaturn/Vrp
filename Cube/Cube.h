@@ -88,7 +88,7 @@ public:
 	
 protected:
 	virtual void _help(Help&);
-	virtual bool _execute(Server* server, string cmd, string incoming, const string& org);
+	virtual bool _execute(Server* server, string cmd, string incoming, const string& org, CmdQueue&);
 	virtual bool _render(bool resetTimer);
 	
 private:

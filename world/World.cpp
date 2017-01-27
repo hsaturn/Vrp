@@ -50,7 +50,7 @@ namespace World
 		return bRet;
 	}
 	
-	bool World::_execute(Server*, string cmd, string incoming, const string& org)
+	bool World::_execute(Server*, string cmd, string incoming, const string& org, CmdQueue&)
 	{
 		bool bRet = false;
 		

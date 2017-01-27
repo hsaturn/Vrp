@@ -17,7 +17,7 @@ namespace RedStone
 		
 	}
 	
-	bool RedStone::_execute(Server*, string cmd, string incoming, const string& org)
+	bool RedStone::_execute(Server*, string cmd, string incoming, const string& org, CmdQueue&)
 	{
 		return false;
 	}

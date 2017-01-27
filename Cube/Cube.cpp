@@ -539,7 +539,7 @@ Face::Dir Cube::getDir(string& incoming, string& dir)
 	return Face::NONE;
 }
 
-bool Cube::_execute(Server* server, string cmd, string incoming, const string& org) {
+bool Cube::_execute(Server* server, string cmd, string incoming, const string& org, CmdQueue&) {
 	bool bRet = true;
 	
 	string prefix=getName()+'.';

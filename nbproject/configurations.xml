@@ -1066,8 +1066,6 @@
       <item path="colib/Bati.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
           <incDir>
-            <pElem>core</pElem>
-            <pElem>colib</pElem>
             <pElem>renderer/opengl</pElem>
             <pElem>/usr/include/GL</pElem>
             <pElem>.</pElem>
@@ -1075,14 +1073,10 @@
         </ccTool>
       </item>
       <item path="colib/Colib.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="1">
+        <ccTool flags="0">
           <incDir>
+            <pElem>/usr/include/GL</pElem>
             <pElem>renderer/opengl</pElem>
-            <pElem>core</pElem>
-            <pElem>genetic</pElem>
-            <pElem>glm</pElem>
-            <pElem>/usr/include</pElem>
-            <pElem>colib</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>
@@ -1090,8 +1084,6 @@
       <item path="colib/Navette.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
           <incDir>
-            <pElem>core</pElem>
-            <pElem>colib</pElem>
             <pElem>/usr/include/GL</pElem>
             <pElem>renderer/opengl</pElem>
             <pElem>.</pElem>
@@ -1390,6 +1382,14 @@
         <ccTool>
           <incDir>
             <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <folder path="0/colib">
+        <ccTool>
+          <incDir>
+            <pElem>core</pElem>
+            <pElem>colib</pElem>
           </incDir>
         </ccTool>
       </folder>

@@ -76,7 +76,7 @@ namespace RedStone
 		return false;
 	}
 	
-	bool RedMap::_execute(Server*, string cmd, string incoming, const string& org)
+	bool RedMap::_execute(Server*, string cmd, string incoming, const string& org, CmdQueue&)
 	{
 		bool bRet = false;
 		

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
+#include <list>
 #include <map>
 #include <sstream>
 #include <cmath>
@@ -769,7 +770,7 @@ void update(int value)
 				Object* object=ObjectBuilder::getInstance(name);
 				if (object)
 				{
-					if (object->execute(server, cmd, incoming, org))
+					if (object->execute(server, cmd, incoming, org, cmdQueue))
 						server->send("#OK "+name+'.'+cmd);
 					else
 						server->send("#KO "+name+'.'+cmd);
@@ -1209,7 +1210,7 @@ void update(int value)
 				cmdQueue.push_back("find green");
 				cmdQueue.push_back("find red");
 			}
-			else if (ObjectBuilder::execute(server, cmd, incoming, org))
+			else if (ObjectBuilder::execute(server, cmd, incoming, org, cmdQueue))
 			{
 				cerr << "Ok ObjectBuilder.execute " << cmd << endl;
 			}

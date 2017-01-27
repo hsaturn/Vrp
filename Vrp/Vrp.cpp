@@ -51,7 +51,7 @@ void Vrp::_help(Help& help)
 	help.add("vrp vars : fast");
 }
 
-bool Vrp::_execute(Server* server, string cmd, string incoming, const string& org)
+bool Vrp::_execute(Server* server, string cmd, string incoming, const string& org, CmdQueue&)
 {
 	bool bRet = true;
 	if (cmd == "solve")

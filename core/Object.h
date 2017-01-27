@@ -31,7 +31,7 @@ public:
 	bool render(bool resetTimer);
 	virtual void renderHud(){};
 	
-	bool execute(Server*, string cmd, string incoming, const string& org);
+	bool execute(Server*, string cmd, string incoming, const string& org, CmdQueue& cmdQueue);
 	void help(Help&);
 	
 	const string& getName() const { return mname; }
@@ -50,7 +50,7 @@ public:
 	
 	
 protected:
-	virtual bool _execute(Server*, string cmd, string incoming, const string& org){ return false; };
+	virtual bool _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&)=0;
 	virtual void _help(Help&){};
 	
 	/**

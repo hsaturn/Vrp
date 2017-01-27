@@ -47,7 +47,7 @@ namespace Colib {
 		virtual ~Colib() ;
 
 		virtual bool _render(bool resetTimer);
-		virtual bool _execute(Server*, string cmd, string incoming, const string& org);
+		virtual bool _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);
 		
 		/**
 		 * @return width 2 or 3

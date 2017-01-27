@@ -12,7 +12,7 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 
-bool Object::execute(Server* server, string cmd, string incoming, const string& org) {
+bool Object::execute(Server* server, string cmd, string incoming, const string& org, CmdQueue& cmdQueue) {
 	cout << getName() << ".exec " << cmd << '/' << incoming << endl;
 	if (StringUtil::preg_match("^[a-zA-Z]+[a-zA-Z0-9_]*=", cmd, false)) {
 		string name = StringUtil::getWord(cmd, '=');
@@ -37,7 +37,7 @@ bool Object::execute(Server* server, string cmd, string incoming, const string& 
 		return true;
 	}
 	else
-		return _execute(server, cmd, incoming, org);
+		return _execute(server, cmd, incoming, org, cmdQueue);
 }
 
 void Object::drawHudText(const string& txt) const
