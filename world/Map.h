@@ -29,7 +29,7 @@ class Map {
 public:
 	Map(int w, int l, float height_scale = 1.0f);
 	~Map();
-	void render();		// Open Gl Rendering !
+	bool render();		// Open Gl Rendering !
 	
 	bool readFile(string incoming);
 	

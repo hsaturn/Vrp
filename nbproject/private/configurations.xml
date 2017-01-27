@@ -3,6 +3,11 @@
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df root="." name="0">
       <df name="build">
+        <df name="colib">
+          <in>Bati.o</in>
+          <in>Colib.o</in>
+          <in>Navette.o</in>
+        </df>
         <df name="core">
           <df name="commands">
             <in>Commands.o</in>
@@ -17,7 +22,9 @@
             <in>widget.o</in>
           </df>
           <in>ClipBoard.o</in>
+          <in>Coord.o</in>
           <in>Help.o</in>
+          <in>MovingCoord.o</in>
           <in>Object.o</in>
           <in>ObjectBuilder.o</in>
           <in>Random.o</in>
@@ -121,6 +128,14 @@
         <in>imageloader.o</in>
         <in>main.o</in>
       </df>
+      <df name="colib">
+        <in>Bati.cpp</in>
+        <in>Bati.hpp</in>
+        <in>Colib.cpp</in>
+        <in>Colib.hpp</in>
+        <in>Navette.cpp</in>
+        <in>Navette.hpp</in>
+      </df>
       <df name="core">
         <df name="commands">
           <in>Commands.cpp</in>
@@ -146,8 +161,12 @@
         </df>
         <in>ClipBoard.cpp</in>
         <in>ClipBoard.h</in>
+        <in>Coord.cpp</in>
+        <in>Coord.hpp</in>
         <in>Help.cpp</in>
         <in>Help.h</in>
+        <in>MovingCoord.cpp</in>
+        <in>MovingCoord.hpp</in>
         <in>Object.cpp</in>
         <in>Object.h</in>
         <in>ObjectBuilder.cpp</in>
@@ -493,8 +512,6 @@
           <in>Torch.hpp</in>
           <in>blocks.hpp</in>
         </df>
-        <in>Coord.cpp</in>
-        <in>Coord.hpp</in>
         <in>RedMap.cpp</in>
         <in>RedMap.hpp</in>
         <in>RedStone.cpp</in>
@@ -559,8 +576,6 @@
           <in>Torch.hpp</in>
           <in>blocks.hpp</in>
         </df>
-        <in>Coord.cpp</in>
-        <in>Coord.hpp</in>
         <in>Map.cpp</in>
         <in>Map.h</in>
         <in>World.cpp</in>
@@ -611,7 +626,7 @@
         </runcommandpicklist>
         <runcommand>"${OUTPUT_PATH}"</runcommand>
         <rundir></rundir>
-        <buildfirst>false</buildfirst>
+        <buildfirst>true</buildfirst>
         <terminal-type>0</terminal-type>
         <remove-instrumentation>0</remove-instrumentation>
         <environment>

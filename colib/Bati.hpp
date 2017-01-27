@@ -13,25 +13,42 @@
 namespace Colib
 {
 	class Colib;
+	class Navette;
 	
 	class Bati
 	{
 	public:
 		Bati(const Colib*);
-		void render();
+		
+		/**
+		 * 
+		 * @return true if need to redraw soon
+		 */
+		bool render();
+		
+		float getHeight() const;	// Hauteur des traverses (cm)
+		float getTopHeight() const;	// Hauteur des traverses + ep.
+		int getLength() const;
+		int getXLeft() const;
+		int getXRight() const;
+		
+		void moveTo(int z_nocol, int h_percent);
+		static const int BATI_THICK = 10;
 		
 	private:
-		void pilier(int x, int y);
+		void pilier(int x, int z);
+		void traverses();
+		void traverse(int x);
 		
-		static const int BATI_THICK = 10;
 		float y;	
 		int dest_y;
 		float vy;	// actual speed 
 		float ay;	// vertical acceleration
 		
 		const Colib* pcolib;
+		Navette* navette;
 		
-		MovingCoord h;
+		MovingCoord h;	// 0..100% of height
 	};
 }
 

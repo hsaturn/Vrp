@@ -65,10 +65,12 @@ void ObjectBuilder::renderHud()
 		it.second->renderHud();
 }
 
-void ObjectBuilder::render(bool bResetTimer)
+bool ObjectBuilder::render(bool bResetTimer)
 {
+	bool bRet = false;
 	for (auto it : instances())
-		it.second->render(false);
+		bRet |= it.second->render(false);
+	return bRet;
 }
 
 void ObjectBuilder::help(Help& help)

@@ -8,7 +8,7 @@
 #ifndef BLOCK_HPP
 #define	BLOCK_HPP
 
-#include "../Coord.hpp"
+#include <Coord.hpp>
 
 namespace RedStone {
 	class RedMap;

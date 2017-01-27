@@ -74,7 +74,7 @@ namespace World
 		delete[] heights;
 	}
 	
-	void Map::render()
+	bool Map::render()
 	{
 		const float delta=0.0001f;
 		float dx = 1.0f/width;
@@ -175,5 +175,6 @@ namespace World
 			}
 			fz += dz;
 		}
+		return false;
 	}
 }

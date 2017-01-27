@@ -60,6 +60,14 @@ bool MovingCoord::targetReached()
 	return abs(target-value)<=position_tolerance;
 }
 
+void MovingCoord::setTarget(float t)
+{
+	if (t>max)
+		t=max;
+	else if (t<min)
+		t=min;
+	target=t;
+}
 
 void MovingCoord::update()
 {

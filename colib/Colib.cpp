@@ -10,6 +10,7 @@
 #include "Colib.hpp"
 #include "StringUtil.hpp"
 #include "Bati.hpp"
+#include "Navette.hpp"
 
 namespace Colib
 {
@@ -52,25 +53,31 @@ namespace Colib
 	{
 	}
 
-	void Colib::_render(bool resetTimer)
+	bool Colib::_render(bool resetTimer)
 	{
 		Color::dark_green.render();
-		glBegin(GL_QUADS);
-		glVertex3i(0,0,0);
-		glVertex3i(width,0,0);
-		glVertex3i(width, 0, length);
-		glVertex3i(0, 0, length);
+		glBegin(GL_TRIANGLE_FAN);
+		glVertex3f(0,-0.01,0);
+		glVertex3f(width,-0.01,0);
+		glVertex3f(width, -0.01, length);
+		glVertex3f(0, -0.01, length);
 		glEnd();
 		
-		bati->render();
+		return bati->render();
 	}
 	
 	bool Colib::_execute(Server*, string cmd, string incoming, const string& org)
 	{
 		bool bRet = false;
 		
-		if (cmd=="add")
-			bRet = true;
+		if (cmd=="go")
+		{
+			int z = StringUtil::getLong(incoming);
+			int h = StringUtil::getLong(incoming);
+			
+			bati->moveTo(z,h);
+			cout << "MOVE TO " << z << 'x' << h << endl;
+		}
 		else if (cmd=="read")
 		{
 		}
@@ -79,6 +86,7 @@ namespace Colib
 	
 	void Colib::_help(Help& help)
 	{
+		help.add("go column, height%");
 		//help.add("world.add block_type ...");
 	}
 	

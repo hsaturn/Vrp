@@ -10,7 +10,7 @@
 
 #include <Object.h>
 #include "Blocks/Block.hpp"
-#include "Coord.hpp"
+#include <Coord.hpp>
 #include <string>
 #include <map>
 
@@ -39,7 +39,7 @@ namespace World {
 
 		virtual ~World() ;
 
-		virtual void _render(bool resetTimer);
+		virtual bool _render(bool resetTimer);
 		virtual bool _execute(Server*, string cmd, string incoming, const string& org);
 		virtual void _help(Help&);
 		

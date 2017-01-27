@@ -43,13 +43,13 @@ namespace RedStone
 			delete it.second;
 	}
 
-	void RedMap::_render(bool resetTimer)
+	bool RedMap::_render(bool resetTimer)
 	{
 		for(auto it : ground)
 			it.second->render(it.first, this);
 		for(auto it : tiles)
 			it.second->render(it.first, this);
-		return;
+		return false;
 		
 		glBegin(GL_QUADS);
 		Color::dark_green.render();
@@ -73,6 +73,7 @@ namespace RedStone
 			glVertex3f(-X,0.01,z);
 		}
 		glEnd();
+		return false;
 	}
 	
 	bool RedMap::_execute(Server*, string cmd, string incoming, const string& org)

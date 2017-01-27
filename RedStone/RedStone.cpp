@@ -27,9 +27,9 @@ namespace RedStone
 		
 	}
 	
-	void RedStone::_render(bool resetTimer)
+	bool RedStone::_render(bool resetTimer)
 	{
-		
+		return false;
 	}
 
 }

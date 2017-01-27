@@ -52,14 +52,16 @@ void Object::drawHudText(const string& txt) const
 	}	
 }
 
-void Object::render(bool resetTimer) {
+bool Object::render(bool resetTimer) {
+	bool bRet = false;
 	if (isVisible())
 	{
 		glPushMatrix();
 		glSetMatrix();
-		_render(resetTimer);
+		bRet = _render(resetTimer);
 		glPopMatrix();
 	}
+	return bRet;
 }
 
 void Object::glSetMatrix()

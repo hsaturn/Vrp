@@ -142,7 +142,7 @@ bool Vrp::solve()
 extern bool redisplayAsked;
 extern Server* server;
 
-void Vrp::_render(bool resetTimer)
+bool Vrp::_render(bool resetTimer)
 {
 	if (algo && galaxy())
 	{
@@ -176,4 +176,6 @@ void Vrp::_render(bool resetTimer)
 		//static SmartIndividual ind(galaxy());
 		//ind.render(10);
 	}
+	return false;	// FIXME shoud return true when algo is running
+	
 }

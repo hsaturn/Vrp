@@ -24,7 +24,11 @@ public:
 	Object(const string& name) : mname(name){};
 	virtual ~Object(){};
 	
-	void render(bool resetTimer);
+	/**
+	 * 
+	 * @return true if need to redisplay next frame
+	 */
+	bool render(bool resetTimer);
 	virtual void renderHud(){};
 	
 	bool execute(Server*, string cmd, string incoming, const string& org);
@@ -48,7 +52,11 @@ public:
 protected:
 	virtual bool _execute(Server*, string cmd, string incoming, const string& org){ return false; };
 	virtual void _help(Help&){};
-	virtual void _render(bool resetTimer) = 0;
+	
+	/**
+	 * @return true if need to redisplay asap
+	 */
+	virtual bool _render(bool resetTimer) = 0;
 
 	void drawHudText(const string& txt) const;
 	

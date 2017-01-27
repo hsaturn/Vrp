@@ -28,7 +28,7 @@ public:
 
 	static bool execute(Server*, string cmd, string incoming, const string& org);
 
-	static void render(bool resetTimer);
+	static bool render(bool resetTimer);
 	
 	static void renderHud();
 

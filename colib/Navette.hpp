@@ -15,20 +15,31 @@
 #define NAVETTE_HPP
 
 #include <Object.h>
+#include <MovingCoord.hpp>
 
 namespace Colib
 {
-	class Colib;
+	class Bati;
 	
 	class Navette
 	{
 		public:
-			Navette(Colib* colib) : m_colib(colib){}
+			Navette(Bati* bati);
 		
-			void _render(bool resetTimer);
+			/**
+			 * @return  true if need to redraw soon
+			 */
+			bool render();
+			
+			void moveTo(int z_percent);
 		
 		private:
-			Colib* m_colib;
+			static const int NAV_LENGTH = 40;	// width (cm)
+			static const int NAV_HEIGHT = 30;	// height (cm)
+			
+			Bati* pbati;
+			
+			MovingCoord z;	// 0..100% of length
 
 	};
 }

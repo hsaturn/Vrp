@@ -39,9 +39,10 @@ public:
 
 void BackgroundStars::render() {
 	static map <float, vector < st_star *>> stars;
+	const int FACT=10;
 	if (stars.size() == 0) {
 		for (float size = 0.5; size < 2; size+= 0.5) {
-			int count = Random::rand(20, 100);
+			int count = Random::rand(5*FACT, 15*FACT);
 			for (int i = 0; i < count; i++)
 				stars[size].push_back(new st_star(Random::rand(-10, 10), Random::rand(-10, 10)));
 		}
@@ -53,7 +54,7 @@ void BackgroundStars::render() {
 		glPointSize(it.first);
 		glBegin(GL_POINTS);
 		for (auto st : it.second) {
-			glVertex2f(st->mx, st->my);
+			glVertex3f(st->mx*FACT, st->my*FACT, 10*FACT);
 		}
 		glEnd();
 	}

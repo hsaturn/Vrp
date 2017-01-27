@@ -113,7 +113,7 @@ void Cube::renderFlat(float size) {
 	glPopMatrix();
 }
 
-void Cube::_render(bool resetTimer) {
+bool Cube::_render(bool resetTimer) {
 	static long wait = 0;
 	static int angle = 0;
 	static auto t_start = std::chrono::high_resolution_clock::now();
@@ -161,7 +161,7 @@ void Cube::_render(bool resetTimer) {
 		glScalef(flats, flats, flats);
 		renderFlat();
 	}
-
+	return !isReady();
 }
 
 void Cube::renderCube(float time)

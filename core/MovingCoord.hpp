@@ -24,14 +24,13 @@ public:
 	MovingCoord(float f, float vmin=0, float vmax=10, float accel=1);
 
 	operator float() const { return value; }
-	void setMinValue(float);
-	void setMaxValue(float);
+	void setMinValue(float m) { min = m; }
+	void setMaxValue(float m) { max = m; }
 	
 	/**
 	 * set max speed in unit per second
 	 * @param max_speed
 	 */
-	void setMaxSpeed(float);
 	
 	void update();
 	
@@ -41,7 +40,7 @@ public:
 	// max dv/dt
 	void setAccel(float);
 	
-	void setTarget(float t) { target = t; }
+	void setTarget(float t);
 	float getTarget() const { return target; }
 	float getDistance() const;
 	bool targetReached();

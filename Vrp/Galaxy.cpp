@@ -114,7 +114,7 @@ const Planet* Galaxy::nearestPlanet(const Point& pos, float& computedDistance) {
 	return nearest;
 }
 
-void Galaxy::_render(bool resetTimer) {
+bool Galaxy::_render(bool resetTimer) {
 	bool names=getLong("names");
 	int quality(getQuality());
 	for (auto planet : * this) {
@@ -122,6 +122,7 @@ void Galaxy::_render(bool resetTimer) {
 		if (names)
 			planet->renderName();
 	}
+	return false;	// TODO ?
 }
 
 const Planet* Galaxy::getPlanet(const string& planetName) const

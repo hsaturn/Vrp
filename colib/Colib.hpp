@@ -35,6 +35,8 @@ namespace Colib {
 			}
 		};
 		
+		virtual void _help(Help&);
+		
 	public:
 		static const int COL_WIDTH=60;	// Largeur utile d'une colonne en cm
 		static const int CLO_THICK=2;	// Epaisseur cloison en cm
@@ -44,9 +46,8 @@ namespace Colib {
 
 		virtual ~Colib() ;
 
-		virtual void _render(bool resetTimer);
+		virtual bool _render(bool resetTimer);
 		virtual bool _execute(Server*, string cmd, string incoming, const string& org);
-		virtual void _help(Help&);
 		
 		/**
 		 * @return width 2 or 3

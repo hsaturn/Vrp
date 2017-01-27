@@ -43,9 +43,11 @@ namespace World
 		delete m_map;
 	}
 
-	void World::_render(bool resetTimer)
+	bool World::_render(bool resetTimer)
 	{
-		m_map->render();
+		bool bRet;
+		bRet = m_map->render();
+		return bRet;
 	}
 	
 	bool World::_execute(Server*, string cmd, string incoming, const string& org)

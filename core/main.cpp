@@ -48,6 +48,11 @@ string lastState = "";
 bool redisplayAsked = false;
 bool backward = true;
 
+// Lighting
+int LightPos[4] = {5,5,-3,1};
+bool light = false;
+int MatSpec [4] = {1,1,1,1};
+
 long lastUpdateWidget = 0;
 
 struct thr_info
@@ -489,13 +494,10 @@ void draw_smallcube()
 void initRendering()
 {
 	glEnable(GL_DEPTH_TEST);
-	/*glEnable(GL_LIGHTING);
-	  glEnable(GL_LIGHT0);*/
 
 	//	float lpos[] = { 50, 50, 50, 0 };
-	// glLightfv(GL_LIGHT0, GL_POSITION, lpos);
 	glShadeModel(GL_SMOOTH);
-	//glEnable(GL_COLOR_MATERIAL);
+	glEnable(GL_COLOR_MATERIAL);
 	//glEnable(GL_NORMALIZE);
 	//glEnable(GL_COLOR_MATERIAL);
 	glClearColor(0.0f, 0.0f, 0.1f, 1.0f);
@@ -634,11 +636,26 @@ void drawScene()
 	/*if (!server->running())
 	  exit(1);
 	 */
+	glMaterialiv(GL_FRONT_AND_BACK,GL_SPECULAR,MatSpec);
+	glMateriali(GL_FRONT_AND_BACK,GL_SHININESS,100);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	background.render();
 //	glTranslatef( eye.x, eye.y, eye.z ); //glTranslatef(cubex, cubey, cubez);
+	
+	if (light)
+	{
+		//GLfloat ambientColor[] = {1.0f, 0.0f, 0.0f, 1.0f};
+		//glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
+		glEnable(GL_LIGHTING);
+		glEnable(GL_LIGHT0);
+		glLightiv(GL_LIGHT0,GL_POSITION,LightPos);
+		glLightf(GL_LIGHT0,GL_CONSTANT_ATTENUATION,.001f);
+	}
+	else
+		glDisable(GL_LIGHTING);
+	
     arcball_rotate();
 //	glMultMatrixf(glm::value_ptr(orient));
 	
@@ -646,7 +663,7 @@ void drawScene()
 	glRotatef(_anglex, 1.0, 0.0, 0.0);
 	glRotatef(_angley, 0.0, 1.0, 0.0);
 	//glUniformMatrix4fv(cube_server, 1, GL_FALSE, glm::value_ptr(orient));
-	ObjectBuilder::render(false);
+	redisplayAsked |= ObjectBuilder::render(false);
 
 	if (bAxis)
 	{
@@ -787,6 +804,7 @@ void update(int value)
 				help.add("screen x y");
 				help.add("widget");
 				help.add("var var=value");
+				help.add("light [on|off|x y z t]");
 
 				ObjectBuilder::help(help);
 
@@ -1114,6 +1132,37 @@ void update(int value)
 			{
 				exec(incoming);
 			}
+			else if (cmd == "light")
+			{
+				stringstream s;
+				s << "Light : ";
+				
+				string onoff = StringUtil::getWord(incoming);
+				if (onoff == "off")
+				{
+					light = false;
+					s << "off";
+				}
+				else
+				{
+					LightPos[0] = StringUtil::getFloat(onoff);
+					light = true;
+					s << "on";
+					if (onoff == "on")
+						light = true;
+					else
+					{
+						int i=1;
+						while(i<4)
+							LightPos[i++] = StringUtil::getFloat(incoming);
+					}
+				}
+				s << " ";
+				for(int i=0; i<4; i++)
+					s << LightPos[i] << ' ';
+				cout << s.str() << endl;
+				server->send(s.str());
+			}
 			else if (cmd == "send")
 			{
 				cout << "SEND " << incoming << endl;
@@ -1188,7 +1237,6 @@ void update(int value)
 
 horrible:
 
-	if (cube && !cube->isReady()) redisplay = 969;
 	if (redisplay || redisplayAsked)
 	{
 		redisplayAsked = false;

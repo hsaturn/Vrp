@@ -19,7 +19,12 @@ translate 0 0 0
 scale 0.6
 var quality=10
 # new redmap
-new world 205 205 0.1
-world.scale=10
-world.read ouessant.txt
+
+# new world 205 205 0.1
+# world.scale=10
+# world.read ouessant.txt
+
+new colib 2 10 100
+light off
+
 axis

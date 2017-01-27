@@ -37,7 +37,7 @@ public:
 	virtual ~Vrp() {
 	};
 
-	virtual void _render(bool resetTimer);
+	virtual bool _render(bool resetTimer);
 	virtual bool _execute(Server*, string cmd, string incoming, const string& org);
 	virtual void _help(Help&);
 	void best(Server*);
