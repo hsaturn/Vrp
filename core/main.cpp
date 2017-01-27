@@ -791,16 +791,14 @@ void update(int value)
 				help.add("event {event} {allow|filter}");
 				help.add("exec file");
 				help.add("flat [x y z [scale]]");
-				help.add("front color");
 				help.add("hud [color]");
 				help.add("is_made");
-				help.add("is_valid [why]");
 				help.add("new {object}");
 				help.add("macro");
 				help.add("pattern");
 				help.add("peek/pop/push [name]/stack remember stack of cubes");
 				help.add("quit");
-				help.add("reset, reboot");
+				help.add("reboot");
 				help.add("scale s");
 				help.add("screen x y");
 				help.add("widget");
@@ -864,157 +862,6 @@ void update(int value)
 			{
 				bAxis = !bAxis;
 				server->send("#OK axis RGB=XYZ");
-			}
-			else if (cmd == "is_valid")
-			{
-				if (cube->isValid())
-					server->send("#OK is_valid");
-				else
-				{
-					server->send("#KO is_valid");
-					if (incoming == "why")
-					{
-						cmdQueue.push_front("@find w b");
-						cmdQueue.push_front("@find w o");
-						cmdQueue.push_front("@find w g");
-						cmdQueue.push_front("@find w r");
-						cmdQueue.push_front("@find y b");
-						cmdQueue.push_front("@find y o");
-						cmdQueue.push_front("@find y g");
-						cmdQueue.push_front("@find y r");
-						cmdQueue.push_front("@find w b o");
-						cmdQueue.push_front("@find w b r");
-						cmdQueue.push_front("@find w g o");
-						cmdQueue.push_front("@find w g r");
-						cmdQueue.push_front("@find y b r");
-						cmdQueue.push_front("@find y b o");
-						cmdQueue.push_front("@find y g o");
-						cmdQueue.push_front("@find y g r");
-					}
-				}
-			}
-			else if (cmd == "front")
-			{
-				bool ok = true;
-				const Color* front = getColor(incoming);
-				if (front)
-				{
-					string face = cube->find(front);
-					if (face == "front")
-					{
-					}
-					else if (face == "bottom")
-						cmdQueue.push_front("@rotate x -90");
-					else if (face == "top")
-						cmdQueue.push_front("@rotate x 90");
-					else if (face == "right")
-						cmdQueue.push_front("@rotate y -90");
-					else if (face == "back")
-					{
-						cmdQueue.push_front("@rotate y 90");
-						cmdQueue.push_front("@rotate y 90");
-					}
-					else if (face == "left")
-						cmdQueue.push_front("@rotate y 90");
-					else
-						ok = false;
-				}
-				if (ok)
-					server->send("#OK front");
-				else
-					server->send("#KO front");
-			}
-			else if (cmd == "top")
-			{
-				bool ok = true;
-				const Color* top = getColor(incoming);
-				if (top)
-				{
-					string face = cube->find(top);
-					if (face == "top")
-					{
-					}
-					else if (face == "bottom")
-					{
-						cmdQueue.push_front("@rotate x 90");
-						cmdQueue.push_front("@rotate x 90");
-					}
-					else if (face == "front")
-						cmdQueue.push_front("@rotate x -90");
-					else if (face == "right")
-						cmdQueue.push_front("@rotate z -90");
-					else if (face == "back")
-						cmdQueue.push_front("@rotate x 90");
-					else if (face == "left")
-						cmdQueue.push_front("@rotate z 90");
-					else
-						ok = false;
-				}
-				if (ok)
-					server->send("#OK top");
-				else
-					server->send("#KO top");
-			}
-			else if (cmd == "orient")
-			{
-				cout << "orient " << incoming << ' ';
-				string in2(incoming);
-				const Color* c1 = getColor(in2);
-				const Color* c2 = getColor(in2);
-				string sc1 = getWord(incoming);
-				string sc2 = getWord(incoming);
-
-				cout << c1 << ' ' << c2 << endl;
-
-				if (c1 && c2)
-				{
-					cmdQueue.push_front("@orient " + sc2); // For later
-
-					string face = cube->find(c1); // c1 to top
-					cout << "  face to top " << sc1 << "=" << face << endl;
-					if (face == "front")
-						cmdQueue.push_front("@rotate x -90");
-					else if (face == "back")
-						cmdQueue.push_front("@rotate x 90");
-					else if (face == "left")
-						cmdQueue.push_front("@rotate z 90");
-					else if (face == "right")
-						cmdQueue.push_front("@rotate z -90");
-					else if (face == "bottom")
-					{
-						cmdQueue.push_front("@rotate x 90"); // 180 ne fonctionne pas
-						cmdQueue.push_front("@rotate x 90");
-					}
-
-				}
-				else if (c1)
-				{
-					bool bOk = true;
-					string face = cube->find(c1); // c1 to front
-
-					cout << "  face to front " << sc1 << "=" << face << endl;
-					if (face == "back")
-					{
-						cmdQueue.push_front("@rotate y 90"); // 180 TODO
-						cmdQueue.push_front("@rotate y 90");
-					}
-					else if (face == "left")
-						cmdQueue.push_front("@rotate y 90");
-					else if (face == "right")
-						cmdQueue.push_front("@rotate y -90");
-					else
-						bOk = false;
-
-					if (bOk)
-						server->send("#OK orient");
-					else
-						server->send("#KO orient 634");
-
-				}
-				else
-				{
-					server->send("#KO orient " + incoming);
-				}
 			}
 			else if (cmd == "event")
 			{
@@ -1113,17 +960,6 @@ void update(int value)
 						server->send("#KO what (try " + cmd + " help)");
 				}
 			}
-			else if (cmd == "orient")
-			{
-				const Color* c1 = getColor(incoming);
-				const Color* c2 = getColor(incoming);
-				if (c1 && c2)
-				{
-
-				}
-				else
-					server->send("#KO orient");
-			}
 			else if (cmd == "echo")
 			{
 				cout << "# " << incoming << endl;
@@ -1192,7 +1028,6 @@ void update(int value)
 			else if (cmd == "reset")
 			{
 				orient = glm::mat4();
-				if (cube) cube->reset();
 				server->send("#OK");
 				_anglex = 0;
 				_angley = 0;

@@ -514,7 +514,10 @@ void Cube::_help(Help& help) {
 	help.add("colors [colorlist]");
 	help.add("desc dir");
 	help.add("find color [color [color]] (find center/edge/corner)");
-	help.add("is_made");
+	help.add("front color");
+	help.add("is_made, is the cube made ?");
+	help.add("is_valid [why], is the cube in a valid configuration");
+	help.add("orient color [color] orient cube");
 	help.add("mark");
 	help.add("move m[m...]               (m=lrtdfb['][2..9])");
 	help.add("orient color1[ color2]     (color1 to top, color2 to front)");
@@ -522,6 +525,7 @@ void Cube::_help(Help& help) {
 	help.add("shuffle [seed]");
 	help.add("top color");
 	help.add("rspeed  n                  (deg/sec)");
+	help.add("reset");
 }
 
 Face::Dir Cube::getDir(string& incoming, string& dir)
@@ -539,7 +543,7 @@ Face::Dir Cube::getDir(string& incoming, string& dir)
 	return Face::NONE;
 }
 
-bool Cube::_execute(Server* server, string cmd, string incoming, const string& org, CmdQueue&) {
+bool Cube::_execute(Server* server, string cmd, string incoming, const string& org, CmdQueue& cmdQueue) {
 	bool bRet = true;
 	
 	string prefix=getName()+'.';
@@ -551,6 +555,161 @@ bool Cube::_execute(Server* server, string cmd, string incoming, const string& o
 			server->send("#OK is_made CUBE IS PERFECT !");
 		else
 			server->send("#KO is_made");
+	}
+	else if (cmd == "top")
+	{
+		bool ok = true;
+		const Color* top = getColor(incoming);
+		if (top)
+		{
+			string face = find(top);
+			if (face == "top")
+			{
+			}
+			else if (face == "bottom")
+			{
+				cmdQueue.push_front("@rotate x 90");
+				cmdQueue.push_front("@rotate x 90");
+			}
+			else if (face == "front")
+				cmdQueue.push_front("@rotate x -90");
+			else if (face == "right")
+				cmdQueue.push_front("@rotate z -90");
+			else if (face == "back")
+				cmdQueue.push_front("@rotate x 90");
+			else if (face == "left")
+				cmdQueue.push_front("@rotate z 90");
+			else
+				ok = false;
+		}
+		if (ok)
+			server->send("#OK top");
+		else
+			server->send("#KO top");
+	}
+	else if (cmd == "reset")
+	{
+		reset();
+	}
+	else if (cmd == "orient")
+	{
+		cout << "orient " << incoming << ' ';
+		string in2(incoming);
+		const Color* c1 = getColor(in2);
+		const Color* c2 = getColor(in2);
+		string sc1 = getWord(incoming);
+		string sc2 = getWord(incoming);
+
+		cout << c1 << ' ' << c2 << endl;
+
+		if (c1 && c2)
+		{
+			cmdQueue.push_front("@orient " + sc2); // For later
+
+			string face = find(c1); // c1 to top
+			cout << "  face to top " << sc1 << "=" << face << endl;
+			if (face == "front")
+				cmdQueue.push_front("@rotate x -90");
+			else if (face == "back")
+				cmdQueue.push_front("@rotate x 90");
+			else if (face == "left")
+				cmdQueue.push_front("@rotate z 90");
+			else if (face == "right")
+				cmdQueue.push_front("@rotate z -90");
+			else if (face == "bottom")
+			{
+				cmdQueue.push_front("@rotate x 90"); // 180 ne fonctionne pas
+				cmdQueue.push_front("@rotate x 90");
+			}
+
+		}
+		else if (c1)
+		{
+			bool bOk = true;
+			string face = find(c1); // c1 to front
+
+			cout << "  face to front " << sc1 << "=" << face << endl;
+			if (face == "back")
+			{
+				cmdQueue.push_front("@rotate y 90"); // 180 TODO
+				cmdQueue.push_front("@rotate y 90");
+			}
+			else if (face == "left")
+				cmdQueue.push_front("@rotate y 90");
+			else if (face == "right")
+				cmdQueue.push_front("@rotate y -90");
+			else
+				bOk = false;
+
+			if (bOk)
+				server->send("#OK orient");
+			else
+				server->send("#KO orient 634");
+
+		}
+		else
+		{
+			server->send("#KO orient " + incoming);
+		}
+	}
+	else if (cmd == "front")
+	{
+		bool ok = true;
+		const Color* front = getColor(incoming);
+		if (front)
+		{
+			string face = find(front);
+			if (face == "front")
+			{
+			}
+			else if (face == "bottom")
+				cmdQueue.push_front("@rotate x -90");
+			else if (face == "top")
+				cmdQueue.push_front("@rotate x 90");
+			else if (face == "right")
+				cmdQueue.push_front("@rotate y -90");
+			else if (face == "back")
+			{
+				cmdQueue.push_front("@rotate y 90");
+				cmdQueue.push_front("@rotate y 90");
+			}
+			else if (face == "left")
+				cmdQueue.push_front("@rotate y 90");
+			else
+				ok = false;
+		}
+		if (ok)
+			server->send("#OK front");
+		else
+			server->send("#KO front");
+	}
+	else if (cmd == "is_valid")
+	{
+		if (isValid())
+			server->send("#OK is_valid");
+		else
+		{
+			server->send("#KO is_valid");
+			if (incoming == "why")
+			{
+				cmdQueue.push_front("@find w b");
+				cmdQueue.push_front("@find w o");
+				cmdQueue.push_front("@find w g");
+				cmdQueue.push_front("@find w r");
+				cmdQueue.push_front("@find y b");
+				cmdQueue.push_front("@find y o");
+				cmdQueue.push_front("@find y g");
+				cmdQueue.push_front("@find y r");
+				cmdQueue.push_front("@find w b o");
+				cmdQueue.push_front("@find w b r");
+				cmdQueue.push_front("@find w g o");
+				cmdQueue.push_front("@find w g r");
+				cmdQueue.push_front("@find y b r");
+				cmdQueue.push_front("@find y b o");
+				cmdQueue.push_front("@find y g o");
+				cmdQueue.push_front("@find y g r");
+			}
+		}
 	}
 	else if (cmd == "backward" || cmd == "back")
 	{
