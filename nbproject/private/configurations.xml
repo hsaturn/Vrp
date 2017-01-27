@@ -24,6 +24,7 @@
           <in>ClipBoard.o</in>
           <in>Coord.o</in>
           <in>Help.o</in>
+          <in>LightElement.o</in>
           <in>MovingCoord.o</in>
           <in>Object.o</in>
           <in>ObjectBuilder.o</in>
@@ -165,6 +166,8 @@
         <in>Coord.hpp</in>
         <in>Help.cpp</in>
         <in>Help.h</in>
+        <in>LightElement.cpp</in>
+        <in>LightElement.h</in>
         <in>MovingCoord.cpp</in>
         <in>MovingCoord.hpp</in>
         <in>Object.cpp</in>

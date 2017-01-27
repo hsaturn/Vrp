@@ -25,6 +25,6 @@ var quality=10
 # world.read ouessant.txt
 
 new colib 2 10 100
-light off
+light on
 
 axis

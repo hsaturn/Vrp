@@ -15,6 +15,7 @@
 #include <list>
 #include <GL/glew.h>
 #include <GL/glut.h>
+#include "LightElement.h"
 #define GLM_FORCE_RADIANS 
 #include <glm/glm.hpp>  
 #include <glm/gtc/matrix_transform.hpp> 
@@ -50,8 +51,9 @@ bool redisplayAsked = false;
 bool backward = true;
 
 // Lighting
-int LightPos[4] = {5,5,-3,1};
-bool light = false;
+LightElement ambientColor(1.0f, 1.0f, 1.0f, 0.5f, false);
+Light light(5, 5, -3, 1, false);
+
 int MatSpec [4] = {1,1,1,1};
 
 long lastUpdateWidget = 0;
@@ -100,7 +102,6 @@ float hudr = hudr_org;
 float hudv = hudv_org;
 float hudb = hudb_org;
 
-map<string, string> patterns;
 map<string, string> macros;
 
 Cube* getCube()
@@ -176,17 +177,12 @@ bool run(const string& sFileName)
 	return ret;
 }
 
-void fillPatterns();
-
 void reboot()
 {
 	macros.clear();
-	patterns.clear();
 	Widget::clear();
 
 	run("startup.cub");
-	fillPatterns();
-	run("patterns.cub");
 	run("macros.cub");
 }
 
@@ -644,25 +640,20 @@ void drawScene()
 	glLoadIdentity();
 	background.render();
 //	glTranslatef( eye.x, eye.y, eye.z ); //glTranslatef(cubex, cubey, cubez);
-	
-	if (light)
-	{
-		//GLfloat ambientColor[] = {1.0f, 0.0f, 0.0f, 1.0f};
-		//glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);
-		glEnable(GL_LIGHTING);
-		glEnable(GL_LIGHT0);
-		glLightiv(GL_LIGHT0,GL_POSITION,LightPos);
-		glLightf(GL_LIGHT0,GL_CONSTANT_ATTENUATION,.001f);
-	}
-	else
-		glDisable(GL_LIGHTING);
+
+	if (ambientColor)
+		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor.marray);
+
 	
     arcball_rotate();
 //	glMultMatrixf(glm::value_ptr(orient));
 	
 	glScalef(scale, scale, scale);
+	light.render();
 	glRotatef(_anglex, 1.0, 0.0, 0.0);
 	glRotatef(_angley, 0.0, 1.0, 0.0);
+	
+	
 	//glUniformMatrix4fv(cube_server, 1, GL_FALSE, glm::value_ptr(orient));
 	redisplayAsked |= ObjectBuilder::render(false);
 
@@ -795,8 +786,6 @@ void update(int value)
 				help.add("is_made");
 				help.add("new {object}");
 				help.add("macro");
-				help.add("pattern");
-				help.add("peek/pop/push [name]/stack remember stack of cubes");
 				help.add("quit");
 				help.add("reboot");
 				help.add("scale s");
@@ -876,15 +865,13 @@ void update(int value)
 				else
 					server->send("#KO event, unknown operation : " + op);
 			}
-			else if (cmd == "pattern" || cmd == "macro")
+			else if (cmd == "macro")
 			{
 				string what = getWord(incoming);
 				string args = "";
 
 				map<string, string>* container = &macros;
-				if (cmd == "pattern")
-					container = &patterns;
-				else if (what == "exec")
+				if (what == "exec")
 				{
 					what = getWord(incoming);
 					args = ' ' + incoming;
@@ -971,34 +958,13 @@ void update(int value)
 			}
 			else if (cmd == "light")
 			{
-				stringstream s;
-				s << "Light : ";
-				
-				string onoff = StringUtil::getWord(incoming);
-				if (onoff == "off")
-				{
-					light = false;
-					s << "off";
-				}
-				else
-				{
-					LightPos[0] = StringUtil::getFloat(onoff);
-					light = true;
-					s << "on";
-					if (onoff == "on")
-						light = true;
-					else
-					{
-						int i=1;
-						while(i<4)
-							LightPos[i++] = StringUtil::getFloat(incoming);
-					}
-				}
-				s << " ";
-				for(int i=0; i<4; i++)
-					s << LightPos[i] << ' ';
-				cout << s.str() << endl;
-				server->send(s.str());
+				server->send(light.read(cmd, incoming));
+				cmd = "";
+			}
+			else if (cmd == "ambient")
+			{
+				server->send(ambientColor.read(cmd, incoming));
+				cmd = "";
 			}
 			else if (cmd == "send")
 			{
@@ -1054,10 +1020,6 @@ void update(int value)
 			else if (macros.find(cmd) != macros.end())
 			{
 				cmdQueue.push_front("@macro exec " + cmd + " " + incoming);
-			}
-			else if (patterns.find(cmd) != patterns.end())
-			{
-				cmdQueue.push_front("@pattern " + cmd);
 			}
 			else
 			{
@@ -1147,22 +1109,6 @@ void mouse_motion(int x, int y)
 void mousepassivemotion(int x, int y)
 {
 	mouse_motion(x, y);
-}
-
-void fillPatterns()
-{
-	if (patterns.size() == 0)
-	{
-		patterns["cube"] = "flfu'ruf2l2u'l'bd'b'l2u";
-		patterns["cube3"] = " F D F' D2 L' B' U L D R U L' F' U L U2";
-		patterns["checker"] = "eemmss";
-		patterns["zigzag"] = "R L B F R L B F R L B F";
-		patterns["holes"] = "U D' B F' R L' U D' ";
-		patterns["6t"] = "f2r2u2f'bd2l2fb";
-		patterns["stripes"] = "F U F R L2 B D' R D2 L D' B R2 L F U F";
-		patterns["twisted"] = "F B' U F U F U L B L2 B' U F' L U L' B";
-		patterns["flowers"] = "eemmssU D' B F' R L' U D'";
-	}
 }
 
 int main(int argc, char** argv)

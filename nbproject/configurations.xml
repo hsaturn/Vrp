@@ -24,6 +24,7 @@
           <in>ClipBoard.o</in>
           <in>Coord.o</in>
           <in>Help.o</in>
+          <in>LightElement.o</in>
           <in>MovingCoord.o</in>
           <in>Object.o</in>
           <in>ObjectBuilder.o</in>
@@ -147,6 +148,7 @@
         <in>ClipBoard.cpp</in>
         <in>Coord.cpp</in>
         <in>Help.cpp</in>
+        <in>LightElement.cpp</in>
         <in>MovingCoord.cpp</in>
         <in>Object.cpp</in>
         <in>ObjectBuilder.cpp</in>
@@ -840,6 +842,10 @@
         <ccTool flags="1">
         </ccTool>
       </item>
+      <item path="build/core/LightElement.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
       <item path="build/core/MovingCoord.o" ex="false" tool="1" flavor2="8">
         <ccTool flags="1">
         </ccTool>
@@ -1112,6 +1118,16 @@
         <ccTool flags="0">
           <incDir>
             <pElem>core</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="core/LightElement.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <incDir>
+            <pElem>core</pElem>
+            <pElem>/usr/include/GL</pElem>
+            <pElem>renderer/opengl</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>

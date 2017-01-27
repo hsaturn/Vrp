@@ -13,6 +13,24 @@
 
 using namespace std;
 
+map<string, string> patterns;
+
+void fillPatterns()
+{
+	if (patterns.size() == 0)
+	{
+		patterns["cube"] = "flfu'ruf2l2u'l'bd'b'l2u";
+		patterns["cube3"] = " F D F' D2 L' B' U L D R U L' F' U L U2";
+		patterns["checker"] = "eemmss";
+		patterns["zigzag"] = "R L B F R L B F R L B F";
+		patterns["holes"] = "U D' B F' R L' U D' ";
+		patterns["6t"] = "f2r2u2f'bd2l2fb";
+		patterns["stripes"] = "F U F R L2 B D' R D2 L D' B R2 L F U F";
+		patterns["twisted"] = "F B' U F U F U L B L2 B' U F' L U L' B";
+		patterns["flowers"] = "eemmssU D' B F' R L' U D'";
+	}
+}
+
 Cube::CubeBuilder Cube::builder;
 
 const float flatx_org = 2.5;
@@ -21,6 +39,7 @@ const float flatz_org = 4.0;
 const float flats_org = 1.0;
 
 Cube::Cube(const string& name, string& incoming) : Object(name) {
+	fillPatterns();
 	backward = true;
 	
 	// backward position & scale
@@ -66,7 +85,6 @@ void Cube::reset() {
 	redir[Face::RIGHT] = Face::RIGHT;
 	redir[Face::BOTTOM] = Face::BOTTOM;
 	redir[Face::BACK] = Face::BACK;
-	
 }
 
 void Cube::renderHud() {
@@ -518,6 +536,7 @@ void Cube::_help(Help& help) {
 	help.add("is_made, is the cube made ?");
 	help.add("is_valid [why], is the cube in a valid configuration");
 	help.add("orient color [color] orient cube");
+	help.add("peek/pop/push [name]/stack remember stack of cubes");
 	help.add("mark");
 	help.add("move m[m...]               (m=lrtdfb['][2..9])");
 	help.add("orient color1[ color2]     (color1 to top, color2 to front)");
@@ -526,6 +545,11 @@ void Cube::_help(Help& help) {
 	help.add("top color");
 	help.add("rspeed  n                  (deg/sec)");
 	help.add("reset");
+	
+	stringstream builder;
+	for(auto s: patterns)
+		builder << s.first << ' ';
+	help.add(builder.str());
 }
 
 Face::Dir Cube::getDir(string& incoming, string& dir)
@@ -1100,8 +1124,14 @@ bool Cube::_execute(Server* server, string cmd, string incoming, const string& o
 			server->send("#OK rspeed");
 		} else
 			server->send("#KO rspeed");
-	} else
+	}
+	else if (patterns.find(cmd) != patterns.end())
+	{
+		cmdQueue.push_front("@move " + patterns[cmd]);
+	}
+	else
 		bRet = false;
 
 	return bRet;
 }
+
