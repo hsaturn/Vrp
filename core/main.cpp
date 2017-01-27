@@ -639,6 +639,7 @@ void drawScene()
 	glLoadIdentity();
 	background.render();
 //	glTranslatef( eye.x, eye.y, eye.z ); //glTranslatef(cubex, cubey, cubez);
+	// git grrr
 
 	if (material)
 	{
