@@ -739,7 +739,7 @@ void update(int value)
 
 		}
 
-		if (cmdQueue.size() && (cube == 0 || cube->isReady()))
+		if (cmdQueue.size())
 		{
 			redisplay = 499;
 			string row = cmdQueue.front();
