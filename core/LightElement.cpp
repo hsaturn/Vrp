@@ -103,27 +103,26 @@ bool Light::render()
 		
 	if (mactive)
 	{
+		
+
 		static GLUquadricObj *quadric = 0;
+		glClearColor (0.0, 0.0, 0.0, 0.0);
 		if (quadric==0)
 		{
 			quadric = gluNewQuadric();
 			gluQuadricDrawStyle(quadric, GLU_FILL );
 		}
 
-		glEnable(GL_LIGHTING);
-		glEnable(GL_COLOR_MATERIAL);
 		glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
-		GLfloat emission[] = { 0,0,0,1.0f};
-		glMaterialfv(GL_FRONT, GL_EMISSION, emission);
+		glEnable(GL_LIGHTING);
 		glEnable(GL_LIGHT0);
+	   glEnable(GL_DEPTH_TEST);
 		glLightfv(GL_LIGHT0,GL_POSITION,marray);
-		glLightf(GL_LIGHT0,GL_CONSTANT_ATTENUATION,.01f);
+		//glLightf(GL_LIGHT0,GL_CONSTANT_ATTENUATION,.01f);
 		
 		Color::yellow.render();
 		//glBegin( GL_LINE_LOOP );/// don't workglPointSize( 0.0 );
 		translate(1);
-		GLfloat full[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-		//glLightModelfv(GL_LIGHT_MODEL_AMBIENT, full);
 		gluSphere( quadric , 0.2 , 36 , 18 );
 		translate(-1);
 	}

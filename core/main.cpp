@@ -52,7 +52,9 @@ bool backward = true;
 
 // Lighting
 LightElement ambientColor(1.0f, 1.0f, 1.0f, 0.5f, false);
-LightElement specular(1.0f, 1.0f, 1.0f, 1.0f, false);
+LightElement specular(1.0f, 1.0f, 1.0f, 1.0f, true);
+LightElement material(0,0,0,0,true);
+LightElement shininess(50.0, 0,0,0,true);
 Light light(5, 5, -3, 1, false);
 
 long lastUpdateWidget = 0;
@@ -638,6 +640,15 @@ void drawScene()
 	background.render();
 //	glTranslatef( eye.x, eye.y, eye.z ); //glTranslatef(cubex, cubey, cubez);
 
+	if (material)
+	{
+		glEnable(GL_COLOR_MATERIAL);
+		if (shininess)
+			glMaterialfv(GL_FRONT, GL_SHININESS, shininess.marray);
+	}
+	else
+		glDisable(GL_COLOR_MATERIAL);
+	
 	if (light.render())
 		redisplayAsked = true;
 	
@@ -971,8 +982,12 @@ void update(int value)
 				server->send(light.read(cmd, incoming));
 			else if (cmd == "ambient")
 				server->send(ambientColor.read(cmd, incoming));
+			else if (cmd == "material")
+				server->send(material.read(cmd, incoming));
 			else if (cmd == "specular")
 				server->send(specular.read(cmd, incoming));
+			else if (cmd == "shininess")
+				server->send(shininess.read(cmd, incoming));
 			else if (cmd == "send")
 			{
 				cout << "SEND " << incoming << endl;
