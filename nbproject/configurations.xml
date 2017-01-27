@@ -1330,13 +1330,17 @@
         </ccTool>
       </item>
       <item path="core/main.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="1">
+        <ccTool flags="0">
           <incDir>
             <pElem>renderer/opengl</pElem>
             <pElem>core</pElem>
-            <pElem>genetic</pElem>
+            <pElem>Cube</pElem>
+            <pElem>glm/detail</pElem>
+            <pElem>/usr/include/GL</pElem>
             <pElem>glm</pElem>
-            <pElem>/usr/include</pElem>
+            <pElem>genetic</pElem>
+            <pElem>Vrp</pElem>
+            <pElem>core/commands</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>
