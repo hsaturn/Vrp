@@ -5,8 +5,11 @@
       <df name="build">
         <df name="colib">
           <in>Bati.o</in>
+          <in>Cloison.o</in>
           <in>Colib.o</in>
+          <in>Column.o</in>
           <in>Navette.o</in>
+          <in>Plateau.o</in>
         </df>
         <df name="core">
           <df name="commands">
@@ -132,10 +135,16 @@
       <df name="colib">
         <in>Bati.cpp</in>
         <in>Bati.hpp</in>
+        <in>Cloison.cpp</in>
+        <in>Cloison.hpp</in>
         <in>Colib.cpp</in>
         <in>Colib.hpp</in>
+        <in>Column.cpp</in>
+        <in>Column.hpp</in>
         <in>Navette.cpp</in>
         <in>Navette.hpp</in>
+        <in>Plateau.cpp</in>
+        <in>Plateau.hpp</in>
       </df>
       <df name="core">
         <df name="commands">
@@ -584,8 +593,12 @@
         <in>World.cpp</in>
         <in>World.hpp</in>
       </df>
+      <in>build.cpp</in>
       <in>main.cpp</in>
+      <in>t</in>
       <in>t.cpp</in>
+      <in>test.cpp</in>
+      <in>test2.cpp</in>
     </df>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>

@@ -14,6 +14,7 @@ namespace Colib
 {
 	class Colib;
 	class Navette;
+	class Plateau;
 	
 	class Bati
 	{
@@ -25,6 +26,7 @@ namespace Colib
 		 * @return true if need to redraw soon
 		 */
 		bool render();
+		bool isReady();
 		
 		float getHeight() const;	// Hauteur des traverses (cm)
 		float getTopHeight() const;	// Hauteur des traverses + ep.
@@ -32,8 +34,12 @@ namespace Colib
 		int getXLeft() const;
 		int getXRight() const;
 		
-		void moveTo(int z_nocol, int h_percent);
-		static const int BATI_THICK = 10;
+		bool moveTo(int z, int h);
+		static const int THICKNESS = 10;
+		
+		Plateau* getPlateau();
+		void setPlateau(Plateau* p);
+		
 		
 	private:
 		void pilier(int x, int z);

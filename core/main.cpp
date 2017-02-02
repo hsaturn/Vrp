@@ -669,7 +669,7 @@ void drawScene()
 	//glUniformMatrix4fv(cube_server, 1, GL_FALSE, glm::value_ptr(orient));
 	redisplayAsked |= ObjectBuilder::render(false);
 	
-	{
+	if (false) {
 		static GLUquadricObj *quadric = 0;
 		Color::cyan.render();
 		if (quadric==0)

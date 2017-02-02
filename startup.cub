@@ -3,8 +3,8 @@ widget button stop    =10,=25  100,15 btn_back=#F808 "New galaxy" btn_text=white
 widget button stop    +0,+20  100,15 btn_back=#F808 "New cube" btn_text=white : new cube
 widget button back    +0,+20   47,15 btn_back       "Back" btn_text       : backward
 widget button flat    +53,+0   47,15 btn_back       "Flat" btn_text       : flat
-widget button demo    -53,+20   47,15 btn_back        "Demo"        btn_text
-widget button solve    +53,+0  47,15 btn_back        "Solve"        btn_text
+widget button demo    -53,+20   47,15 btn_back        "Add B"        btn_text : colib.add back 60
+widget button solve    +53,+0  47,15 btn_back        "Add F"        btn_text : colib.add front 60
 widget button anon    -53,+20  47,15 btn_back        "Anim"         btn_text : anim x 0.03; anim y 0.028
 widget button anoff   +53,+0   47,15 btn_back        "$c"          btn_text : anim x 0; anim y 0
 # widget button cmdline 4,4  200,15 #00F1          left  "> $_cmdline_"   white
@@ -24,7 +24,21 @@ var quality=10
 # world.scale=10
 # world.read ouessant.txt
 
-new colib 2 10 100
+new colib 150
+colib.add back 60
+colib.add back 60
+colib.add back 60
+colib.add back 60
+colib.add back 60
+colib.add back 60
+colib.add back 60
+colib.add back 60
+colib.add back 60
+colib.add back 60
+colib.add back 60
+colib.add back 60
+colib.add back 60
+colib.dz=-40
 light on
 
 axis

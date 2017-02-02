@@ -43,7 +43,7 @@ public:
 	void setTarget(float t);
 	float getTarget() const { return target; }
 	float getDistance() const;
-	bool targetReached();
+	bool targetReached() const;
 	
 	float getVelocity() const { return velocity; }
 	

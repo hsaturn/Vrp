@@ -12,23 +12,23 @@
 #include "Coord.hpp"
 #include <string>
 #include <map>
+#include <vector>
 
 using namespace std;
 
 namespace Colib {
 
 	class Bati;
+	class Column;
 	
 	class Colib : public Object {
 
 		class ColibBuilder : public ObjectBuilder {
 		public:
 
-			ColibBuilder() : ObjectBuilder("colib") {
-			}
+			ColibBuilder() : ObjectBuilder("colib") {}
 
-			virtual ~ColibBuilder() {
-			}
+			virtual ~ColibBuilder() {}
 
 			Object* build(const string& name, string& incoming) {
 				return new Colib(name, incoming);
@@ -38,9 +38,7 @@ namespace Colib {
 		virtual void _help(Help&);
 		
 	public:
-		static const int COL_WIDTH=60;	// Largeur utile d'une colonne en cm
 		static const int CLO_THICK=2;	// Epaisseur cloison en cm
-		static const int CFG_WIDTH=60;	// Largeur d'une rangée
 		
 		Colib(const string &name, string& incoming);
 
@@ -55,20 +53,30 @@ namespace Colib {
 		int getWidth() const { return width; }
 		
 		/**
-		 * @return length : Number of columns
-		 */
-		int getColumnsCount() const { return colCount; }
-		
-		/**
 		 * @return height in cm
 		 */
-		int getHeight() const { return height; }
+		int getHeight() const { return height; };
+		
+		/**
+		 * 
+		 * @param etage numéro de l'étage à atteindre
+		 * @return hauteur (basse) de l'étage, ou -1 (out of range)
+		 */
+		int getHeight(unsigned int etage) const;
 		
 		int getLength() const { return length; }
+		
+		/**
+		 * 
+		 * @param col_nr
+		 * @return center of column (z axis), or -1 (out of range)
+		 */
+		int getCenterOfColumn(unsigned int col_nr);
 		
 	private:
 		
 		void recalcSize();
+		void renderColumns(vector<Column*>&, int x1);
 
 		static ColibBuilder builder;
 		
@@ -80,6 +88,11 @@ namespace Colib {
 		int length;		// Longeur en cm
 		
 		Bati* bati;
+		vector<Column*> columns_back;
+		vector<Column*> columns_front;
+		
+		vector<int> heights;		// Hauteurs des plateaux
+		int last_frozen;			// Dernier plateau froid (non inclu)
 	};
 }
 #endif	/* COLIB_HPP */

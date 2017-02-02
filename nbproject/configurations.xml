@@ -5,8 +5,11 @@
       <df name="build">
         <df name="colib">
           <in>Bati.o</in>
+          <in>Cloison.o</in>
           <in>Colib.o</in>
+          <in>Column.o</in>
           <in>Navette.o</in>
+          <in>Plateau.o</in>
         </df>
         <df name="core">
           <df name="commands">
@@ -129,8 +132,12 @@
       </df>
       <df name="colib">
         <in>Bati.cpp</in>
+        <in>Cloison.cpp</in>
         <in>Colib.cpp</in>
+        <in>Column.cpp</in>
         <in>Navette.cpp</in>
+        <in>Plateau.cpp</in>
+        <in>Plateau.hpp</in>
       </df>
       <df name="core">
         <df name="commands">
@@ -150,6 +157,7 @@
         <in>Help.cpp</in>
         <in>LightElement.cpp</in>
         <in>MovingCoord.cpp</in>
+        <in>MovingCoord.hpp</in>
         <in>Object.cpp</in>
         <in>ObjectBuilder.cpp</in>
         <in>Random.cpp</in>
@@ -226,6 +234,7 @@
         <in>World.cpp</in>
       </df>
       <in>main.cpp</in>
+      <in>test.cpp</in>
     </df>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -822,11 +831,23 @@
         <ccTool flags="1">
         </ccTool>
       </item>
+      <item path="build/colib/Cloison.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
       <item path="build/colib/Colib.o" ex="false" tool="1" flavor2="8">
         <ccTool flags="1">
         </ccTool>
       </item>
+      <item path="build/colib/Column.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
       <item path="build/colib/Navette.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="build/colib/Plateau.o" ex="false" tool="1" flavor2="8">
         <ccTool flags="1">
         </ccTool>
       </item>
@@ -1070,28 +1091,76 @@
         </ccTool>
       </item>
       <item path="colib/Bati.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="0">
+        <ccTool flags="1">
           <incDir>
             <pElem>renderer/opengl</pElem>
+            <pElem>core</pElem>
+            <pElem>genetic</pElem>
+            <pElem>glm</pElem>
+            <pElem>/usr/include</pElem>
+            <pElem>colib</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="colib/Cloison.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <incDir>
+            <pElem>colib</pElem>
             <pElem>/usr/include/GL</pElem>
+            <pElem>renderer/opengl</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>
       </item>
       <item path="colib/Colib.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="0">
+        <ccTool flags="1">
           <incDir>
-            <pElem>/usr/include/GL</pElem>
             <pElem>renderer/opengl</pElem>
+            <pElem>core</pElem>
+            <pElem>genetic</pElem>
+            <pElem>glm</pElem>
+            <pElem>/usr/include</pElem>
+            <pElem>colib</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="colib/Column.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>renderer/opengl</pElem>
+            <pElem>core</pElem>
+            <pElem>genetic</pElem>
+            <pElem>glm</pElem>
+            <pElem>/usr/include</pElem>
+            <pElem>colib</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>
       </item>
       <item path="colib/Navette.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="0">
+        <ccTool flags="1">
           <incDir>
-            <pElem>/usr/include/GL</pElem>
             <pElem>renderer/opengl</pElem>
+            <pElem>core</pElem>
+            <pElem>genetic</pElem>
+            <pElem>glm</pElem>
+            <pElem>/usr/include</pElem>
+            <pElem>colib</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="colib/Plateau.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>renderer/opengl</pElem>
+            <pElem>core</pElem>
+            <pElem>genetic</pElem>
+            <pElem>glm</pElem>
+            <pElem>/usr/include</pElem>
+            <pElem>colib</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>
@@ -1123,19 +1192,25 @@
         </ccTool>
       </item>
       <item path="core/LightElement.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="0">
+        <ccTool flags="1">
           <incDir>
-            <pElem>core</pElem>
-            <pElem>/usr/include/GL</pElem>
             <pElem>renderer/opengl</pElem>
+            <pElem>core</pElem>
+            <pElem>genetic</pElem>
+            <pElem>glm</pElem>
+            <pElem>/usr/include</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>
       </item>
       <item path="core/MovingCoord.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="0">
+        <ccTool flags="1">
           <incDir>
+            <pElem>renderer/opengl</pElem>
             <pElem>core</pElem>
+            <pElem>genetic</pElem>
+            <pElem>glm</pElem>
+            <pElem>/usr/include</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>
@@ -1401,14 +1476,6 @@
           </incDir>
         </ccTool>
       </folder>
-      <folder path="0/colib">
-        <ccTool>
-          <incDir>
-            <pElem>core</pElem>
-            <pElem>colib</pElem>
-          </incDir>
-        </ccTool>
-      </folder>
       <folder path="0/genetic">
         <ccTool>
           <incDir>
@@ -1596,6 +1663,8 @@
             <pElem>.</pElem>
           </incDir>
         </ccTool>
+      </item>
+      <item path="test.cpp" ex="false" tool="1" flavor2="4">
       </item>
       <item path="world/Blocks/Block.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">

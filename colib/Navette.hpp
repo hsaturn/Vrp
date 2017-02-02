@@ -17,9 +17,12 @@
 #include <Object.h>
 #include <MovingCoord.hpp>
 
+using namespace std;
+
 namespace Colib
 {
 	class Bati;
+	class Plateau;
 	
 	class Navette
 	{
@@ -31,16 +34,21 @@ namespace Colib
 			 */
 			bool render();
 			
-			void moveTo(int z_percent);
+			bool isReady() const;
+			
+			Plateau* getPlateau() { return plateau; }
+			void setPlateau(Plateau* p);
+			
+			void centerOn(int z);
+			static const int LENGTH = 40;	// width (cm)
+			static const int HEIGHT = 10;	// height (cm)
 		
 		private:
-			static const int NAV_LENGTH = 40;	// width (cm)
-			static const int NAV_HEIGHT = 30;	// height (cm)
 			
 			Bati* pbati;
 			
 			MovingCoord z;	// 0..100% of length
-
+			Plateau* plateau;
 	};
 }
 

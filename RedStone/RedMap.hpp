@@ -23,11 +23,9 @@ namespace RedStone {
 		class RedMapBuilder : public ObjectBuilder {
 		public:
 
-			RedMapBuilder() : ObjectBuilder("redmap") {
-			}
+			RedMapBuilder() : ObjectBuilder("redmap") {}
 
-			virtual ~RedMapBuilder() {
-			}
+			virtual ~RedMapBuilder() {}
 
 			Object* build(const string& name, string& incoming) {
 				return new RedMap(name, incoming);

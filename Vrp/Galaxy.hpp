@@ -23,8 +23,7 @@ class Galaxy : public Object {
 
 		GalaxyBuilder() : ObjectBuilder("galaxy"){}
 
-		virtual ~GalaxyBuilder() {
-		};
+		virtual ~GalaxyBuilder() {};
 
 		Object* build(const string& name, string& incoming) {
 			return new Galaxy(name, incoming);

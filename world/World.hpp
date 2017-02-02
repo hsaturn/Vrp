@@ -24,11 +24,9 @@ namespace World {
 		class WorldBuilder : public ObjectBuilder {
 		public:
 
-			WorldBuilder() : ObjectBuilder("world") {
-			}
+			WorldBuilder() : ObjectBuilder("world") {}
 
-			virtual ~WorldBuilder() {
-			}
+			virtual ~WorldBuilder() {}
 
 			Object* build(const string& name, string& incoming) {
 				return new World(name, incoming);

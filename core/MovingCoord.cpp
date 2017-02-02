@@ -55,7 +55,7 @@ float MovingCoord::getDistance() const
 	return abs((float)(target-value));
 }
 
-bool MovingCoord::targetReached()
+bool MovingCoord::targetReached() const
 {
 	return abs(target-value)<=position_tolerance;
 }
