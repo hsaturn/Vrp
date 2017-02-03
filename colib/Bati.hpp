@@ -34,11 +34,15 @@ namespace Colib
 		int getXLeft() const;
 		int getXRight() const;
 		
-		bool moveTo(int z, int h);
+		bool moveTo(int col_nr, int h);
 		static const int THICKNESS = 10;
 		
 		Plateau* getPlateau();
 		void setPlateau(Plateau* p);
+		
+		const char* get(bool back);	// récupère plateau, ret: erreur ou 0
+		const char* put(bool back);	// pose le plateau, ret: erreur ou 0
+		void remove();	// Enleve le plateau de la navette
 		
 		
 	private:
@@ -53,6 +57,8 @@ namespace Colib
 		
 		const Colib* pcolib;
 		Navette* navette;
+		int column_dest;
+		int etage_dest;
 		
 		MovingCoord h;	// 0..100% of height
 	};

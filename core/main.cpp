@@ -500,8 +500,8 @@ void initRendering()
 	glClearColor(0.0f, 0.0f, 0.1f, 1.0f);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
-	// glEnable(GL_BLEND);
-	// glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	return;
 
 	//Set up a display list for drawing a cube
@@ -590,16 +590,6 @@ void drawHud()
 
 		glClear(GL_DEPTH_BUFFER_BIT);
 		c.render();
-
-		/*
-		glBegin(GL_QUADS);
-		c.render(0.1);
-		glVertex2f(0, SCREEN_HEIGHT - 14);
-		glVertex2f(SCREEN_WIDTH, SCREEN_HEIGHT - 14);
-		glVertex2f(SCREEN_WIDTH, SCREEN_HEIGHT);
-		glVertex2f(0, SCREEN_HEIGHT);
-		glEnd();
-		*/
 
 		//glScalef(0.001, 0.001, 0.001);
 		glRotatef(g_rotate, 0, 0, 1.0);
@@ -989,6 +979,10 @@ void update(int value)
 				server->send(specular.read(cmd, incoming));
 			else if (cmd == "shininess")
 				server->send(shininess.read(cmd, incoming));
+			else if (cmd == "anglex")
+				_anglex=StringUtil::getFloat(incoming);
+			else if (cmd == "angley")
+				_angley = StringUtil::getFloat(incoming);
 			else if (cmd == "send")
 			{
 				cout << "SEND " << incoming << endl;
@@ -1157,6 +1151,11 @@ int main(int argc, char** argv)
 
 	string sPort = toString(lPort);
 	glutCreateWindow((string("CS ") + sPort).c_str());
+	if (glewInit())
+	{
+		cerr << "Failed to initialize GLEW" << endl;
+		exit(1);
+	}
 	initRendering();
 
 	glutDisplayFunc(drawScene);

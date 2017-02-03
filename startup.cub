@@ -16,7 +16,7 @@ widget console 2%,70% 96%,25% #F804 white #AAAA helvetica 10
 translate 0 0 0
 # new galaxy flat 10
 
-scale 0.6
+scale 0.3
 var quality=10
 # new redmap
 
@@ -24,7 +24,11 @@ var quality=10
 # world.scale=10
 # world.read ouessant.txt
 
+angley 50
+anglex -10
 new colib 150
+colib.dz=-30
+colib.dy=-5
 colib.add back 60
 colib.add back 60
 colib.add back 60
@@ -38,8 +42,9 @@ colib.add back 60
 colib.add back 60
 colib.add back 60
 colib.add back 60
-colib.dz=-40
 light on
+colib.go 0 0
+colib.fill Un colis
 
 axis
 

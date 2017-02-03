@@ -15,7 +15,7 @@
 #define COLUMN_HPP
 
 #include <memory>
-#include <vector>
+#include <map>
 #include "Plateau.hpp"
 
 using namespace std;
@@ -38,7 +38,9 @@ namespace Colib
 			
 		int getWidth() const { return mwidth; }
 		int getAlveoleCount() const;
-		int getAlveoleHeight() const;
+		
+		Plateau* getPlateau(int etage) const;
+		void setPlateau(int etage, Plateau* plateau);
 		
 		bool isEmpty(int alveole) const;
 		
@@ -46,7 +48,7 @@ namespace Colib
 			
 	private:
 		int mwidth;
-		vector<shared_ptr<Plateau>> alveoles;
+		map<int, Plateau*> alveoles;	// Map num cellule / plateau
 		Colib* pcolib;
 	};
 }

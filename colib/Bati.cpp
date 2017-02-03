@@ -11,13 +11,17 @@ namespace Colib {
 	Bati::Bati(const Colib* p)
 	:
 	pcolib(p),
-	h(0) {
+	h(0)
+	{
 #define FACTOR 2
 		navette = new Navette(this);
 		h.setMaxVelocity(16*FACTOR);
 		h.setMaxValue(10000);
 		h.setMaxVelocityThreshold(10*FACTOR);
 		h.setAccel(12*FACTOR);
+		
+		column_dest = 0;
+		etage_dest = 0;
 	}
 	
 	Plateau* Bati::getPlateau()
@@ -45,6 +49,24 @@ namespace Colib {
 		bool bRet = navette->render() || !h.targetReached();
 		
 		return bRet;
+	}
+	
+	const char* Bati::put(bool back)
+	{
+		Column* col = pcolib->getColumn(column_dest, back);
+		int xdest = pcolib->getCenterOfColumnX(back);
+		return navette->put(col, etage_dest, xdest);
+	}
+	
+	const char* Bati::get(bool back)
+	{
+		Column* col = pcolib->getColumn(column_dest, back);
+		return navette->get(col, etage_dest);
+	}
+	
+	void Bati::remove()
+	{
+		navette->remove();
 	}
 
 	void Bati::pilier(int x, int z) {
@@ -84,11 +106,16 @@ namespace Colib {
 		return false;
 	}
 	
-	bool Bati::moveTo(int z, int height)
+	bool Bati::moveTo(int col_dest, int etage)
 	{
 		if (navette->isReady())
 		{
-			h.setTarget(height);
+			column_dest = col_dest;
+			etage_dest = etage;
+			cerr << "col_dest=" << col_dest << " / etage_dest=" << etage_dest << endl;
+			
+			h.setTarget(pcolib->getHeight(etage) -Navette::HEIGHT-Bati::THICKNESS);
+			int z = pcolib->getCenterOfColumnZ(col_dest);
 			navette->centerOn(z);
 			return true;
 		}

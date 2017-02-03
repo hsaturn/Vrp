@@ -121,29 +121,23 @@ namespace Colib
 	bool Colib::_execute(Server* server, string cmd, string incoming, const string& org, CmdQueue&)
 	{
 		string error="";
-		bool bRet = false;
-		
-		cout << "EXECOLIB " << cmd << endl;
-		server->send("EXECOLIB "+cmd);
+		bool bRet = true;
 		
 		if (cmd=="go")
 		{
 			int z = StringUtil::getLong(incoming);	// Colonne
 			int h = StringUtil::getLong(incoming);	// Cellule verticale
 			
-			h = getHeight(h);
-			if (h==-1)
+			if (getHeight(h)==-1)
 			{
 				cout << "ERREUR cellule" << endl;
-				return false;
+				return true;
 			}
-			h -= Navette::HEIGHT+Bati::THICKNESS;
 			
-			z = getCenterOfColumn(z);
-			if (z==-1)
+			if (getCenterOfColumnZ(z)==-1)
 			{
 				cout << "ERREUR column";
-				return false;
+				return true;
 			}
 			
 			bati->moveTo(z,h);
@@ -166,7 +160,7 @@ namespace Colib
 					error="Not empty !";
 				else
 				{
-					Plateau* plateau = new Plateau(incoming);
+					Plateau* plateau = new Plateau(incoming, (bati->getXLeft()+bati->getXRight())/2);
 					bati->setPlateau(plateau);
 				}
 			}
@@ -217,6 +211,26 @@ namespace Colib
 		else if (cmd=="read")
 		{
 		}
+		else if (cmd=="put")
+		{
+			StringUtil::trim(incoming);
+			const char* err= bati->put(incoming!="front");
+			if (err)
+				error=err;
+		}
+		else if (cmd=="drop" || cmd=="remove")
+		{
+			bati->remove();
+		}
+		else if (cmd=="get")
+		{
+			StringUtil::trim(incoming);
+			const char* err=bati->get(incoming!="front");
+			if (err)
+				error=err;
+		}
+		else
+			bRet = false;
 		
 		if (error.length())
 		{
@@ -232,6 +246,15 @@ namespace Colib
 	{
 		help.add("go column, height%");
 		//help.add("world.add block_type ...");
+	}
+	
+	Column* Colib::getColumn(unsigned int nr, bool back) const
+	{
+		const vector<Column*>* p = (back ? &columns_back : &columns_front);
+		if (nr<p->size())
+			return (*p)[nr];
+		cerr << "Bad column number " << nr << " for " << back << " size=" <<  p->size() << endl;
+		return 0;
 	}
 	
 	int computeLength(vector<Column*>& columns)
@@ -257,7 +280,16 @@ namespace Colib
 		return -1;
 	}
 	
-	int Colib::getCenterOfColumn(unsigned int col_nr)
+	int Colib::getCenterOfColumnX(bool back) const
+	{
+		int x = 0;
+		if (!back)
+			x = 2*(Column::DEPTH + Cloison::THICKNESS);
+		return x+Column::DEPTH/2;
+	}
+
+	
+	int Colib::getCenterOfColumnZ(unsigned int col_nr) const
 	{
 		int z = Bati::THICKNESS;
 		if (col_nr<columns_back.size())	// TODO columns may have different widths by design (not physically)

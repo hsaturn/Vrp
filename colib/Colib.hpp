@@ -47,6 +47,7 @@ namespace Colib {
 		virtual bool _render(bool resetTimer);
 		virtual bool _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);
 		
+		Column* getColumn(unsigned int nr, bool back=true) const;
 		/**
 		 * @return width 2 or 3
 		 */
@@ -71,7 +72,8 @@ namespace Colib {
 		 * @param col_nr
 		 * @return center of column (z axis), or -1 (out of range)
 		 */
-		int getCenterOfColumn(unsigned int col_nr);
+		int getCenterOfColumnZ(unsigned int col_nr) const;
+		int getCenterOfColumnX(bool back) const;
 		
 	private:
 		

@@ -21,6 +21,7 @@ using namespace std;
 
 namespace Colib
 {
+	class Column;
 	class Bati;
 	class Plateau;
 	
@@ -39,6 +40,10 @@ namespace Colib
 			Plateau* getPlateau() { return plateau; }
 			void setPlateau(Plateau* p);
 			
+			const char* put(Column* col, int etage, int xdest);	// ret: err ou 0
+			const char* get(Column* col, int etage);			// ret: err ou 0
+			void remove();
+			
 			void centerOn(int z);
 			static const int LENGTH = 40;	// width (cm)
 			static const int HEIGHT = 10;	// height (cm)
@@ -47,8 +52,13 @@ namespace Colib
 			
 			Bati* pbati;
 			
-			MovingCoord z;	// 0..100% of length
+			MovingCoord z;
 			Plateau* plateau;
+			
+			Column* moving_col;	// 0 ou ptr column put/get plateau (en cours)
+			bool putting;		// si moving_col, putting / moving plateau
+			int etage_dest;		// etage dest / source
+			
 	};
 }
 

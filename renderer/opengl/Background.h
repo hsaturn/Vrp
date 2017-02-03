@@ -8,6 +8,8 @@
 #ifndef BACKGROUND_H
 #define	BACKGROUND_H
 
+#include <math.h>
+
 class AbstractBackground {
 public:
 	AbstractBackground(){};

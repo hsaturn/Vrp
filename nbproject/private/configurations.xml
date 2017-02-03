@@ -112,14 +112,12 @@
           <in>RedStone.o</in>
           <in>World.o</in>
         </df>
-        <in>ClipBoard.o</in>
         <in>Color.o</in>
         <in>Country.o</in>
         <in>Cube.o</in>
         <in>Face.o</in>
         <in>FontRenderer.o</in>
         <in>Object.o</in>
-        <in>ObjectBuilder.o</in>
         <in>Point.o</in>
         <in>Random.o</in>
         <in>Range.o</in>
@@ -510,6 +508,8 @@
         <in>t.cpp</in>
         <in>test.cpp</in>
       </df>
+      <df name="models">
+      </df>
       <df name="php">
         <df name="solver">
         </df>
@@ -595,7 +595,6 @@
       </df>
       <in>build.cpp</in>
       <in>main.cpp</in>
-      <in>t</in>
       <in>t.cpp</in>
       <in>test.cpp</in>
       <in>test2.cpp</in>
@@ -626,6 +625,8 @@
         <gdb_interceptlist>
           <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
         </gdb_interceptlist>
+        <gdb_signals>
+        </gdb_signals>
         <gdb_options>
           <DebugOptions>
           </DebugOptions>

@@ -17,6 +17,9 @@
 #ifndef MOVINGCOORD_HPP
 #define MOVINGCOORD_HPP
 #include <chrono>
+#include <ostream>
+
+using namespace std;
 
 class MovingCoord
 {
@@ -50,6 +53,10 @@ public:
 	void setPositionTolerance(float t) { position_tolerance = t; }
 	
 	float operator = (float f) { value = f; target = f; velocity = 0; return f; }
+	
+	void setValue(float t);
+	
+	friend ostream& operator<<(ostream& out, const MovingCoord&);
 	
 private:
 	

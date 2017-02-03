@@ -35,6 +35,13 @@ MovingCoord::MovingCoord(float v, float vmin, float vmax, float acc)
 	last = std::chrono::system_clock::now();
 }
 
+void MovingCoord::setValue(float t)
+{
+	value = t;
+	target = t;
+	velocity = 0;
+}
+
 void MovingCoord::setMaxVelocityThreshold(float m)
 {
 	max_velocity_threshold = abs(m);
@@ -112,4 +119,13 @@ void MovingCoord::update()
 	
 	value += velocity * elapsed_seconds.count();
 }
-	
+
+ostream& operator<<(ostream& out, const MovingCoord& coord)
+{
+	out << "Value    : " << coord.value << endl;
+	out << "Target   : " << coord.target << endl;
+	out << "Velocity : " << coord.velocity << endl;
+	out << "Accel.   : " << coord.accel << endl;
+	out << "---" << endl;
+	return out;
+}

@@ -3,10 +3,11 @@
 #include "Navette.hpp"
 #include "Bati.hpp"
 #include "Plateau.hpp"
+#include "Column.hpp"
 
 namespace Colib
 {
-	Navette::Navette(Bati* bati) : pbati(bati), z(0), plateau(0) 
+	Navette::Navette(Bati* bati) : pbati(bati), z(0), plateau(0), moving_col(0)
 	{
 #define FACTOR 4
 		z.setTarget(0);
@@ -77,9 +78,22 @@ namespace Colib
 		glEnd();
 		
 		if (plateau)
-			plateau->renderAtCenter(Y+HEIGHT, z);
+		{
+			plateau->renderAtCenter(Y+HEIGHT, z+LENGTH/2);
+			
+			if (moving_col && plateau->isReady())
+			{
+				cout << "Fin déplacement x plateau ! " << plateau->getX() << endl;
+				if (putting)
+				{
+					moving_col->setPlateau(etage_dest, plateau);
+					plateau = 0;
+				}
+				moving_col = 0;
+			}
+		}
 		
-		return !z.targetReached();
+		return !isReady();
 	}
 	
 	void Navette::centerOn(int zz)
@@ -87,11 +101,58 @@ namespace Colib
 		z.setTarget(zz-Navette::LENGTH/2);
 	}
 	
-	bool Navette::isReady() const
+	const char* Navette::put(Column* col, int etage, int xdest)
+	{
+		if (plateau==0)
+			return "Navette vide !";
+		
+		if (col->getPlateau(etage))
+			return "Alvéole occupé";
+		
+		etage_dest = etage;
+		moving_col = col;
+		putting = true;
+		plateau->setTargetX(xdest);
+		cout << "Destination etage : " << col << '.' << etage << endl;
+		cout << plateau->getMovingCoord() << endl;
+		return 0;
+	}
+	
+	const char* Navette::get(Column* col, int etage)
+	{
+		cout << "get " << col << '.' << etage << endl;
+		if (plateau)
+			return "Navette occupée !";
+		if (col->getPlateau(etage)==0)
+			return "Alvéole vide !!! ";
+		
+		moving_col = col;
+		plateau = moving_col->getPlateau(etage);
+		moving_col->setPlateau(etage, 0);
+		putting = false;
+		plateau->setTargetX((pbati->getXLeft()+pbati->getXRight())/2);
+		return "";
+	}
+	
+	void Navette::remove()
 	{
 		if (plateau)
+		{
+			delete plateau;
+			plateau = 0;
+			moving_col = 0;
+		}
+	}
+
+	
+	bool Navette::isReady() const
+	{
+		
+		if (moving_col)
+			return true;
+		else if (plateau)
 			return plateau->isReady();
 		else
-			return true;
+			return z.targetReached();
 	}
 }

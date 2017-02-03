@@ -18,6 +18,7 @@ namespace Colib
 		
 		for(int h : heights)
 		{
+			Color::dark_gray.render();
 			int dz=2*THICKNESS;
 			glBegin(GL_TRIANGLE_STRIP);
 			glVertex3i(x1, h, z1-dz);

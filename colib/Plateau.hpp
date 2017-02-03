@@ -19,18 +19,23 @@
 
 using namespace std;
 
+class Model;
+
 namespace Colib {
+
 	class Plateau
 	{
 	public:
-		Plateau(string content) : mcontent(content){};
+		Plateau(string content, int center_x);
 		static const int LENGTH = 60;	// Z axis
 		static const int HEIGHT = 2;	// Height
 		
 		bool isReady() const { return x.targetReached(); }
-		void setTargetX(int tx) { x.setTarget(x); }
+		void setTargetX(int tx) { x.setTarget(tx); }
 		const string& getContent() { return mcontent; }
+		float getX() const { return x; }
 
+		const MovingCoord& getMovingCoord() const { return x; }
 		/**
 		 * @param cx center coords
 		 * @param cy
@@ -41,6 +46,7 @@ namespace Colib {
 	private:
 		MovingCoord x;
 		string mcontent;
+		const Model* pmodel;
 	};
 }
 

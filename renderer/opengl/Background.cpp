@@ -31,10 +31,32 @@ void drawStar() {
 class st_star {
 public:
 
-	st_star(float x, float y) : mx(x), my(y) {
+	st_star(float x, float y, float z) : mx(x), my(y), mz(z) {
 	};
+	
+	st_star() {
+		//Random::rand(-10, 10), Random::rand(-10, 10),  Random::rand(-10, 10)));
+		
+		float ray=100.0;
+		float angle1 = Random::rand(0, M_PI);
+		float angle2 = Random::rand(0, 2*M_PI);
+				
+		mx = sin(angle1)*cos(angle2)*ray;
+		my = sin(angle1)*sin(angle2)*ray;
+		mz = cos(angle1)*ray;
+	}
+	
+	void render()
+	{
+		glVertex3f(mx, my, mz);
+	}
+	
+private:
+	
 	float mx;
 	float my;
+	float mz;
+	
 };
 
 void BackgroundStars::render() {
@@ -44,7 +66,7 @@ void BackgroundStars::render() {
 		for (float size = 0.5; size < 2; size+= 0.5) {
 			int count = Random::rand(5*FACT, 15*FACT);
 			for (int i = 0; i < count; i++)
-				stars[size].push_back(new st_star(Random::rand(-10, 10), Random::rand(-10, 10)));
+				stars[size].push_back(new st_star());
 		}
 		cout << "STARS : " << stars.size() << endl;
 	}
@@ -53,9 +75,8 @@ void BackgroundStars::render() {
 	for (auto it : stars) {
 		glPointSize(it.first);
 		glBegin(GL_POINTS);
-		for (auto st : it.second) {
-			glVertex3f(st->mx*FACT, st->my*FACT, 10*FACT);
-		}
+		for (auto st : it.second)
+			st->render();
 		glEnd();
 	}
 }
