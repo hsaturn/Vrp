@@ -1,0 +1,10 @@
+# Material file for truc.obj
+
+newmtl vert_fonce
+	Ns 0
+	d 1
+	illum 2
+	Kd -1,000000 0,000000 -1,000000
+	Ks 0,000000 0,000000 0,000000
+	Ka 0,200000 0,200000 0,200000
+
