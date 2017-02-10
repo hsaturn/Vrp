@@ -9,6 +9,7 @@
 #define	COLIB_HPP
 
 #include <Object.h>
+#include <GL/glew.h>
 #include "Coord.hpp"
 #include <string>
 #include <map>
@@ -77,7 +78,7 @@ namespace Colib {
 		
 	private:
 		
-		void recalcSize();
+		void sizeHasChanged();
 		void renderColumns(vector<Column*>&, int x1);
 
 		static ColibBuilder builder;
@@ -95,6 +96,7 @@ namespace Colib {
 		
 		vector<int> heights;		// Hauteurs des plateaux
 		int last_frozen;			// Dernier plateau froid (non inclu)
+		GLuint list_columns;		// Indexe liste cloisons des colonnes ou 0
 	};
 }
 #endif	/* COLIB_HPP */

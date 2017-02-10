@@ -27,8 +27,7 @@ namespace Colib
 	class Column
 	{
 	public:
-		static const int ALVEOLE_MIN_HEIGHT = 30;
-		static const int ALVEOLE_MAX_HEIGHT = 60;
+		static const int ALVEOLE_MIN_HEIGHT = 5;
 		static const int ALVEOLE_SPLIT_FROST = 40;	// en %
 		static const int DEPTH=60;	// Profondeur d'une colonne en cm
 		

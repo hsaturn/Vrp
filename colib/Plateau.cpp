@@ -9,7 +9,8 @@
 #include "Color.h"
 #include "StringUtil.hpp"
 #include <GL/glew.h>
-#include <Model.hpp>
+#include <ModelOld.hpp>
+#include <model/Model.hpp>
 
 namespace Colib
 {
@@ -17,7 +18,7 @@ namespace Colib
 	{
 		cout << "NEW PLATEAU " << content << endl;
 		string model = StringUtil::getWord(content);
-		pmodel = Model::get(model);
+		pmodel = MyModel::get(model);
 		//pmodel = 0;
 		if (pmodel == 0)
 		{
@@ -47,7 +48,7 @@ namespace Colib
 		x1 = x-Column::DEPTH/2;
 		x2 = x+Column::DEPTH/2;
 		y1 = cy+1;
-		y2 = cy+HEIGHT;
+		y2 = cy+THICKNESS;
 		z1 = cz-LENGTH/2;
 		z2 = cz+LENGTH/2;
 		
@@ -56,7 +57,7 @@ namespace Colib
 		glVertex3i(x1, y1, z1);
 		glVertex3i(x2, y1, z1);
 		glVertex3i(x1, y1, z2);
-		glVertex3i(x2, y2, z2);
+		glVertex3i(x2, y1, z2);
 		glEnd();
 	}
 }

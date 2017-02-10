@@ -21,6 +21,7 @@ namespace Colib
 	Colib::Colib(const string& name, string &incoming)
 	: Object(name)
 	{
+		list_columns = 0;
 		height = StringUtil::getFloat(incoming);
 
 		if (height<100)
@@ -28,7 +29,7 @@ namespace Colib
 		if (height>500)
 			height = 500;
 		
-		recalcSize();
+		sizeHasChanged();
 		
 		setVar("scale", "0.1");
 		
@@ -39,6 +40,8 @@ namespace Colib
 	
 	Colib::~Colib()
 	{
+		cout << "DELETING COLIB" << endl;
+		delete bati;
 	}
 
 	bool Colib::_render(bool resetTimer)
@@ -63,33 +66,17 @@ namespace Colib
 		if (columns.size())
 		{
 			int x2 = x1 + Column::DEPTH;
-			int z=Bati::THICKNESS;
+			int z=Bati::THICKNESS + Cloison::THICKNESS;
 			
-			Cloison::render(x1, x2, getHeight(), z, heights);
-			
-			z+=Cloison::THICKNESS;
-			for(auto column: columns)
+			if (list_columns == 0)
 			{
-				column->render(x1,x2,z);
-				z += column->getWidth();
-				Cloison::render(x1, x2, getHeight(), z, heights);
-				z += Cloison::THICKNESS;
-			}
+				list_columns = glGenLists(1);
+				if (list_columns)
+					glNewList(list_columns, GL_COMPILE);
 			
-			if (last_frozen)
+				// Cloison, Jupes et tablier
 			{
-				Color::blue.render();	// Separation chaud / froid
-				glBegin(GL_TRIANGLE_STRIP);
-				float h = getHeight(last_frozen)-0.01;
-				glVertex3f(x1, h, 0);
-				glVertex3f(x2, h, 0);
-				glVertex3f(x1, h, length);
-				glVertex3f(x2, h, length);
-				glEnd();
-			}
-			
-			// Jupes et tablier
-			{
+					Cloison::render(x1, x2, getHeight(), Bati::THICKNESS, heights);
 				int h = getHeight(0);
 				Color::dark_gray.render();
 				glBegin(GL_TRIANGLE_STRIP);
@@ -113,7 +100,41 @@ namespace Colib
 				glVertex3f(x2, hf, length);
 				glEnd();
 				
+					int zz=z;
+					for(Column* column: columns)
+					{
+						zz += column->getWidth();
+						Cloison::render(x1, x2, getHeight(), zz, heights);
+						zz += Cloison::THICKNESS;
 			}
+		}
+				if (list_columns)
+					glEndList();
+			}
+			else
+				glCallList(list_columns);
+			
+			for(Column* column: columns)
+			{
+				column->render(x1,x2,z);
+				z += column->getWidth();
+				Cloison::render(x1, x2, getHeight(), z, heights);
+				z += Cloison::THICKNESS;
+			}
+			
+			if (last_frozen)
+			{
+				Color::blue.render();	// Separation chaud / froid
+				glBegin(GL_TRIANGLE_STRIP);
+				float h = getHeight(last_frozen)-0.01;
+				glVertex3f(x1, h, 0);
+				glVertex3f(x2, h, 0);
+				glVertex3f(x1, h, length);
+				glVertex3f(x2, h, length);
+				glEnd();
+			}
+			
+
 		}
 	}
 
@@ -150,9 +171,13 @@ namespace Colib
 				height=100;
 			else if (height>2000)
 				height = 2000;
-			recalcSize();
+			sizeHasChanged();
 		}
-		else if (cmd=="fill")
+		else if (cmd=="sound")
+		{
+			bati->changeSound(incoming);
+		}
+		else if (cmd=="load")
 		{
 			if (bati->isReady())
 			{
@@ -191,7 +216,7 @@ namespace Colib
 					{
 						Column* column = new Column(this, width);
 						pcols->push_back(column);
-						recalcSize();
+						sizeHasChanged();
 						server->send("Column added");
 					}
 				}
@@ -309,7 +334,7 @@ namespace Colib
 	}
 
 	
-	void Colib::recalcSize() {
+	void Colib::sizeHasChanged() {
 		int sizes = 2;
 		// length = colCount*COL_WIDTH+(colCount-1)*Cloison::THICKNESS;
 		
@@ -333,6 +358,11 @@ namespace Colib
 			h += Column::ALVEOLE_MIN_HEIGHT;
 			if (h < Column::ALVEOLE_SPLIT_FROST*getHeight()/100)
 				last_frozen++;
+		}
+		if (list_columns)
+		{
+			glDeleteLists(list_columns, 1);
+			list_columns = 0;
 		}
 	}
 }

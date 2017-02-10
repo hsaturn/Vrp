@@ -1,7 +1,16 @@
-OPT=-std=c++0x -g
-PARTS = core Cube Vrp genetic RedStone RedStone/Blocks core/commands Cube/commands world world/Blocks colib
+HAVE_SYNTH=1
+
+ifeq ($(HAVE_SYNTH),1)
+LIBS=-lsynthetizer
+else
+HAVE_SYNTH=0
+endif
+
+OPT=-std=c++0x -g -DHAVE_SYNTH=$(HAVE_SYNTH)
+PARTS = core core/model Cube Vrp genetic RedStone RedStone/Blocks core/commands Cube/commands world world/Blocks colib
 RENDERER:=renderer/opengl
-	
+CXX=g++
+
 SRCE:= \
 	$(foreach dir,$(PARTS),$(wildcard $(dir)/*.cpp)) \
 	$(wildcard $(RENDERER)/*.cpp)
@@ -9,14 +18,14 @@ SRCE:= \
 BUILD_DIR=build
 OBJS=$(addprefix $(BUILD_DIR)/,$(SRCE:.cpp=.o))
 DEPS=$(addprefix $(BUILD_DIR)/,$(SRCE:.cpp=.d))
-	
+
 .PHONY:	build_dir
 	
 all: build_dir vrp
 
 vrp: $(OBJS)
 	@echo "Linking $@"
-	@g++ $(OPT) $^ -lSDL -lglut -lGL -lGLU -lGLEW -o $@ -pthread
+	$(CXX) $(OPT) $^ -lSDL -lglut -lGL -lGLU -lGLEW $(LIBS) -o $@ -pthread
 
 build_dir:
 	@mkdir -p $(BUILD_DIR)
@@ -24,7 +33,7 @@ build_dir:
 $(BUILD_DIR)/%.o:%.cpp Makefile
 	@echo "  Compiling $<"
 	@mkdir -p $(BUILD_DIR)/$(shell dirname $<)
-	@g++ -I$(RENDERER) -Icore -Igenetic -MMD -g -Iglm -I/usr/include -I$(shell dirname $<) -Wall -I. $(OPT) -c $< -o $@ -pthread
+	@$(CXX) -I$(RENDERER) -Icore -Igenetic -MMD -g -Iglm -I/usr/include -I$(shell dirname $<) -Wall -I. $(OPT) -c $< -o $@ -pthread
 
 vars:
 	echo $(OBJS)

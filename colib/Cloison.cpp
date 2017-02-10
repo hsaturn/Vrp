@@ -1,4 +1,6 @@
 #include "Cloison.hpp"
+#include "Plateau.hpp"
+#include "Vrp/Planet.hpp"
 #include <GL/glew.h>
 #include <Color.h>
 
@@ -6,26 +8,78 @@ namespace Colib
 {
 	void Cloison::render(int x1, int x2, int height, int z, const vector<int>& heights)
 	{
-		int h1 = heights[0];
-		int z1 = z +THICKNESS/2;
-		Color::gray.render();
-		glBegin(GL_TRIANGLE_STRIP);
-		glVertex3i(x1, h1, z1);
-		glVertex3i(x1, height, z1);
-		glVertex3i(x2, h1, z1);
-		glVertex3i(x2, height, z1);
-		glEnd();
+		int zz = z;
 		
-		for(int h : heights)
+		for(int hollow=HOLLOW; hollow>=-HOLLOW; hollow -= 2*HOLLOW)
 		{
-			Color::dark_gray.render();
-			int dz=2*THICKNESS;
 			glBegin(GL_TRIANGLE_STRIP);
-			glVertex3i(x1, h, z1-dz);
-			glVertex3i(x1, h, z1+dz);
-			glVertex3i(x2, h, z1-dz);
-			glVertex3i(x2, h, z1+dz);
+			int h1 = 0;
+			for(int h2 : heights)
+			{
+				if (h1)
+				{
+					Color::dark_gray.render();
+
+					// plat rainure
+					glVertex3i(x1, h1, zz);
+					glVertex3i(x2, h1, zz);
+					glVertex3i(x1, h1, zz+hollow);
+					glVertex3i(x2, h1, zz+hollow);
+
+					// fond rainure
+					h1 += Plateau::THICKNESS;
+					glVertex3i(x1, h1, zz+hollow);
+					glVertex3i(x2, h1, zz+hollow);
+
+					// plat haut rainure
+					glVertex3i(x1, h1, zz);
+					glVertex3i(x2, h1, zz);
+
+					// cloison	
+					Color::gray.render();
+					glVertex3i(x1, h2, zz);
+					glVertex3i(x2, h2, zz);
+
+				}
+				h1 = h2;
+			}
+			zz += THICKNESS;
 			glEnd();
+			
 		}
+		
+		Color::white.render();
+		int x = x1;
+		// Bords de cloison
+		for(int i=0; i<=1; i++)
+		{
+			int h1 = 0;
+			for(int h2: heights)
+			{
+				if (h1)
+				{
+					glBegin(GL_TRIANGLE_STRIP);
+					glVertex3i(x, h1, z+THICKNESS-HOLLOW);
+					glVertex3i(x, h1, z+HOLLOW);
+
+					h1 += Plateau::THICKNESS;
+					glVertex3i(x, h1, z+THICKNESS-HOLLOW);
+					glVertex3i(x, h1, z+HOLLOW);
+					glEnd();
+
+					glBegin(GL_TRIANGLE_STRIP);
+					glVertex3i(x, h1, z+THICKNESS);
+					glVertex3i(x, h1, z);
+					glVertex3i(x, h2, z+THICKNESS);
+					glVertex3i(x, h2, z);
+					glEnd();
+				}
+
+				h1 = h2;
+			}
+			if (x == x1) x = x2;
+		}
+		
+		return;
 	}
 }

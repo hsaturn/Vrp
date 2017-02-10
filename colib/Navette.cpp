@@ -4,18 +4,56 @@
 #include "Bati.hpp"
 #include "Plateau.hpp"
 #include "Column.hpp"
+#include "MotorSpeedHook.hpp"
+#include <StringUtil.hpp>
 
 namespace Colib
 {
 	Navette::Navette(Bati* bati) : pbati(bati), z(0), plateau(0), moving_col(0)
 	{
-#define FACTOR 4
 		z.setTarget(0);
 		z.setMaxVelocity(20*FACTOR);
 		z.setMaxValue(100000);
 		z.setMaxVelocityThreshold(20*FACTOR);
 		z.setAccel(10*FACTOR);
+		
+		static int number=0;
+		string name = "nav_speed_"+StringUtil::to_string(number++);
+
+		speed_hook = new MotorSpeedHook(name, MAX_SPEED);
+		cout << "BUILDING SOUND GENERATOR" << endl;
+		
+		stringstream in;
+		in << "reverb 30:30 fm 0 100 am 0 100 square 30:30 triangle 100 " + name;
+		
+		speed_hook->changeSound(in);
 	}
+	
+	Navette::~Navette()
+	{
+		if (speed_hook)
+		{
+			cout << "DELETING HOOK" << endl;
+			delete speed_hook;
+		}
+	}
+	
+	bool Navette::isAllStopped() const
+	{
+		if (moving_col)
+			return false;
+		if (plateau)
+			return plateau->isAllStopped();
+		return true;
+	}
+
+	
+	void Navette::changeSound(istream& in)
+	{
+		if (speed_hook)
+			speed_hook->changeSound(in);
+	}
+	
 	
 	void Navette::setPlateau(Plateau* p)
 	{
@@ -31,6 +69,11 @@ namespace Colib
 	{
 		const int debord = 1;
 		z.update();
+	
+#ifdef HAVE_SYNTH
+		if (speed_hook)
+			speed_hook->update(z.getVelocity());
+#endif
 		
 		int Z1 = z;
 		if (z < Bati::THICKNESS)
@@ -93,7 +136,7 @@ namespace Colib
 			}
 		}
 		
-		return !isReady();
+		return !isAllStopped();
 	}
 	
 	void Navette::centerOn(int zz)
@@ -103,6 +146,8 @@ namespace Colib
 	
 	const char* Navette::put(Column* col, int etage, int xdest)
 	{
+		if (isAllStopped())
+			return "Attendre l'arrêt complet";
 		if (plateau==0)
 			return "Navette vide !";
 		
@@ -147,12 +192,10 @@ namespace Colib
 	
 	bool Navette::isReady() const
 	{
-		
 		if (moving_col)
-			return true;
+			return false;
 		else if (plateau)
 			return plateau->isReady();
-		else
-			return z.targetReached();
+		return true;
 	}
 }

@@ -24,18 +24,27 @@ namespace Colib
 	class Column;
 	class Bati;
 	class Plateau;
+	class MotorSpeedHook;
 	
 	class Navette
 	{
 		public:
 			Navette(Bati* bati);
+			~Navette();
 		
+			static const int FACTOR=4;
+			static const int MAX_SPEED = FACTOR*5;
+
 			/**
 			 * @return  true if need to redraw soon
 			 */
 			bool render();
 			
+			// Ready to move
 			bool isReady() const;
+			
+			// Nothing is moving around this
+			bool isAllStopped() const;
 			
 			Plateau* getPlateau() { return plateau; }
 			void setPlateau(Plateau* p);
@@ -47,7 +56,9 @@ namespace Colib
 			void centerOn(int z);
 			static const int LENGTH = 40;	// width (cm)
 			static const int HEIGHT = 10;	// height (cm)
-		
+			
+			void changeSound(istream& incoming);
+			
 		private:
 			
 			Bati* pbati;
@@ -58,7 +69,7 @@ namespace Colib
 			Column* moving_col;	// 0 ou ptr column put/get plateau (en cours)
 			bool putting;		// si moving_col, putting / moving plateau
 			int etage_dest;		// etage dest / source
-			
+			MotorSpeedHook* speed_hook;	// Pour le générateur de son
 	};
 }
 

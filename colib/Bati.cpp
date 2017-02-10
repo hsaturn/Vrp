@@ -2,27 +2,62 @@
 #include "Colib.hpp"
 #include <GL/glew.h>
 #include <Color.h>
+#include <StringUtil.hpp>
 #include "Navette.hpp"
 #include "Cloison.hpp"
 #include "Column.hpp"
+#include "MotorSpeedHook.hpp"
 
 namespace Colib {
-
+	
 	Bati::Bati(const Colib* p)
 	:
 	pcolib(p),
 	h(0)
 	{
-#define FACTOR 2
 		navette = new Navette(this);
-		h.setMaxVelocity(16*FACTOR);
+		h.setMaxVelocity(MAX_SPEED);
 		h.setMaxValue(10000);
 		h.setMaxVelocityThreshold(10*FACTOR);
 		h.setAccel(12*FACTOR);
 		
 		column_dest = 0;
 		etage_dest = 0;
+		
+		static int number=0;
+		string name="hook_bati_"+number++;
+		hook_speed = new MotorSpeedHook(name, MAX_SPEED);
+		string s="bati define sound { am 70 100 sinus 200:80 sq 300 triangle 400:10 sq 600:10 } reverb 30:30 { sound fm 10 100 sound " + name +" }";
+		changeSound(s);
 	}
+	
+	Bati::~Bati()
+	{
+		if (hook_speed)
+			delete hook_speed;
+		delete navette;
+	}
+	
+	bool Bati::isAllStopped()
+	{
+		if (!h.targetReached())
+			return false;
+		return navette->isAllStopped();
+	}
+
+	void Bati::changeSound(string& incoming)
+	{
+		string what = StringUtil::getWord(incoming);
+		stringstream in;
+		in << incoming;
+		if (what == "bati")
+		{
+			hook_speed->changeSound(in);
+		}
+		else if (what == "navette")
+			navette->changeSound(in);
+	}
+
 	
 	Plateau* Bati::getPlateau()
 	{
@@ -37,6 +72,9 @@ namespace Colib {
 	bool Bati::render() {
 		Color::red.render();
 		h.update();
+		
+		if (hook_speed)
+			hook_speed->update(h.getVelocity());
 
 		int x1 = getXLeft();
 		pilier(x1, 0);
