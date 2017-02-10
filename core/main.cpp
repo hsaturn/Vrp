@@ -67,7 +67,15 @@ struct thr_info
 
 list<thr_info*> exec_list;
 
-bool buttonDown = false;
+bool buttonRotate = false;
+bool buttonTranslate = false;
+float factor_translate = 0.1;
+float translateX = 0;
+float translateY = 0;
+float translateZ = 0;
+int translateStartX = 0;
+int translateStartY = 0;
+
 using namespace std;
 GLint cube_server;
 bool bAxis = false;
@@ -586,6 +594,8 @@ void drawHud()
 		glMatrixMode(GL_MODELVIEW);
 		//glPushMatrix();        ----Not sure if I need this
 		glLoadIdentity();
+		glTranslatef(translateX, translateY,translateZ);
+		
 		glDisable(GL_CULL_FACE);
 
 		glClear(GL_DEPTH_BUFFER_BIT);
@@ -602,7 +612,7 @@ void drawHud()
 		
 		glTranslatef(0, 0, -1.0);
 	}
-
+	glLoadIdentity();
 	long redisplay = Widget::renderAll();
 	if (redisplay)
 	{
@@ -627,6 +637,7 @@ void drawScene()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+	glTranslatef(translateX, translateY, translateZ);
 	background.render();
 //	glTranslatef( eye.x, eye.y, eye.z ); //glTranslatef(cubex, cubey, cubez);
 	// git grrr
@@ -691,6 +702,26 @@ void drawScene()
 	resetTimer = false;
 	drawHud();
 	glutSwapBuffers();
+}
+
+void calcTranslate(string& incoming, float& v)
+{
+	StringUtil::trim(incoming);
+	if (incoming.length())
+	{
+		char c=incoming[0];
+		if (c=='+' || c=='-')
+		{
+			incoming.erase(0,1);
+			int dv = StringUtil::getLong(incoming);
+			if (c=='-')
+				v -= dv;
+			else
+				v += dv;
+		}
+		else
+			v = StringUtil::getLong(incoming);
+	}
 }
 
 void update(int value)
@@ -804,6 +835,7 @@ void update(int value)
 				help.add("scale s");
 				help.add("screen x y");
 				help.add("widget");
+				help.add("translate [+|-| ]dx [+|- | ]dy [+|-| ]dz");
 				help.add("var var=value");
 				help.add("light [on|off|x y z t]");
 
@@ -828,6 +860,12 @@ void update(int value)
 			else if (cmd == "var")
 			{
 				Widget::setVar(incoming);
+			}
+			else if (cmd == "translate")
+			{
+				calcTranslate(incoming, translateX);
+				calcTranslate(incoming, translateY);
+				calcTranslate(incoming, translateZ);
 			}
 			else if (cmd == "scale")
 			{
@@ -1066,22 +1104,25 @@ horrible:
 void mouse_button(int button, int state, int x, int y)
 {
 	cout << "MOUSE " << button << '/' << state << endl;
-	buttonDown = false;
+	buttonRotate = false;
+	buttonTranslate = false;
+	
 	/* si on appuie sur le bouton gauche */
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
-		buttonDown = true;
-		cout << "JE START" << endl;
+		buttonRotate = true;
 		int invert_y = (SCREEN_HEIGHT - y) - 1; // OpenGL viewport coordinates are Cartesian
 		arcball_start(x,invert_y);
 	}
-	else
+	if (button == GLUT_MIDDLE_BUTTON && state == GLUT_DOWN)
 	{
+		buttonTranslate = true;
+		translateStartX = x;
+		translateStartY = y;
+	}
 		GLint pix[20];
 		glReadPixels(x/SCREEN_WIDTH, y/SCREEN_HEIGHT, 1, 1, GL_RED, GL_INT8_NV, pix);	// WAS GL_FLOAT
-
 		cout << "depth=" << pix[0] << "  ";
-	}
 
 	if (Widget::mouseButton(button, state, x, y) == 0 && (button == 4 || button == 3))
 	{
@@ -1114,11 +1155,18 @@ glm::vec3 get_arcball_vector(int x, int y) {
 
 void mouse_motion(int x, int y)
 {
-	if (buttonDown)
+	if (buttonRotate)
 	{
 		Widget::mouseMotion(x, y);
 		int invert_y = (SCREEN_HEIGHT - y) - 1;
 		arcball_move(x,invert_y);
+	}
+	if (buttonTranslate)
+	{
+		translateX += (translateStartX-x)*factor_translate;
+		translateY += (translateStartY-y)*factor_translate;
+		translateStartX = x;
+		translateStartY = y;
 	}
 	glutPostRedisplay();
 }

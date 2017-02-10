@@ -8,6 +8,7 @@
           <in>Cloison.o</in>
           <in>Colib.o</in>
           <in>Column.o</in>
+          <in>MotorSpeedHook.o</in>
           <in>Navette.o</in>
           <in>Plateau.o</in>
         </df>
@@ -24,10 +25,16 @@
             <in>test.o</in>
             <in>widget.o</in>
           </df>
+          <df name="model">
+            <in>Model.o</in>
+            <in>tiny_obj_loader.o</in>
+          </df>
           <in>ClipBoard.o</in>
           <in>Coord.o</in>
           <in>Help.o</in>
           <in>LightElement.o</in>
+          <in>Model.o</in>
+          <in>ModelOld.o</in>
           <in>MovingCoord.o</in>
           <in>Object.o</in>
           <in>ObjectBuilder.o</in>
@@ -41,6 +48,8 @@
           <in>arcball_sample.o</in>
           <in>imageloader.o</in>
           <in>main.o</in>
+          <in>objloader.o</in>
+          <in>stb_image.o</in>
         </df>
         <df name="Cube">
           <df name="commands">
@@ -67,12 +76,6 @@
             <in>Solid.o</in>
             <in>Torch.o</in>
           </df>
-          <df name="Blocs">
-            <in>Bloc.o</in>
-            <in>Solid.o</in>
-          </df>
-          <in>Bloc.o</in>
-          <in>Coord.o</in>
           <in>RedMap.o</in>
           <in>RedStone.o</in>
         </df>
@@ -107,34 +110,16 @@
             <in>Solid.o</in>
             <in>Torch.o</in>
           </df>
-          <in>Coord.o</in>
           <in>Map.o</in>
-          <in>RedStone.o</in>
           <in>World.o</in>
         </df>
-        <in>Color.o</in>
-        <in>Country.o</in>
-        <in>Cube.o</in>
-        <in>Face.o</in>
-        <in>FontRenderer.o</in>
-        <in>Object.o</in>
-        <in>Point.o</in>
-        <in>Random.o</in>
-        <in>Range.o</in>
-        <in>Server.o</in>
-        <in>StringUtil.o</in>
-        <in>Town.o</in>
-        <in>Widget.o</in>
-        <in>WidgetButton.o</in>
-        <in>WidgetConsole.o</in>
-        <in>imageloader.o</in>
-        <in>main.o</in>
       </df>
       <df name="colib">
         <in>Bati.cpp</in>
         <in>Cloison.cpp</in>
         <in>Colib.cpp</in>
         <in>Column.cpp</in>
+        <in>MotorSpeedHook.cpp</in>
         <in>Navette.cpp</in>
         <in>Plateau.cpp</in>
       </df>
@@ -151,10 +136,15 @@
           <in>test.cpp</in>
           <in>widget.cpp</in>
         </df>
+        <df name="model">
+          <in>Model.cpp</in>
+          <in>tiny_obj_loader.cpp</in>
+        </df>
         <in>ClipBoard.cpp</in>
         <in>Coord.cpp</in>
         <in>Help.cpp</in>
         <in>LightElement.cpp</in>
+        <in>ModelOld.cpp</in>
         <in>MovingCoord.cpp</in>
         <in>Object.cpp</in>
         <in>ObjectBuilder.cpp</in>
@@ -168,6 +158,8 @@
         <in>arcball_sample.cpp</in>
         <in>imageloader.cpp</in>
         <in>main.cpp</in>
+        <in>objloader.cpp</in>
+        <in>stb_image.cpp</in>
       </df>
       <df name="Cube">
         <df name="commands">
@@ -231,39 +223,13 @@
         <in>Map.cpp</in>
         <in>World.cpp</in>
       </df>
-      <in>main.cpp</in>
-      <in>test.cpp</in>
     </df>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
                    projectFiles="false"
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Makefile</itemPath>
-    </logicalFolder>
-    <logicalFolder name="TestFiles"
-                   displayName="Test Files"
-                   projectFiles="false"
-                   kind="TEST_LOGICAL_FOLDER">
-      <logicalFolder name="f2"
-                     displayName="New C++ Simple Test"
-                     projectFiles="true"
-                     kind="TEST">
-      </logicalFolder>
-      <logicalFolder name="f3"
-                     displayName="New CppUnit Test"
-                     projectFiles="true"
-                     kind="TEST">
-      </logicalFolder>
-      <logicalFolder name="f4"
-                     displayName="New CppUnit Test 1"
-                     projectFiles="true"
-                     kind="TEST">
-      </logicalFolder>
-      <logicalFolder name="f1"
-                     displayName="New CUnit Test"
-                     projectFiles="true"
-                     kind="TEST">
-      </logicalFolder>
+      <itemPath>nbproject/private/launcher.properties</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
@@ -291,8 +257,6 @@
           <buildCommand>${MAKE} -f Makefile</buildCommand>
           <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
           <executablePath>vrp</executablePath>
-          <ccTool flags="1">
-          </ccTool>
         </makeTool>
         <preBuild>
           <preBuildCommandWorkingDir>.</preBuildCommandWorkingDir>
@@ -340,6 +304,9 @@
             <pElem>Cube/commands</pElem>
             <pElem>.</pElem>
           </incDir>
+          <preprocessorList>
+            <Elem>HAVE_SYNTH=1</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="RedStone/Blocks/Block.cpp" ex="false" tool="1" flavor2="8">
@@ -523,45 +490,6 @@
           </incDir>
         </ccTool>
       </item>
-      <item path="build/Color.o" ex="false" tool="1" flavor2="8">
-        <ccTool flags="1">
-          <incDir>
-            <pElem>genetic</pElem>
-            <pElem>core</pElem>
-            <pElem>renderer/opengl</pElem>
-            <pElem>glm</pElem>
-            <pElem>.</pElem>
-            <pElem>Vrp</pElem>
-            <pElem>Cube</pElem>
-          </incDir>
-        </ccTool>
-      </item>
-      <item path="build/Country.o" ex="false" tool="1" flavor2="8">
-        <ccTool flags="1">
-          <incDir>
-            <pElem>genetic</pElem>
-            <pElem>core</pElem>
-            <pElem>renderer/opengl</pElem>
-            <pElem>glm</pElem>
-            <pElem>.</pElem>
-            <pElem>Vrp</pElem>
-            <pElem>Cube</pElem>
-          </incDir>
-        </ccTool>
-      </item>
-      <item path="build/Cube.o" ex="false" tool="1" flavor2="8">
-        <ccTool flags="1">
-          <incDir>
-            <pElem>genetic</pElem>
-            <pElem>core</pElem>
-            <pElem>renderer/opengl</pElem>
-            <pElem>glm</pElem>
-            <pElem>.</pElem>
-            <pElem>Vrp</pElem>
-            <pElem>Cube</pElem>
-          </incDir>
-        </ccTool>
-      </item>
       <item path="build/Cube/Cube.o" ex="false" tool="1" flavor2="8">
         <ccTool flags="1">
         </ccTool>
@@ -578,88 +506,6 @@
         <ccTool flags="1">
         </ccTool>
       </item>
-      <item path="build/Face.o" ex="false" tool="1" flavor2="8">
-        <ccTool flags="1">
-          <incDir>
-            <pElem>genetic</pElem>
-            <pElem>core</pElem>
-            <pElem>renderer/opengl</pElem>
-            <pElem>glm</pElem>
-            <pElem>.</pElem>
-            <pElem>Vrp</pElem>
-            <pElem>Cube</pElem>
-          </incDir>
-        </ccTool>
-      </item>
-      <item path="build/FontRenderer.o" ex="false" tool="1" flavor2="8">
-        <ccTool flags="1">
-          <incDir>
-            <pElem>genetic</pElem>
-            <pElem>core</pElem>
-            <pElem>renderer/opengl</pElem>
-            <pElem>glm</pElem>
-            <pElem>.</pElem>
-            <pElem>Vrp</pElem>
-            <pElem>Cube</pElem>
-          </incDir>
-        </ccTool>
-      </item>
-      <item path="build/Object.o" ex="false" tool="1" flavor2="8">
-        <ccTool flags="1">
-          <incDir>
-            <pElem>genetic</pElem>
-            <pElem>core</pElem>
-            <pElem>renderer/opengl</pElem>
-            <pElem>glm</pElem>
-            <pElem>.</pElem>
-            <pElem>Vrp</pElem>
-            <pElem>Cube</pElem>
-          </incDir>
-        </ccTool>
-      </item>
-      <item path="build/Point.o" ex="false" tool="1" flavor2="8">
-        <ccTool flags="1">
-          <incDir>
-            <pElem>genetic</pElem>
-            <pElem>core</pElem>
-            <pElem>renderer/opengl</pElem>
-            <pElem>glm</pElem>
-            <pElem>.</pElem>
-            <pElem>Vrp</pElem>
-            <pElem>Cube</pElem>
-          </incDir>
-        </ccTool>
-      </item>
-      <item path="build/Random.o" ex="false" tool="1" flavor2="8">
-        <ccTool flags="1">
-          <incDir>
-            <pElem>genetic</pElem>
-            <pElem>core</pElem>
-            <pElem>renderer/opengl</pElem>
-            <pElem>glm</pElem>
-            <pElem>.</pElem>
-            <pElem>Vrp</pElem>
-            <pElem>Cube</pElem>
-          </incDir>
-        </ccTool>
-      </item>
-      <item path="build/Range.o" ex="false" tool="1" flavor2="8">
-        <ccTool flags="1">
-          <incDir>
-            <pElem>genetic</pElem>
-            <pElem>core</pElem>
-            <pElem>renderer/opengl</pElem>
-            <pElem>glm</pElem>
-            <pElem>.</pElem>
-            <pElem>Vrp</pElem>
-            <pElem>Cube</pElem>
-          </incDir>
-        </ccTool>
-      </item>
-      <item path="build/RedStone/Bloc.o" ex="false" tool="1" flavor2="8">
-        <ccTool flags="1">
-        </ccTool>
-      </item>
       <item path="build/RedStone/Blocks/Block.o" ex="false" tool="1" flavor2="8">
         <ccTool flags="1">
         </ccTool>
@@ -672,63 +518,12 @@
         <ccTool flags="1">
         </ccTool>
       </item>
-      <item path="build/RedStone/Blocs/Bloc.o" ex="false" tool="1" flavor2="8">
-        <ccTool flags="1">
-        </ccTool>
-      </item>
-      <item path="build/RedStone/Blocs/Solid.o" ex="false" tool="1" flavor2="8">
-        <ccTool flags="1">
-        </ccTool>
-      </item>
-      <item path="build/RedStone/Coord.o" ex="false" tool="1" flavor2="8">
-        <ccTool flags="1">
-        </ccTool>
-      </item>
       <item path="build/RedStone/RedMap.o" ex="false" tool="1" flavor2="8">
         <ccTool flags="1">
         </ccTool>
       </item>
       <item path="build/RedStone/RedStone.o" ex="false" tool="1" flavor2="8">
         <ccTool flags="1">
-        </ccTool>
-      </item>
-      <item path="build/Server.o" ex="false" tool="1" flavor2="8">
-        <ccTool flags="1">
-          <incDir>
-            <pElem>genetic</pElem>
-            <pElem>core</pElem>
-            <pElem>renderer/opengl</pElem>
-            <pElem>glm</pElem>
-            <pElem>.</pElem>
-            <pElem>Vrp</pElem>
-            <pElem>Cube</pElem>
-          </incDir>
-        </ccTool>
-      </item>
-      <item path="build/StringUtil.o" ex="false" tool="1" flavor2="8">
-        <ccTool flags="1">
-          <incDir>
-            <pElem>genetic</pElem>
-            <pElem>core</pElem>
-            <pElem>renderer/opengl</pElem>
-            <pElem>glm</pElem>
-            <pElem>.</pElem>
-            <pElem>Vrp</pElem>
-            <pElem>Cube</pElem>
-          </incDir>
-        </ccTool>
-      </item>
-      <item path="build/Town.o" ex="false" tool="1" flavor2="8">
-        <ccTool flags="1">
-          <incDir>
-            <pElem>genetic</pElem>
-            <pElem>core</pElem>
-            <pElem>renderer/opengl</pElem>
-            <pElem>glm</pElem>
-            <pElem>.</pElem>
-            <pElem>Vrp</pElem>
-            <pElem>Cube</pElem>
-          </incDir>
         </ccTool>
       </item>
       <item path="build/Vrp/CrossOver.o" ex="false" tool="1" flavor2="8">
@@ -775,45 +570,6 @@
         <ccTool flags="1">
         </ccTool>
       </item>
-      <item path="build/Widget.o" ex="false" tool="1" flavor2="8">
-        <ccTool flags="1">
-          <incDir>
-            <pElem>genetic</pElem>
-            <pElem>core</pElem>
-            <pElem>renderer/opengl</pElem>
-            <pElem>glm</pElem>
-            <pElem>.</pElem>
-            <pElem>Vrp</pElem>
-            <pElem>Cube</pElem>
-          </incDir>
-        </ccTool>
-      </item>
-      <item path="build/WidgetButton.o" ex="false" tool="1" flavor2="8">
-        <ccTool flags="1">
-          <incDir>
-            <pElem>genetic</pElem>
-            <pElem>core</pElem>
-            <pElem>renderer/opengl</pElem>
-            <pElem>glm</pElem>
-            <pElem>.</pElem>
-            <pElem>Vrp</pElem>
-            <pElem>Cube</pElem>
-          </incDir>
-        </ccTool>
-      </item>
-      <item path="build/WidgetConsole.o" ex="false" tool="1" flavor2="8">
-        <ccTool flags="1">
-          <incDir>
-            <pElem>genetic</pElem>
-            <pElem>core</pElem>
-            <pElem>renderer/opengl</pElem>
-            <pElem>glm</pElem>
-            <pElem>.</pElem>
-            <pElem>Vrp</pElem>
-            <pElem>Cube</pElem>
-          </incDir>
-        </ccTool>
-      </item>
       <item path="build/colib/Bati.o" ex="false" tool="1" flavor2="8">
         <ccTool flags="1">
         </ccTool>
@@ -827,6 +583,10 @@
         </ccTool>
       </item>
       <item path="build/colib/Column.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="build/colib/MotorSpeedHook.o" ex="false" tool="1" flavor2="8">
         <ccTool flags="1">
         </ccTool>
       </item>
@@ -856,9 +616,10 @@
       </item>
       <item path="build/core/Model.o" ex="false" tool="1" flavor2="8">
         <ccTool flags="1">
-          <incDir>
-            <pElem>.</pElem>
-          </incDir>
+        </ccTool>
+      </item>
+      <item path="build/core/ModelOld.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="1">
         </ccTool>
       </item>
       <item path="build/core/MovingCoord.o" ex="false" tool="1" flavor2="8">
@@ -953,11 +714,20 @@
         <ccTool flags="1">
         </ccTool>
       </item>
+      <item path="build/core/model/Model.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="build/core/model/tiny_obj_loader.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
       <item path="build/core/objloader.o" ex="false" tool="1" flavor2="8">
         <ccTool flags="1">
-          <incDir>
-            <pElem>.</pElem>
-          </incDir>
+        </ccTool>
+      </item>
+      <item path="build/core/stb_image.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="1">
         </ccTool>
       </item>
       <item path="build/genetic/AbstractCrossOver.o" ex="false" tool="1" flavor2="8">
@@ -1000,26 +770,6 @@
       </item>
       <item path="build/genetic/Vector.o" ex="false" tool="1" flavor2="8">
         <ccTool flags="1">
-        </ccTool>
-      </item>
-      <item path="build/imageloader.o" ex="false" tool="1" flavor2="8">
-        <ccTool flags="1">
-          <incDir>
-            <pElem>genetic</pElem>
-            <pElem>core</pElem>
-            <pElem>renderer/opengl</pElem>
-            <pElem>glm</pElem>
-            <pElem>.</pElem>
-            <pElem>Vrp</pElem>
-            <pElem>Cube</pElem>
-          </incDir>
-        </ccTool>
-      </item>
-      <item path="build/main.o" ex="false" tool="1" flavor2="8">
-        <ccTool flags="1">
-          <incDir>
-            <pElem>.</pElem>
-          </incDir>
         </ccTool>
       </item>
       <item path="build/renderer/opengl/Background.o" ex="false" tool="1" flavor2="8">
@@ -1075,15 +825,7 @@
         <ccTool flags="1">
         </ccTool>
       </item>
-      <item path="build/world/Coord.o" ex="false" tool="1" flavor2="8">
-        <ccTool flags="1">
-        </ccTool>
-      </item>
       <item path="build/world/Map.o" ex="false" tool="1" flavor2="8">
-        <ccTool flags="1">
-        </ccTool>
-      </item>
-      <item path="build/world/RedStone.o" ex="false" tool="1" flavor2="8">
         <ccTool flags="1">
         </ccTool>
       </item>
@@ -1092,20 +834,30 @@
         </ccTool>
       </item>
       <item path="colib/Bati.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="0">
+        <ccTool flags="1">
           <incDir>
-            <pElem>core</pElem>
-            <pElem>colib</pElem>
             <pElem>renderer/opengl</pElem>
+            <pElem>core</pElem>
+            <pElem>genetic</pElem>
+            <pElem>glm</pElem>
+            <pElem>/usr/include</pElem>
+            <pElem>colib</pElem>
             <pElem>.</pElem>
           </incDir>
+          <preprocessorList>
+            <Elem>HAVE_SYNTH=1</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="colib/Cloison.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
           <incDir>
             <pElem>colib</pElem>
+            <pElem>core</pElem>
+            <pElem>glm/detail</pElem>
+            <pElem>glm</pElem>
             <pElem>renderer/opengl</pElem>
+            <pElem>Vrp</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>
@@ -1115,6 +867,7 @@
           <incDir>
             <pElem>core</pElem>
             <pElem>colib</pElem>
+            <pElem>/usr/include/GL</pElem>
             <pElem>renderer/opengl</pElem>
             <pElem>.</pElem>
           </incDir>
@@ -1130,14 +883,30 @@
           </incDir>
         </ccTool>
       </item>
-      <item path="colib/Navette.cpp" ex="false" tool="1" flavor2="8">
+      <item path="colib/MotorSpeedHook.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
           <incDir>
-            <pElem>core</pElem>
             <pElem>colib</pElem>
+            <pElem>core</pElem>
             <pElem>renderer/opengl</pElem>
             <pElem>.</pElem>
           </incDir>
+        </ccTool>
+      </item>
+      <item path="colib/Navette.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="1">
+          <incDir>
+            <pElem>renderer/opengl</pElem>
+            <pElem>core</pElem>
+            <pElem>genetic</pElem>
+            <pElem>glm</pElem>
+            <pElem>/usr/include</pElem>
+            <pElem>colib</pElem>
+            <pElem>.</pElem>
+          </incDir>
+          <preprocessorList>
+            <Elem>HAVE_SYNTH=1</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="colib/Plateau.cpp" ex="false" tool="1" flavor2="8">
@@ -1145,6 +914,7 @@
           <incDir>
             <pElem>core</pElem>
             <pElem>colib</pElem>
+            <pElem>core/model</pElem>
             <pElem>renderer/opengl</pElem>
             <pElem>/usr/include/GL</pElem>
             <pElem>glm/detail</pElem>
@@ -1188,7 +958,7 @@
           </incDir>
         </ccTool>
       </item>
-      <item path="core/Model.cpp" ex="false" tool="1" flavor2="8">
+      <item path="core/ModelOld.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
           <incDir>
             <pElem>core</pElem>
@@ -1409,6 +1179,25 @@
           </incDir>
         </ccTool>
       </item>
+      <item path="core/model/Model.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <incDir>
+            <pElem>glm/detail</pElem>
+            <pElem>glm</pElem>
+            <pElem>/usr/include/GL</pElem>
+            <pElem>/usr/include/GLFW</pElem>
+            <pElem>core</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="core/model/tiny_obj_loader.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <incDir>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </item>
       <item path="core/objloader.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
           <incDir>
@@ -1419,59 +1208,28 @@
           </incDir>
         </ccTool>
       </item>
-      <folder path="0/build/Cube">
+      <item path="core/stb_image.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <incDir>
+            <pElem>core</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <folder path="0/build">
         <ccTool>
           <incDir>
             <pElem>.</pElem>
           </incDir>
+          <preprocessorList>
+            <Elem>HAVE_SYNTH=1</Elem>
+          </preprocessorList>
         </ccTool>
       </folder>
-      <folder path="0/build/RedStone">
+      <folder path="0/core/model">
         <ccTool>
           <incDir>
-            <pElem>.</pElem>
-          </incDir>
-        </ccTool>
-      </folder>
-      <folder path="0/build/Vrp">
-        <ccTool>
-          <incDir>
-            <pElem>.</pElem>
-          </incDir>
-        </ccTool>
-      </folder>
-      <folder path="0/build/colib">
-        <ccTool>
-          <incDir>
-            <pElem>.</pElem>
-          </incDir>
-        </ccTool>
-      </folder>
-      <folder path="0/build/core">
-        <ccTool>
-          <incDir>
-            <pElem>.</pElem>
-          </incDir>
-        </ccTool>
-      </folder>
-      <folder path="0/build/genetic">
-        <ccTool>
-          <incDir>
-            <pElem>.</pElem>
-          </incDir>
-        </ccTool>
-      </folder>
-      <folder path="0/build/renderer">
-        <ccTool>
-          <incDir>
-            <pElem>.</pElem>
-          </incDir>
-        </ccTool>
-      </folder>
-      <folder path="0/build/world">
-        <ccTool>
-          <incDir>
-            <pElem>.</pElem>
+            <pElem>core/model</pElem>
           </incDir>
         </ccTool>
       </folder>
@@ -1489,57 +1247,6 @@
             <pElem>renderer/opengl</pElem>
           </incDir>
         </ccTool>
-      </folder>
-      <folder path="TestFiles/f1">
-        <linkerTool>
-          <output>${TESTDIR}/TestFiles/f1</output>
-          <linkerLibItems>
-            <linkerOptionItem>-lcunit</linkerOptionItem>
-          </linkerLibItems>
-        </linkerTool>
-      </folder>
-      <folder path="TestFiles/f2">
-        <cTool>
-          <incDir>
-            <pElem>.</pElem>
-          </incDir>
-        </cTool>
-        <ccTool>
-          <incDir>
-            <pElem>.</pElem>
-          </incDir>
-        </ccTool>
-        <linkerTool>
-          <output>${TESTDIR}/TestFiles/f2</output>
-        </linkerTool>
-      </folder>
-      <folder path="TestFiles/f3">
-        <cTool>
-          <commandLine>`cppunit-config --cflags`</commandLine>
-        </cTool>
-        <ccTool>
-          <commandLine>`cppunit-config --cflags`</commandLine>
-        </ccTool>
-        <linkerTool>
-          <output>${TESTDIR}/TestFiles/f3</output>
-          <linkerLibItems>
-            <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
-          </linkerLibItems>
-        </linkerTool>
-      </folder>
-      <folder path="TestFiles/f4">
-        <cTool>
-          <commandLine>`cppunit-config --cflags`</commandLine>
-        </cTool>
-        <ccTool>
-          <commandLine>`cppunit-config --cflags`</commandLine>
-        </ccTool>
-        <linkerTool>
-          <output>${TESTDIR}/TestFiles/f4</output>
-          <linkerLibItems>
-            <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
-          </linkerLibItems>
-        </linkerTool>
       </folder>
       <item path="genetic/AbstractCrossOver.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
@@ -1578,18 +1285,6 @@
       </item>
       <item path="genetic/Vector.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
-        </ccTool>
-      </item>
-      <item path="main.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="1">
-          <incDir>
-            <pElem>renderer/opengl</pElem>
-            <pElem>core</pElem>
-            <pElem>genetic</pElem>
-            <pElem>glm</pElem>
-            <pElem>/usr/include</pElem>
-            <pElem>.</pElem>
-          </incDir>
         </ccTool>
       </item>
       <item path="renderer/opengl/Background.cpp" ex="false" tool="1" flavor2="8">
@@ -1658,8 +1353,6 @@
             <pElem>.</pElem>
           </incDir>
         </ccTool>
-      </item>
-      <item path="test.cpp" ex="false" tool="1" flavor2="4">
       </item>
       <item path="world/Blocks/Block.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
