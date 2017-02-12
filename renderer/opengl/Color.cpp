@@ -8,6 +8,7 @@
 using namespace hwidgets;
 
 const Color Color::black		(0.0,0.0,0.0,"black");
+const Color Color::light_gray	(0.7,0.7,0.7,"light_gray");
 const Color Color::dark_gray	(0.2,0.2,0.2,"dark_gray");
 const Color Color::gray			(0.5,0.5,0.5,"gray");
 const Color Color::dark_cyan	(0.0,0.2,0.2,"dark_cyan");
@@ -30,6 +31,7 @@ const Color* Color::random()
 	{
 		colors.push_back(&black);
 		colors.push_back(&dark_gray);
+		colors.push_back(&light_gray);
 		colors.push_back(&gray);
 		colors.push_back(&dark_cyan);
 		colors.push_back(&dark_red);

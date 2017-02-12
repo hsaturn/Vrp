@@ -20,7 +20,7 @@ namespace Colib
 	class Bati
 	{
 		static const int FACTOR=2;
-		static const int MAX_SPEED=16*FACTOR;
+		static const int MAX_SPEED=8*FACTOR;
 	public:
 		Bati(const Colib*);
 		~Bati();
@@ -43,7 +43,7 @@ namespace Colib
 		int getXLeft() const;
 		int getXRight() const;
 		
-		bool moveTo(int col_nr, int h);
+		bool moveTo(int col_nr, int h, bool back);
 		static const int THICKNESS = 10;
 		
 		Plateau* getPlateau();
@@ -59,6 +59,8 @@ namespace Colib
 		 */
 		void changeSound(string &incoming);
 		
+		const Colib* pcolib;
+		
 	private:
 		void pilier(int x, int z);
 		void traverses();
@@ -69,7 +71,6 @@ namespace Colib
 		float vy;	// actual speed 
 		float ay;	// vertical acceleration
 		
-		const Colib* pcolib;
 		Navette* navette;
 		int column_dest;
 		int etage_dest;

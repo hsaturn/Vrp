@@ -10,7 +10,7 @@ namespace Colib
 	{
 		int zz = z;
 		
-		for(int hollow=HOLLOW; hollow>=-HOLLOW; hollow -= 2*HOLLOW)
+		for(int hollow=HOLLOW_Z; hollow>=-HOLLOW_Z; hollow -= 2*HOLLOW_Z)
 		{
 			glBegin(GL_TRIANGLE_STRIP);
 			int h1 = 0;
@@ -43,7 +43,7 @@ namespace Colib
 				}
 				h1 = h2;
 			}
-			zz += THICKNESS;
+			zz += THICKNESS_Z;
 			glEnd();
 			
 		}
@@ -59,18 +59,18 @@ namespace Colib
 				if (h1)
 				{
 					glBegin(GL_TRIANGLE_STRIP);
-					glVertex3i(x, h1, z+THICKNESS-HOLLOW);
-					glVertex3i(x, h1, z+HOLLOW);
+					glVertex3i(x, h1, z+THICKNESS_Z-HOLLOW_Z);
+					glVertex3i(x, h1, z+HOLLOW_Z);
 
 					h1 += Plateau::THICKNESS;
-					glVertex3i(x, h1, z+THICKNESS-HOLLOW);
-					glVertex3i(x, h1, z+HOLLOW);
+					glVertex3i(x, h1, z+THICKNESS_Z-HOLLOW_Z);
+					glVertex3i(x, h1, z+HOLLOW_Z);
 					glEnd();
 
 					glBegin(GL_TRIANGLE_STRIP);
-					glVertex3i(x, h1, z+THICKNESS);
+					glVertex3i(x, h1, z+THICKNESS_Z);
 					glVertex3i(x, h1, z);
-					glVertex3i(x, h2, z+THICKNESS);
+					glVertex3i(x, h2, z+THICKNESS_Z);
 					glVertex3i(x, h2, z);
 					glEnd();
 				}

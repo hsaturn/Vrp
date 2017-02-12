@@ -6,6 +6,7 @@
 #include "Column.hpp"
 #include "MotorSpeedHook.hpp"
 #include <StringUtil.hpp>
+#include "Colib.hpp"
 
 namespace Colib
 {
@@ -23,10 +24,12 @@ namespace Colib
 		speed_hook = new MotorSpeedHook(name, MAX_SPEED);
 		cout << "BUILDING SOUND GENERATOR" << endl;
 		
-		stringstream in;
-		in << "reverb 30:30 fm 0 100 am 0 100 square 30:30 triangle 100 " + name;
+		string s;
+		s = "reverb 30:30 fm 0 100 am 0 100 square 30:30 triangle 100 hook";
+		s = "fm 50 150 fm 80 100  triangle 100 sin 30 hook";
+		s = "define sound { am 70 100 sinus 200:80 sq 300 triangle 400:10 } define motor { sound fm 99 101 sound sin 4 } fm 0 40 motor hook";
 		
-		speed_hook->changeSound(in);
+		speed_hook->changeSound(s);
 	}
 	
 	Navette::~Navette()
@@ -40,6 +43,8 @@ namespace Colib
 	
 	bool Navette::isAllStopped() const
 	{
+		if (!z.targetReached())
+			return false;
 		if (moving_col)
 			return false;
 		if (plateau)
@@ -48,10 +53,10 @@ namespace Colib
 	}
 
 	
-	void Navette::changeSound(istream& in)
+	void Navette::changeSound(string& sound)
 	{
 		if (speed_hook)
-			speed_hook->changeSound(in);
+			speed_hook->changeSound(sound);
 	}
 	
 	
@@ -75,7 +80,7 @@ namespace Colib
 			speed_hook->update(z.getVelocity());
 #endif
 		
-		int Z1 = z;
+		float Z1 = z;
 		if (z < Bati::THICKNESS)
 			z = Bati::THICKNESS;
 		float Y = pbati->getTopHeight();
@@ -85,21 +90,21 @@ namespace Colib
 		glBegin(GL_TRIANGLE_STRIP);
 		glNormal3i(0 ,-1, 0);	// Bottom rectangle
 		glVertex3f(pbati->getXLeft()-debord, Y, Z1);
-		glVertex3f(pbati->getXLeft()-debord, Y, Z1+LENGTH);
+		glVertex3f(pbati->getXLeft()-debord, Y, Z1+LENGTH_Z);
 		glVertex3f(pbati->getXRight()+debord, Y, Z1);
-		glVertex3f(pbati->getXRight()+debord, Y, Z1+LENGTH);
+		glVertex3f(pbati->getXRight()+debord, Y, Z1+LENGTH_Z);
 		
 		glNormal3i(1 ,0, 0);	// Right rectangle
-		glVertex3f(pbati->getXRight()+debord, Y+HEIGHT, Z1);
-		glVertex3f(pbati->getXRight()+debord, Y+HEIGHT, Z1+LENGTH);
+		glVertex3f(pbati->getXRight()+debord, Y+HEIGHT_Y, Z1);
+		glVertex3f(pbati->getXRight()+debord, Y+HEIGHT_Y, Z1+LENGTH_Z);
 		
 		glNormal3i(0, 1, 0);	// Top rectangle
-		glVertex3f(pbati->getXLeft()-debord, Y+HEIGHT, Z1);
-		glVertex3f(pbati->getXLeft()-debord, Y+HEIGHT, Z1+LENGTH);
+		glVertex3f(pbati->getXLeft()-debord, Y+HEIGHT_Y, Z1);
+		glVertex3f(pbati->getXLeft()-debord, Y+HEIGHT_Y, Z1+LENGTH_Z);
 			
 		glNormal3i(-1, 0, 0);	// Left rectangle
 		glVertex3f(pbati->getXLeft()-debord, Y, Z1);
-		glVertex3f(pbati->getXLeft()-debord, Y, Z1+LENGTH);
+		glVertex3f(pbati->getXLeft()-debord, Y, Z1+LENGTH_Z);
 		glEnd();
 		
 		Color::blue.render();
@@ -107,22 +112,22 @@ namespace Colib
 		glNormal3i(0,0,-1);	// back rectangle
 		glVertex3f(pbati->getXRight()+debord, Y, Z1);
 		glVertex3f(pbati->getXLeft()-debord, Y, Z1);
-		glVertex3f(pbati->getXRight()+debord, Y+HEIGHT, Z1);
-		glVertex3f(pbati->getXLeft()-debord, Y+HEIGHT, Z1);
+		glVertex3f(pbati->getXRight()+debord, Y+HEIGHT_Y, Z1);
+		glVertex3f(pbati->getXLeft()-debord, Y+HEIGHT_Y, Z1);
 		glEnd();
 		
 		Color::brown.render();
 		glBegin(GL_TRIANGLE_STRIP);
 		glNormal3i(0,0,1);	// front rectangle
-		glVertex3f(pbati->getXRight()+debord, Y, Z1+LENGTH);
-		glVertex3f(pbati->getXLeft()-debord, Y, Z1+LENGTH);
-		glVertex3f(pbati->getXRight()+debord, Y+HEIGHT, Z1+LENGTH);
-		glVertex3f(pbati->getXLeft()-debord, Y+HEIGHT, Z1+LENGTH);
+		glVertex3f(pbati->getXRight()+debord, Y, Z1+LENGTH_Z);
+		glVertex3f(pbati->getXLeft()-debord, Y, Z1+LENGTH_Z);
+		glVertex3f(pbati->getXRight()+debord, Y+HEIGHT_Y, Z1+LENGTH_Z);
+		glVertex3f(pbati->getXLeft()-debord, Y+HEIGHT_Y, Z1+LENGTH_Z);
 		glEnd();
 		
 		if (plateau)
 		{
-			plateau->renderAtCenter(Y+HEIGHT, z+LENGTH/2);
+			plateau->renderAtCenter(Y+HEIGHT_Y, z+LENGTH_Z/2);
 			
 			if (moving_col && plateau->isReady())
 			{
@@ -139,28 +144,30 @@ namespace Colib
 		return !isAllStopped();
 	}
 	
-	void Navette::centerOn(int zz)
+	void Navette::centerOn(float zz)
 	{
-		z.setTarget(zz-Navette::LENGTH/2);
+		z.setTarget(zz-Navette::LENGTH_Z/2);
 	}
 	
-	const char* Navette::put(Column* col, int etage, int xdest)
+	const char* Navette::put(Column* col, int etage, bool back)
 	{
-		if (isAllStopped())
+		if (!isAllStopped())
 			return "Attendre l'arrêt complet";
 		if (plateau==0)
 			return "Navette vide !";
 		
-		if (col->getPlateau(etage))
-			return "Alvéole occupé";
-		
-		etage_dest = etage;
-		moving_col = col;
-		putting = true;
-		plateau->setTargetX(xdest);
-		cout << "Destination etage : " << col << '.' << etage << endl;
-		cout << plateau->getMovingCoord() << endl;
-		return 0;
+		if (col->hasRoomFor(etage, plateau))
+		{
+			etage_dest = etage;
+			moving_col = col;
+			putting = true;
+			int xdest = pbati->pcolib->getCenterOfColumnX(back);
+			plateau->setTargetX(xdest);
+			cout << "Destination etage : " << col << '.' << etage << endl;
+			cout << plateau->getMovingCoord() << endl;
+			return 0;
+		}
+		return "Pas de place ici";
 	}
 	
 	const char* Navette::get(Column* col, int etage)

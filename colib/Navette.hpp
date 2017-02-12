@@ -49,15 +49,15 @@ namespace Colib
 			Plateau* getPlateau() { return plateau; }
 			void setPlateau(Plateau* p);
 			
-			const char* put(Column* col, int etage, int xdest);	// ret: err ou 0
+			const char* put(Column* col, int etage, bool back);	// ret: err ou 0
 			const char* get(Column* col, int etage);			// ret: err ou 0
 			void remove();
 			
-			void centerOn(int z);
-			static const int LENGTH = 40;	// width (cm)
-			static const int HEIGHT = 10;	// height (cm)
+			void centerOn(float z);
+			static const int LENGTH_Z = 40;	// SIZE Z (cm)
+			static const int HEIGHT_Y = 10;	// SIZE Y (cm)
 			
-			void changeSound(istream& incoming);
+			void changeSound(string& incoming);
 			
 		private:
 			

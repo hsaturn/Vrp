@@ -17,8 +17,6 @@
 #include <libsynth.hpp>
 #endif
 
-#include <sstream>
-
 using namespace std;
 
 namespace Colib
@@ -34,11 +32,12 @@ namespace Colib
 
 			void update(float f);
 
-			void changeSound(istream& in);
+			void changeSound(string& in);
 			void deleteSound();
 
 		private:
 			atomic<float> speed;
+			string hook_name;
 	#ifdef HAVE_SYNTH
 			SoundGenerator* sound;
 	#endif

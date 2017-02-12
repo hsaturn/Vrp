@@ -250,6 +250,9 @@
         <element flagsID="1" commonFlags="-std=c++0x"/>
       </flagsDictionary>
       <codeAssistance>
+        <envVariables>
+          <Elem>HAVE_SYNTH</Elem>
+        </envVariables>
       </codeAssistance>
       <makefileType>
         <makeTool>
@@ -834,19 +837,14 @@
         </ccTool>
       </item>
       <item path="colib/Bati.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="1">
+        <ccTool flags="0">
           <incDir>
-            <pElem>renderer/opengl</pElem>
             <pElem>core</pElem>
-            <pElem>genetic</pElem>
-            <pElem>glm</pElem>
-            <pElem>/usr/include</pElem>
             <pElem>colib</pElem>
+            <pElem>renderer/opengl</pElem>
+            <pElem>/usr/include/GL</pElem>
             <pElem>.</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>HAVE_SYNTH=1</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="colib/Cloison.cpp" ex="false" tool="1" flavor2="8">
@@ -894,19 +892,13 @@
         </ccTool>
       </item>
       <item path="colib/Navette.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="1">
+        <ccTool flags="0">
           <incDir>
-            <pElem>renderer/opengl</pElem>
             <pElem>core</pElem>
-            <pElem>genetic</pElem>
-            <pElem>glm</pElem>
-            <pElem>/usr/include</pElem>
             <pElem>colib</pElem>
+            <pElem>renderer/opengl</pElem>
             <pElem>.</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>HAVE_SYNTH=1</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="colib/Plateau.cpp" ex="false" tool="1" flavor2="8">
@@ -915,9 +907,9 @@
             <pElem>core</pElem>
             <pElem>colib</pElem>
             <pElem>core/model</pElem>
+            <pElem>glm/detail</pElem>
             <pElem>renderer/opengl</pElem>
             <pElem>/usr/include/GL</pElem>
-            <pElem>glm/detail</pElem>
             <pElem>glm</pElem>
             <pElem>.</pElem>
           </incDir>

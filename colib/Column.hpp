@@ -29,15 +29,17 @@ namespace Colib
 	public:
 		static const int ALVEOLE_MIN_HEIGHT = 5;
 		static const int ALVEOLE_SPLIT_FROST = 40;	// en %
-		static const int DEPTH=60;	// Profondeur d'une colonne en cm
+		static const int DEPTH_X=60;	// Profondeur d'une colonne en cm
 		
 		Column(Colib*, int width);
 		
+		// Rendu des plateaux uniquement
 		void render(int x1, int x2, int z);
 			
 		int getWidth() const { return mwidth; }
 		int getAlveoleCount() const;
 		
+		bool hasRoomFor(int etage, const Plateau*) const;
 		Plateau* getPlateau(int etage) const;
 		void setPlateau(int etage, Plateau* plateau);
 		

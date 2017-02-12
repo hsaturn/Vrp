@@ -16,6 +16,10 @@
 
 namespace Colib
 {
+	int col=0;
+	int vert=0;
+	bool back=true;
+		
 	Colib::ColibBuilder Colib::builder;
 	
 	Colib::Colib(const string& name, string &incoming)
@@ -55,28 +59,39 @@ namespace Colib
 		glVertex3f(0, -0.01, length);
 		glEnd();
 		
-		renderColumns(columns_back, 0);
-		renderColumns(columns_front, 2*(Column::DEPTH + Cloison::THICKNESS));
+		if (list_columns == 0)
+		{
+			list_columns = glGenLists(1);
+			if (list_columns)
+				glNewList(list_columns, GL_COMPILE);
+			
+			// Rendu des cloisons uniquement
+			renderColumns(columns_back, 0, true);
+			renderColumns(columns_front, 2*(Column::DEPTH_X + Cloison::THICKNESS_Z), true);
+			
+			glEndList();
+		}
+		if (list_columns)
+			glCallList(list_columns);
+		
+		// Pour les plateaux uniquement
+		renderColumns(columns_back, 0, false);
+		renderColumns(columns_front, 2*(Column::DEPTH_X + Cloison::THICKNESS_Z), false);
 		
 		return bati->render();
 	}
 	
-	void Colib::renderColumns(vector<Column*>& columns, int x1)
+	void Colib::renderColumns(vector<Column*>& columns, int x1, bool bCloisons)
 	{
 		if (columns.size())
 		{
-			int x2 = x1 + Column::DEPTH;
-			int z=Bati::THICKNESS + Cloison::THICKNESS;
+			int x2 = x1 + Column::DEPTH_X;
+			int z=Bati::THICKNESS - Cloison::THICKNESS_Z + Cloison::HOLLOW_Z;
 			
-			if (list_columns == 0)
+			if (bCloisons)
 			{
-				list_columns = glGenLists(1);
-				if (list_columns)
-					glNewList(list_columns, GL_COMPILE);
-			
 				// Cloison, Jupes et tablier
-			{
-					Cloison::render(x1, x2, getHeight(), Bati::THICKNESS, heights);
+				Cloison::render(x1, x2, getHeight(), z, heights);
 				int h = getHeight(0);
 				Color::dark_gray.render();
 				glBegin(GL_TRIANGLE_STRIP);
@@ -92,39 +107,30 @@ namespace Colib
 				glVertex3i(x2, h, length);
 				glEnd();
 				glBegin(GL_TRIANGLE_STRIP);
-				
+
 				float hf = h-0.01;
 				glVertex3f(x1, hf, 0);
 				glVertex3f(x2, hf, 0);
 				glVertex3f(x1, hf, length);
 				glVertex3f(x2, hf, length);
 				glEnd();
-				
-					int zz=z;
-					for(Column* column: columns)
-					{
-						zz += column->getWidth();
-						Cloison::render(x1, x2, getHeight(), zz, heights);
-						zz += Cloison::THICKNESS;
 			}
-		}
-				if (list_columns)
-					glEndList();
-			}
-			else
-				glCallList(list_columns);
-			
+
 			for(Column* column: columns)
 			{
-				column->render(x1,x2,z);
-				z += column->getWidth();
-				Cloison::render(x1, x2, getHeight(), z, heights);
-				z += Cloison::THICKNESS;
+				z += column->getWidth()/2 + Cloison::THICKNESS_Z-Cloison::HOLLOW_Z;
+				if (!bCloisons)
+					column->render(x1,x2,z);
+				
+				z += column->getWidth()/2  - Cloison::HOLLOW_Z;
+				
+				if (bCloisons)
+					Cloison::render(x1, x2, getHeight(), z, heights);
 			}
 			
-			if (last_frozen)
+			if (bCloisons && last_frozen)
 			{
-				Color::blue.render();	// Separation chaud / froid
+				Color::light_gray.render();
 				glBegin(GL_TRIANGLE_STRIP);
 				float h = getHeight(last_frozen)-0.01;
 				glVertex3f(x1, h, 0);
@@ -133,8 +139,6 @@ namespace Colib
 				glVertex3f(x2, h, length);
 				glEnd();
 			}
-			
-
 		}
 	}
 
@@ -144,25 +148,68 @@ namespace Colib
 		string error="";
 		bool bRet = true;
 		
-		if (cmd=="go")
+		if (cmd=="go" || cmd=="next" || cmd=="prev")
 		{
-			int z = StringUtil::getLong(incoming);	// Colonne
-			int h = StringUtil::getLong(incoming);	// Cellule verticale
+			int revcol = col;
+			int revvert= vert;
 			
-			if (getHeight(h)==-1)
+			if (cmd=="next" || cmd=="prev")
+			{
+				int dir=1;
+				string what = StringUtil::getWord(incoming);
+
+				if (cmd=="prev") dir=-1;
+				
+				if (what=="col")
+					col += dir;
+				else if (what=="cell")
+					vert += dir;
+				else if (what=="side")
+					back = !back;
+				else
+				{
+					cerr << "Invalid : " << what << endl;
+				}
+			}
+			else
+			{
+				col = StringUtil::getLong(incoming);	// Colonne
+				vert = StringUtil::getLong(incoming);	// Cellule verticale
+				
+				if (incoming.substr(0,5)=="front")
+				{
+					back=false;
+					StringUtil::getWord(incoming);
+				}
+				else
+					back = true;
+			}
+			
+			if (getHeight(vert)==-1)
 			{
 				cout << "ERREUR cellule" << endl;
+				vert=revvert;
 				return true;
 			}
 			
-			if (getCenterOfColumnZ(z)==-1)
+			if (getCenterOfColumnZ(col, back)==-1)
 			{
 				cout << "ERREUR column";
+				col=revcol;
 				return true;
 			}
 			
-			bati->moveTo(z,h);
-			cout << "MOVE TO " << z << 'x' << h << endl;
+			stringstream out;
+			if (bati->moveTo(col,vert,back))
+				out << "MOVE TO " << col << 'x' << vert << endl;
+			else
+			{
+				col = revcol;
+				vert = revvert;
+				out << "CANNOT MOVE THERE" << endl;
+			}
+			cout << out.str();
+			server->send(out.str());
 		}
 		else if (cmd=="height")
 		{
@@ -185,7 +232,7 @@ namespace Colib
 					error="Not empty !";
 				else
 				{
-					Plateau* plateau = new Plateau(incoming, (bati->getXLeft()+bati->getXRight())/2);
+					Plateau* plateau = Plateau::factory(incoming, (bati->getXLeft()+bati->getXRight())/2);
 					bati->setPlateau(plateau);
 				}
 			}
@@ -206,12 +253,14 @@ namespace Colib
 					pcols = &columns_back;
 				else if (where=="front")
 					pcols = &columns_front;
+				else
+					error = "Invalid (back or front expected)";
 				if (pcols)
 				{
 					int width = StringUtil::getLong(incoming);
 					
 					if (width<20 || width>100)
-						help=true;
+						error = "Invalid width (from 20 to 200)";
 					else
 					{
 						Column* column = new Column(this, width);
@@ -238,8 +287,7 @@ namespace Colib
 		}
 		else if (cmd=="put")
 		{
-			StringUtil::trim(incoming);
-			const char* err= bati->put(incoming!="front");
+			const char* err= bati->put(back);
 			if (err)
 				error=err;
 		}
@@ -250,7 +298,7 @@ namespace Colib
 		else if (cmd=="get")
 		{
 			StringUtil::trim(incoming);
-			const char* err=bati->get(incoming!="front");
+			const char* err=bati->get(back);
 			if (err)
 				error=err;
 		}
@@ -270,6 +318,8 @@ namespace Colib
 	void Colib::_help(Help& help)
 	{
 		help.add("go column, height%");
+		help.add("next/prev col/cell/side");
+		help.add("put");
 		//help.add("world.add block_type ...");
 	}
 	
@@ -291,9 +341,10 @@ namespace Colib
 		for(auto column : columns)
 			length += column->getWidth();
 		
-		length += 2*Cloison::THICKNESS;
+		int ep = Cloison::THICKNESS_Z - 2*Cloison::HOLLOW_Z;
+		
 		if (columns.size() > 1)
-			length += Cloison::THICKNESS * (columns.size()-1);
+			length += ep * (columns.size()-1);
 				
 		return length;
 	}
@@ -305,52 +356,65 @@ namespace Colib
 		return -1;
 	}
 	
-	int Colib::getCenterOfColumnX(bool back) const
+	float Colib::getCenterOfColumnX(bool back) const
 	{
-		int x = 0;
+		float x = 0;
 		if (!back)
-			x = 2*(Column::DEPTH + Cloison::THICKNESS);
-		return x+Column::DEPTH/2;
+			x = 2*(Column::DEPTH_X + Cloison::THICKNESS_Z);
+		return x+Column::DEPTH_X/2.0;
 	}
 
 	
-	int Colib::getCenterOfColumnZ(unsigned int col_nr) const
+	float Colib::getCenterOfColumnZ(unsigned int col_nr, bool back) const
 	{
-		int z = Bati::THICKNESS;
-		if (col_nr<columns_back.size())	// TODO columns may have different widths by design (not physically)
+		const vector<Column*>* pcolumns;
+		
+		if (back)
+			pcolumns = &columns_back;
+		else
+			pcolumns = &columns_front;
+		
+		if (col_nr >= pcolumns->size())
 		{
-			int last_z;
-			for(auto column: columns_back)
-			{
-				last_z = z;
-				z += column->getWidth() + Cloison::THICKNESS;
-				if (col_nr==0)
-					break;
-				col_nr--;
-			}
-			return (last_z + z)/2 + Cloison::THICKNESS/2;
+			cerr << "Column out of range (max is " << pcolumns->size() << ')' << endl;
+			return -1;
 		}
-		return 0;
+
+		float z = Bati::THICKNESS;
+		for(auto column: *pcolumns)
+		{
+			if (col_nr==0)
+			{
+				z+= column->getWidth()/2;
+				break;
+			}
+			else
+				z += column->getWidth() + Cloison::THICKNESS_Z - 2*Cloison::HOLLOW_Z;
+			col_nr--;
+		}
+		return z;
 	}
 
 	
 	void Colib::sizeHasChanged() {
-		int sizes = 2;
+		int widths = 2;
 		// length = colCount*COL_WIDTH+(colCount-1)*Cloison::THICKNESS;
+		
+		// Calcul distance entre bati (plus proches faces)
 		
 		int length_back = computeLength(columns_back);
 		int length_front = computeLength(columns_front);
 		
 		if (length_front)
-			sizes=3;
+			widths=3;
 		
 		length = 2*Bati::THICKNESS + (length_back > length_front ? length_back : length_front);
-		width =  sizes * Column::DEPTH+(sizes-1)*Cloison::THICKNESS;
+		width =  widths * Column::DEPTH_X+(widths-1)*Cloison::THICKNESS_Z;
 		
 		heights.clear();
 		// FIXME plateaux.clear()
 		
-		int h=Navette::HEIGHT + Bati::THICKNESS;
+		int h=Navette::HEIGHT_Y + Bati::THICKNESS;
 		last_frozen=0;
 		while(h<getHeight())
 		{
@@ -364,6 +428,31 @@ namespace Colib
 			glDeleteLists(list_columns, 1);
 			list_columns = 0;
 		}
+	}
+	
+	const char* Colib::collideVertical(int h1, int h2, bool back) const
+	{
+		const char* reason = 0;
+		//  @todo /back & forbidden area (guichet)
+		if (h1>h2)
+		{
+			int h = h1;
+			h1 = h2;
+			h2 = h;
+		}
+		if (h1<Navette::HEIGHT_Y + Bati::THICKNESS)
+			reason = "Too low";
+		else if (h2>=getHeight())
+			reason = "Too high";
+		else if (last_frozen)
+		{
+			int frozen_h = getHeight(last_frozen);
+			if (h1<frozen_h && h2>=frozen_h)
+				reason = "Collide frozen zone";
+		}
+		if (reason)
+			cerr << reason << endl;
+		return reason;
 	}
 }
 

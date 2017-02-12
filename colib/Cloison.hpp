@@ -16,8 +16,8 @@ namespace Colib
 	class Cloison
 	{
 	public:
-		static const int THICKNESS = 3;
-		static const int HOLLOW = 1;		// Largeur rainure
+		static const int THICKNESS_Z = 3;
+		static const int HOLLOW_Z = 1;		// profondeur rainure
 		
 		static void render(int x1, int x2, int height, int z, const vector<int>& heights);
 	};

@@ -19,17 +19,14 @@
 
 using namespace std;
 
-class ModelOld;
 class Model;
 
 namespace Colib {
-	typedef Model MyModel;
+	class MotorSpeedHook;
 
 	class Plateau
 	{
 	public:
-		Plateau(string content, int center_x);
-		static const int LENGTH = 60;	// Z axis
 		static const int THICKNESS = 2;	// Height
 		
 		bool isReady() const { return x.targetReached(); }
@@ -37,6 +34,10 @@ namespace Colib {
 		void setTargetX(int tx) { x.setTarget(tx); }
 		const string& getContent() { return mcontent; }
 		float getX() const { return x; }
+		int getWidth() const { return width_z; }
+		int getHeight() const { return height_y; }
+		
+		const Model* getModel() const { return pmodel; }
 
 		const MovingCoord& getMovingCoord() const { return x; }
 		/**
@@ -44,12 +45,21 @@ namespace Colib {
 		 * @param cy
 		 * @param cz
 		 */
-		void renderAtCenter(int cy, int cz);
+		void renderAtCenter(float cy, float cz);
+		
+		static Plateau* factory(string content, int center_x);
+		
+		~Plateau();
 		
 	private:
+		Plateau(string content, int center_x);
 		MovingCoord x;
 		string mcontent;
-		const MyModel* pmodel;
+		const Model* pmodel;
+		int length_x;
+		int height_y;
+		int width_z;
+		MotorSpeedHook* speed_hook;
 	};
 }
 

@@ -25,9 +25,9 @@ namespace Colib {
 		etage_dest = 0;
 		
 		static int number=0;
-		string name="hook_bati_"+number++;
+		string name="hook_bati_"+StringUtil::to_string(number++);
 		hook_speed = new MotorSpeedHook(name, MAX_SPEED);
-		string s="bati define sound { am 70 100 sinus 200:80 sq 300 triangle 400:10 sq 600:10 } reverb 30:30 { sound fm 10 100 sound " + name +" }";
+		string s="bati define sound { am 70 100 sinus 200:80 sq 300 triangle 400:10 sq 600:10 } reverb 30:30 fm 0 80 sound hook";
 		changeSound(s);
 	}
 	
@@ -45,17 +45,16 @@ namespace Colib {
 		return navette->isAllStopped();
 	}
 
-	void Bati::changeSound(string& incoming)
+	void Bati::changeSound(string& sound)
 	{
-		string what = StringUtil::getWord(incoming);
-		stringstream in;
-		in << incoming;
+		string what = StringUtil::getWord(sound);
+		cout << "CHANGING SOUND " << sound << endl;
 		if (what == "bati")
-		{
-			hook_speed->changeSound(in);
-		}
+			hook_speed->changeSound(sound);
 		else if (what == "navette")
-			navette->changeSound(in);
+			navette->changeSound(sound);
+		else
+			cerr << "Unknown sound target : " << what  << endl;
 	}
 
 	
@@ -78,13 +77,36 @@ namespace Colib {
 
 		int x1 = getXLeft();
 		pilier(x1, 0);
-		pilier(x1 + Column::DEPTH - THICKNESS, 0);
+		pilier(x1 + Column::DEPTH_X - THICKNESS, 0);
 		pilier(x1, pcolib->getLength() - THICKNESS);
-		pilier(x1 + Column::DEPTH - THICKNESS, pcolib->getLength() - THICKNESS);
+		pilier(x1 + Column::DEPTH_X - THICKNESS, pcolib->getLength() - THICKNESS);
 		
 		traverses();
 		
-		bool bRet = navette->render() || !h.targetReached();
+		bool bRet = navette->render();
+		
+		bRet |= !h.targetReached();
+		
+		{
+			extern int col;
+			extern bool back;
+			const int RAY= 2;
+			
+			static GLUquadricObj *quadric = 0;
+			Color::red.render();
+			if (quadric==0)
+			{
+				quadric = gluNewQuadric();
+				gluQuadricDrawStyle(quadric, GLU_FILL );
+			}
+			glPushMatrix();
+			
+			int x = (back ?  getXLeft() + RAY/2 : getXRight() -RAY/2); // pcolib->getCenterOfColumnX(back) - Column::DEPTH_X/2.0; // Column::DEPTH_X + (back ? RAY : Column::DEPTH_X-RAY);
+			
+			glTranslatef(x, h.getTarget()+Navette::HEIGHT_Y+Bati::THICKNESS, pcolib->getCenterOfColumnZ(col, back));
+			gluSphere( quadric , 2 , 36 , 18 );
+			glPopMatrix();
+		}
 		
 		return bRet;
 	}
@@ -92,8 +114,7 @@ namespace Colib {
 	const char* Bati::put(bool back)
 	{
 		Column* col = pcolib->getColumn(column_dest, back);
-		int xdest = pcolib->getCenterOfColumnX(back);
-		return navette->put(col, etage_dest, xdest);
+		return navette->put(col, etage_dest, back);
 	}
 	
 	const char* Bati::get(bool back)
@@ -144,21 +165,30 @@ namespace Colib {
 		return false;
 	}
 	
-	bool Bati::moveTo(int col_dest, int etage)
+	bool Bati::moveTo(int col_dest, int etage, bool back)
 	{
 		if (navette->isReady())
 		{
 			column_dest = col_dest;
 			etage_dest = etage;
 			cerr << "col_dest=" << col_dest << " / etage_dest=" << etage_dest << endl;
-			
-			h.setTarget(pcolib->getHeight(etage) -Navette::HEIGHT-Bati::THICKNESS);
-			int z = pcolib->getCenterOfColumnZ(col_dest);
+
+			int total_height = pcolib->getHeight(etage);
+			if (navette->getPlateau())
+				total_height += navette->getPlateau()->getHeight();
+			if (total_height>pcolib->getHeight())
+			{
+				cerr << "Ca toucherait le plafond !!! " << endl;
+				return false;
+			}
+			h.setTarget(pcolib->getHeight(etage) -Navette::HEIGHT_Y-Bati::THICKNESS);
+			float z = pcolib->getCenterOfColumnZ(col_dest, back);
 			navette->centerOn(z);
 			return true;
 		}
 		else
 			cout << "Navette not ready" << endl;
+		
 		return false;
 	}
 	
@@ -179,12 +209,12 @@ namespace Colib {
 
 	int Bati::getXLeft() const
 	{
-		return Column::DEPTH + Cloison::THICKNESS;
+		return Column::DEPTH_X + Cloison::THICKNESS_Z;
 	}
 	
 	int Bati::getXRight() const
 	{
-		return Column::DEPTH*2 + Cloison::THICKNESS;
+		return Column::DEPTH_X*2 + Cloison::THICKNESS_Z;
 	}
 	
 	void Bati::traverse(int x)

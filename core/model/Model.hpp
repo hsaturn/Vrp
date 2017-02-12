@@ -38,6 +38,8 @@ class Model
 		const glm::vec3& getMinCoord() const { return bmin; }
 		const glm::vec3& getMaxCoord() const { return bmax; }
 		
+		float getHeight() const { return bmax[2]-bmin[2]; }
+		
 	private:
 		Model();
 		~Model();

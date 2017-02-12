@@ -60,6 +60,14 @@ namespace Colib {
 		int getHeight() const { return height; };
 		
 		/**
+		 * @param h1
+		 * @param h2
+		 * @return not 0 if h1/h2 collides with colib 'walls'
+		 * (frozen horizontal barrier, roof etc...)
+		 */
+		const char* collideVertical(int h1, int h2, bool back) const;
+		
+		/**
 		 * 
 		 * @param etage numéro de l'étage à atteindre
 		 * @return hauteur (basse) de l'étage, ou -1 (out of range)
@@ -73,13 +81,13 @@ namespace Colib {
 		 * @param col_nr
 		 * @return center of column (z axis), or -1 (out of range)
 		 */
-		int getCenterOfColumnZ(unsigned int col_nr) const;
-		int getCenterOfColumnX(bool back) const;
+		float getCenterOfColumnZ(unsigned int col_nr, bool back) const;
+		float getCenterOfColumnX(bool back) const;
 		
 	private:
 		
 		void sizeHasChanged();
-		void renderColumns(vector<Column*>&, int x1);
+		void renderColumns(vector<Column*>&, int x1, bool bCloisons);
 
 		static ColibBuilder builder;
 		

@@ -8,14 +8,23 @@
 #include "MotorSpeedHook.hpp"
 #include "Navette.hpp"
 #include <cmath>
+#include <StringUtil.hpp>
 
 namespace Colib
 {
-	void MotorSpeedHook::changeSound(istream& in)
+	void MotorSpeedHook::changeSound(string& sound_str)
 	{
 		speed = 0;
 #ifdef HAVE_SYNTH
+		stringstream in;
+		while(sound_str.length())
+		{
+			string s = StringUtil::getWord(sound_str);
+			if (s=="hook") s=hook_name;
+			in << s << ' ';
+		}
 		deleteSound();
+		cout << "Changing sound " << sound_str << endl;
 		sound = SoundGenerator::factory(in);
 		SoundGenerator::play(sound);
 #endif
@@ -25,6 +34,7 @@ namespace Colib
 #ifdef HAVE_SYNTH
 		: SoundGeneratorVarHook(&speed, 0, speed_max, name)
 	{
+		hook_name = name;
 		sound = 0;
 	}
 #else
