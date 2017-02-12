@@ -13,14 +13,23 @@
 #include <list>
 #include "Color.h"
 #include "Help.h"
-#include "ObjectBuilder.hpp"
 
 #include <map>
 
 using namespace std;
 
+typedef list<string> CmdQueue;
+
 class Object {
 public:
+	typedef enum ExecResult
+	{
+		FALSE,	// Unknown
+		FAILED,	// Known, execution failed
+		TRUE,	// Execution ok
+		WAITING	// Known but cannot run now
+	} ExecResult;
+	
 	Object(const string& name) : mname(name){};
 	virtual ~Object(){};
 	
@@ -31,7 +40,7 @@ public:
 	bool render(bool resetTimer);
 	virtual void renderHud(){};
 	
-	bool execute(Server*, string cmd, string incoming, const string& org, CmdQueue& cmdQueue);
+	ExecResult execute(Server*, string cmd, string incoming, const string& org, CmdQueue& cmdQueue);
 	void help(Help&);
 	
 	const string& getName() const { return mname; }
@@ -50,7 +59,7 @@ public:
 	
 	
 protected:
-	virtual bool _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&)=0;
+	virtual ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&)=0;
 	virtual void _help(Help&){};
 	
 	/**

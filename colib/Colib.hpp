@@ -9,6 +9,7 @@
 #define	COLIB_HPP
 
 #include <Object.h>
+#include <ObjectBuilder.hpp>
 #include <GL/glew.h>
 #include "Coord.hpp"
 #include <string>
@@ -46,7 +47,7 @@ namespace Colib {
 		virtual ~Colib() ;
 
 		virtual bool _render(bool resetTimer);
-		virtual bool _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);
+		virtual ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);
 		
 		Column* getColumn(unsigned int nr, bool back=true) const;
 		/**

@@ -51,9 +51,9 @@ void Vrp::_help(Help& help)
 	help.add("vrp vars : fast");
 }
 
-bool Vrp::_execute(Server* server, string cmd, string incoming, const string& org, CmdQueue&)
+Object::ExecResult Vrp::_execute(Server* server, string cmd, string incoming, const string& org, CmdQueue&)
 {
-	bool bRet = true;
+	ExecResult ret = TRUE;
 	if (cmd == "solve")
 	{
 		cout << "SOLVE " << cmd << '/' << incoming << '/' << org << endl;
@@ -73,8 +73,8 @@ bool Vrp::_execute(Server* server, string cmd, string incoming, const string& or
 	else if (cmd == "pause")
 		setVar("pause", "1");
 	else
-		bRet = false;
-	return bRet;
+		ret = FALSE;
+	return ret;
 }
 
 void Vrp::best(Server* server)

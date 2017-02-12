@@ -567,14 +567,11 @@ Face::Dir Cube::getDir(string& incoming, string& dir)
 	return Face::NONE;
 }
 
-bool Cube::_execute(Server* server, string cmd, string incoming, const string& org, CmdQueue& cmdQueue) {
+Object::ExecResult Cube::_execute(Server* server, string cmd, string incoming, const string& org, CmdQueue& cmdQueue) {
 	if (!isReady())
-	{
-		cmdQueue.push_front(org);
-		return false;
-	}
+		return WAITING;
 	
-	bool bRet = true;
+	ExecResult ret = TRUE;
 	
 	string prefix=getName()+'.';
 	string prefixa='@'+getName()+'.';
@@ -1130,8 +1127,8 @@ bool Cube::_execute(Server* server, string cmd, string incoming, const string& o
 		cmdQueue.push_front("@move " + patterns[cmd]);
 	}
 	else
-		bRet = false;
+		ret = FALSE;
 
-	return bRet;
+	return ret;
 }
 

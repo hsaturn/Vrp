@@ -9,6 +9,7 @@
 #define	WORLD_HPP
 
 #include <Object.h>
+#include <ObjectBuilder.hpp>
 #include "Blocks/Block.hpp"
 #include <Coord.hpp>
 #include <string>
@@ -38,7 +39,7 @@ namespace World {
 		virtual ~World() ;
 
 		virtual bool _render(bool resetTimer);
-		virtual bool _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);
+		virtual ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);
 		virtual void _help(Help&);
 		
 	private:

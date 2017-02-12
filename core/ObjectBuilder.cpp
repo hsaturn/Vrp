@@ -50,13 +50,24 @@ Object* ObjectBuilder::getInstance(const string& name)
 	return 0;
 }
 
-bool ObjectBuilder::execute(Server* server, string cmd, string incoming, const string& org, CmdQueue& queue)
+Object::ExecResult ObjectBuilder::execute(Server* server, string cmd, string incoming, const string& org, CmdQueue& queue)
 {
-	bool bRet = false;
+	Object::ExecResult ret;
 
 	for (auto it : instances())
-		bRet = bRet || (it.second->execute(server, cmd, incoming, org, queue));
-	return bRet;
+	{
+		ret = it.second->execute(server, cmd, incoming, org, queue);
+		if (ret ==Object::FALSE)
+			continue;
+		else if (ret == Object::WAITING)
+		{
+			queue.push_front(org);
+			return Object::WAITING;
+		}
+		else
+			return ret;
+	}
+	return Object::FALSE;
 }
 
 void ObjectBuilder::renderHud()

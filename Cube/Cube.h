@@ -3,7 +3,9 @@
 
 #include "Face.h"
 #include <string>
-#include "Object.h"
+
+#include <Object.h>
+#include <ObjectBuilder.hpp>
 
 using namespace std;
 
@@ -88,7 +90,7 @@ public:
 	
 protected:
 	virtual void _help(Help&);
-	virtual bool _execute(Server* server, string cmd, string incoming, const string& org, CmdQueue&);
+	virtual ExecResult _execute(Server* server, string cmd, string incoming, const string& org, CmdQueue&);
 	virtual bool _render(bool resetTimer);
 	
 private:

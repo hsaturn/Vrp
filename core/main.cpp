@@ -805,10 +805,24 @@ void update(int value)
 				Object* object=ObjectBuilder::getInstance(name);
 				if (object)
 				{
-					if (object->execute(server, cmd, incoming, org, cmdQueue))
-						server->send("#OK "+name+'.'+cmd);
-					else
-						server->send("#KO "+name+'.'+cmd);
+					Object::ExecResult ret = object->execute(server, cmd, incoming, org, cmdQueue);
+					switch (ret)
+					{
+						case Object::TRUE:
+							server->send("#OK "+name+'.'+cmd);
+							break;
+						case Object::FALSE:
+							server->send("#Unknown command "+name+'.'+cmd);
+							break;
+						case Object::FAILED:
+							server->send("#KO "+name+'.'+cmd);
+							break;
+						case Object::WAITING:
+						{
+							cout << "REPUSHING " << org << endl;
+							cmdQueue.push_front(org);
+						}
+					};
 				}
 				else
 				{

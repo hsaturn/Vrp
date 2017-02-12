@@ -73,16 +73,16 @@ namespace RedStone
 			glVertex3f(-X,0.01,z);
 		}
 		glEnd();
-		return false;
+		return FALSE;
 	}
 	
-	bool RedMap::_execute(Server*, string cmd, string incoming, const string& org, CmdQueue&)
+	Object::ExecResult RedMap::_execute(Server*, string cmd, string incoming, const string& org, CmdQueue&)
 	{
-		bool bRet = false;
+		ExecResult ret = FALSE;
 		
 		if (cmd=="add")
-			bRet = true;
-		return bRet;
+			ret = TRUE;
+		return ret;
 	}
 	
 	void RedMap::_help(Help& help)

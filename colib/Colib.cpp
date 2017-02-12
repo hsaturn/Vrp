@@ -143,10 +143,10 @@ namespace Colib
 	}
 
 	
-	bool Colib::_execute(Server* server, string cmd, string incoming, const string& org, CmdQueue&)
+	Object::ExecResult Colib::_execute(Server* server, string cmd, string incoming, const string& org, CmdQueue&)
 	{
 		string error="";
-		bool bRet = true;
+		ExecResult ret = TRUE;
 		
 		if (cmd=="go" || cmd=="next" || cmd=="prev")
 		{
@@ -167,9 +167,7 @@ namespace Colib
 				else if (what=="side")
 					back = !back;
 				else
-				{
 					cerr << "Invalid : " << what << endl;
-				}
 			}
 			else
 			{
@@ -189,20 +187,21 @@ namespace Colib
 			{
 				cout << "ERREUR cellule" << endl;
 				vert=revvert;
-				return true;
+				return FAILED;
 			}
 			
 			if (getCenterOfColumnZ(col, back)==-1)
 			{
 				cout << "ERREUR column";
 				col=revcol;
-				return true;
+				return FAILED;
 			}
 			
 			stringstream out;
-			if (bati->moveTo(col,vert,back))
+			ret = bati->moveTo(col,vert,back);
+			if (ret == TRUE)
 				out << "MOVE TO " << col << 'x' << vert << endl;
-			else
+			else if (ret == FAILED)
 			{
 				col = revcol;
 				vert = revvert;
@@ -287,9 +286,15 @@ namespace Colib
 		}
 		else if (cmd=="put")
 		{
-			const char* err= bati->put(back);
-			if (err)
-				error=err;
+			if (bati->isAllStopped())
+			{
+				cout << "Colib.put " << endl;
+				const char* err= bati->put(back);
+				if (err)
+					error=err;
+			}
+			else
+				ret = Object::WAITING;
 		}
 		else if (cmd=="drop" || cmd=="remove")
 		{
@@ -297,22 +302,27 @@ namespace Colib
 		}
 		else if (cmd=="get")
 		{
-			StringUtil::trim(incoming);
-			const char* err=bati->get(back);
-			if (err)
-				error=err;
+			if (!bati->isAllStopped())
+				ret = WAITING;
+			else
+			{
+				StringUtil::trim(incoming);
+				const char* err=bati->get(back);
+				if (err)
+					error=err;
+			}
 		}
 		else
-			bRet = false;
+			ret = FALSE;
 		
 		if (error.length())
 		{
 			server->send("ERROR : " + error);
 			cerr << "ERROR : " << error << endl;
 			cout << "ERROR : " << error << endl;
-			return false;
+			return FAILED;
 		}
-		return bRet;
+		return ret;
 	}
 	
 	void Colib::_help(Help& help)

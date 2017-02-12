@@ -50,17 +50,17 @@ namespace World
 		return bRet;
 	}
 	
-	bool World::_execute(Server*, string cmd, string incoming, const string& org, CmdQueue&)
+	Object::ExecResult World::_execute(Server*, string cmd, string incoming, const string& org, CmdQueue&)
 	{
-		bool bRet = false;
+		ExecResult ret = FALSE;
 		
 		if (cmd=="add")
-			bRet = true;
+			ret = TRUE;
 		else if (cmd=="read")
 		{
 			m_map->readFile(incoming);
 		}
-		return bRet;
+		return ret;
 	}
 	
 	void World::_help(Help& help)

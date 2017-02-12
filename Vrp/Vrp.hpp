@@ -8,7 +8,8 @@
 #ifndef VRP_HPP
 #define	VRP_HPP
 
-#include "Object.h"
+#include <Object.h>
+#include <ObjectBuilder.hpp>
 #include <string>
 #include "genetic.hpp"
 
@@ -38,7 +39,7 @@ public:
 	};
 
 	virtual bool _render(bool resetTimer);
-	virtual bool _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);
+	virtual Object::ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);
 	virtual void _help(Help&);
 	void best(Server*);
 	void pop();

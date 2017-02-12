@@ -11,11 +11,10 @@
 #include "Help.h"
 #include <string>
 #include <list>
+#include "Object.h"
 
 using namespace std;
-typedef list<string> CmdQueue;
 
-class Object;
 class Server;
 
 class ObjectBuilder {
@@ -28,7 +27,7 @@ public:
 
 	static Object* getInstance(const string& name);
 
-	static bool execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);
+	static Object::ExecResult execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);
 
 	static bool render(bool resetTimer);
 	

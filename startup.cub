@@ -5,6 +5,8 @@ widget button back    +0,+20   47,15 btn_back       "Back" btn_text       : back
 widget button flat    +53,+0   47,15 btn_back       "Flat" btn_text       : flat
 widget button demo    -53,+20   47,15 btn_back        "Add B"        btn_text : colib.add back 60
 widget button solve   +53,+0  47,15 btn_back        "Add F"        btn_text : colib.add front 60
+widget button demo    -53,+20   47,15 btn_back        "Add B"        btn_text : colib.add back 30
+widget button solve   +53,+0  47,15 btn_back        "Add F"        btn_text : colib.add front 30
 widget button anon    -53,+20  47,15 btn_back        "Anim"         btn_text : anim x 0.03; anim y 0.028
 widget button anoff   +53,+0   47,15 btn_back        "$c"          btn_text : anim x 0; anim y 0
 widget button nxt_col -53,+20  47,15 btn_back        "<"           btn_text : colib.next col
@@ -37,29 +39,18 @@ var quality=10
 
 angley 50
 anglex -10
-new colib 400
+new colib 200
+colib.add  back 30
+colib.add  back 30
+colib.add  back 30
+colib.add  back 30
+colib.add  back 30
+colib.add  back 30
 colib.dz=-30
 colib.dy=-5
+colib.load chien
+colib.go 4 15
 
-colib.add back 60
-colib.add back 60
-colib.add back 60
-colib.add back 60
-colib.add back 60
-colib.add back 60
-colib.add back 60
-colib.add back 60
-colib.add back 60
-colib.add back 30
-colib.add back 30
-colib.add back 30
-colib.add back 30
-colib.add back 30
-colib.add back 30
-colib.add back 30
-colib.add front 30
-colib.add front 30
-colib.add front 30
 light on
 colib.go 0 0
 colib.fill Un colis

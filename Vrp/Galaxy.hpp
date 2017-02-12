@@ -10,7 +10,8 @@
 
 #include <vector>
 #include "Range.hpp"
-#include "Object.h"
+#include <Object.h>
+#include <ObjectBuilder.hpp>
 
 using namespace std;
 
@@ -54,7 +55,7 @@ public:
 	
 	int size() const { return mcont.size(); }
 	
-	virtual bool _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);
+	virtual ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);
 
 protected:
 	virtual bool _render(bool resetTimer);

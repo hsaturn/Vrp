@@ -134,7 +134,7 @@ const Planet* Galaxy::getPlanet(const string& planetName) const
 	return 0;
 }
 
-bool Galaxy::_execute(Server* svr, string cmd, string incoming, const string& org, CmdQueue&) {
+Object::ExecResult Galaxy::_execute(Server* svr, string cmd, string incoming, const string& org, CmdQueue&) {
 	if (cmd == "distance") {
 		cout << "incoming distance (" << incoming << ")" << endl;
 		const Planet* p1 = getPlanet(StringUtil::getWord(incoming));
@@ -143,7 +143,7 @@ bool Galaxy::_execute(Server* svr, string cmd, string incoming, const string& or
 			svr->send("#OK " + getName() + " planet " + p1->getName() + " to " + p2->getName() + " = " + StringUtil::to_string(p1->distanceTo(p2)));
 		} else
 			svr->send("#KO Unexistant planet(s)");
-		return true;
+		return TRUE;
 	}
-	return false;
+	return FALSE;
 }

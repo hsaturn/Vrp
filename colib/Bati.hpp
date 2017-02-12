@@ -8,6 +8,7 @@
 #ifndef BATI_HPP
 #define BATI_HPP
 
+#include <Object.h>
 #include <MovingCoord.hpp>
 
 namespace Colib
@@ -43,7 +44,7 @@ namespace Colib
 		int getXLeft() const;
 		int getXRight() const;
 		
-		bool moveTo(int col_nr, int h, bool back);
+		Object::ExecResult moveTo(int col_nr, int h, bool back);
 		static const int THICKNESS = 10;
 		
 		Plateau* getPlateau();

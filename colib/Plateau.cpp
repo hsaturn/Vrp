@@ -99,10 +99,10 @@ namespace Colib
 			glPushMatrix();
 			auto low = pmodel->getMinCoord();
 			auto hig = pmodel->getMaxCoord();
-			low[0] = -low[0]-length_x/2;
+			low[0] = -low[0]-hig[0]/2;
 			low[1] = -low[1];
-			low[2] = -low[2]-width_z/2;
-			glTranslatef(x+low[0], cy+low[1]+0.011, cz+low[2]);
+			low[2] = -low[2]-hig[2]/2;
+			glTranslatef(x+low[0], cy+low[1]+0.1, cz+low[2]);
 			pmodel->render();
 			glPopMatrix();
 		}

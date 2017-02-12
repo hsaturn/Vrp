@@ -12,7 +12,7 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 
-bool Object::execute(Server* server, string cmd, string incoming, const string& org, CmdQueue& cmdQueue) {
+Object::ExecResult Object::execute(Server* server, string cmd, string incoming, const string& org, CmdQueue& cmdQueue) {
 	cout << getName() << ".exec " << cmd << '/' << incoming << endl;
 	if (StringUtil::preg_match("^[a-zA-Z]+[a-zA-Z0-9_]*=", cmd, false)) {
 		string name = StringUtil::getWord(cmd, '=');
@@ -23,18 +23,18 @@ bool Object::execute(Server* server, string cmd, string incoming, const string& 
 				mapVars.erase(it);
 		} else
 			mapVars [name] = cmd;
-		return true;
+		return TRUE;
 	} else if (StringUtil::preg_match("^[a-zA-Z][a-zA-Z0-9_]*\\?", cmd)) {
 		cmd.erase(cmd.length() - 1, 1);
 		server->send("#OK " + getName() + '.' + cmd + "=" + getString(cmd));
-		return true;
+		return TRUE;
 	}
 	else if (cmd=="vars")
 	{
 		for(auto it: mapVars)
 			server->send(getName()+'.'+it.first+'='+it.second);
 		server->send("Vars count : "+StringUtil::to_string(mapVars.size()));
-		return true;
+		return TRUE;
 	}
 	else
 		return _execute(server, cmd, incoming, org, cmdQueue);

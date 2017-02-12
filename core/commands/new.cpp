@@ -6,6 +6,7 @@
 
 #include "new.hpp"
 #include <Object.h>
+#include <ObjectBuilder.hpp>
 
 using namespace std;
 

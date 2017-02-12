@@ -438,9 +438,9 @@
             <pElem>Vrp</pElem>
             <pElem>genetic</pElem>
             <pElem>core</pElem>
+            <pElem>renderer/opengl</pElem>
             <pElem>glm/detail</pElem>
             <pElem>glm</pElem>
-            <pElem>renderer/opengl</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>
@@ -1078,6 +1078,7 @@
           <incDir>
             <pElem>core/commands</pElem>
             <pElem>core</pElem>
+            <pElem>renderer/opengl</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>
@@ -1115,6 +1116,7 @@
           <incDir>
             <pElem>core/commands</pElem>
             <pElem>core</pElem>
+            <pElem>renderer/opengl</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>
