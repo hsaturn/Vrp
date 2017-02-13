@@ -1,7 +1,7 @@
 HAVE_SYNTH=1
 
 ifeq ($(HAVE_SYNTH),1)
-LIBS=-lsynthetizer
+LIBS=-lsynthetizer -lsfml-graphics
 else
 HAVE_SYNTH=0
 endif
@@ -30,7 +30,7 @@ vrp: $(OBJS)
 build_dir:
 	@mkdir -p $(BUILD_DIR)
 
-$(BUILD_DIR)/%.o:%.cpp Makefile
+$(BUILD_DIR)/%.o:%.cpp
 	@echo "  Compiling $<"
 	@mkdir -p $(BUILD_DIR)/$(shell dirname $<)
 	@$(CXX) -I$(RENDERER) -Icore -Igenetic -MMD -g -Iglm -I/usr/include -I$(shell dirname $<) -Wall -I. $(OPT) -c $< -o $@ -pthread

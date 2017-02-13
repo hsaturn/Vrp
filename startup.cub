@@ -44,9 +44,9 @@ light on
 angley 50
 anglex -10
 
-new colib def
-colib.load cube2
+new colib 200
+
 axis
 
-ambient 0.2 0.2 0.2
+ambient 0.5
 specular off

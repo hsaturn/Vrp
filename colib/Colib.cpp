@@ -17,7 +17,7 @@
 
 namespace Colib
 {
-	int col=0;
+	int col=-1;
 	int vert=0;
 	bool back=true;
 		
@@ -307,16 +307,21 @@ namespace Colib
 		}
 		else if (cmd=="restore")
 		{
-			error = restore(incoming);
-			incoming=="";
+			cout << endl << "--- RESTORING FROM " << incoming << "---" << endl;
+			if (restore(incoming))
+			{
+				incoming=="";
+				return TRUE;
+			}
+			return FAILED;
 		}
 		else if (cmd=="save")
 		{
 			if (bati->isReady())
 			{
 				error = save(incoming);
-				cerr << "END OF SAVE" << endl;
 				incoming="";
+				return TRUE;
 			}
 			else
 				return WAITING;
@@ -394,6 +399,7 @@ namespace Colib
 		ofstream output(file.c_str());
 		if (output.is_open())
 		{
+			saveVars(output);
 			output << "height " << height << endl;
 			Column::save("back", columns_back, output);
 			Column::save("front", columns_front, output);
@@ -407,6 +413,7 @@ namespace Colib
 	bool Colib::restore(string file)
 	{
 		ifstream input(file.c_str());
+		loadVars(input);
 		while(input.good())
 		{
 			string item;

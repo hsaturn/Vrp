@@ -44,8 +44,8 @@ string LightElement::read(string& cmd, string& incoming)
 	}
 	else if (onoff.length())
 	{
-		cout << "ONOFF=(" << onoff << ")" << endl;
-		setValue(0, StringUtil::getFloat(onoff));
+		float value = StringUtil::getFloat(onoff);
+		setValue(0, value);
 		mactive = true;
 		s << "on";
 		if (onoff == "on")
@@ -53,8 +53,15 @@ string LightElement::read(string& cmd, string& incoming)
 		else
 		{
 			int i=1;
-			while(i<4 && incoming.length())
-				setValue(i++, StringUtil::getFloat(incoming));
+			while(i<3)
+			{
+				if (incoming.length())
+					value = StringUtil::getFloat(incoming);
+				setValue(i++, value);
+			}
+			if (incoming.length())
+				setValue(4, StringUtil::getFloat(incoming));
+			
 		}
 	}
 	s << " ";
@@ -103,8 +110,6 @@ bool Light::render()
 		
 	if (mactive)
 	{
-		
-
 		static GLUquadricObj *quadric = 0;
 		glClearColor (0.0, 0.0, 0.0, 0.0);
 		if (quadric==0)

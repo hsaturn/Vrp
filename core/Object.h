@@ -57,7 +57,8 @@ public:
 	void setVar(const string& name, const string value) { mapVars[name]=value; }
 	bool isVisible();
 	
-	
+	bool saveVars(ostream&) const;
+	bool loadVars(istream&);
 protected:
 	virtual ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&)=0;
 	virtual void _help(Help&){};

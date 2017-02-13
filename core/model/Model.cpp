@@ -16,8 +16,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-
-#include "../stb_image.h"
+#include "TextureLoader.hpp"
 
 #include <sys/time.h>
 
@@ -96,7 +95,16 @@ Model::Model()
 
 Model::~Model()
 {
-	
+	cerr << "deleting model" << endl;
+}
+
+void  my_assert_sup(int i, int j)
+{
+	if (j<0)
+		cerr << "Model my_assert error " << i << ',' << j << endl;
+	if (i<=j)
+		cerr << "Model my_assert error " << i << ',' << j << endl;
+	assert(i>j);
 }
 
 bool Model::loadObjAndConvert(const string& file)
@@ -130,6 +138,9 @@ bool Model::loadObjAndConvert(const string& file)
   printf("# of materials = %d\n", (int)materials.size());
   printf("# of shapes    = %d\n", (int)shapes.size());
 
+  // Append `default` material
+  materials.push_back(tinyobj::material_t());
+
   // Load diffuse textures
   {
       for (size_t m = 0; m < materials.size(); m++) {
@@ -148,28 +159,17 @@ bool Model::loadObjAndConvert(const string& file)
                     texture_filename = base_dir + mp->diffuse_texname;
                     if (!FileExists(texture_filename)) {
                       cerr << "Unable to find file: " << mp->diffuse_texname << endl;
-                      exit(1);
                     }
                   }
                   
-                  unsigned char* image = stbi_load(texture_filename.c_str(), &w, &h, &comp, STBI_default);
-                  if (image == nullptr) {
-                      cerr << "Unable to load texture: " << texture_filename << endl;
-                      exit(1);
-                  }
                   glGenTextures(1, &texture_id);
-				  cout << "TEXTURE ID " << texture_id << " FILE " << mp->diffuse_texname << endl;
                   glBindTexture(GL_TEXTURE_2D, texture_id);
                   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
                   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-                  if (comp == 3) {
-                      glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
-                  }
-                  else if (comp == 4) {
-                      glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
-                  }
+				  //TextureLoader::genGlCheckerBoard();
+				  TextureLoader::genGlTexture(texture_filename);
                   glBindTexture(GL_TEXTURE_2D, 0);
-                  stbi_image_free(image);
+                  // stbi_image_free(image);
                   textures.insert(make_pair(mp->diffuse_texname, texture_id));
               }
           }
@@ -204,15 +204,24 @@ bool Model::loadObjAndConvert(const string& file)
         }
         float tc[3][2];
         if (attrib.texcoords.size() > 0) {
-/*            assert(attrib.texcoords.size() > 2 * idx0.texcoord_index + 1);
-            assert(attrib.texcoords.size() > 2 * idx1.texcoord_index + 1);
-            assert(attrib.texcoords.size() > 2 * idx2.texcoord_index + 1);
- */           tc[0][0] = attrib.texcoords[2 * idx0.texcoord_index];
+            my_assert_sup(attrib.texcoords.size(), 2 * idx0.texcoord_index + 1);
+            my_assert_sup(attrib.texcoords.size(), 2 * idx1.texcoord_index + 1);
+            my_assert_sup(attrib.texcoords.size(), 2 * idx2.texcoord_index + 1);
+			
+            tc[0][0] = attrib.texcoords[2 * idx0.texcoord_index];
             tc[0][1] = 1.0f - attrib.texcoords[2 * idx0.texcoord_index + 1];
             tc[1][0] = attrib.texcoords[2 * idx1.texcoord_index];
             tc[1][1] = 1.0f - attrib.texcoords[2 * idx1.texcoord_index + 1];
             tc[2][0] = attrib.texcoords[2 * idx2.texcoord_index];
             tc[2][1] = 1.0f - attrib.texcoords[2 * idx2.texcoord_index + 1];
+			
+        } else {
+            tc[0][0] = 0.0f;
+            tc[0][1] = 0.0f;
+            tc[1][0] = 0.0f;
+            tc[1][1] = 0.0f;
+            tc[2][0] = 0.0f;
+            tc[2][1] = 0.0f;
         }
 
         float v[3][3];
@@ -351,11 +360,14 @@ void Model::renderBoundingBox() const
 
 void Model::render() const
 {
-  glPolygonMode(GL_FRONT, GL_FILL);
-  glPolygonMode(GL_BACK, GL_FILL);
-
-  glEnable(GL_POLYGON_OFFSET_FILL);
-  glPolygonOffset(1.0, 1.0);
+	glMatrixMode(GL_MODELVIEW);
+	glPolygonMode(GL_FRONT, GL_FILL);
+	glPolygonMode(GL_BACK, GL_FILL);
+	glEnable(GL_DEPTH_TEST);
+    glEnable(GL_TEXTURE_2D);
+ 
+	// glEnable(GL_POLYGON_OFFSET_FILL);
+	// glPolygonOffset(1.0, 1.0);
 
   for (size_t i = 0; i < drawObjects.size(); i++) {
     const DrawObject& o = drawObjects[i];
@@ -428,8 +440,6 @@ void Model::main()
     glEnable(GL_TEXTURE_2D);
 
     // camera & rotate
-    glMatrixMode(GL_MODELVIEW);
-
     render();
 }
 

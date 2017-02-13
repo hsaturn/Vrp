@@ -130,3 +130,41 @@ int Object::getQuality() const {
 	if (quality > 100) quality = 100;
 	return quality;
 }
+
+bool Object::saveVars(ostream& out) const
+{
+	out << "vars" << endl << "{" << endl;
+	for(auto it: mapVars)
+		out << "  " << it.first << '=' << it.second << endl;
+	out << '}' << endl;
+	return true;
+}
+
+bool Object::loadVars(istream& in)
+{
+	string s;
+	in >> s;
+	if (s=="vars")
+	{
+		mapVars.clear();
+		while(in.good())
+		{
+			getline(in, s);
+			StringUtil::trim(s);
+			string::size_type p = s.find('=');
+			if (p != string::npos)
+			{
+				string name = s.substr(0, p-1);
+				StringUtil::trim(name);
+				s.erase(0,p+1);
+				StringUtil::trim(s);
+				mapVars[name] = s;
+				cout << "VAR " << name << " = " << s << endl;
+			}
+			if (s=="}")
+				break;
+		}
+	}
+	else
+		return false;
+}

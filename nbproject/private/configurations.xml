@@ -26,8 +26,10 @@
             <in>widget.o</in>
           </df>
           <df name="model">
+            <in>ImageLoader.o</in>
             <in>Model.o</in>
             <in>ModelOld.o</in>
+            <in>TextureLoader.o</in>
             <in>tiny_obj_loader.o</in>
           </df>
           <in>ClipBoard.o</in>
@@ -157,6 +159,8 @@
         <df name="model">
           <in>Model.cpp</in>
           <in>Model.hpp</in>
+          <in>TextureLoader.cpp</in>
+          <in>TextureLoader.hpp</in>
           <in>tiny_obj_loader.cpp</in>
           <in>tiny_obj_loader.h</in>
         </df>
@@ -627,8 +631,6 @@
         <gdb_interceptlist>
           <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
         </gdb_interceptlist>
-        <gdb_signals>
-        </gdb_signals>
         <gdb_options>
           <DebugOptions>
           </DebugOptions>

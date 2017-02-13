@@ -99,13 +99,16 @@ namespace Colib {
 				quadric = gluNewQuadric();
 				gluQuadricDrawStyle(quadric, GLU_FILL );
 			}
-			glPushMatrix();
+			if (col>=0)
+			{
+				glPushMatrix();
 			
-			int x = (back ?  getXLeft() + RAY/2 : getXRight() -RAY/2); // pcolib->getCenterOfColumnX(back) - Column::DEPTH_X/2.0; // Column::DEPTH_X + (back ? RAY : Column::DEPTH_X-RAY);
+				int x = (back ?  getXLeft() + RAY/2 : getXRight() -RAY/2); // pcolib->getCenterOfColumnX(back) - Column::DEPTH_X/2.0; // Column::DEPTH_X + (back ? RAY : Column::DEPTH_X-RAY);
+				glTranslatef(x, h.getTarget()+Navette::HEIGHT_Y+Bati::THICKNESS, pcolib->getCenterOfColumnZ(col, back));
 			
-			glTranslatef(x, h.getTarget()+Navette::HEIGHT_Y+Bati::THICKNESS, pcolib->getCenterOfColumnZ(col, back));
-			gluSphere( quadric , 2 , 36 , 18 );
-			glPopMatrix();
+				gluSphere( quadric , 2 , 36 , 18 );
+				glPopMatrix();
+			}
 		}
 		
 		return bRet;
@@ -183,6 +186,8 @@ namespace Colib {
 			}
 			h.setTarget(pcolib->getHeight(etage) -Navette::HEIGHT_Y-Bati::THICKNESS);
 			float z = pcolib->getCenterOfColumnZ(col_dest, back);
+			if (z==-1)
+				return Object::FAILED;
 			navette->centerOn(z);
 			return Object::TRUE;
 		}
@@ -192,7 +197,7 @@ namespace Colib {
 			return Object::WAITING;
 		}
 		
-		return Object::FALSE;
+		return Object::FAILED;
 	}
 	
 	float Bati::getHeight() const

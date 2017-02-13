@@ -51,10 +51,10 @@ bool redisplayAsked = false;
 bool backward = true;
 
 // Lighting
-LightElement ambientColor(1.0f, 1.0f, 1.0f, 0.5f, false);
+LightElement ambientColor(1.0f, 1.0f, 1.0f, 0.8f, false);
 LightElement specular(1.0f, 1.0f, 1.0f, 1.0f, true);
 LightElement material(0,0,0,0,true);
-LightElement shininess(50.0, 0,0,0,true);
+LightElement shininess(10.0, 0,0,0,true);
 Light light(5, 5, -3, 1, false);
 
 long lastUpdateWidget = 0;
