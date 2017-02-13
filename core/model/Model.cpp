@@ -158,6 +158,7 @@ bool Model::loadObjAndConvert(const string& file)
                       exit(1);
                   }
                   glGenTextures(1, &texture_id);
+				  cout << "TEXTURE ID " << texture_id << " FILE " << mp->diffuse_texname << endl;
                   glBindTexture(GL_TEXTURE_2D, texture_id);
                   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
                   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -321,6 +322,32 @@ bool Model::loadObjAndConvert(const string& file)
   return true;
 }
 static const GLsizei stride = (3 + 3 + 3 + 2) * sizeof(float);
+
+void Model::renderBoundingBox() const
+{
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(bmin[0], bmin[1], bmin[2]);
+	glVertex3f(bmax[0], bmin[1], bmin[2]);
+	glVertex3f(bmax[0], bmax[1], bmin[2]);
+	glVertex3f(bmin[0], bmax[1], bmin[2]);
+	glEnd();
+	glBegin(GL_LINE_LOOP);
+	glVertex3f(bmin[0], bmin[1], bmax[2]);
+	glVertex3f(bmax[0], bmin[1], bmax[2]);
+	glVertex3f(bmax[0], bmax[1], bmax[2]);
+	glVertex3f(bmin[0], bmax[1], bmax[2]);
+	glEnd();
+	glBegin(GL_LINES);
+	glVertex3f(bmin[0], bmin[1], bmin[2]);
+	glVertex3f(bmin[0], bmin[1], bmax[2]);
+	glVertex3f(bmax[0], bmin[1], bmin[2]);
+	glVertex3f(bmax[0], bmin[1], bmax[2]);
+	glVertex3f(bmax[0], bmax[1], bmin[2]);
+	glVertex3f(bmax[0], bmax[1], bmax[2]);
+	glVertex3f(bmin[0], bmax[1], bmin[2]);
+	glVertex3f(bmin[0], bmax[1], bmax[2]);
+	glEnd();
+}
 
 void Model::render() const
 {

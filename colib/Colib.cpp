@@ -6,6 +6,7 @@
  */
 
 #include <GL/glew.h>
+#include <fstream>
 
 #include "Colib.hpp"
 #include "StringUtil.hpp"
@@ -21,12 +22,37 @@ namespace Colib
 	bool back=true;
 		
 	Colib::ColibBuilder Colib::builder;
+	bool Colib::gRenderBoundingBoxes=false;
 	
-	Colib::Colib(const string& name, string &incoming)
-	: Object(name)
+	Colib::ColibBuilder::ColibBuilder() : ObjectBuilder("colib"){}
+	
+	Object* Colib::ColibBuilder::build(const string& name, string& incoming)
+	{
+		Colib* pcolib;
+		string sheight = StringUtil::getWord(incoming);
+		if (StringUtil::is_integer(sheight))
+		{
+			 pcolib = new Colib(name, atoi(sheight.c_str()));
+			 cout << sheight << " is int." << endl;
+		}
+		else
+		{
+			cout << "Reading colib from file " << sheight << endl;
+			pcolib = new Colib(name, 200);
+			if (!pcolib->restore(sheight))
+			{
+				delete pcolib;
+				pcolib = 0;
+				cerr << "Error while restoring Colib from " << sheight << " file." << endl;
+			}
+		}
+		return pcolib;
+	}
+	
+	Colib::Colib(const string& name, int initial_height)
+	: Object(name), height(initial_height)
 	{
 		list_columns = 0;
-		height = StringUtil::getFloat(incoming);
 
 		if (height<100)
 			height = 100;
@@ -38,8 +64,6 @@ namespace Colib
 		setVar("scale", "0.1");
 		
 		bati = new Bati(this);
-		setVar("dx" ,StringUtil::to_string(-width/20));
-		setVar("dz", StringUtil::to_string(-getLength()/20));
 	}
 	
 	Colib::~Colib()
@@ -225,7 +249,7 @@ namespace Colib
 		}
 		else if (cmd=="load")
 		{
-			if (bati->isReady())
+			if (bati->isAllStopped())
 			{
 				if (bati->getPlateau())
 					error="Not empty !";
@@ -236,7 +260,7 @@ namespace Colib
 				}
 			}
 			else
-				error="Not ready !";
+				return WAITING;
 		}
 		else if (cmd=="add")
 		{
@@ -281,8 +305,48 @@ namespace Colib
 				server->send("colib.add [back|front] width (cm), add a column. "+err);
 			}
 		}
-		else if (cmd=="read")
+		else if (cmd=="restore")
 		{
+			error = restore(incoming);
+			incoming=="";
+		}
+		else if (cmd=="save")
+		{
+			if (bati->isReady())
+			{
+				error = save(incoming);
+				cerr << "END OF SAVE" << endl;
+				incoming="";
+			}
+			else
+				return WAITING;
+		}
+		else if (cmd=="center")
+		{
+			setVar("dx" ,StringUtil::to_string(-width/20));
+			setVar("dz", StringUtil::to_string(-length/20));
+			cout << "dx=" << -width/20 << ", dz=" << -length/20 << endl;
+		}
+		else if (cmd=="boundings")
+		{
+			if (incoming=="on")
+			{
+				gRenderBoundingBoxes = true;
+				StringUtil::getWord(incoming);
+			}
+			else if (incoming=="off")
+			{
+				gRenderBoundingBoxes = false;
+				StringUtil::getWord(incoming);
+			}
+			else if (StringUtil::is_integer(incoming))
+				gRenderBoundingBoxes = StringUtil::getLong(incoming);
+			else
+			{
+				cerr << "Bad parameter for boundings : " << incoming << endl;
+				return FAILED;
+			}
+			return TRUE;
 		}
 		else if (cmd=="put")
 		{
@@ -324,6 +388,42 @@ namespace Colib
 		}
 		return ret;
 	}
+	
+	bool Colib::save(string file)
+	{
+		ofstream output(file.c_str());
+		if (output.is_open())
+		{
+			output << "height " << height << endl;
+			Column::save("back", columns_back, output);
+			Column::save("front", columns_front, output);
+			output << "END" << endl;
+			return true;
+		}
+		else
+			return false;
+	}
+	
+	bool Colib::restore(string file)
+	{
+		ifstream input(file.c_str());
+		while(input.good())
+		{
+			string item;
+			input >> item;
+			if (item=="end")
+				break;
+			else if (item=="height")
+				input >> height;
+			else if (item=="back")
+				Column::restore(this, columns_back, input, getCenterOfColumnX(true));
+			else if (item=="front")
+				Column::restore(this, columns_front, input, getCenterOfColumnX(false));
+		}
+		sizeHasChanged();
+		return true;
+	}
+	
 	
 	void Colib::_help(Help& help)
 	{

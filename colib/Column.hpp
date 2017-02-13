@@ -15,6 +15,7 @@
 #define COLUMN_HPP
 
 #include <memory>
+#include <vector>
 #include <map>
 #include "Plateau.hpp"
 
@@ -32,11 +33,13 @@ namespace Colib
 		static const int DEPTH_X=60;	// Profondeur d'une colonne en cm
 		
 		Column(Colib*, int width);
+		Column(Colib*, istream&, int center_x);
+		~Column();
 		
 		// Rendu des plateaux uniquement
 		void render(int x1, int x2, int z);
 			
-		int getWidth() const { return mwidth; }
+		int getWidth() const { return mwidth_z; }
 		int getAlveoleCount() const;
 		
 		bool hasRoomFor(int etage, const Plateau*) const;
@@ -46,9 +49,15 @@ namespace Colib
 		bool isEmpty(int alveole) const;
 		
 		void insertPlateau(shared_ptr<Plateau>, int alveole);
+		
+		bool save(ostream&) const;
+		bool restore(ifstream& in, Colib* pcolib) const;
+		
+		static bool save(const string name, const vector<Column*>&, ostream& out);
+		static bool restore(Colib* pcolib, vector<Column*>&, istream& in, int center_x);
 			
 	private:
-		int mwidth;
+		int mwidth_z;
 		map<int, Plateau*> alveoles;	// Map num cellule / plateau
 		Colib* pcolib;
 	};

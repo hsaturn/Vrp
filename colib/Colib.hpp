@@ -28,21 +28,22 @@ namespace Colib {
 		class ColibBuilder : public ObjectBuilder {
 		public:
 
-			ColibBuilder() : ObjectBuilder("colib") {}
+			ColibBuilder();
 
 			virtual ~ColibBuilder() {}
 
-			Object* build(const string& name, string& incoming) {
-				return new Colib(name, incoming);
-			}
+			Object* build(const string& name, string& incoming);
 		};
 		
 		virtual void _help(Help&);
 		
+		bool save(string file);
+		bool restore(string file);
+		
 	public:
 		static const int CLO_THICK=2;	// Epaisseur cloison en cm
 		
-		Colib(const string &name, string& incoming);
+		Colib(const string &name, int height);
 
 		virtual ~Colib() ;
 
@@ -85,15 +86,16 @@ namespace Colib {
 		float getCenterOfColumnZ(unsigned int col_nr, bool back) const;
 		float getCenterOfColumnX(bool back) const;
 		
+		static bool renderBoundingBoxes() { return gRenderBoundingBoxes; }
+		
 	private:
 		
 		void sizeHasChanged();
 		void renderColumns(vector<Column*>&, int x1, bool bCloisons);
 
 		static ColibBuilder builder;
+		static bool			gRenderBoundingBoxes;
 		
-		int config;		// 2 ou 3 (1 ou 2 cotés + espace central)
-		int colCount;	// longueur en nombre de colonnes
 		int height;		// Hauteur en cm
 		
 		int width;		// Largeur en cm

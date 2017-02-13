@@ -44,6 +44,9 @@ THE SOFTWARE.
 #include <map>
 #include <string>
 #include <vector>
+#include <iostream>
+
+using namespace std;
 
 namespace tinyobj {
 

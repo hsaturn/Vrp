@@ -819,7 +819,6 @@ void update(int value)
 							break;
 						case Object::WAITING:
 						{
-							cout << "REPUSHING " << org << endl;
 							cmdQueue.push_front(org);
 						}
 					};
@@ -1117,7 +1116,6 @@ horrible:
 
 void mouse_button(int button, int state, int x, int y)
 {
-	cout << "MOUSE " << button << '/' << state << endl;
 	buttonRotate = false;
 	buttonTranslate = false;
 	
@@ -1136,7 +1134,6 @@ void mouse_button(int button, int state, int x, int y)
 	}
 		GLint pix[20];
 		glReadPixels(x/SCREEN_WIDTH, y/SCREEN_HEIGHT, 1, 1, GL_RED, GL_INT8_NV, pix);	// WAS GL_FLOAT
-		cout << "depth=" << pix[0] << "  ";
 
 	if (Widget::mouseButton(button, state, x, y) == 0 && (button == 4 || button == 3))
 	{
@@ -1144,7 +1141,6 @@ void mouse_button(int button, int state, int x, int y)
 			scale *= 0.98;
 		else
 			scale /= 0.98;
-		cout << "SCALE MODIFY:" << scale << endl;
 	}
 }
 

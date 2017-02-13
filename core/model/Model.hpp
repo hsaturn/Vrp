@@ -33,6 +33,7 @@ class Model
 		static const Model* get(const string& name);
 		void renderWireFrame() const;
 		void render() const;
+		void renderBoundingBox() const;
 		
 		// Bounding box
 		const glm::vec3& getMinCoord() const { return bmin; }

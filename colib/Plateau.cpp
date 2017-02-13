@@ -11,7 +11,9 @@
 #include <GL/glew.h>
 #include <ModelOld.hpp>
 #include <model/Model.hpp>
+#include <libsynth.hpp>
 #include "MotorSpeedHook.hpp"
+#include "Colib.hpp"
 
 namespace Colib
 {
@@ -37,17 +39,20 @@ namespace Colib
 			delete p;
 			p = 0;
 		}
-		cout << "PLATEAU WIDTH : " << p->getWidth() << endl;
+		else
+			cout << "PLATEAU WIDTH : " << p->getWidth() << endl;
 		return p;
 	}
 	
 	Plateau::~Plateau()
 	{
+		SoundGenerator::remove(speed_hook);
 		delete speed_hook;
 	}
 	
 	Plateau::Plateau(string content, int xc)
 	{
+		mcontent = content;
 		cout << "NEW PLATEAU " << content << endl;
 		string model = StringUtil::getWord(content);
 		pmodel = Model::get(model);
@@ -57,7 +62,6 @@ namespace Colib
 			cerr << "Model not loaded:" << model << endl;
 			content=model+' '+content;
 		}
-		mcontent = content;
 		
 		const int MAX_SPEED = 20;
 		x.setValue(xc);
@@ -94,19 +98,24 @@ namespace Colib
 	
 	void Plateau::renderAtCenter(float cy, float cz)
 	{
+		x.update();
 		if (pmodel)
 		{
 			glPushMatrix();
 			auto low = pmodel->getMinCoord();
 			auto hig = pmodel->getMaxCoord();
-			low[0] = -low[0]-hig[0]/2;
+			low[0] = (-hig[0]-low[0])/2;
 			low[1] = -low[1];
-			low[2] = -low[2]-hig[2]/2;
+			low[2] = (-hig[2]-low[2])/2;
 			glTranslatef(x+low[0], cy+low[1]+0.1, cz+low[2]);
 			pmodel->render();
+			if (Colib::renderBoundingBoxes())
+			{
+				Color::red.render();
+				pmodel->renderBoundingBox();
+			}
 			glPopMatrix();
 		}
-		x.update();
 		speed_hook->update(x.getVelocity());
 		float x1,x2,y1,y2,z1,z2;
 		x1 = x-Column::DEPTH_X/2;
@@ -124,5 +133,6 @@ namespace Colib
 		glVertex3f(x2, y1, z2);
 		glEnd();
 	}
+	
 }
 

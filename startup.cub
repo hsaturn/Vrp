@@ -20,6 +20,8 @@ widget button cdog    -53,+20  47,15 btn_back        "chien"       btn_text : co
 widget button cdon    +53,+0   47,15 btn_back        "donuts"      btn_text : colib.load donuts
 widget button cbtl    -53,+20  47,15 btn_back        "bouts."      btn_text : colib.load bouteilles
 widget button cbts    +53,+0   47,15 btn_back        "bout."       btn_text : colib.load bouteille
+widget button cbtl    -53,+20  47,15 btn_back        "singe"       btn_text : colib.load singe
+widget button cbts    +53,+0   47,15 btn_back        "pommes"      btn_text : colib.load pommes
 # widget button cmdline 4,4  200,15 #00F1          left  "> $_cmdline_"   white
 screen 400 300
 event filter mousemove mouseup resize
@@ -37,24 +39,13 @@ var quality=10
 # world.scale=10
 # world.read ouessant.txt
 
+light on
+
 angley 50
 anglex -10
-new colib 200
-colib.add  back 30
-colib.add  back 30
-colib.add  back 30
-colib.add  back 30
-colib.add  back 30
-colib.add  back 30
-colib.dz=-30
-colib.dy=-5
-colib.load chien
-colib.go 4 15
 
-light on
-colib.go 0 0
-colib.fill Un colis
-
+new colib def
+colib.load cube2
 axis
 
 ambient 0.2 0.2 0.2

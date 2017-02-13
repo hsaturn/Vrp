@@ -118,6 +118,7 @@
         <in>Bati.cpp</in>
         <in>Cloison.cpp</in>
         <in>Colib.cpp</in>
+        <in>Colib.hpp</in>
         <in>Column.cpp</in>
         <in>MotorSpeedHook.cpp</in>
         <in>Navette.cpp</in>

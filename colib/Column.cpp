@@ -6,11 +6,102 @@ namespace Colib
 {
 	Column::Column(Colib* colib, int width)
 		:
-		mwidth(width),
+		mwidth_z(width),
 		pcolib(colib)
 	{
 		
 	}
+	
+	Column::Column(Colib* colib, istream& in, int center_x)
+		: pcolib(colib)
+	{
+		string s;
+		in >> s;
+		if (s == "width")
+			in >> mwidth_z;
+		else
+		{
+			mwidth_z = 30;
+			cerr << "Erreur in input, no width" << endl;
+		}
+		in >> s;
+		if (s=="{")
+		{
+			while(in.good() && s!="}")
+			{
+				int num_cell;
+				string content;
+				
+				in >> s;
+				if (s=="}")
+					break;
+				num_cell=atoi(s.c_str());
+				in >> content;
+				
+				Plateau* p = Plateau::factory(content, center_x);
+				if (p)
+				{
+					if (alveoles.find(num_cell)==alveoles.end())
+						alveoles[num_cell] = p;
+					else
+					{
+						delete p;
+						cerr << "Conflict num_cell for Plateau (" << num_cell << ' ' << content << ')' << endl;
+					}
+				}
+			}
+			if (s != "}")
+				cerr << " end of column not found '}' in input file." << endl;
+		}
+		else
+			cerr << "Expecting { in input for column description" << endl;
+	}
+	
+	Column::~Column()
+	{
+		for(auto it: alveoles)
+			delete it.second;
+	}
+	
+	bool Column::save(const string name, const vector<Column*>& cols, ostream &out)
+	{
+		out << name <<  " {" << endl;
+		for(auto it : cols)
+			it->save(out);
+		out << "}" << endl;
+		return true;
+	}
+	
+	bool Column::save(ostream& out) const
+	{
+		out << "  width " << mwidth_z << " { ";
+		for(auto it : alveoles)
+			out << it.first << " " << it.second->getContent() << ' ';
+		out << '}' << endl;
+		return true;
+	}
+	
+	bool Column::restore(Colib* pcolib, vector<Column*>& cols, istream& in, int center_x)
+	{
+		for(auto it: cols)
+			delete it;
+		cols.clear();
+		
+		string s;
+		in >> s;
+		if (s != "{")
+		{
+			cerr << "Missing { for column." << endl;
+			return false;
+		}
+		while(in.good() && s!="}")
+		{
+			Column* column = new Column(pcolib, in, center_x);
+			cols.push_back(column);
+		}
+		return true;
+	}
+
 	
 	bool Column::hasRoomFor(int etage, const Plateau* plateau) const
 	{
