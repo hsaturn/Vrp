@@ -44,7 +44,7 @@ light on
 angley 50
 anglex -10
 
-new colib 200
+new colib def
 
 axis
 

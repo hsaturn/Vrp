@@ -90,6 +90,8 @@ namespace Colib {
 		
 	private:
 		
+		void autosave();
+		
 		void sizeHasChanged();
 		void renderColumns(vector<Column*>&, int x1, bool bCloisons);
 
@@ -108,6 +110,7 @@ namespace Colib {
 		vector<int> heights;		// Hauteurs des plateaux
 		int last_frozen;			// Dernier plateau froid (non inclu)
 		GLuint list_columns;		// Indexe liste cloisons des colonnes ou 0
+		bool last_ready;			// pour autosave
 	};
 }
 #endif	/* COLIB_HPP */

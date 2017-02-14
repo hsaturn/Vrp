@@ -11,47 +11,15 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/home/hsaturn/Projets/C++/Vrp/core/Object.h</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/core/arcball.cpp</file>
             <file>file:/home/hsaturn/Projets/C++/Vrp/colib/Colib.hpp</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/Cube/Cube.h</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/core/StringUtil.cpp</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/Vrp/Vrp.cpp</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/Makefile</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/Vrp/Vrp.hpp</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/core/ObjectBuilder.hpp</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/core/Object.cpp</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/core/model/tiny_obj_loader.h</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/core/commands/cmd.cpp</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/RedStone/RedStone.cpp</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/RedStone/RedStone.hpp</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/colib/Cloison.cpp</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/core/ObjectBuilder.cpp</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/core/StringUtil.hpp</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/world/World.hpp</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/colib/Navette.hpp</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/colib/Plateau.cpp</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/colib/Navette.cpp</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/colib/Colib.cpp</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/world/World.cpp</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/RedStone/RedMap.hpp</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/core/arcball.h</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/RedStone/RedMap.cpp</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/colib/Plateau.hpp</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/core/model/Model.cpp</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/colib/Column.cpp</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/core/model/Model.hpp</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/core/arcball_sample.cpp</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/Vrp/Galaxy.cpp</file>
             <file>file:/home/hsaturn/Projets/C++/Vrp/colib/Bati.cpp</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/colib/Bati.hpp</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/Vrp/Galaxy.hpp</file>
+            <file>file:/home/hsaturn/Projets/C++/Vrp/startup.cub</file>
             <file>file:/home/hsaturn/Projets/C++/Vrp/colib/Column.hpp</file>
             <file>file:/home/hsaturn/Projets/C++/Vrp/core/main.cpp</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/colib/MotorSpeedHook.hpp</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/Cube/Cube.cpp</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/glm/detail/type_vec.hpp</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/colib/MotorSpeedHook.cpp</file>
-            <file>file:/home/hsaturn/Projets/C++/Vrp/core/commands/new.cpp</file>
+            <file>file:/home/hsaturn/Projets/C++/Vrp/colib/Column.cpp</file>
+            <file>file:/home/hsaturn/Projets/C++/Vrp/colib/Plateau.cpp</file>
+            <file>file:/home/hsaturn/Projets/C++/Vrp/core/Object.cpp</file>
+            <file>file:/home/hsaturn/Projets/C++/Vrp/colib/Colib.cpp</file>
         </group>
     </open-files>
 </project-private>

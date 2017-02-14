@@ -976,18 +976,13 @@
         </ccTool>
       </item>
       <item path="core/Object.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="1">
+        <ccTool flags="0">
           <incDir>
-            <pElem>renderer/opengl</pElem>
             <pElem>core</pElem>
-            <pElem>genetic</pElem>
-            <pElem>glm</pElem>
-            <pElem>/usr/include</pElem>
+            <pElem>renderer/opengl</pElem>
+            <pElem>/usr/include/GL</pElem>
             <pElem>.</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>HAVE_SYNTH=1</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="core/ObjectBuilder.cpp" ex="false" tool="1" flavor2="8">

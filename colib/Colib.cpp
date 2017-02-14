@@ -102,7 +102,13 @@ namespace Colib
 		renderColumns(columns_back, 0, false);
 		renderColumns(columns_front, 2*(Column::DEPTH_X + Cloison::THICKNESS_Z), false);
 		
-		return bati->render();
+		bool brender = bati->render();
+		if (brender != last_ready)
+		{
+			last_ready = brender;
+			autosave();
+		}
+		return brender;
 	}
 	
 	void Colib::renderColumns(vector<Column*>& columns, int x1, bool bCloisons)
@@ -224,7 +230,10 @@ namespace Colib
 			stringstream out;
 			ret = bati->moveTo(col,vert,back);
 			if (ret == TRUE)
+			{
+				autosave();
 				out << "MOVE TO " << col << 'x' << vert << endl;
+			}
 			else if (ret == FAILED)
 			{
 				col = revcol;
@@ -242,10 +251,30 @@ namespace Colib
 			else if (height>2000)
 				height = 2000;
 			sizeHasChanged();
+			autosave();
+		}
+		else if (cmd=="autosave")
+		{
+			string s = StringUtil::getWord(incoming);
+			if (s=="on" || s=="off")
+				setVar("autosave", s);
+			else
+				cerr << "autosave [on|off]" << endl;
 		}
 		else if (cmd=="sound")
 		{
+			string income2(incoming);
+			string sound_name=StringUtil::getWord(income2);
+			if (sound_name=="bati" || sound_name=="navette")
+			{
+				if (incoming.length())
+					setVar("sound_"+sound_name, incoming);
+				else
+					incoming=getString("sound_"+sound_name);
+			}
+			cout << "SOUND " << incoming << endl;
 			bati->changeSound(incoming);
+			// @TODO save sound
 		}
 		else if (cmd=="load")
 		{
@@ -257,6 +286,7 @@ namespace Colib
 				{
 					Plateau* plateau = Plateau::factory(incoming, (bati->getXLeft()+bati->getXRight())/2);
 					bati->setPlateau(plateau);
+					autosave();	// @TODO save current plateau
 				}
 			}
 			else
@@ -290,6 +320,7 @@ namespace Colib
 						pcols->push_back(column);
 						sizeHasChanged();
 						server->send("Column added");
+						autosave();
 					}
 				}
 				else
@@ -301,6 +332,7 @@ namespace Colib
 			
 			if (help)
 			{
+				// @FIXME
 				cerr << "Syntax error :-( " << err << endl;
 				server->send("colib.add [back|front] width (cm), add a column. "+err);
 			}
@@ -331,6 +363,7 @@ namespace Colib
 			setVar("dx" , -width_x/20);
 			setVar("dz", -length_z/20);
 			cout << "dx=" << -width_x/20 << ", dz=" << -length_z/20 << endl;
+			autosave();
 		}
 		else if (cmd=="boundings")
 		{
@@ -361,6 +394,8 @@ namespace Colib
 				const char* err= bati->put(back);
 				if (err)
 					error=err;
+				else
+					autosave();
 			}
 			else
 				ret = Object::WAITING;
@@ -368,6 +403,7 @@ namespace Colib
 		else if (cmd=="drop" || cmd=="remove")
 		{
 			bati->remove();
+			autosave();
 		}
 		else if (cmd=="get")
 		{
@@ -379,6 +415,8 @@ namespace Colib
 				const char* err=bati->get(back);
 				if (err)
 					error=err;
+				else
+					autosave();
 			}
 		}
 		else
@@ -394,20 +432,30 @@ namespace Colib
 		return ret;
 	}
 	
+	void Colib::autosave()
+	{
+		if (getString("autosave")=="on")
+			save(getString("last_save"));
+	}
+	
 	bool Colib::save(string file)
 	{
-		ofstream output(file.c_str());
-		if (output.is_open())
+		if (file.length())
 		{
-			saveVars(output);
-			output << "height " << height << endl;
-			Column::save("back", columns_back, output);
-			Column::save("front", columns_front, output);
-			output << "END" << endl;
-			return true;
+			setVar("last_save", file);
+			setVar("bouding_boxes", gRenderBoundingBoxes);
+			ofstream output(file.c_str());
+			if (output.is_open())
+			{
+				saveVars(output);
+				output << "height " << height << endl;
+				Column::save("back", columns_back, output);
+				Column::save("front", columns_front, output);
+				output << "END" << endl;
+				return true;
+			}
 		}
-		else
-			return false;
+		return false;
 	}
 	
 	bool Colib::restore(string file)
@@ -427,6 +475,14 @@ namespace Colib
 			else if (item=="front")
 				Column::restore(this, columns_front, input, getCenterOfColumnX(false));
 		}
+		gRenderBoundingBoxes = getFloat("bouding_boxes");
+		string sound;
+		sound = getString("bati");
+		if (sound.length())
+			bati->changeSound(sound);
+		sound = getString("navette");
+		if (sound.length())
+			bati->changeSound(sound);
 		sizeHasChanged();
 		return true;
 	}
@@ -436,8 +492,15 @@ namespace Colib
 	{
 		help.add("go column, height%");
 		help.add("next/prev col/cell/side");
-		help.add("put");
-		//help.add("world.add block_type ...");
+		help.add("put/get");
+		help.add("autosave [on|off]");
+		help.add("center");
+		help.add("save file");
+		help.add("restore file");
+		help.add("height n");
+		help.add("drop|remove");
+		help.add("sound");
+		help.add("add [back|front] size");
 	}
 	
 	Column* Colib::getColumn(unsigned int nr, bool back) const
