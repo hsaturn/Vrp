@@ -14,7 +14,7 @@
 #define MOTORSPEEDHOOK_HPP
 
 #ifdef HAVE_SYNTH
-#include <libsynth.hpp>
+#include <libsynth.hpp> 
 #endif
 
 using namespace std;

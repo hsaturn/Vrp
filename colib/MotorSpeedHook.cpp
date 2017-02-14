@@ -24,7 +24,7 @@ namespace Colib
 			in << s << ' ';
 		}
 		deleteSound();
-		cout << "Changing sound " << sound_str << endl;
+		cout << "Changing sound  : " << in.str() << endl;
 		sound = SoundGenerator::factory(in);
 		SoundGenerator::play(sound);
 #endif
@@ -46,12 +46,11 @@ namespace Colib
 
 	void MotorSpeedHook::update(float f)
 	{
+		f = abs(f);
+		if (f<0.02) f=0;
 		speed = (float)abs(f);
-		return;
 		if (f<0.02)
-		{
 			SoundGenerator::remove(sound);
-		}
 		else
 			SoundGenerator::play(sound);
 	}
