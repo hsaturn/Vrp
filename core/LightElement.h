@@ -16,7 +16,8 @@
 
 #include <string>
 #include <GL/glew.h>
-
+#include <MovingCoord.hpp>
+#include <GL/gl.h>
 
 using namespace std;
 
@@ -29,16 +30,24 @@ public:
 		
 	string read(string& cmd, string &incoming);
 	
-	virtual void setValue(int index, float f) { marray[index] = f; }
-
+	virtual void setValue(int index, float f);
+	
 	operator bool() const { return mactive; }
 	
 	void translate(GLfloat dir);
 	
-	virtual bool render() { return false;};
+	virtual bool render() { return false; }	// TODO ??
 	
-	GLfloat marray[4];
+	bool isReady() const;
+	
+	
+	// GLfloat marray[4];
+	
+	MovingCoord marray[4];
 	bool mactive;
+	
+	GLfloat*	getFloatArray();
+	
 };
 
 class Light : public LightElement

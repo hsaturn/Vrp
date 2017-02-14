@@ -20,10 +20,29 @@
 LightElement::LightElement(float x, float y, float z, float a, bool active)
 : mactive(active)
 {
-	marray[0] = x;
-	marray[1] = y;
-	marray[2] = z;
-	marray[3] = a;
+	marray[0].setTarget(x);
+	marray[1].setTarget(y);
+	marray[2].setTarget(z);
+	marray[3].setTarget(a);
+
+	for(int i=0; i<4; i++)
+	{
+		marray[i].setAccel(0.3);
+		marray[i].setMaxVelocityThreshold(0.3);
+		marray[i].setMaxVelocity(0.3);
+		marray[i].setMinValue(0);
+		marray[i].setMaxValue(1);
+		marray[i].setPositionTolerance(0.01);
+	}
+	
+}
+
+bool LightElement::isReady() const
+{
+	for(int i=0; i<4; i++)
+		if (!marray[i].targetReached())
+			return false;
+	return true;
 }
 
 string LightElement::read(string& cmd, string& incoming)
@@ -105,7 +124,7 @@ bool Light::render()
 		dest[i].update();
 		if (!dest[i].targetReached())
 			moving = true;
-		marray[i] = dest[i];
+		// marray[i] = dest[i];
 	}
 		
 	if (mactive)
@@ -122,7 +141,8 @@ bool Light::render()
 		glEnable(GL_LIGHTING);
 		glEnable(GL_LIGHT0);
 	   glEnable(GL_DEPTH_TEST);
-		glLightfv(GL_LIGHT0,GL_POSITION,marray);
+	   
+		glLightfv(GL_LIGHT0,GL_POSITION, getFloatArray());
 		//glLightf(GL_LIGHT0,GL_CONSTANT_ATTENUATION,.01f);
 		
 		Color::yellow.render();
@@ -140,10 +160,32 @@ bool Light::render()
 	return moving;
 }
 
+GLfloat*  LightElement::getFloatArray()
+{
+	static GLfloat farray[4];
+	for (int i = 0; i < 4; i++)
+	{
+		marray[i].update();
+		farray[i] = marray[i];
+	}
+	return &farray[0];
+}	   
+	   
+
+
 void Light::setValue(int index, float f)
 {
-	cout << "SETTING VALUE " << index << " to " << f << endl;
+	cout << "SETTING LIGHT DEST" << index << " to " << f << endl;
 	moving = true;
 	dest[index].setTarget(f);
-	marray[index] = dest[index];
+	// marray[index] = dest[index];
+	marray[index].setTarget(dest[index]);
+}
+
+void LightElement::setValue(int index, float f)
+{
+	cout << "SETTING LIGHT ELEMENT VALUE " << index << " to " << f << endl;
+//	moving = true;
+	// marray[index] = dest[index];
+	marray[index].setTarget(f);
 }

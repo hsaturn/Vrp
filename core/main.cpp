@@ -646,7 +646,7 @@ void drawScene()
 	{
 		glEnable(GL_COLOR_MATERIAL);
 		if (shininess)
-			glMaterialfv(GL_FRONT, GL_SHININESS, shininess.marray);
+			glMaterialfv(GL_FRONT, GL_SHININESS, shininess.getFloatArray());
 	}
 	else
 		glDisable(GL_COLOR_MATERIAL);
@@ -655,10 +655,16 @@ void drawScene()
 		redisplayAsked = true;
 	
 	if (specular)
-		glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,specular.marray);
+	{
+		redisplayAsked |= !specular.isReady();
+		glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,specular.getFloatArray());
+	}
 	
 	if (ambientColor)
-		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor.marray);
+	{
+		redisplayAsked |= !ambientColor.isReady();
+		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor.getFloatArray());
+	}
 
     arcball_rotate();
 //	glMultMatrixf(glm::value_ptr(orient));
