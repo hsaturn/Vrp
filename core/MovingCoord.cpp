@@ -94,7 +94,10 @@ void MovingCoord::update()
 	float target_velocity;
 	
 	if (targetReached())
-		target_velocity = 0;
+	{
+		velocity = 0;
+		return;
+	}
 	else
 	{
 		target_velocity = max_velocity * (target-value) / max_velocity_threshold;
