@@ -54,7 +54,7 @@ namespace Colib {
 		/**
 		 * @return width 2 or 3
 		 */
-		int getWidth() const { return width; }
+		int getWidth() const { return width_x; }
 		
 		/**
 		 * @return height in cm
@@ -76,7 +76,7 @@ namespace Colib {
 		 */
 		int getHeight(unsigned int etage) const;
 		
-		int getLength() const { return length; }
+		int getLength() const { return length_z; }
 		
 		/**
 		 * 
@@ -98,8 +98,8 @@ namespace Colib {
 		
 		int height;		// Hauteur en cm
 		
-		int width;		// Largeur en cm
-		int length;		// Longeur en cm
+		int width_x;		// Largeur en cm
+		int length_z;		// Longeur en cm
 		
 		Bati* bati;
 		vector<Column*> columns_back;

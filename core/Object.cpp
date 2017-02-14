@@ -28,34 +28,28 @@ Object::ExecResult Object::execute(Server* server, string cmd, string incoming, 
 		cmd.erase(cmd.length() - 1, 1);
 		server->send("#OK " + getName() + '.' + cmd + "=" + getString(cmd));
 		return TRUE;
-	}
-	else if (cmd=="vars")
-	{
-		for(auto it: mapVars)
-			server->send(getName()+'.'+it.first+'='+it.second);
-		server->send("Vars count : "+StringUtil::to_string(mapVars.size()));
+	} else if (cmd == "vars") {
+		for (auto it : mapVars)
+			server->send(getName() + '.' + it.first + '=' + it.second);
+		server->send("Vars count : " + StringUtil::to_string(mapVars.size()));
 		return TRUE;
-	}
-	else
+	} else
 		return _execute(server, cmd, incoming, org, cmdQueue);
 }
 
-void Object::drawHudText(const string& txt) const
-{
-	const char* message=txt.c_str();
-	
-	while (*message)
-	{
+void Object::drawHudText(const string& txt) const {
+	const char* message = txt.c_str();
+
+	while (*message) {
 		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *message);
 		//glutStrokeCharacter(GLUT_STROKE_ROMAN,*message);
 		message++;
-	}	
+	}
 }
 
 bool Object::render(bool resetTimer) {
 	bool bRet = false;
-	if (isVisible())
-	{
+	if (isVisible()) {
 		glPushMatrix();
 		glSetMatrix();
 		bRet = _render(resetTimer);
@@ -64,14 +58,13 @@ bool Object::render(bool resetTimer) {
 	return bRet;
 }
 
-void Object::glSetMatrix()
-{
-	float scale=getFloat("scale",1);
-	glTranslatef(getFloat("dx"),getFloat("dy"),getFloat("dz"));
+void Object::glSetMatrix() {
+	float scale = getFloat("scale", 1);
+	glTranslatef(getFloat("dx"), getFloat("dy"), getFloat("dz"));
 	glScalef(
-		getFloat("sx", 1)*scale,
-		getFloat("sy", 1)*scale,
-		getFloat("sz", 1)*scale);
+		getFloat("sx", 1) * scale,
+		getFloat("sy", 1) * scale,
+		getFloat("sz", 1) * scale);
 }
 
 void Object::help(Help& help) {
@@ -88,8 +81,7 @@ bool Object::isVisible() {
 	if (it != mapVars.end())
 		return atol(it->second.c_str());
 	return true;
- }
-
+}
 
 long Object::getLong(const string& name) const {
 	return atol(getString(name).c_str());
@@ -103,7 +95,7 @@ float Object::getFloat(const string& name, float fdefault) const {
 }
 
 float Object::eatFloat(string& buf) const {
-	string name=StringUtil::getWord(buf);
+	string name = StringUtil::getWord(buf);
 	auto it = mapVars.find(name);
 	if (it != mapVars.end())
 		return atof(it->second.c_str());
@@ -131,40 +123,42 @@ int Object::getQuality() const {
 	return quality;
 }
 
-bool Object::saveVars(ostream& out) const
-{
+bool Object::saveVars(ostream& out) const {
 	out << "vars" << endl << "{" << endl;
-	for(auto it: mapVars)
+	out << "  name=" << mname << endl;
+	for (auto it : mapVars)
 		out << "  " << it.first << '=' << it.second << endl;
 	out << '}' << endl;
 	return true;
 }
 
-bool Object::loadVars(istream& in)
-{
+bool Object::loadVars(istream& in) {
 	string s;
 	in >> s;
-	if (s=="vars")
-	{
+	if (s == "vars") {
 		mapVars.clear();
-		while(in.good())
-		{
+		while (in.good()) {
 			getline(in, s);
 			StringUtil::trim(s);
 			string::size_type p = s.find('=');
-			if (p != string::npos)
-			{
-				string name = s.substr(0, p-1);
+			if (p != string::npos) {
+				string name = s.substr(0, p);
 				StringUtil::trim(name);
-				s.erase(0,p+1);
+				s.erase(0, p + 1);
 				StringUtil::trim(s);
-				mapVars[name] = s;
-				cout << "VAR " << name << " = " << s << endl;
+				if (name.length()) {
+					if (name=="name")
+						mname = s;
+					else
+						mapVars[name] = s;
+					cout << "VAR " << name << " = " << s << endl;
+				} else
+					cout << "Empty name" << endl;
 			}
-			if (s=="}")
-				break;
+			if (s == "}")
+				return true;
 		}
-	}
-	else
+		return false;
+	} else
 		return false;
 }

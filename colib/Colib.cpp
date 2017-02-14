@@ -78,9 +78,9 @@ namespace Colib
 		glBegin(GL_TRIANGLE_FAN);
 		glNormal3i(0, 1, 0);
 		glVertex3f(0,-0.01,0);
-		glVertex3f(width,-0.01,0);
-		glVertex3f(width, -0.01, length);
-		glVertex3f(0, -0.01, length);
+		glVertex3f(width_x,-0.01,0);
+		glVertex3f(width_x, -0.01, length_z);
+		glVertex3f(0, -0.01, length_z);
 		glEnd();
 		
 		if (list_columns == 0)
@@ -120,23 +120,23 @@ namespace Colib
 				Color::dark_gray.render();
 				glBegin(GL_TRIANGLE_STRIP);
 				glVertex3i(x1, 0, 0);
-				glVertex3i(x1, 0, length);
+				glVertex3i(x1, 0, length_z);
 				glVertex3i(x1, h, 0);
-				glVertex3i(x1, h, length);
+				glVertex3i(x1, h, length_z);
 				glEnd();
 				glBegin(GL_TRIANGLE_STRIP);
 				glVertex3i(x2, 0, 0);
-				glVertex3i(x2, 0, length);
+				glVertex3i(x2, 0, length_z);
 				glVertex3i(x2, h, 0);
-				glVertex3i(x2, h, length);
+				glVertex3i(x2, h, length_z);
 				glEnd();
 				glBegin(GL_TRIANGLE_STRIP);
 
 				float hf = h-0.01;
 				glVertex3f(x1, hf, 0);
 				glVertex3f(x2, hf, 0);
-				glVertex3f(x1, hf, length);
-				glVertex3f(x2, hf, length);
+				glVertex3f(x1, hf, length_z);
+				glVertex3f(x2, hf, length_z);
 				glEnd();
 			}
 
@@ -159,8 +159,8 @@ namespace Colib
 				float h = getHeight(last_frozen)-0.01;
 				glVertex3f(x1, h, 0);
 				glVertex3f(x2, h, 0);
-				glVertex3f(x1, h, length);
-				glVertex3f(x2, h, length);
+				glVertex3f(x1, h, length_z);
+				glVertex3f(x2, h, length_z);
 				glEnd();
 			}
 		}
@@ -328,9 +328,9 @@ namespace Colib
 		}
 		else if (cmd=="center")
 		{
-			setVar("dx" ,StringUtil::to_string(-width/20));
-			setVar("dz", StringUtil::to_string(-length/20));
-			cout << "dx=" << -width/20 << ", dz=" << -length/20 << endl;
+			setVar("dx" , -width_x/20);
+			setVar("dz", -length_z/20);
+			cout << "dx=" << -width_x/20 << ", dz=" << -length_z/20 << endl;
 		}
 		else if (cmd=="boundings")
 		{
@@ -525,9 +525,9 @@ namespace Colib
 		if (length_front)
 			widths=3;
 		
-		length = 2*Bati::THICKNESS + (length_back > length_front ? length_back : length_front);
-		width =  widths * Column::DEPTH_X+(widths-1)*Cloison::THICKNESS_Z;
-		
+		length_z = 2*Bati::THICKNESS + (length_back > length_front ? length_back : length_front);
+		width_x =  widths * Column::DEPTH_X+(widths-1)*Cloison::THICKNESS_Z;
+		cout << "New length_z : " << length_z << endl;
 		heights.clear();
 		// FIXME plateaux.clear()
 		

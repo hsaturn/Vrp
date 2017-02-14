@@ -84,7 +84,7 @@ Galaxy::Galaxy(const string& name, string& incoming) : Object(name) {
 				num_planets--;
 			}
 		}
-		setVar("size", StringUtil::to_string(n));
+		setVar("size", n);
 		
 	} catch (...) {
 		cerr << "EXCEPTION :-(" << flush << endl;

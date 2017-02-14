@@ -21,8 +21,8 @@ namespace Colib
 			in >> mwidth_z;
 		else
 		{
-			mwidth_z = 30;
-			cerr << "Erreur in input, no width" << endl;
+			mwidth_z = 0;
+			return;
 		}
 		in >> s;
 		if (s=="{")
@@ -46,15 +46,15 @@ namespace Colib
 					else
 					{
 						delete p;
-						cerr << "Conflict num_cell for Plateau (" << num_cell << ' ' << content << ')' << endl;
+						cerr << "Column::restore, Conflict num_cell for Plateau (" << num_cell << ' ' << content << ')' << endl;
 					}
 				}
 			}
 			if (s != "}")
-				cerr << " end of column not found '}' in input file." << endl;
+				cerr << "Column::restore, end of column not found '}' in input file." << endl;
 		}
 		else
-			cerr << "Expecting { in input for column description" << endl;
+			cerr << "Column::restore, Expecting { in input for column description, got '" << s << "' instead." << endl;
 	}
 	
 	Column::~Column()
@@ -97,7 +97,13 @@ namespace Colib
 		while(in.good() && s!="}")
 		{
 			Column* column = new Column(pcolib, in, center_x);
-			cols.push_back(column);
+			if (column->getWidth())
+				cols.push_back(column);
+			else
+			{
+				delete column;
+				break;
+			}
 		}
 		return true;
 	}

@@ -13,6 +13,7 @@
 #include <list>
 #include "Color.h"
 #include "Help.h"
+#include <StringUtil.hpp>
 
 #include <map>
 
@@ -54,7 +55,15 @@ public:
 	
 	int getQuality() const;
 	
-	void setVar(const string& name, const string value) { mapVars[name]=value; }
+	template<class T>
+	void setVar(const string& name, const T value)
+	{
+		if (name.length())
+			mapVars[name]=StringUtil::to_string(value);
+		else
+			cerr << "Cannot assign var with empty name to value : " << value << endl;
+	}
+
 	bool isVisible();
 	
 	bool saveVars(ostream&) const;

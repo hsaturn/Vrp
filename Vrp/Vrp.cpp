@@ -28,7 +28,7 @@ Vrp::Vrp(const string& name, string& incoming)
 : Object(name),
 algo(0)
 {
-	setVar("render_best", "1");
+	setVar("render_best", 1);
 	mgalaxyName = StringUtil::getWord(incoming);
 	solveParams = incoming;
 	cout << "New vrp on galaxy #" << mgalaxyName << " with solve params : " << solveParams << endl;
@@ -69,9 +69,9 @@ Object::ExecResult Vrp::_execute(Server* server, string cmd, string incoming, co
 	else if (cmd == "pop")
 		pop();
 	else if (cmd == "run")
-		setVar("pause", "0");
+		setVar("pause", 0);
 	else if (cmd == "pause")
-		setVar("pause", "1");
+		setVar("pause", 1);
 	else
 		ret = FALSE;
 	return ret;
