@@ -75,7 +75,6 @@ namespace Colib
 
 	bool Colib::_render(bool resetTimer)
 	{
-		cout << "WIDTH = " << width_x << endl;
 		glPushMatrix();
 		glTranslatef(width_x/2,0,length_z/2);
 		Decor::render(width_x+100, 0, length_z+100, 30);
@@ -268,6 +267,17 @@ namespace Colib
 			else
 				cerr << "autosave [on|off]" << endl;
 		}
+		else if (cmd=="autocenter")
+		{
+			string s = StringUtil::getWord(incoming);
+			if (s=="on" || s=="off")
+			{
+				setVar("autocenter", s);
+				if (s=="on") center();
+			}
+			else
+				cerr << "autocenter [on|off]" << endl;
+		}
 		else if (cmd=="sound")
 		{
 			string income2(incoming);
@@ -367,9 +377,7 @@ namespace Colib
 		}
 		else if (cmd=="center")
 		{
-			setVar("dx" , -width_x/20);
-			setVar("dz", -length_z/20);
-			cout << "dx=" << -width_x/20 << ", dz=" << -length_z/20 << endl;
+			center();
 			autosave();
 		}
 		else if (cmd=="boundings")
@@ -439,6 +447,13 @@ namespace Colib
 		return ret;
 	}
 	
+	void Colib::center()
+	{
+		setVar("dx" , -width_x/20);
+		setVar("dz", -length_z/20);
+		cout << "dx=" << -width_x/20 << ", dz=" << -length_z/20 << endl;
+	}
+	
 	void Colib::autosave()
 	{
 		if (getString("autosave")=="on")
@@ -467,30 +482,41 @@ namespace Colib
 	
 	bool Colib::restore(string file)
 	{
-		ifstream input(file.c_str());
-		loadVars(input);
-		while(input.good())
+		try
 		{
-			string item;
-			input >> item;
-			if (item=="end")
-				break;
-			else if (item=="height")
-				input >> height;
-			else if (item=="back")
-				Column::restore(this, columns_back, input, getCenterOfColumnX(true));
-			else if (item=="front")
-				Column::restore(this, columns_front, input, getCenterOfColumnX(false));
+			ifstream input(file.c_str());
+			loadVars(input);
+			while(input.good())
+			{
+				string item;
+				input >> item;
+				if (item=="end")
+					break;
+				else if (item=="height")
+					input >> height;
+				else if (item=="back")
+					Column::restore(this, columns_back, input, getCenterOfColumnX(true));
+				else if (item=="front")
+					Column::restore(this, columns_front, input, getCenterOfColumnX(false));
+			}
+			gRenderBoundingBoxes = getFloat("bouding_boxes");
+			string sound;
+			sound = getString("bati");
+			if (sound.length())
+				bati->changeSound(sound);
+			sound = getString("navette");
+			if (sound.length())
+				bati->changeSound(sound);
+			sizeHasChanged();
 		}
-		gRenderBoundingBoxes = getFloat("bouding_boxes");
-		string sound;
-		sound = getString("bati");
-		if (sound.length())
-			bati->changeSound(sound);
-		sound = getString("navette");
-		if (sound.length())
-			bati->changeSound(sound);
-		sizeHasChanged();
+		catch(exception &e)
+		{
+			cerr << "Caught exception while restoring " << e.what() << endl;
+		}
+		catch(...)
+		{
+			cerr << "Caught unknown exception while restoring" << endl;
+		}
 		return true;
 	}
 	
@@ -615,6 +641,8 @@ namespace Colib
 			glDeleteLists(list_columns, 1);
 			list_columns = 0;
 		}
+		if (getString("autocenter")=="on")
+			center();
 	}
 	
 	const char* Colib::collideVertical(int h1, int h2, bool back) const

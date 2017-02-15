@@ -11,8 +11,6 @@ void Decor::render(float size_x, float pos_y, float size_z, float tile_size)
 	static bool init=false;
 	static GLuint floor_tex;
 	
-	cout << "size " << size_x << " x " << size_z << endl;
-	
 	if (init==false)
 	{
 		init = true;

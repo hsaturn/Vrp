@@ -80,7 +80,6 @@ namespace Colib
 			width_z = hig[2]-low[2];
 			height_y = hig[1]-low[1];
 			length_x = hig[0]-low[0];
-			cout << "WIDTH (" << model << ")=" << width_z << endl;
 		}
 		
 		static int number=0;

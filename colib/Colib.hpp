@@ -39,6 +39,7 @@ namespace Colib {
 		
 		bool save(string file);
 		bool restore(string file);
+		void center();
 		
 	public:
 		static const int CLO_THICK=2;	// Epaisseur cloison en cm

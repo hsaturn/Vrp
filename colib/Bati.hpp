@@ -58,7 +58,7 @@ namespace Colib
 		 * incoming = navette { sound generator }  : son de la navette, hook est le hook pour la vitesse
 		 * incoming = bati {sound generator}       : son du bati (hook pour la vitesse)
 		 */
-		void changeSound(string &incoming);
+		void changeSound(string incoming);
 		
 		const Colib* pcolib;
 		

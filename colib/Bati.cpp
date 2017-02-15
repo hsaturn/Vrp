@@ -15,6 +15,7 @@ namespace Colib {
 	pcolib(p),
 	h(0)
 	{
+		hook_speed = 0;
 		navette = new Navette(this);
 		h.setMaxVelocity(MAX_SPEED);
 		h.setMaxValue(10000);
@@ -24,17 +25,12 @@ namespace Colib {
 		column_dest = 0;
 		etage_dest = 0;
 		
-		static int number=0;
-		string name="hook_bati_"+StringUtil::to_string(number++);
-		hook_speed = new MotorSpeedHook(name, MAX_SPEED);
-		string s="bati define sound { am 70 100 sinus 200:80 sq 300 triangle 400:10 sq 600:10 } reverb 30:30 fm 0 80 sound hook";
-		changeSound(s);
+		// changeSound("bati define sound { am 70 100 sinus 200:80 sq 300 triangle 400:10 sq 600:10 } reverb 30:30 fm 0 80 sound hook");
 	}
 	
 	Bati::~Bati()
 	{
-		if (hook_speed)
-			delete hook_speed;
+		changeSound("");
 		delete navette;
 	}
 	
@@ -45,16 +41,36 @@ namespace Colib {
 		return navette->isAllStopped();
 	}
 
-	void Bati::changeSound(string& sound)
+	void Bati::changeSound(string sound)
 	{
-		string what = StringUtil::getWord(sound);
-		cout << "CHANGING SOUND " << sound << endl;
-		if (what == "bati")
-			hook_speed->changeSound(sound);
-		else if (what == "navette")
-			navette->changeSound(sound);
+		return;
+		if (sound.length())
+		{
+			string what = StringUtil::getWord(sound);
+			cout << "CHANGING SOUND " << sound << endl;
+			if (what == "bati")
+			{
+				static int number=0;
+				string name="hook_bati_"+StringUtil::to_string(number++);
+				
+				if (hook_speed == 0)
+					hook_speed = new MotorSpeedHook(name, MAX_SPEED);
+					// delete hook_speed;
+				hook_speed->changeSound(sound);
+			}
+			else if (what == "navette")
+				navette->changeSound(sound);
+			else
+				cerr << "Unknown sound target : " << what  << endl;
+		}
 		else
-			cerr << "Unknown sound target : " << what  << endl;
+		{
+			if (hook_speed)
+			{
+				delete hook_speed;
+				hook_speed = 0;
+			}
+		}
 	}
 
 	

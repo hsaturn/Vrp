@@ -54,6 +54,7 @@ namespace Colib {
 	private:
 		Plateau(string content, int center_x);
 		MovingCoord x;
+		string unique_name;
 		string mcontent;
 		const Model* pmodel;
 		int length_x;
