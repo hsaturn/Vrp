@@ -57,17 +57,17 @@ Object::ExecResult ObjectBuilder::execute(Server* server, string cmd, string inc
 	for (auto it : instances())
 	{
 		ret = it.second->execute(server, cmd, incoming, org, queue);
-		if (ret ==Object::FALSE)
+		if (ret ==Object::EXEC_UNKNOWN)
 			continue;
-		else if (ret == Object::WAITING)
+		else if (ret == Object::EXEC_BUSY)
 		{
 			queue.push_front(org);
-			return Object::WAITING;
+			return Object::EXEC_BUSY;
 		}
 		else
 			return ret;
 	}
-	return Object::FALSE;
+	return Object::EXEC_UNKNOWN;
 }
 
 void ObjectBuilder::renderHud()

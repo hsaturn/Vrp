@@ -182,7 +182,7 @@ namespace Colib
 	Object::ExecResult Colib::_execute(Server* server, string cmd, string incoming, const string& org, CmdQueue&)
 	{
 		string error="";
-		ExecResult ret = TRUE;
+		ExecResult ret = EXEC_OK;
 		
 		if (cmd=="go" || cmd=="next" || cmd=="prev")
 		{
@@ -223,24 +223,24 @@ namespace Colib
 			{
 				cout << "ERREUR cellule" << endl;
 				vert=revvert;
-				return FAILED;
+				return EXEC_FAILED;
 			}
 			
 			if (getCenterOfColumnZ(col, back)==-1)
 			{
 				cout << "ERREUR column";
 				col=revcol;
-				return FAILED;
+				return EXEC_FAILED;
 			}
 			
 			stringstream out;
 			ret = bati->moveTo(col,vert,back);
-			if (ret == TRUE)
+			if (ret == EXEC_OK)
 			{
 				autosave();
 				out << "MOVE TO " << col << 'x' << vert << endl;
 			}
-			else if (ret == FAILED)
+			else if (ret == EXEC_FAILED)
 			{
 				col = revcol;
 				vert = revvert;
@@ -307,7 +307,7 @@ namespace Colib
 				}
 			}
 			else
-				return WAITING;
+				return EXEC_BUSY;
 		}
 		else if (cmd=="add")
 		{
@@ -360,9 +360,9 @@ namespace Colib
 			if (restore(incoming))
 			{
 				incoming=="";
-				return TRUE;
+				return EXEC_OK;
 			}
-			return FAILED;
+			return EXEC_FAILED;
 		}
 		else if (cmd=="save")
 		{
@@ -370,15 +370,16 @@ namespace Colib
 			{
 				error = save(incoming);
 				incoming="";
-				return TRUE;
+				return EXEC_OK;
 			}
 			else
-				return WAITING;
+				return EXEC_BUSY;
 		}
 		else if (cmd=="center")
 		{
 			center();
 			autosave();
+			return EXEC_OK;
 		}
 		else if (cmd=="boundings")
 		{
@@ -397,9 +398,9 @@ namespace Colib
 			else
 			{
 				cerr << "Bad parameter for boundings : " << incoming << endl;
-				return FAILED;
+				return EXEC_FAILED;
 			}
-			return TRUE;
+			return EXEC_OK;
 		}
 		else if (cmd=="put")
 		{
@@ -413,7 +414,7 @@ namespace Colib
 					autosave();
 			}
 			else
-				ret = Object::WAITING;
+				ret = Object::EXEC_BUSY;
 		}
 		else if (cmd=="drop" || cmd=="remove")
 		{
@@ -423,7 +424,7 @@ namespace Colib
 		else if (cmd=="get")
 		{
 			if (!bati->isAllStopped())
-				ret = WAITING;
+				ret = EXEC_BUSY;
 			else
 			{
 				StringUtil::trim(incoming);
@@ -435,14 +436,14 @@ namespace Colib
 			}
 		}
 		else
-			ret = FALSE;
+			ret = EXEC_UNKNOWN;
 		
 		if (error.length())
 		{
 			server->send("ERROR : " + error);
 			cerr << "ERROR : " << error << endl;
 			cout << "ERROR : " << error << endl;
-			return FAILED;
+			return EXEC_FAILED;
 		}
 		return ret;
 	}

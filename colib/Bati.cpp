@@ -198,22 +198,22 @@ namespace Colib {
 			if (total_height>pcolib->getHeight())
 			{
 				cerr << "Ca toucherait le plafond !!! " << endl;
-				return Object::FAILED;
+				return Object::EXEC_FAILED;
 			}
 			h.setTarget(pcolib->getHeight(etage) -Navette::HEIGHT_Y-Bati::THICKNESS);
 			float z = pcolib->getCenterOfColumnZ(col_dest, back);
 			if (z==-1)
-				return Object::FAILED;
+				return Object::EXEC_FAILED;
 			navette->centerOn(z);
-			return Object::TRUE;
+			return Object::EXEC_OK;
 		}
 		else
 		{
 			cout << "Navette not ready" << endl;
-			return Object::WAITING;
+			return Object::EXEC_BUSY;
 		}
 		
-		return Object::FAILED;
+		return Object::EXEC_FAILED;
 	}
 	
 	float Bati::getHeight() const

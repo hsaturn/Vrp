@@ -813,16 +813,16 @@ void update(int value)
 					Object::ExecResult ret = object->execute(server, cmd, incoming, org, cmdQueue);
 					switch (ret)
 					{
-						case Object::TRUE:
+						case Object::EXEC_OK:
 							server->send("#OK "+name+'.'+cmd);
 							break;
-						case Object::FALSE:
+						case Object::EXEC_UNKNOWN:
 							server->send("#Unknown command "+name+'.'+cmd);
 							break;
-						case Object::FAILED:
+						case Object::EXEC_FAILED:
 							server->send("#KO "+name+'.'+cmd);
 							break;
-						case Object::WAITING:
+						case Object::EXEC_BUSY:
 						{
 							cmdQueue.push_front(org);
 						}
@@ -1084,7 +1084,7 @@ void update(int value)
 				cmdQueue.push_back("find green");
 				cmdQueue.push_back("find red");
 			}
-			else if (ObjectBuilder::execute(server, cmd, incoming, org, cmdQueue))
+			else if (ObjectBuilder::execute(server, cmd, incoming, org, cmdQueue) != Object::EXEC_UNKNOWN)
 			{
 				cerr << "Ok ObjectBuilder.execute " << cmd << endl;
 			}
@@ -1211,7 +1211,7 @@ int main(int argc, char** argv)
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH | GLUT_MULTISAMPLE);
 	glEnable(GL_MULTISAMPLE_SGIS);
 	glutInitWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-
+	
 	string sPort = toString(lPort);
 	glutCreateWindow((string("CS ") + sPort).c_str());
 	if (glewInit())

@@ -25,10 +25,10 @@ class Object {
 public:
 	typedef enum ExecResult
 	{
-		FALSE,	// Unknown
-		FAILED,	// Known, execution failed
-		TRUE,	// Execution ok
-		WAITING	// Known but cannot run now
+		EXEC_UNKNOWN,	// Unknown
+		EXEC_FAILED,	// Known, execution failed
+		EXEC_OK,	// Execution ok
+		EXEC_BUSY	// Known but cannot run now
 	} ExecResult;
 	
 	Object(const string& name) : mname(name){};

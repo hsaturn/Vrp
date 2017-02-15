@@ -251,6 +251,8 @@ namespace hwidgets
 		{
 			if ((*it)->name == cmd)
 			{
+				if (cmd.find((*it)->name)!=string::npos)
+					cerr << "Warning, widget name used as macro, but cmd contains the name (possible loop)" << endl;
 				pushEvent("mousedown", cmd+" -1 "+(*it)->data    );
 				ret = true;
 			}

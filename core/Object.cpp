@@ -13,28 +13,28 @@
 #include <GL/glut.h>
 
 Object::ExecResult Object::execute(Server* server, string cmd, string incoming, const string& org, CmdQueue& cmdQueue) {
-	cout << getName() << ".exec " << cmd << '/' << incoming << endl;
 	if (StringUtil::preg_match("^[a-zA-Z]+[a-zA-Z0-9_]*=", cmd, false)) {
 		string name = StringUtil::getWord(cmd, '=');
-		cout << " assign " << name << " : " << cmd << endl;
 		if (cmd.length() == 0) {
 			auto it = mapVars.find(name);
 			if (it != mapVars.end())
 				mapVars.erase(it);
 		} else
 			mapVars [name] = cmd;
-		return TRUE;
+		return EXEC_OK;
 	} else if (StringUtil::preg_match("^[a-zA-Z][a-zA-Z0-9_]*\\?", cmd)) {
 		cmd.erase(cmd.length() - 1, 1);
 		server->send("#OK " + getName() + '.' + cmd + "=" + getString(cmd));
-		return TRUE;
+		return EXEC_OK;
 	} else if (cmd == "vars") {
 		for (auto it : mapVars)
 			server->send(getName() + '.' + it.first + '=' + it.second);
 		server->send("Vars count : " + StringUtil::to_string(mapVars.size()));
-		return TRUE;
+		return EXEC_OK;
 	} else
+	{
 		return _execute(server, cmd, incoming, org, cmdQueue);
+	}
 }
 
 void Object::drawHudText(const string& txt) const {
@@ -134,6 +134,7 @@ bool Object::saveVars(ostream& out) const {
 
 bool Object::loadVars(istream& in) {
 	string s;
+	if (!in.good()) return false;
 	in >> s;
 	if (s == "vars") {
 		mapVars.clear();
@@ -151,9 +152,8 @@ bool Object::loadVars(istream& in) {
 						mname = s;
 					else
 						mapVars[name] = s;
-					cout << "VAR " << name << " = " << s << endl;
 				} else
-					cout << "Empty name" << endl;
+					cerr << "Empty name (for value " << s << ")" << endl;
 			}
 			if (s == "}")
 				return true;
