@@ -14,6 +14,7 @@
 #include "Navette.hpp"
 #include "Column.hpp"
 #include "Cloison.hpp"
+#include "Decor.hpp"
 
 namespace Colib
 {
@@ -74,6 +75,12 @@ namespace Colib
 
 	bool Colib::_render(bool resetTimer)
 	{
+		cout << "WIDTH = " << width_x << endl;
+		glPushMatrix();
+		glTranslatef(width_x/2,0,length_z/2);
+		Decor::render(width_x+100, 0, length_z+100, 30);
+		glPopMatrix();
+		
 		Color::dark_green.render();
 		glBegin(GL_TRIANGLE_FAN);
 		glNormal3i(0, 1, 0);
