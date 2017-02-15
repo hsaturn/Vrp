@@ -164,8 +164,6 @@ bool Model::loadObjAndConvert(const string& file)
 				if (textures.find(mp->diffuse_texname) == textures.end())
 				{
 					GLuint texture_id;
-					int w, h;
-					int comp;
 
 					string texture_filename = mp->diffuse_texname;
 					if (!FileExists(texture_filename))

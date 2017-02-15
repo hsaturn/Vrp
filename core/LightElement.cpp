@@ -175,17 +175,12 @@ GLfloat*  LightElement::getFloatArray()
 
 void Light::setValue(int index, float f)
 {
-	cout << "SETTING LIGHT DEST" << index << " to " << f << endl;
 	moving = true;
 	dest[index].setTarget(f);
-	// marray[index] = dest[index];
 	marray[index].setTarget(dest[index]);
 }
 
 void LightElement::setValue(int index, float f)
 {
-	cout << "SETTING LIGHT ELEMENT VALUE " << index << " to " << f << endl;
-//	moving = true;
-	// marray[index] = dest[index];
 	marray[index].setTarget(f);
 }

@@ -744,7 +744,7 @@ void update(int value)
 			else
 			{
 				cmdQueue.push_back(cmd);
-				cout << "Pushing [" << cmd << "]" << endl;
+				// cout << "Pushing [" << cmd << "]" << endl;
 			}
 		}
 
@@ -798,15 +798,14 @@ void update(int value)
 				cmdQueue.push_front(row);
 
 			Widget::replaceVars(incoming);
-			cout << "INCOMMING " << incoming << endl;
+			// cout << "INCOMMING " << incoming << endl;
 			string cmd = getWord(incoming);
-			cout << "CMD=[" << cmd << "] incoming=[" << incoming << "]" << endl;
+			// cout << "CMD=[" << cmd << "] incoming=[" << incoming << "]" << endl;
 
 			//if (StringUtil::match("[a-zA-Z]+[a-zA-Z0-9]*.[a-zA-Z]+[a-zA-Z0-9]+=", cmd))
 			
 			if (StringUtil::preg_match("^[a-zA-Z]+[a-zA-Z0-9_]*\\.[a-zA-Z]+[a-zA-Z0-9_]*", cmd, false))
 			{
-				cout << Ansi::cyan() << "MATCH" << endl;
 				string name=StringUtil::getWord(cmd, '.');
 				Object* object=ObjectBuilder::getInstance(name);
 				if (object)
@@ -1042,7 +1041,7 @@ void update(int value)
 				_angley = StringUtil::getFloat(incoming);
 			else if (cmd == "send")
 			{
-				cout << "SEND " << incoming << endl;
+				// cout << "SEND " << incoming << endl;
 				server->send(incoming);
 			}
 			else if (cmd == "anim")

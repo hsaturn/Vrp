@@ -26,6 +26,7 @@ namespace Colib
 		deleteSound();
 		cout << "Changing sound  : " << in.str() << endl;
 		sound = SoundGenerator::factory(in);
+		cout << "Play sound " << sound << endl;
 		SoundGenerator::play(sound);
 #endif
 	}
@@ -49,6 +50,7 @@ namespace Colib
 		f = abs(f);
 		if (f<0.02) f=0;
 		speed = (float)abs(f);
+		return;
 		if (f<0.02)
 			SoundGenerator::remove(sound);
 		else
@@ -61,7 +63,7 @@ namespace Colib
 #if HAVE_SYNTH
 		if (sound)
 		{
-			cout << "DELETING SOUND" << SoundGenerator::remove(sound) << endl;
+			cout << "DELETING SOUND " << SoundGenerator::remove(sound) << endl;
 			delete sound;
 			sound = 0;
 		}
