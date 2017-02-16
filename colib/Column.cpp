@@ -60,7 +60,8 @@ namespace Colib
 	Column::~Column()
 	{
 		for(auto it: alveoles)
-			delete it.second;
+			if (it.second)
+				delete it.second;
 	}
 	
 	bool Column::save(const string name, const vector<Column*>& cols, ostream &out)
@@ -76,7 +77,8 @@ namespace Colib
 	{
 		out << "  width " << mwidth_z << " { ";
 		for(auto it : alveoles)
-			out << it.first << " " << it.second->getContent() << ' ';
+			if (it.second)
+				out << it.first << " " << it.second->getContent() << ' ';
 		out << '}' << endl;
 		return true;
 	}
@@ -177,14 +179,8 @@ namespace Colib
 	void Column::render(int x1, int x2, int z)
 	{
 		for(auto it: alveoles)
-		{
-			Plateau* p=it.second;
-			if (p)
-			{
-				int h = pcolib->getHeight(it.first);
-				p->renderAtCenter(h, z);
-			}
-		}
+			if (it.second)
+				it.second->renderAtCenter(pcolib->getHeight(it.first), z);
 	}
 
 }

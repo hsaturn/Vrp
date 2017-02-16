@@ -17,14 +17,14 @@ namespace Colib
 	{
 		
 		const int MAX_SPEED = 20.0;
-		pp_z.setValue(15);
-		pp_z.setTarget(15);		// half length_z of current plateau
-		pp_z.setAccel(MAX_SPEED*4);
-		pp_z.setMaxValue(9999);
-		pp_z.setMinValue(-9999);
-		pp_z.setPositionTolerance(0.01);
-		pp_z.setMaxVelocityThreshold(MAX_SPEED);
-		pp_z.setMaxVelocity(MAX_SPEED);
+		wings_z.setValue(15);
+		wings_z.setTarget(15);		// half length_z of current plateau
+		wings_z.setAccel(MAX_SPEED*4);
+		wings_z.setMaxValue(9999);
+		wings_z.setMinValue(-9999);
+		wings_z.setPositionTolerance(0.01);
+		wings_z.setMaxVelocityThreshold(MAX_SPEED);
+		wings_z.setMaxVelocity(MAX_SPEED);
 		// @TODO SOUND ?
 		
 		z.setTarget(0);
@@ -92,6 +92,7 @@ namespace Colib
 	{
 		if (!z.targetReached())
 			return false;
+		if (!wings_z.targetReached())
 		if (moving_col)
 			return false;
 		if (plateau)
@@ -134,73 +135,40 @@ namespace Colib
 		if (support_plateau_left || support_plateau_right)
 		{
 			if (plateau)
-				pp_z.setTarget(plateau->getWidth()/2);
-			pp_z.update();
+				wings_z.setTarget(plateau->getWidth()/2);
+			wings_z.update();
 		}
 		
 		if (support_plateau_left)
 		{
 			glPushMatrix();
-			glTranslatef(cx+offset_support_left[0], YTOP+offset_support_left[1], cz+pp_z+offset_support_left[2]);
+			glTranslatef(cx+offset_support_left[0], YTOP+offset_support_left[1], cz+wings_z+offset_support_left[2]);
 			support_plateau_left->render();
 			glPopMatrix();
 		}
 		if (support_plateau_right)
 		{
 			glPushMatrix();
-			glTranslatef(cx+offset_support_right[0], YTOP+offset_support_right[1], cz-pp_z+offset_support_right[2]);
+			glTranslatef(cx+offset_support_right[0], YTOP+offset_support_right[1], cz-wings_z+offset_support_right[2]);
 			support_plateau_right->render();
 			glPopMatrix();
 		}
-		/*
-		float Z1 = z;
-		float Z2 = Z1 + LENGTH_Z;
-		const int debord = 1;
-		 * 
-		Color::cyan.render();
-		
-		glBegin(GL_TRIANGLE_STRIP);
-		glNormal3i(0 ,-1, 0);	// Bottom rectangle
-		glVertex3f(pbati->getXLeft()-debord, Y, Z1);
-		glVertex3f(pbati->getXLeft()-debord, Y, Z2);
-		glVertex3f(pbati->getXRight()+debord, Y, Z1);
-		glVertex3f(pbati->getXRight()+debord, Y, Z2);
-		
-		glNormal3i(1 ,0, 0);	// Right rectangle
-		glVertex3f(pbati->getXRight()+debord, YTOP, Z1);
-		glVertex3f(pbati->getXRight()+debord, YTOP, Z2);
-		
-		glNormal3i(0, 1, 0);	// Top rectangle
-		glVertex3f(pbati->getXLeft()-debord, YTOP, Z1);
-		glVertex3f(pbati->getXLeft()-debord, YTOP, Z2);
-			
-		glNormal3i(-1, 0, 0);	// Left rectangle
-		glVertex3f(pbati->getXLeft()-debord, Y, Z1);
-		glVertex3f(pbati->getXLeft()-debord, Y, Z2);
-		glEnd();
-		
-		Color::blue.render();
-		glBegin(GL_TRIANGLE_STRIP);
-		glNormal3i(0,0,-1);	// back rectangle
-		glVertex3f(pbati->getXRight()+debord, Y, Z1);
-		glVertex3f(pbati->getXLeft()-debord, Y, Z1);
-		glVertex3f(pbati->getXRight()+debord, YTOP, Z1);
-		glVertex3f(pbati->getXLeft()-debord, YTOP, Z1);
-		glEnd();
-		
-		Color::brown.render();
-		glBegin(GL_TRIANGLE_STRIP);
-		glNormal3i(0,0,1);	// front rectangle
-		glVertex3f(pbati->getXRight()+debord, Y, Z2);
-		glVertex3f(pbati->getXLeft()-debord, Y, Z2);
-		glVertex3f(pbati->getXRight()+debord, YTOP, Z2);
-		glVertex3f(pbati->getXLeft()-debord, YTOP, Z2);
-		glEnd();
-		*/
+
+		// Suite de get: les ailes sont déployées
+		if (moving_col && putting==false && wings_z.targetReached() && plateau==false)
+		{
+			Plateau* p = moving_col->getPlateau(etage_dest);
+			if (p)
+			{
+				plateau = p;
+				cerr << "OK PLATEAU" << endl;
+				moving_col->setPlateau(etage_dest, 0);
+				plateau->setTargetX((pbati->getXLeft()+pbati->getXRight())/2);
+			}
+		}
 		
 		if (plateau)
 		{
-			
 			plateau->renderAtCenter(YTOP, cz);
 			if (moving_col && plateau->isReady())
 			{
@@ -210,6 +178,7 @@ namespace Colib
 					moving_col->setPlateau(etage_dest, plateau);
 					plateau = 0;
 				}
+				cout << "SETTING MOVING COL TO 0" << endl;
 				moving_col = 0;
 			}
 		}
@@ -247,18 +216,23 @@ namespace Colib
 	
 	const char* Navette::get(Column* col, int etage)
 	{
-		cout << "get " << col << '.' << etage << endl;
+		cout << "NAVETTE GET " << etage << endl;
 		if (plateau)
 			return "Navette occupée !";
-		if (col->getPlateau(etage)==0)
+		Plateau* p = col->getPlateau(etage);
+		if (p==0)
 			return "Alvéole vide !!! ";
 		
+		etage_dest = etage;
+		wings_z.setTarget(p->getWidth()/2);
+
+		cout << "SETTING MOVING COL IN PUT " << endl;
 		moving_col = col;
-		plateau = moving_col->getPlateau(etage);
-		moving_col->setPlateau(etage, 0);
 		putting = false;
-		plateau->setTargetX((pbati->getXLeft()+pbati->getXRight())/2);
-		return "";
+		
+		// Suite dans render (...)
+		// quand wings_z reached target
+		return 0;
 	}
 	
 	void Navette::remove()

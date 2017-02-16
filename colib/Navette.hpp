@@ -51,6 +51,8 @@ namespace Colib
 			void setPlateau(Plateau* p);
 			
 			const char* put(Column* col, int etage, bool back);	// ret: err ou 0
+			
+			const char* canGet(Column* col, int etage);			// ret: 0 if can or reason if cannot
 			const char* get(Column* col, int etage);			// ret: err ou 0
 			void remove();
 			
@@ -65,11 +67,11 @@ namespace Colib
 			Bati* pbati;
 			
 			MovingCoord z;
-			MovingCoord pp_z;	// Etirement du porte plateau (0 .. largeur plateau_z/2)
+			MovingCoord wings_z;	// Etirement du porte plateau (0 .. largeur plateau_z/2)
 			Plateau* plateau;
 			
 			Column* moving_col;	// 0 ou ptr column put/get plateau (en cours)
-			bool putting;		// si moving_col, putting / moving plateau
+			bool putting;		// si moving_col, putting / getting plateau
 			int etage_dest;		// etage dest / source
 			MotorSpeedHook* speed_hook;	// Pour le générateur de son
 			

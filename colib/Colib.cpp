@@ -415,6 +415,7 @@ namespace Colib
 			{
 				StringUtil::trim(incoming);
 				const char* err=bati->get(back);
+				cout << "COLIB NAVETTE::GET BAD " << err << endl;
 				if (err)
 					error=err;
 				else

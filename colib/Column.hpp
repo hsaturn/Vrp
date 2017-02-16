@@ -58,8 +58,8 @@ namespace Colib
 			
 	private:
 		int mwidth_z;
-		map<int, Plateau*> alveoles;	// Map num cellule / plateau
 		Colib* pcolib;
+		map<int, Plateau*> alveoles;	// Map num cellule / plateau
 	};
 }
 

@@ -137,7 +137,7 @@ namespace Colib {
 		Column* col = pcolib->getColumn(column_dest, back);
 		return navette->put(col, etage_dest, back);
 	}
-	
+
 	const char* Bati::get(bool back)
 	{
 		Column* col = pcolib->getColumn(column_dest, back);
