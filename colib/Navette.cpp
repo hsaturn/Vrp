@@ -15,7 +15,6 @@ namespace Colib
 	
 	Navette::Navette(Bati* bati) : pbati(bati), z(0), plateau(0), moving_col(0)
 	{
-		
 		const int MAX_SPEED = 20.0;
 		wings_z.setValue(15);
 		wings_z.setTarget(15);		// half length_z of current plateau
