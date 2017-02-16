@@ -16,6 +16,7 @@
 
 #include <Object.h>
 #include <MovingCoord.hpp>
+#include <model/Model.hpp>
 
 using namespace std;
 
@@ -64,12 +65,19 @@ namespace Colib
 			Bati* pbati;
 			
 			MovingCoord z;
+			MovingCoord pp_z;	// Etirement du porte plateau (0 .. largeur plateau_z/2)
 			Plateau* plateau;
 			
 			Column* moving_col;	// 0 ou ptr column put/get plateau (en cours)
 			bool putting;		// si moving_col, putting / moving plateau
 			int etage_dest;		// etage dest / source
 			MotorSpeedHook* speed_hook;	// Pour le générateur de son
+			
+			static const Model* support_plateau_left;
+			float offset_support_left[3];
+			
+			static const Model* support_plateau_right;
+			float offset_support_right[3];
 	};
 }
 

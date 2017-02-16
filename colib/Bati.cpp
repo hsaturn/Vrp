@@ -20,6 +20,7 @@ namespace Colib {
 		h.setMaxVelocity(MAX_SPEED);
 		h.setMaxValue(10000);
 		h.setMaxVelocityThreshold(10*FACTOR);
+		h.setPositionTolerance(0.1);
 		h.setAccel(12*FACTOR);
 		
 		column_dest = 0;
@@ -92,10 +93,11 @@ namespace Colib {
 			hook_speed->update(h.getVelocity());
 
 		int x1 = getXLeft();
-		pilier(x1, 0);
-		pilier(x1 + Column::DEPTH_X - THICKNESS, 0);
-		pilier(x1, pcolib->getLength() - THICKNESS);
-		pilier(x1 + Column::DEPTH_X - THICKNESS, pcolib->getLength() - THICKNESS);
+		const int delta = Bati::THICKNESS;
+		pilier(x1, -delta);
+		pilier(x1 + Column::DEPTH_X - THICKNESS, -delta);
+		pilier(x1, pcolib->getLength() - THICKNESS + delta);
+		pilier(x1 + Column::DEPTH_X - THICKNESS, pcolib->getLength() - THICKNESS + delta);
 		
 		traverses();
 		
@@ -202,6 +204,7 @@ namespace Colib {
 			}
 			h.setTarget(pcolib->getHeight(etage) -Navette::HEIGHT_Y-Bati::THICKNESS);
 			float z = pcolib->getCenterOfColumnZ(col_dest, back);
+			
 			if (z==-1)
 				return Object::EXEC_FAILED;
 			navette->centerOn(z);

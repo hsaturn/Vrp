@@ -57,6 +57,9 @@ namespace Colib {
 		string unique_name;
 		string mcontent;
 		const Model* pmodel;
+		float offset_model[3];
+		const Model* plateau;
+		float plateau_offset[3];
 		int length_x;
 		int height_y;
 		int width_z;

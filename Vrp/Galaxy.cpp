@@ -143,7 +143,7 @@ Object::ExecResult Galaxy::_execute(Server* svr, string cmd, string incoming, co
 			svr->send("#OK " + getName() + " planet " + p1->getName() + " to " + p2->getName() + " = " + StringUtil::to_string(p1->distanceTo(p2)));
 		} else
 			svr->send("#KO Unexistant planet(s)");
-		return TRUE;
+		return EXEC_OK;
 	}
-	return FALSE;
+	return EXEC_UNKNOWN;
 }

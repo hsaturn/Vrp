@@ -311,48 +311,31 @@ namespace Colib
 		}
 		else if (cmd=="add")
 		{
-			string err="";
-			bool help(false);
-			if (incoming=="help" || incoming=="")
-				help = true;
+			vector<Column*>*	pcols = 0;
+			string where = StringUtil::getIdentifier(incoming);
+			if (where=="back")
+				pcols = &columns_back;
+			else if (where=="front")
+				pcols = &columns_front;
 			else
+				error = "Invalid (back or front expected)";
+			if (pcols)
 			{
-				vector<Column*>*	pcols = 0;
-				string where = StringUtil::getIdentifier(incoming);
-				if (where=="back")
-					pcols = &columns_back;
-				else if (where=="front")
-					pcols = &columns_front;
-				else
-					error = "Invalid (back or front expected)";
-				if (pcols)
-				{
-					int width = StringUtil::getLong(incoming);
-					
-					if (width<20 || width>100)
-						error = "Invalid width (from 20 to 200)";
-					else
-					{
-						Column* column = new Column(this, width);
-						pcols->push_back(column);
-						sizeHasChanged();
-						server->send("Column added");
-						autosave();
-					}
-				}
+				int width = StringUtil::getLong(incoming);
+
+				if (width<20 || width>100)
+					error = "Invalid width (from 20 to 200)";
 				else
 				{
-					help=true;
-					err="Missing back/front";
+					Column* column = new Column(this, width);
+					pcols->push_back(column);
+					sizeHasChanged();
+					server->send("Column added");
+					autosave();
 				}
 			}
-			
-			if (help)
-			{
-				// @FIXME
-				cerr << "Syntax error :-( " << err << endl;
-				server->send("colib.add [back|front] width (cm), add a column. "+err);
-			}
+			else
+				error="Missing back/front";
 		}
 		else if (cmd=="restore")
 		{
@@ -397,21 +380,24 @@ namespace Colib
 				gRenderBoundingBoxes = StringUtil::getLong(incoming);
 			else
 			{
-				cerr << "Bad parameter for boundings : " << incoming << endl;
-				return EXEC_FAILED;
+				error = "Bad parameter for boundings : " + incoming;
 			}
-			return EXEC_OK;
 		}
 		else if (cmd=="put")
 		{
 			if (bati->isAllStopped())
 			{
-				cout << "Colib.put " << endl;
-				const char* err= bati->put(back);
-				if (err)
-					error=err;
+				if (getCenterOfColumnZ(col, back) != -1)
+				{
+					cout << "Colib.put " << endl;
+					const char* err= bati->put(back);
+					if (err)
+						error=err;
+					else
+						autosave();
+				}
 				else
-					autosave();
+					error = "Position courante incorrecte";
 			}
 			else
 				ret = Object::EXEC_BUSY;
@@ -587,6 +573,7 @@ namespace Colib
 			pcolumns = &columns_back;
 		else
 			pcolumns = &columns_front;
+		
 		
 		if (col_nr >= pcolumns->size())
 		{

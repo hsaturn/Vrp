@@ -19,7 +19,7 @@ namespace RedStone
 	
 	Object::ExecResult RedStone::_execute(Server*, string cmd, string incoming, const string& org, CmdQueue&)
 	{
-		return FALSE;
+		return EXEC_UNKNOWN;
 	}
 	
 	void RedStone::_help(Help&)

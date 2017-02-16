@@ -52,13 +52,14 @@ namespace World
 	
 	Object::ExecResult World::_execute(Server*, string cmd, string incoming, const string& org, CmdQueue&)
 	{
-		ExecResult ret = FALSE;
+		ExecResult ret = EXEC_UNKNOWN;
 		
 		if (cmd=="add")
-			ret = TRUE;
+			ret = EXEC_OK;
 		else if (cmd=="read")
 		{
 			m_map->readFile(incoming);
+			ret = EXEC_OK;
 		}
 		return ret;
 	}

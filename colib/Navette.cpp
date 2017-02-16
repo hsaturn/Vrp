@@ -10,11 +10,28 @@
 
 namespace Colib
 {
+	const Model* Navette::support_plateau_left=0;
+	const Model* Navette::support_plateau_right=0;
+	
 	Navette::Navette(Bati* bati) : pbati(bati), z(0), plateau(0), moving_col(0)
 	{
+		
+		const int MAX_SPEED = 20.0;
+		pp_z.setValue(15);
+		pp_z.setTarget(15);		// half length_z of current plateau
+		pp_z.setAccel(MAX_SPEED*4);
+		pp_z.setMaxValue(9999);
+		pp_z.setMinValue(-9999);
+		pp_z.setPositionTolerance(0.01);
+		pp_z.setMaxVelocityThreshold(MAX_SPEED);
+		pp_z.setMaxVelocity(MAX_SPEED);
+		// @TODO SOUND ?
+		
 		z.setTarget(0);
 		z.setMaxVelocity(20*FACTOR);
+		z.setMinValue(-10000);
 		z.setMaxValue(100000);
+		z.setPositionTolerance(0.1);
 		z.setMaxVelocityThreshold(20*FACTOR);
 		z.setAccel(10*FACTOR);
 		
@@ -30,6 +47,36 @@ namespace Colib
 		s = "define sound { am 70 100 sinus 200:80 sq 300 triangle 400:10 } define motor { sound fm 99 101 sound sin 4 } fm 0 40 motor hook";
 		
 		speed_hook->changeSound(s);
+		
+		const float ep = 0.5;	// epaisseur bords support plateau
+		if (support_plateau_left == 0)
+		{
+			support_plateau_left = Model::get("nav_support_plateau_left");
+			if (support_plateau_left)
+			{
+				auto low = support_plateau_left->getMinCoord();
+				auto hig = support_plateau_left->getMaxCoord();
+
+				offset_support_left[0] = (-hig[0]-low[0])/2;
+				offset_support_left[1] = -low[1] - ep;
+				offset_support_left[2] = -hig[2] + ep + 0.1;	// 1mm d'écart plateau / support
+			}
+		}
+		
+		if (support_plateau_right == 0)
+		{
+			support_plateau_right = Model::get("nav_support_plateau_right");
+			
+			if (support_plateau_right)
+			{
+				auto low = support_plateau_right->getMinCoord();
+				auto hig = support_plateau_right->getMaxCoord();
+
+				offset_support_right[0] = (-hig[0]-low[0])/2;
+				offset_support_right[1] = -low[1] - ep;
+				offset_support_right[2] = -low[2] - ep - 0.1;
+			}
+		}
 	}
 	
 	Navette::~Navette()
@@ -72,39 +119,64 @@ namespace Colib
 	
 	bool Navette::render()
 	{
-		const int debord = 1;
 		z.update();
-	
+
 #ifdef HAVE_SYNTH
 		if (speed_hook)
 			speed_hook->update(z.getVelocity());
 #endif
 		
-		float Z1 = z;
-		if (z < Bati::THICKNESS)
-			z = Bati::THICKNESS;
 		float Y = pbati->getTopHeight();
+		float YTOP = Y + HEIGHT_Y;
+		float cz = z+LENGTH_Z/2.0;								// Centre navette Z
+		float cx = (pbati->getXLeft()+pbati->getXRight())/2;	// Centre X
+
+		if (support_plateau_left || support_plateau_right)
+		{
+			if (plateau)
+				pp_z.setTarget(plateau->getWidth()/2);
+			pp_z.update();
+		}
 		
+		if (support_plateau_left)
+		{
+			glPushMatrix();
+			glTranslatef(cx+offset_support_left[0], YTOP+offset_support_left[1], cz+pp_z+offset_support_left[2]);
+			support_plateau_left->render();
+			glPopMatrix();
+		}
+		if (support_plateau_right)
+		{
+			glPushMatrix();
+			glTranslatef(cx+offset_support_right[0], YTOP+offset_support_right[1], cz-pp_z+offset_support_right[2]);
+			support_plateau_right->render();
+			glPopMatrix();
+		}
+		/*
+		float Z1 = z;
+		float Z2 = Z1 + LENGTH_Z;
+		const int debord = 1;
+		 * 
 		Color::cyan.render();
 		
 		glBegin(GL_TRIANGLE_STRIP);
 		glNormal3i(0 ,-1, 0);	// Bottom rectangle
 		glVertex3f(pbati->getXLeft()-debord, Y, Z1);
-		glVertex3f(pbati->getXLeft()-debord, Y, Z1+LENGTH_Z);
+		glVertex3f(pbati->getXLeft()-debord, Y, Z2);
 		glVertex3f(pbati->getXRight()+debord, Y, Z1);
-		glVertex3f(pbati->getXRight()+debord, Y, Z1+LENGTH_Z);
+		glVertex3f(pbati->getXRight()+debord, Y, Z2);
 		
 		glNormal3i(1 ,0, 0);	// Right rectangle
-		glVertex3f(pbati->getXRight()+debord, Y+HEIGHT_Y, Z1);
-		glVertex3f(pbati->getXRight()+debord, Y+HEIGHT_Y, Z1+LENGTH_Z);
+		glVertex3f(pbati->getXRight()+debord, YTOP, Z1);
+		glVertex3f(pbati->getXRight()+debord, YTOP, Z2);
 		
 		glNormal3i(0, 1, 0);	// Top rectangle
-		glVertex3f(pbati->getXLeft()-debord, Y+HEIGHT_Y, Z1);
-		glVertex3f(pbati->getXLeft()-debord, Y+HEIGHT_Y, Z1+LENGTH_Z);
+		glVertex3f(pbati->getXLeft()-debord, YTOP, Z1);
+		glVertex3f(pbati->getXLeft()-debord, YTOP, Z2);
 			
 		glNormal3i(-1, 0, 0);	// Left rectangle
 		glVertex3f(pbati->getXLeft()-debord, Y, Z1);
-		glVertex3f(pbati->getXLeft()-debord, Y, Z1+LENGTH_Z);
+		glVertex3f(pbati->getXLeft()-debord, Y, Z2);
 		glEnd();
 		
 		Color::blue.render();
@@ -112,23 +184,24 @@ namespace Colib
 		glNormal3i(0,0,-1);	// back rectangle
 		glVertex3f(pbati->getXRight()+debord, Y, Z1);
 		glVertex3f(pbati->getXLeft()-debord, Y, Z1);
-		glVertex3f(pbati->getXRight()+debord, Y+HEIGHT_Y, Z1);
-		glVertex3f(pbati->getXLeft()-debord, Y+HEIGHT_Y, Z1);
+		glVertex3f(pbati->getXRight()+debord, YTOP, Z1);
+		glVertex3f(pbati->getXLeft()-debord, YTOP, Z1);
 		glEnd();
 		
 		Color::brown.render();
 		glBegin(GL_TRIANGLE_STRIP);
 		glNormal3i(0,0,1);	// front rectangle
-		glVertex3f(pbati->getXRight()+debord, Y, Z1+LENGTH_Z);
-		glVertex3f(pbati->getXLeft()-debord, Y, Z1+LENGTH_Z);
-		glVertex3f(pbati->getXRight()+debord, Y+HEIGHT_Y, Z1+LENGTH_Z);
-		glVertex3f(pbati->getXLeft()-debord, Y+HEIGHT_Y, Z1+LENGTH_Z);
+		glVertex3f(pbati->getXRight()+debord, Y, Z2);
+		glVertex3f(pbati->getXLeft()-debord, Y, Z2);
+		glVertex3f(pbati->getXRight()+debord, YTOP, Z2);
+		glVertex3f(pbati->getXLeft()-debord, YTOP, Z2);
 		glEnd();
+		*/
 		
 		if (plateau)
 		{
-			plateau->renderAtCenter(Y+HEIGHT_Y, z+LENGTH_Z/2);
 			
+			plateau->renderAtCenter(YTOP, cz);
 			if (moving_col && plateau->isReady())
 			{
 				cout << "Fin déplacement x plateau ! " << plateau->getX() << endl;
@@ -146,6 +219,8 @@ namespace Colib
 	
 	void Navette::centerOn(float zz)
 	{
+		
+		cout << "CENTER " << zz << endl;
 		z.setTarget(zz-Navette::LENGTH_Z/2);
 	}
 	

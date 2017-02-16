@@ -53,7 +53,7 @@ void Vrp::_help(Help& help)
 
 Object::ExecResult Vrp::_execute(Server* server, string cmd, string incoming, const string& org, CmdQueue&)
 {
-	ExecResult ret = TRUE;
+	ExecResult ret = EXEC_OK;
 	if (cmd == "solve")
 	{
 		cout << "SOLVE " << cmd << '/' << incoming << '/' << org << endl;
@@ -73,7 +73,7 @@ Object::ExecResult Vrp::_execute(Server* server, string cmd, string incoming, co
 	else if (cmd == "pause")
 		setVar("pause", 1);
 	else
-		ret = FALSE;
+		ret = EXEC_UNKNOWN;
 	return ret;
 }
 

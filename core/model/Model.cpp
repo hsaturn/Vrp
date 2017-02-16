@@ -143,11 +143,12 @@ bool Model::loadObjAndConvert(const string& file)
 		return false;
 	}
 
-	printf("# of vertices  = %d\n", (int) (attrib.vertices.size()) / 3);
-	printf("# of normals   = %d\n", (int) (attrib.normals.size()) / 3);
-	printf("# of texcoords = %d\n", (int) (attrib.texcoords.size()) / 2);
-	printf("# of materials = %d\n", (int) materials.size());
-	printf("# of shapes    = %d\n", (int) shapes.size());
+	cout << "MODEL " << file << endl;
+	cout << "# of vertices  = " << (int) (attrib.vertices.size()) / 3 << endl;
+	cout << "# of normals   = " << (int) (attrib.normals.size()) / 3 << endl;
+	cout << "# of texcoords = " << (int) (attrib.texcoords.size()) / 2 << endl;
+	cout << "# of materials = " << (int) materials.size() << endl;
+	cout << "# of shapes    = " << (int) shapes.size() << endl;
 
 	// Append `default` material
 	materials.push_back(tinyobj::material_t());
@@ -387,7 +388,7 @@ bool Model::loadObjAndConvert(const string& file)
 
 	printf("bmin = %f, %f, %f\n", bmin[0], bmin[1], bmin[2]);
 	printf("bmax = %f, %f, %f\n", bmax[0], bmax[1], bmax[2]);
-
+	
 	return true;
 }
 static const GLsizei stride = (3 + 3 + 3 + 2) * sizeof (float);
