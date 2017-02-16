@@ -10,10 +10,6 @@ bool TextureLoader::genGlTexture(std::string file)
 {
 	sf::Image image;
 	image.loadFromFile(file);
-	cout << "-----------------" << endl;
-	cout << "IMAGE " << file << endl;
-	cout << "  WIDTH  : " << image.getSize().x << endl;
-	cout << "  HEIGHT : " << image.getSize().y << endl;
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.getSize().x, image.getSize().y, 0, GL_RGBA, GL_UNSIGNED_BYTE, image.getPixelsPtr());
 	glGenerateMipmap(GL_TEXTURE_2D);  //Generate mipmaps now!!!

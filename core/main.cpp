@@ -1086,7 +1086,7 @@ void update(int value)
 			}
 			else if (ObjectBuilder::execute(server, cmd, incoming, org, cmdQueue) != Object::EXEC_UNKNOWN)
 			{
-				cerr << "Ok ObjectBuilder.execute " << cmd << endl;
+				// cerr << "Ok ObjectBuilder.execute " << cmd << endl;
 			}
 			else if (Widget::onCommand(org_row))
 				goto horrible; // @FIXME PTDR, un GOTO dans un code c++ Mouarf
