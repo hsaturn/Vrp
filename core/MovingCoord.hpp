@@ -52,7 +52,7 @@ public:
 	
 	void setPositionTolerance(float t) { position_tolerance = t; }
 	
-	float operator = (float f) { value = f; target = f; velocity = 0; return f; }
+	float operator = (float f) { setValue(f); return f; }
 	
 	void setValue(float t);
 	

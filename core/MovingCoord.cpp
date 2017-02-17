@@ -40,6 +40,7 @@ void MovingCoord::setValue(float t)
 	value = t;
 	target = t;
 	velocity = 0;
+	last = std::chrono::system_clock::now();
 }
 
 void MovingCoord::setMaxVelocityThreshold(float m)
