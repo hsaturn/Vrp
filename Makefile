@@ -1,12 +1,14 @@
-HAVE_SYNTH=1
+HAVE_SYNTH=0
+
+OPT=-std=c++0x -g
 
 ifeq ($(HAVE_SYNTH),1)
-LIBS=-lsynthetizer -lsfml-graphics
-else
-HAVE_SYNTH=0
+LIBS=-lsynthetizer
+OPT:=${OPT} -DHAVE_SYNTH
 endif
 
-OPT=-std=c++0x -g -DHAVE_SYNTH=$(HAVE_SYNTH)
+LIBS:=${LIBS} -lsfml-graphics
+
 PARTS = core core/model Cube Vrp genetic RedStone RedStone/Blocks core/commands Cube/commands world world/Blocks colib
 RENDERER:=renderer/opengl
 CXX=g++

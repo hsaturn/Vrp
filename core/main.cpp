@@ -715,7 +715,7 @@ void calcTranslate(string& incoming, float& v)
 	StringUtil::trim(incoming);
 	if (incoming.length())
 	{
-		char c=incoming[0];
+		// char c=incoming[0];
 /*		if (c=='+' || c=='-')
 		{
 			incoming.erase(0,1);

@@ -86,7 +86,6 @@ string LightElement::read(string& cmd, string& incoming)
 	s << " ";
 	for(int i=0; i<4; i++)
 		s << marray[i] << ' ';
-	cout << s.str() << endl;
 	cmd = "";
 	return s.str();
 }

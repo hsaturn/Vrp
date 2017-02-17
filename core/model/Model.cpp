@@ -386,8 +386,8 @@ bool Model::loadObjAndConvert(const string& file)
 		}
 	}
 
-	printf("bmin = %f, %f, %f\n", bmin[0], bmin[1], bmin[2]);
-	printf("bmax = %f, %f, %f\n", bmax[0], bmax[1], bmax[2]);
+	// printf("bmin = %f, %f, %f\n", bmin[0], bmin[1], bmin[2]);
+	// printf("bmax = %f, %f, %f\n", bmax[0], bmax[1], bmax[2]);
 	
 	return true;
 }
