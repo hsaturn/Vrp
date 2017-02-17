@@ -1,6 +1,6 @@
 # Blender v2.76 (sub 0) OBJ File: ''
 # www.blender.org
-mtllib nav_pusher_support.mtl
+mtllib nav_pusher.mtl
 o Cylinder
 v 0.000000 -3.000000 -2.500000
 v 0.000000 3.000000 -2.500000
