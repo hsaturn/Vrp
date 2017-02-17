@@ -32,7 +32,6 @@ namespace Colib
 	
 	Plateau::~Plateau()
 	{
-		SoundGenerator::remove(speed_hook);
 		if (speed_hook) delete speed_hook;
 	}
 	

@@ -107,10 +107,6 @@ namespace Colib
 	
 	bool Wings::isAllStopped()
 	{
-		if (!pusher_offset_x.targetReached())
-		{
-			cout << "Offset x " << pusher_offset_x << endl;
-		}
 		return wings_z.targetReached() && pusher_x.targetReached() && pusher_offset_x.targetReached();
 	}
 	
@@ -119,13 +115,26 @@ namespace Colib
 		float delta_x = 0;
 		if (plateau)
 		{
-			delta_x = plateau->getX()-plateau->getXDest();
+			if (plateau->getXDest()==pbati->getCenterX())	// get
+			{
+				if (pusher_x>1)	// get from front
+				{
+					cout << " FROM FRONT" << endl;
+					delta_x = -(plateau->getX()-plateau->getXDest());
+				}
+				else // get from back
+				{
+					cout << " FROM BACK" << endl;
+					delta_x = (plateau->getX()-plateau->getXDest());
+				}
+			}
+			else // put
+				delta_x = (plateau->getX()-pbati->getCenterX());
 			pusher_offset_x.setValue(delta_x);
 		}
 		else
 			pusher_offset_x.setTarget(0);
 
-		cout << "offset_x " << pusher_offset_x << endl;
 		wings_z.update();
 		
 		if (pusher_support)
@@ -145,7 +154,7 @@ namespace Colib
 			if (pusher)
 			{
 				y = pusher_support_offset_y-pusher->getMinCoord()[1];
-				glTranslatef(pusher_x*(pusher_offset_x+pusher->getLengthX()+Column::DEPTH_X/2), y, 0);
+				glTranslatef(pusher_offset_x+pusher_x*(pusher->getLengthX()+Column::DEPTH_X/2), y, 0);
 				pusher->render();
 			}
 			glPopMatrix();

@@ -13,6 +13,9 @@
 #ifndef MOTORSPEEDHOOK_HPP
 #define MOTORSPEEDHOOK_HPP
 
+#include <atomic>
+#include <string>
+
 #ifdef HAVE_SYNTH
 #include <libsynth.hpp> 
 #endif
@@ -21,9 +24,11 @@ using namespace std;
 
 namespace Colib
 {
-	class MotorSpeedHook
 #ifdef HAVE_SYNTH
+	class MotorSpeedHook
 	: public SoundGeneratorVarHook<float>
+#else
+	class MotorSpeedHook
 #endif
 	{
 		public:

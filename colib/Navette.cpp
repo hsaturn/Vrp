@@ -73,6 +73,8 @@ namespace Colib
 			cerr << "ERROR : Setting plateau with existing one !" << endl;
 			delete plateau;
 		}
+		if (p)
+			cout << "Navette: GOT PLATEAU" << endl;
 		plateau = p;
 		wings->adjustFor(plateau);
 	}
@@ -107,8 +109,9 @@ namespace Colib
 			else
 			{
 				Plateau* p = moving_col->getPlateau(etage_dest);
-				if (p && plateau==false)
+				if (p && plateau==0)
 				{
+					cout << "GOT PLATEAU" << endl;
 					setPlateau(p);
 					moving_col->setPlateau(etage_dest, 0);
 					plateau->setTargetCenterX(pbati->getCenterX());
