@@ -716,17 +716,18 @@ void calcTranslate(string& incoming, float& v)
 	if (incoming.length())
 	{
 		char c=incoming[0];
-		if (c=='+' || c=='-')
+/*		if (c=='+' || c=='-')
 		{
 			incoming.erase(0,1);
-			int dv = StringUtil::getLong(incoming);
+			int dv = StringUtil::getFloat(incoming);
 			if (c=='-')
 				v -= dv;
 			else
 				v += dv;
 		}
 		else
-			v = StringUtil::getLong(incoming);
+ * */
+			v = StringUtil::getFloat(incoming);
 	}
 }
 
@@ -853,7 +854,7 @@ void update(int value)
 				help.add("scale s");
 				help.add("screen x y");
 				help.add("widget");
-				help.add("translate [+|-| ]dx [+|- | ]dy [+|-| ]dz");
+				help.add("translate [[x|y|z] value]*");
 				help.add("var var=value");
 				help.add("light [on|off|x y z t]");
 
@@ -881,9 +882,18 @@ void update(int value)
 			}
 			else if (cmd == "translate")
 			{
-				calcTranslate(incoming, translateX);
-				calcTranslate(incoming, translateY);
-				calcTranslate(incoming, translateZ);
+				while(incoming.length())
+				{
+					string what=StringUtil::getWord(incoming);
+					if (what=="x")
+						calcTranslate(incoming, translateX);
+					else if (what=="y")
+						calcTranslate(incoming, translateY);
+					else if (what=="z")
+						calcTranslate(incoming, translateZ);
+					else
+						server->send("x,y or z expedcted instead of "+what);
+				}
 			}
 			else if (cmd == "scale")
 			{
