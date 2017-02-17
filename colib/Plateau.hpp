@@ -31,9 +31,10 @@ namespace Colib {
 		
 		bool isReady() const { return x.targetReached(); }
 		bool isAllStopped() const { return x.targetReached(); }
-		void setTargetX(int tx) { x.setTarget(tx); }
+		void setTargetCenterX(int tx) { x.setTarget(tx); }
 		const string& getContent() { return mcontent; }
 		float getX() const { return x; }
+		float getXDest() const { return x.getTarget(); }
 		int getWidth() const { return width_z; }
 		int getHeight() const { return height_y; }
 		

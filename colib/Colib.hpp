@@ -77,7 +77,7 @@ namespace Colib {
 		 */
 		int getHeight(unsigned int etage) const;
 		
-		int getLength() const { return length_z; }
+		float getLength() const { return length_z; }
 		
 		/**
 		 * 

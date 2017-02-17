@@ -141,7 +141,7 @@ namespace Colib {
 	const char* Bati::get(bool back)
 	{
 		Column* col = pcolib->getColumn(column_dest, back);
-		return navette->get(col, etage_dest);
+		return navette->get(col, etage_dest, back);
 	}
 	
 	void Bati::remove()
@@ -207,7 +207,7 @@ namespace Colib {
 			
 			if (z==-1)
 				return Object::EXEC_FAILED;
-			navette->centerOn(z);
+			navette->centerOn(z, back);
 			return Object::EXEC_OK;
 		}
 		else
@@ -229,19 +229,24 @@ namespace Colib {
 		return getHeight() + THICKNESS;
 	}
 	
-	int Bati::getLength() const
+	float Bati::getLength() const
 	{
 		return pcolib->getLength();
 	}
 
-	int Bati::getXLeft() const
+	float Bati::getXLeft() const
 	{
 		return Column::DEPTH_X + Cloison::THICKNESS_Z;
 	}
 	
-	int Bati::getXRight() const
+	float Bati::getXRight() const
 	{
 		return Column::DEPTH_X*2 + Cloison::THICKNESS_Z;
+	}
+	
+	float Bati::getCenterX() const
+	{
+		return (getXLeft()+getXRight())/2;
 	}
 	
 	void Bati::traverse(int x)

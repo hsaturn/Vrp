@@ -40,9 +40,10 @@ namespace Colib
 		
 		float getHeight() const;	// Hauteur des traverses (cm)
 		float getTopHeight() const;	// Hauteur des traverses + ep.
-		int getLength() const;
-		int getXLeft() const;
-		int getXRight() const;
+		float getLength() const;
+		float getXLeft() const;
+		float getXRight() const;
+		float getCenterX() const;
 		
 		Object::ExecResult moveTo(int col_nr, int h, bool back);
 		static const int THICKNESS = 10;

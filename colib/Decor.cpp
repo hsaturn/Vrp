@@ -30,10 +30,13 @@ void Decor::render(float size_x, float pos_y, float size_z, float tile_size)
 	glEnable(GL_TEXTURE_2D);
 	//glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	
-	const float size_x_tex = size_x / tile_size / 2.0;
-	const float size_z_tex = size_z / tile_size / 2.0;
+	float half_sx = size_x / 2.0;
+	float half_sz = size_z / 2.0;
 	
-	glTranslatef(-size_x/2, 0, -size_z/2);
+	const float size_x_tex = half_sx / tile_size;
+	const float size_z_tex = half_sz / tile_size;
+	
+	glTranslatef(-half_sx, 0, -half_sz);
 	Color::gray.render();
 	glBegin(GL_QUADS);
 	
@@ -53,4 +56,15 @@ void Decor::render(float size_x, float pos_y, float size_z, float tile_size)
 
 	glPopMatrix();
 	glBindTexture(GL_TEXTURE_2D, 0);
+	
+	glBegin(GL_QUAD_STRIP);
+	const int H = 200;
+	glColor4f(1, 1, 0.5, 0.3);
+	glVertex3f(-half_sx, 0, -half_sz);
+	glVertex3f(-half_sx, H, -half_sz);
+	glVertex3f(-half_sx, 0,  half_sz);
+	glVertex3f(-half_sx, H,  half_sz);
+	glVertex3f( half_sx, 0,  half_sz);
+	glVertex3f( half_sx, H,  half_sz);
+	glEnd();
 }

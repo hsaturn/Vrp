@@ -77,7 +77,7 @@ namespace Colib
 	{
 		glPushMatrix();
 		glTranslatef(width_x/2,0,length_z/2);
-		Decor::render(width_x+100, 0, length_z+100, 30);
+		Decor::render(30*((width_x+200)/30), 0, 30*((length_z+200)/30), 30);
 		glPopMatrix();
 		
 		Color::dark_green.render();
@@ -186,6 +186,8 @@ namespace Colib
 		
 		if (cmd=="go" || cmd=="next" || cmd=="prev")
 		{
+			if (!bati->isReady())
+				return EXEC_BUSY;
 			int revcol = col;
 			int revvert= vert;
 			

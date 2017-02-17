@@ -26,6 +26,7 @@ namespace Colib
 	class Bati;
 	class Plateau;
 	class MotorSpeedHook;
+	class Wings;
 	
 	class Navette
 	{
@@ -53,10 +54,10 @@ namespace Colib
 			const char* put(Column* col, int etage, bool back);	// ret: err ou 0
 			
 			const char* canGet(Column* col, int etage);			// ret: 0 if can or reason if cannot
-			const char* get(Column* col, int etage);			// ret: err ou 0
+			const char* get(Column* col, int etage, bool back);			// ret: err ou 0
 			void remove();
 			
-			void centerOn(float z);
+			void centerOn(float z, bool back);
 			static const int LENGTH_Z = 40;	// SIZE Z (cm)
 			static const int HEIGHT_Y = 10;	// SIZE Y (cm)
 			
@@ -67,19 +68,14 @@ namespace Colib
 			Bati* pbati;
 			
 			MovingCoord z;
-			MovingCoord wings_z;	// Etirement du porte plateau (0 .. largeur plateau_z/2)
 			Plateau* plateau;
 			
 			Column* moving_col;	// 0 ou ptr column put/get plateau (en cours)
 			bool putting;		// si moving_col, putting / getting plateau
+			bool putting_back;	// si moving_col && putting, de quel coté ?
 			int etage_dest;		// etage dest / source
 			MotorSpeedHook* speed_hook;	// Pour le générateur de son
-			
-			static const Model* support_plateau_left;
-			float offset_support_left[3];
-			
-			static const Model* support_plateau_right;
-			float offset_support_right[3];
+			Wings* wings;
 	};
 }
 
