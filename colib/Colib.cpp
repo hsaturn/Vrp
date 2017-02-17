@@ -16,8 +16,11 @@
 #include "Cloison.hpp"
 #include "Decor.hpp"
 
+	
 namespace Colib
 {
+	map<const char*, string> last;
+	
 	int col=-1;
 	int vert=0;
 	bool back=true;
@@ -417,7 +420,6 @@ namespace Colib
 			{
 				StringUtil::trim(incoming);
 				const char* err=bati->get(back);
-				cout << "COLIB NAVETTE::GET BAD " << err << endl;
 				if (err)
 					error=err;
 				else

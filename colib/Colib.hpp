@@ -19,7 +19,19 @@
 using namespace std;
 
 namespace Colib {
+	
+	extern map<const char*, string> last;
 
+	template<class T>
+	void colog(const char* key, T data)
+	{
+		string s =StringUtil::to_string(data);
+		if (last[key]==s)
+			return;
+		last[key] = s;
+		cout << '[' << key << "] " << s << endl;
+	}
+	
 	class Bati;
 	class Column;
 	

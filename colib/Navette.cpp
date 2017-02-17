@@ -93,6 +93,7 @@ namespace Colib
 		float cz = z+LENGTH_Z/2.0;								// Centre navette Z
 		float cx = (pbati->getXLeft()+pbati->getXRight())/2;	// Centre X
 
+		colog("NAV_PLATEAU", plateau);
 		wings->render(cx, ytop, cz, plateau, pbati);
 		
 		// Suite de put / get: les ailes sont déployées

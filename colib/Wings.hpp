@@ -32,7 +32,8 @@ namespace Colib
 			MovingCoord wings_z;	// Etirement des ailes (0 .. largeur plateau_z/2)
 			MovingCoord pusher_x;
 			
-			MovingCoord pusher_offset_x;
+			const Plateau* adjust;			// Ajustement sur ce plateau lors de render (attn this ptr must not be used to call Plateau methods))
+			float pusher_offset_x;	// x du plateau d'ajustement
 
 			static const Model* support_plateau_left;
 			static float offset_support_left[3];
