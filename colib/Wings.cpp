@@ -196,7 +196,7 @@ namespace Colib
 		cout << "PUSHER TARGET " << pusher_x.getTarget() << endl;
 	}
 	
-	void Wings::adjustFor(const Plateau* p)
+	loadvoid Wings::adjustFor(const Plateau* p)
 	{
 		if (p) wings_z.setTarget(p->getWidth()/2);
 	}
