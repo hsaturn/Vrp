@@ -1,6 +1,6 @@
 # Blender v2.76 (sub 0) OBJ File: ''
 # www.blender.org
-mtllib cube2.mtl
+mtllib caisse.mtl
 o Cube.002
 v 10.343462 -10.343462 -10.343462
 v 10.343462 -10.343462 10.343462

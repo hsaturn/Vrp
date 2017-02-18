@@ -1,10 +1,10 @@
-# Blender MTL File: 'None'
+# Blender MTL File: 'nav_support_plateau.blend'
 # Material Count: 1
 
-newmtl Material.001
-Ns 96.078431
+newmtl Material.000
+Ns 94.117647
 Ka 1.000000 1.000000 1.000000
-Kd 0.640000 0.277912 0.134045
+Kd 0.387613 0.640000 0.476234
 Ks 0.500000 0.500000 0.500000
 Ke 0.000000 0.000000 0.000000
 Ni 1.000000
