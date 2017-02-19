@@ -33,6 +33,8 @@
 #include "Help.h"
 #include <Widget.h>
 
+#include "colib/Decor.hpp"
+
 int SCREEN_WIDTH = 200;
 int SCREEN_HEIGHT = 200;
 
@@ -673,8 +675,23 @@ void drawScene()
 	glRotatef(_anglex, 1.0, 0.0, 0.0);
 	glRotatef(_angley, 0.0, 1.0, 0.0);
 	
+	// Tentative désespérée de réflection ...
+#if REFLEXION
 	//glUniformMatrix4fv(cube_server, 1, GL_FALSE, glm::value_ptr(orient));
+	glPushMatrix();
+	glScalef(1.0, -1.0, 1.0);
 	redisplayAsked |= ObjectBuilder::render(false);
+	glPopMatrix();
+	
+		  glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glColor4f(0.7, 0.0, 0.0, 0.40);  /* 40% dark red floor color */
+	Decor::render(600, 0, 600, 30);
+	glDisable(GL_BLEND);
+	redisplayAsked |= ObjectBuilder::render(false);
+#else
+	redisplayAsked |= ObjectBuilder::render(false);
+#endif
 	
 	if (false) {
 		static GLUquadricObj *quadric = 0;
@@ -783,6 +800,8 @@ void update(int value)
 
 		if (cmdQueue.size())
 		{
+			static string last;
+			
 			redisplay = 499;
 			string row = cmdQueue.front();
 			string org_row = row;
@@ -792,6 +811,11 @@ void update(int value)
 			while (row[0] == '@')
 				row.erase(0, 1);
 			string org = row;
+			
+			if (row == "!")
+				row = last;
+			else
+				last = row;
 
 			string incoming = getWord(row, ";");
 			trim(row);
