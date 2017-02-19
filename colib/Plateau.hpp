@@ -14,7 +14,7 @@
 #ifndef PLATEAU_HPP
 #define PLATEAU_HPP
 
-#include "MovingCoord.hpp"
+#include "DynamicFloat.hpp"
 #include <string>
 
 using namespace std;
@@ -40,7 +40,7 @@ namespace Colib {
 		
 		const Model* getModel() const { return pmodel; }
 
-		const MovingCoord& getMovingCoord() const { return x; }
+		const DynamicFloat& getMovingCoord() const { return x; }
 		/**
 		 * @param cx center coords
 		 * @param cy
@@ -54,7 +54,7 @@ namespace Colib {
 		
 	private:
 		Plateau(string content, int center_x);
-		MovingCoord x;
+		DynamicFloat x;
 		string unique_name;
 		string mcontent;
 		const Model* pmodel;

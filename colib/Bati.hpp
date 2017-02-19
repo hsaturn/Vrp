@@ -9,7 +9,7 @@
 #define BATI_HPP
 
 #include <Object.h>
-#include <MovingCoord.hpp>
+#include <DynamicFloat.hpp>
 
 namespace Colib
 {
@@ -65,8 +65,8 @@ namespace Colib
 		
 	private:
 		void pilier(int x, int z);
-		void traverses();
-		void traverse(int x);
+		void traverses(float delta);
+		void traverse(int x, float delta);
 		
 		float y;	
 		int dest_y;
@@ -77,7 +77,7 @@ namespace Colib
 		int column_dest;
 		int etage_dest;
 		
-		MovingCoord h;	// 0..100% of height
+		DynamicFloat h;	// 0..100% of height
 		
 		MotorSpeedHook* hook_speed;
 	};

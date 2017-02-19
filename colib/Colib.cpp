@@ -56,6 +56,7 @@ namespace Colib
 	Colib::Colib(const string& name, int initial_height)
 	: Object(name), height(initial_height)
 	{
+		last_ready = false;
 		list_columns = 0;
 
 		if (height<100)

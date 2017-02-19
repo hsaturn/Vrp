@@ -15,7 +15,7 @@
 #define NAVETTE_HPP
 
 #include <Object.h>
-#include <MovingCoord.hpp>
+#include <DynamicFloat.hpp>
 #include <model/Model.hpp>
 
 using namespace std;
@@ -67,7 +67,7 @@ namespace Colib
 			
 			Bati* pbati;
 			
-			MovingCoord z;
+			DynamicFloat z;
 			Plateau* plateau;
 			
 			Column* moving_col;	// 0 ou ptr column put/get plateau (en cours)

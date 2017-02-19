@@ -26,7 +26,7 @@ namespace Colib {
 		column_dest = 0;
 		etage_dest = 0;
 		
-		// changeSound("bati define sound { am 70 100 sinus 200:80 sq 300 triangle 400:10 sq 600:10 } reverb 30:30 fm 0 80 sound hook");
+		changeSound("bati define sound { am 70 100 sinus 200:80 sq 300 triangle 400:10 sq 600:10 } reverb 30:30 fm 0 80 sound hook");
 	}
 	
 	Bati::~Bati()
@@ -44,7 +44,6 @@ namespace Colib {
 
 	void Bati::changeSound(string sound)
 	{
-		return;
 		if (sound.length())
 		{
 			string what = StringUtil::getWord(sound);
@@ -99,7 +98,7 @@ namespace Colib {
 		pilier(x1, pcolib->getLength() - THICKNESS + delta);
 		pilier(x1 + Column::DEPTH_X - THICKNESS, pcolib->getLength() - THICKNESS + delta);
 		
-		traverses();
+		traverses(delta);
 		
 		bool bRet = navette->render();
 		
@@ -172,11 +171,11 @@ namespace Colib {
 		glEnd();
 	}
 	
-	void Bati::traverses()
+	void Bati::traverses(float delta)
 	{
 		Color::dark_red.render();
-		traverse(getXLeft());
-		traverse(getXRight() - THICKNESS);
+		traverse(getXLeft(), delta);
+		traverse(getXRight() - THICKNESS, delta);
 	}
 	
 	bool Bati::isReady()
@@ -249,28 +248,28 @@ namespace Colib {
 		return (getXLeft()+getXRight())/2;
 	}
 	
-	void Bati::traverse(int x)
+	void Bati::traverse(int x, float delta)
 	{
 		float H = getHeight();
-		int Z2 = pcolib->getLength()-THICKNESS;
+		int Z2 = pcolib->getLength()-THICKNESS+delta;
 		glBegin(GL_TRIANGLE_STRIP);
 		
 		glNormal3i(0, -1, 0);
-		glVertex3f(x, H, THICKNESS);
+		glVertex3f(x, H, THICKNESS-delta);
 		glVertex3f(x, H, Z2);
-		glVertex3f(x+THICKNESS, H, THICKNESS);
+		glVertex3f(x+THICKNESS, H, THICKNESS-delta);
 		glVertex3f(x+THICKNESS, H, Z2);
 		
 		glNormal3i(1, 0, 0);
-		glVertex3f(x+THICKNESS, H+THICKNESS, THICKNESS);
+		glVertex3f(x+THICKNESS, H+THICKNESS, THICKNESS-delta);
 		glVertex3f(x+THICKNESS, H+THICKNESS, Z2);
 		
 		glNormal3i(0, 1, 0);
-		glVertex3f(x, H+THICKNESS, THICKNESS);
+		glVertex3f(x, H+THICKNESS, THICKNESS-delta);
 		glVertex3f(x, H+THICKNESS, Z2);
 		
 		glNormal3i(-1, 0, 0);
-		glVertex3f(x, H, THICKNESS);
+		glVertex3f(x, H, THICKNESS-delta);
 		glVertex3f(x, H, Z2);
 		
 		glEnd();
