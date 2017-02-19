@@ -1,8 +1,8 @@
-# Blender MTL File: 'nav_support_plateau.blend'
+# Blender MTL File: 'nav_pusher_support.blend'
 # Material Count: 1
 
 newmtl Material.000
-Ns 94.117647
+Ns 92.156863
 Ka 1.000000 1.000000 1.000000
 Kd 0.387613 0.640000 0.476234
 Ks 0.500000 0.500000 0.500000
