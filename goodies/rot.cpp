@@ -1,10 +1,12 @@
-/ Working OpenGL3.3 Context with GLFW Window showing a colored rectangle with Kitten 
-#define GLEW_STATIC
+// Working OpenGL3.3 Context with GLFW Window showing a colored rectangle with Kitten 
 #include <GL/glew.h>
+#include <GLFW/glfw3.h>
 #include "glm/glm.hpp"
-#include <gtc\matrix_transform.hpp>
-#include <gtc\type_ptr.hpp>
-#include <stdio.h.>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <SOIL/SOIL.h>
+
+#include <stdio.h>
 #include <stdlib.h>
 #include <ctime>
 #include <iostream>

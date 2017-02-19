@@ -322,7 +322,7 @@ int main (int argc, char **argv)
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
 	glutInitWindowSize(width, height);
-	glutCreateWindow("GLUT Skeleton Program");
+	glutCreateWindow("GLUT Skeleton Program F1 .. F4, F10 cursor");
 
 	// Register call backs for standard tasks such as:
 	// display, windowresize, keypress, functionkey press, mouse movement.
