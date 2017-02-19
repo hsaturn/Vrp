@@ -1,6 +1,11 @@
 # Quick makefile, sry
 
-all: build rot snowman 2d basic
+TARGETS = build rot snowman 2d basic
+
+all: $(TARGETS)
+
+clean:
+	rm -rf $(TARGETS)
 
 INCLUDE=
 LIBS=-lGL -lglfw -lGLEW -lSOIL -lGLU -lglut
