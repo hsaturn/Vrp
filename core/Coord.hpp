@@ -10,17 +10,28 @@
 
 #include "Object.h"
 #include <iostream>
-
-
-typedef float Type;
+#include <GL/glew.h>
 
 /**
  Class used to store coordinates that can be used as key (for maps etc.) */
 
-class Coord {
+template<class Type>
+class CoordType {
 public:
-	Coord();
-	Coord(Type x, Type y, Type z);
+
+	CoordType() {
+		key = 0;
+		_x = 0;
+		_y = 0;
+		_z = 0;
+	};
+	
+	CoordType(Type cx, Type cy, Type cz) {
+		_x = cx;
+		_y = cy;
+		_z = cz;
+		key = _x + 1000.0 * _y + 1000000.0 * _z;
+	};
 
 	Type x() const {
 		return _x;
@@ -34,16 +45,18 @@ public:
 		return _z;
 	}
 
-	bool operator<(const Coord& b) const {
+	inline bool operator<(const CoordType& b) const {
 		return key < b.key;
 	}
 
-	friend inline ostream& operator<<(ostream& out, const Coord& c) {
+	inline void render() {
+			glVertex3f(_x, _y, _z);
+		};
+		
+	friend inline ostream& operator<<(ostream& out, const CoordType& c) {
 		out << '(' << c.key << ", " << (int) c.x() << ", " << (int) c.y() << ", " << (int) c.z() << ", " << ')';
 		return out;
 	}
-
-	void render();
 
 private:
 
@@ -52,6 +65,9 @@ private:
 	Type _z;
 	float key;
 };
+
+typedef CoordType<float> Coord;
+
 
 #endif /* COORD_HPP */
 

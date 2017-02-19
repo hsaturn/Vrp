@@ -8,9 +8,11 @@
           <in>Cloison.o</in>
           <in>Colib.o</in>
           <in>Column.o</in>
+          <in>Decor.o</in>
           <in>MotorSpeedHook.o</in>
           <in>Navette.o</in>
           <in>Plateau.o</in>
+          <in>Wings.o</in>
         </df>
         <df name="core">
           <df name="commands">
@@ -32,6 +34,7 @@
           </df>
           <in>ClipBoard.o</in>
           <in>Coord.o</in>
+          <in>DynamicFloat.o</in>
           <in>Help.o</in>
           <in>LightElement.o</in>
           <in>Model.o</in>
@@ -120,9 +123,11 @@
         <in>Cloison.cpp</in>
         <in>Colib.cpp</in>
         <in>Column.cpp</in>
+        <in>Decor.cpp</in>
         <in>MotorSpeedHook.cpp</in>
         <in>Navette.cpp</in>
         <in>Plateau.cpp</in>
+        <in>Wings.cpp</in>
       </df>
       <df name="core">
         <df name="commands">
@@ -144,6 +149,7 @@
         </df>
         <in>ClipBoard.cpp</in>
         <in>Coord.cpp</in>
+        <in>DynamicFloat.cpp</in>
         <in>Help.cpp</in>
         <in>LightElement.cpp</in>
         <in>ModelOld.cpp</in>
@@ -274,6 +280,7 @@
             <pElem>renderer/opengl</pElem>
             <pElem>Cube</pElem>
             <pElem>core</pElem>
+            <pElem>/usr/include/GL</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>
@@ -283,6 +290,7 @@
           <incDir>
             <pElem>renderer/opengl</pElem>
             <pElem>Cube</pElem>
+            <pElem>/usr/include/GL</pElem>
             <pElem>core</pElem>
             <pElem>.</pElem>
           </incDir>
@@ -310,38 +318,20 @@
             <pElem>.</pElem>
           </incDir>
           <preprocessorList>
-            <Elem>HAVE_SYNTH=1</Elem>
+            <Elem>HAVE_SYNTH</Elem>
           </preprocessorList>
         </ccTool>
       </item>
       <item path="RedStone/Blocks/Block.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
-          <incDir>
-            <pElem>core</pElem>
-            <pElem>RedStone/Blocks</pElem>
-            <pElem>renderer/opengl</pElem>
-            <pElem>.</pElem>
-          </incDir>
         </ccTool>
       </item>
       <item path="RedStone/Blocks/Solid.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
-          <incDir>
-            <pElem>RedStone/Blocks</pElem>
-            <pElem>core</pElem>
-            <pElem>renderer/opengl</pElem>
-            <pElem>.</pElem>
-          </incDir>
         </ccTool>
       </item>
       <item path="RedStone/Blocks/Torch.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
-          <incDir>
-            <pElem>core</pElem>
-            <pElem>RedStone/Blocks</pElem>
-            <pElem>renderer/opengl</pElem>
-            <pElem>.</pElem>
-          </incDir>
         </ccTool>
       </item>
       <item path="RedStone/RedMap.cpp" ex="false" tool="1" flavor2="8">
@@ -394,6 +384,7 @@
             <pElem>Vrp</pElem>
             <pElem>glm/detail</pElem>
             <pElem>glm</pElem>
+            <pElem>/usr/include/GL</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>
@@ -403,6 +394,7 @@
           <incDir>
             <pElem>genetic</pElem>
             <pElem>Vrp</pElem>
+            <pElem>/usr/include/GL</pElem>
             <pElem>glm/detail</pElem>
             <pElem>glm</pElem>
             <pElem>renderer/opengl</pElem>
@@ -430,6 +422,7 @@
             <pElem>glm/gtc</pElem>
             <pElem>glm</pElem>
             <pElem>core</pElem>
+            <pElem>/usr/include/GL</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>
@@ -454,6 +447,7 @@
             <pElem>Vrp</pElem>
             <pElem>glm/detail</pElem>
             <pElem>glm</pElem>
+            <pElem>/usr/include/GL</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>
@@ -465,6 +459,7 @@
             <pElem>glm/detail</pElem>
             <pElem>glm</pElem>
             <pElem>renderer/opengl</pElem>
+            <pElem>/usr/include/GL</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>
@@ -478,6 +473,7 @@
             <pElem>glm</pElem>
             <pElem>renderer/opengl</pElem>
             <pElem>core</pElem>
+            <pElem>/usr/include/GL</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>
@@ -591,6 +587,10 @@
         <ccTool flags="1">
         </ccTool>
       </item>
+      <item path="build/colib/Decor.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
       <item path="build/colib/MotorSpeedHook.o" ex="false" tool="1" flavor2="8">
         <ccTool flags="1">
         </ccTool>
@@ -603,11 +603,19 @@
         <ccTool flags="1">
         </ccTool>
       </item>
+      <item path="build/colib/Wings.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
       <item path="build/core/ClipBoard.o" ex="false" tool="1" flavor2="8">
         <ccTool flags="1">
         </ccTool>
       </item>
       <item path="build/core/Coord.o" ex="false" tool="1" flavor2="8">
+        <ccTool flags="1">
+        </ccTool>
+      </item>
+      <item path="build/core/DynamicFloat.o" ex="false" tool="1" flavor2="8">
         <ccTool flags="1">
         </ccTool>
       </item>
@@ -621,6 +629,9 @@
       </item>
       <item path="build/core/Model.o" ex="false" tool="1" flavor2="8">
         <ccTool flags="1">
+          <preprocessorList>
+            <Elem>HAVE_SYNTH=1</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="build/core/ModelOld.o" ex="false" tool="1" flavor2="8">
@@ -847,8 +858,11 @@
           <incDir>
             <pElem>core</pElem>
             <pElem>colib</pElem>
-            <pElem>renderer/opengl</pElem>
+            <pElem>core/model</pElem>
             <pElem>/usr/include/GL</pElem>
+            <pElem>renderer/opengl</pElem>
+            <pElem>glm/detail</pElem>
+            <pElem>glm</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>
@@ -860,8 +874,8 @@
             <pElem>core</pElem>
             <pElem>glm/detail</pElem>
             <pElem>glm</pElem>
-            <pElem>renderer/opengl</pElem>
             <pElem>Vrp</pElem>
+            <pElem>renderer/opengl</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>
@@ -872,7 +886,10 @@
             <pElem>core</pElem>
             <pElem>colib</pElem>
             <pElem>/usr/include/GL</pElem>
+            <pElem>core/model</pElem>
             <pElem>renderer/opengl</pElem>
+            <pElem>glm/detail</pElem>
+            <pElem>glm</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>
@@ -887,12 +904,25 @@
           </incDir>
         </ccTool>
       </item>
+      <item path="colib/Decor.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <incDir>
+            <pElem>colib</pElem>
+            <pElem>/usr/include/GL</pElem>
+            <pElem>renderer/opengl</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </item>
       <item path="colib/MotorSpeedHook.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
           <incDir>
             <pElem>colib</pElem>
             <pElem>core</pElem>
             <pElem>renderer/opengl</pElem>
+            <pElem>glm/detail</pElem>
+            <pElem>glm</pElem>
+            <pElem>core/model</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>
@@ -902,7 +932,11 @@
           <incDir>
             <pElem>core</pElem>
             <pElem>colib</pElem>
+            <pElem>/usr/include/GL</pElem>
+            <pElem>core/model</pElem>
             <pElem>renderer/opengl</pElem>
+            <pElem>glm/detail</pElem>
+            <pElem>glm</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>
@@ -914,9 +948,24 @@
             <pElem>colib</pElem>
             <pElem>core/model</pElem>
             <pElem>glm/detail</pElem>
-            <pElem>renderer/opengl</pElem>
             <pElem>/usr/include/GL</pElem>
+            <pElem>renderer/opengl</pElem>
             <pElem>glm</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="colib/Wings.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <incDir>
+            <pElem>core</pElem>
+            <pElem>core/model</pElem>
+            <pElem>colib</pElem>
+            <pElem>glm/detail</pElem>
+            <pElem>glm</pElem>
+            <pElem>/usr/include/GL</pElem>
+            <pElem>Vrp</pElem>
+            <pElem>renderer/opengl</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>
@@ -934,6 +983,14 @@
           <incDir>
             <pElem>core</pElem>
             <pElem>renderer/opengl</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="core/DynamicFloat.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <incDir>
+            <pElem>core</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>
@@ -968,11 +1025,18 @@
         </ccTool>
       </item>
       <item path="core/MovingCoord.cpp" ex="false" tool="1" flavor2="8">
-        <ccTool flags="0">
+        <ccTool flags="1">
           <incDir>
+            <pElem>renderer/opengl</pElem>
             <pElem>core</pElem>
+            <pElem>genetic</pElem>
+            <pElem>glm</pElem>
+            <pElem>/usr/include</pElem>
             <pElem>.</pElem>
           </incDir>
+          <preprocessorList>
+            <Elem>HAVE_SYNTH</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="core/Object.cpp" ex="false" tool="1" flavor2="8">
@@ -1227,13 +1291,23 @@
           </incDir>
         </ccTool>
       </item>
+      <folder path="0/RedStone/Blocks">
+        <ccTool>
+          <incDir>
+            <pElem>RedStone/Blocks</pElem>
+            <pElem>core</pElem>
+            <pElem>renderer/opengl</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
       <folder path="0/build">
         <ccTool>
           <incDir>
             <pElem>.</pElem>
           </incDir>
           <preprocessorList>
-            <Elem>HAVE_SYNTH=1</Elem>
+            <Elem>HAVE_SYNTH</Elem>
           </preprocessorList>
         </ccTool>
       </folder>
@@ -1256,6 +1330,16 @@
         <ccTool>
           <incDir>
             <pElem>renderer/opengl</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <folder path="0/world/Blocks">
+        <ccTool>
+          <incDir>
+            <pElem>world/Blocks</pElem>
+            <pElem>core</pElem>
+            <pElem>renderer/opengl</pElem>
+            <pElem>.</pElem>
           </incDir>
         </ccTool>
       </folder>
@@ -1308,6 +1392,7 @@
       <item path="renderer/opengl/Color.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
           <incDir>
+            <pElem>/usr/include/GL</pElem>
             <pElem>core</pElem>
             <pElem>.</pElem>
           </incDir>
@@ -1342,8 +1427,8 @@
       <item path="renderer/opengl/WidgetButton.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
           <incDir>
-            <pElem>core</pElem>
             <pElem>/usr/include/GL</pElem>
+            <pElem>core</pElem>
             <pElem>.</pElem>
           </incDir>
         </ccTool>
@@ -1351,6 +1436,7 @@
       <item path="renderer/opengl/WidgetConsole.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
           <incDir>
+            <pElem>/usr/include/GL</pElem>
             <pElem>core</pElem>
             <pElem>.</pElem>
           </incDir>
@@ -1367,38 +1453,21 @@
       </item>
       <item path="world/Blocks/Block.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
-          <incDir>
-            <pElem>core</pElem>
-            <pElem>world/Blocks</pElem>
-            <pElem>renderer/opengl</pElem>
-            <pElem>.</pElem>
-          </incDir>
         </ccTool>
       </item>
       <item path="world/Blocks/Solid.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
-          <incDir>
-            <pElem>world/Blocks</pElem>
-            <pElem>core</pElem>
-            <pElem>renderer/opengl</pElem>
-            <pElem>.</pElem>
-          </incDir>
         </ccTool>
       </item>
       <item path="world/Blocks/Torch.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
-          <incDir>
-            <pElem>core</pElem>
-            <pElem>world/Blocks</pElem>
-            <pElem>renderer/opengl</pElem>
-            <pElem>.</pElem>
-          </incDir>
         </ccTool>
       </item>
       <item path="world/Map.cpp" ex="false" tool="1" flavor2="8">
         <ccTool flags="0">
           <incDir>
             <pElem>world</pElem>
+            <pElem>/usr/include/GL</pElem>
             <pElem>renderer/opengl</pElem>
             <pElem>.</pElem>
           </incDir>

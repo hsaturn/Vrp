@@ -968,3 +968,39 @@ bool StringUtil::isIso(const char* p)
 
 	return false;
 }
+
+bool StringUtil::startsWith(string&s, const string& start, bool remove)
+{
+	string::size_type ps=0;
+	string::size_type pstart=0;
+	
+	while(s.length()>ps && s[ps]==' ') ps++;
+
+	if (s.length()>ps)
+		if (s.substr(ps, start.length())==start)
+		{
+			if (remove)
+				s.erase(0,ps+start.length());
+			return true;
+		}
+	return false;
+}
+
+bool StringUtil::startsWithFloat(const string& s)
+{
+	bool sign=false;
+	for(auto it: s)
+	{
+		if (it==' ' && sign==false)
+			continue;
+		if (it=='-' && sign==false)
+		{
+			sign=true;
+			continue;
+		}
+		if ((it>='0' && it<='9') || it=='.')
+			return true;
+		return false;
+	}
+	return false;
+}

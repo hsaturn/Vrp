@@ -15,7 +15,8 @@
 #include <sstream>
 #include "StringUtil.hpp"
 #include "Color.h"
-#include "MovingCoord.hpp"
+#include "DynamicFloat.hpp"
+#include <iomanip>
 
 LightElement::LightElement(float x, float y, float z, float a, bool active)
 : mactive(active)
@@ -50,105 +51,186 @@ string LightElement::read(string& cmd, string& incoming)
 	stringstream s;
 	s << cmd << " : ";
 
-	string onoff = StringUtil::getWord(incoming);
-	if (onoff == "off")
-	{
+	if (StringUtil::startsWith(incoming, "off", true))
 		mactive = false;
-		s << "off";
-	}
-	else if (onoff == "on")
+	else if (StringUtil::startsWith(incoming, "on", true))
+		mactive = true;
+	
+	if (StringUtil::startsWithFloat(incoming))
 	{
 		mactive = true;
-		s << "on";
-	}
-	else if (onoff.length())
-	{
-		float value = StringUtil::getFloat(onoff);
-		setValue(0, value);
-		mactive = true;
-		s << "on";
-		if (onoff == "on")
-			mactive = true;
-		else
+		float value = StringUtil::getFloat(incoming);
+		int i=0;
+		while(i<3)
 		{
-			int i=1;
-			while(i<3)
-			{
-				if (incoming.length())
-					value = StringUtil::getFloat(incoming);
-				setValue(i++, value);
-			}
-			if (incoming.length())
-				setValue(4, StringUtil::getFloat(incoming));
-			
+			if (StringUtil::startsWithFloat(incoming))
+				value = StringUtil::getFloat(incoming);
+			marray[i++].setTarget(value);
 		}
+		if (StringUtil::startsWithFloat(incoming))
+			marray[3].setValue(StringUtil::getFloat(incoming));
 	}
-	s << " ";
-	for(int i=0; i<4; i++)
-		s << marray[i] << ' ';
+	else
+		cerr << "bad syntax, [on|off] float[,float...] expected." << endl;
+
+	outDynFloat(s, marray, 4);
+
 	cmd = "";
 	return s.str();
 }
 
-void LightElement::translate(GLfloat dir)
+void LightElement::outDynFloat(ostream& s, DynamicFloat* dyns, uint8_t size)
 {
-	glTranslatef(marray[0]*dir, marray[1]*dir, marray[2]*dir);
+	s << (mactive ? "on" : "off") << " Value: (";
+	for(int i=0; i<size; i++)
+		s << setprecision(2) << (float)dyns[i] << ", ";
+	s.seekp(-2,s.cur);
+
+	s << ") Target: (";
+	for(int i=0; i<size; i++)
+		s << dyns[i].getTarget() << ", ";
+	s.seekp(-2,s.cur);
+
+	s << ") Velocity: (";
+	for(int i=0; i<size; i++)
+		s << dyns[i].getVelocity() << ", ";
+	s.seekp(-2,s.cur);
+
+	s << ") Accel: (";
+	for(int i=0; i<size; i++)
+		s << dyns[i].getVelocity() << ", ";	
+	s.seekp(-2,s.cur);
+	s << ") ";
 }
+
 
  Light::Light(float x, float y, float z, float a, bool active)
 	:
-	LightElement(x,y,z,a,active)
+	LightElement(1,1,1,a,active)
  {
-	 dest = new MovingCoord[4];
-	 for(int i=0; i<4; i++)
+	 rotation_ray = 0;
+	 for(int i=0; i<3; i++)
 	 {
-		dest[i].setMinValue(-100);
-		dest[i].setMaxValue(100);
-		dest[i].setAccel(1);
-		dest[i].setMaxVelocityThreshold(5);
-		dest[i]=marray[i];
+		position[i].setMinValue(-100);
+		position[i].setMaxValue(100);
+		position[i].setAccel(1);
+		position[i].setMaxVelocityThreshold(20);
 	 }
+	 position[0].setTarget(x);
+	 position[1].setTarget(y);
+	 position[2].setTarget(z);
  }
  
  Light::~Light()
  {
-	 delete [] dest;
  }
+ 
+string Light::read(string& cmd, string &incoming)
+{
+	stringstream s;
+	s << cmd << ' ';
+	bool help=false;
+	
+	while(incoming.length() && help ==false)
+	{
+		if (StringUtil::startsWith(incoming, "color ", true))
+		{
+			s << LightElement::read(cmd, incoming);
+		}
+		else if (
+			StringUtil::startsWith(incoming, "pos ", true) ||
+			StringUtil::startsWith(incoming, "position ", true))
+		{
+			int i=0;
+			while(StringUtil::startsWithFloat(incoming) && i<3)
+				position[i++].setTarget(StringUtil::getFloat(incoming));
+		}
+		else if (StringUtil::startsWith(incoming, "rotation", true))
+		{
+			rotation_angle = 0;
+			if (StringUtil::startsWithFloat(incoming))
+				rotation_ray = StringUtil::getFloat(incoming);
+			if (StringUtil::startsWithFloat(incoming))
+				rotation_speed = StringUtil::getFloat(incoming);
+			else
+				help = true;
+		}
+		else if (StringUtil::startsWith(incoming, "on", true))
+			mactive = true;
+		else if (StringUtil::startsWith(incoming, "off", true))
+			mactive = false;
+		else if (StringUtil::startsWith(incoming, "help", true))
+			help = true;
+		else
+			help = true;
+	}
+
+	if (help)
+	{
+		s << "help syntax:" << endl;
+		s << "Invalid syntax [rotation {ray} {speed}] (color {color} position [x,y,z]" << endl;
+		if (incoming.length())
+			s << "Garbage : " << incoming << endl;
+	}
+	
+	s << "position: ";
+	outDynFloat(s, position,3);
+	if (rotation_ray)
+	{
+		s << "rotate " << rotation_ray << " " << rotation_speed << "/s";
+	}
+	cmd="";
+	return s.str();
+}
+
 
 bool Light::render()
 {
-	moving = false;
-	for(int i=0; i<4; i++)
-	{
-		dest[i].update();
-		if (!dest[i].targetReached())
-			moving = true;
-		// marray[i] = dest[i];
-	}
+	evolving = false;
 		
 	if (mactive)
 	{
+		float* pos = getFloatArray(position, 3);
+		if (rotation_ray)
+		{
+			evolving = true;
+			
+			std::chrono::time_point<std::chrono::system_clock> cur;
+			cur = std::chrono::system_clock::now();
+			std::chrono::duration<float> elapsed_seconds = cur-last;
+			last = cur;
+			
+			rotation_angle += 2*M_PI*elapsed_seconds.count()*rotation_speed;
+			if (rotation_angle> 2*M_PI)
+				rotation_angle -= 2*M_PI;
+			
+			pos[0] += rotation_ray*cos(rotation_angle);
+			pos[2] += rotation_ray*sin(rotation_angle);
+		}
+		
 		static GLUquadricObj *quadric = 0;
-		glClearColor (0.0, 0.0, 0.0, 0.0);
 		if (quadric==0)
 		{
 			quadric = gluNewQuadric();
 			gluQuadricDrawStyle(quadric, GLU_FILL );
 		}
 
+		glDisable(GL_LIGHTING);
+		Color::yellow.render();
+		//glBegin( GL_LINE_LOOP );/// don't workglPointSize( 0.0 );
+		glTranslatef(pos[0], pos[1], pos[2]);
+		gluSphere( quadric , 0.2 , 36 , 18 );
+		glTranslatef(-pos[0], -pos[1], -pos[2]);
+		
+		glClearColor (0.0, 0.0, 0.0, 0.0);
+
 		glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
 		glEnable(GL_LIGHTING);
 		glEnable(GL_LIGHT0);
 	   glEnable(GL_DEPTH_TEST);
 	   
-		glLightfv(GL_LIGHT0,GL_POSITION, getFloatArray());
+		glLightfv(GL_LIGHT0,GL_POSITION, pos);
 		//glLightf(GL_LIGHT0,GL_CONSTANT_ATTENUATION,.01f);
-		
-		Color::yellow.render();
-		//glBegin( GL_LINE_LOOP );/// don't workglPointSize( 0.0 );
-		translate(1);
-		gluSphere( quadric , 0.2 , 36 , 18 );
-		translate(-1);
 	}
 	else
 	{
@@ -156,30 +238,27 @@ bool Light::render()
 		glDisable(GL_COLOR_MATERIAL);
 	}
 
-	return moving;
+	return evolving;
 }
 
-GLfloat*  LightElement::getFloatArray()
+GLfloat*  LightElement::getFloatArray(DynamicFloat* dyns,uint8_t size)
 {
-	static GLfloat farray[4];
-	for (int i = 0; i < 4; i++)
+	if (dyns==0)
+		dyns=marray;
+	if (size>4)
 	{
-		marray[i].update();
-		farray[i] = marray[i];
+		size=4;
+		cerr << "ERROR: Size limited to 4 in LightElement::getFloatArray()" << endl;
 	}
-	return &farray[0];
+	static GLfloat floats[4];
+	floats[3]=1;
+	
+	for (int i = 0; i < size; i++)
+	{
+		if (!dyns[i].targetReached())
+			evolving = true;
+		dyns[i].update();
+		floats[i]=dyns[i];
+	}
+	return &floats[0];
 }	   
-	   
-
-
-void Light::setValue(int index, float f)
-{
-	moving = true;
-	dest[index].setTarget(f);
-	marray[index].setTarget(dest[index]);
-}
-
-void LightElement::setValue(int index, float f)
-{
-	marray[index].setTarget(f);
-}

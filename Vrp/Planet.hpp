@@ -11,18 +11,15 @@
 #include <string>
 #include <Point.hpp>
 
-#include "Color.h"
 
 using namespace std;
 
 class AbstractRing;
+class Color;
 
 class Planet {
 public:
-	Planet(const string& name, const Point& p, float ray)
-	: mname(name), mpos(p), mray(ray), mcolor(Color::random()), mring(0)
-	{
-	};
+	Planet(const string& name, const Point& p, float ray);
 	
 	void render(int quality) const;
 	void renderName() const;

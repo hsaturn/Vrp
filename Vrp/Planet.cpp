@@ -18,6 +18,11 @@
 
 using namespace std;
 
+Planet::Planet(const string& name, const Point& p, float ray)
+: mname(name), mpos(p), mray(ray), mcolor(Color::random()), mring(0)
+{
+}
+
 void Planet::render(int quality) const {
 	int lats = quality;
 	int longs = lats;

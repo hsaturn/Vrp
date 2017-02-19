@@ -53,7 +53,7 @@ class server
 		}
 	}
 
-	public function find($c1, $c2="", $c2="")
+	public function find($c1, $c2="", $c3="")
 	{
 		$this->send("find $c1 $c2 $c3");
 		$rec=$this->wait("find");
@@ -92,8 +92,8 @@ echo "FIND=[".($server->find("w b"))."]\n";
 function demo()
 {
 	global $server;
-	$server->send("anim y 0.3");
-	$server->send("anim x 0.05");
+	//$server->send("anim y 0.3");
+	//$server->send("anim x 0.05");
 	while(1)
 	{
 		$a=explode(' ',"cube cube3 checker zigzag holes 6t stripes twisted");

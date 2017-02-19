@@ -16,37 +16,39 @@
 
 #include <string>
 #include <GL/glew.h>
-#include <MovingCoord.hpp>
+#include <DynamicFloat.hpp>
 #include <GL/gl.h>
+#include <chrono>
 
 using namespace std;
 
-class MovingCoord;
+class DynamicFloat;
 
 class LightElement {
 public:
-	LightElement(float x, float y, float z, float a, bool active);
+	LightElement(float r, float v, float b, float alpha, bool active);
+	
 	virtual ~LightElement(){};
-		
-	string read(string& cmd, string &incoming);
 	
-	virtual void setValue(int index, float f);
+	// [on|off] r[,v[,b[,a]]]
+	virtual string read(string& cmd, string &incoming);
 	
-	operator bool() const { return mactive; }
+	operator bool()  { getFloatArray(); return mactive; }
 	
-	void translate(GLfloat dir);
 	
-	virtual bool render() { return false; }	// TODO ??
+	virtual bool render() { getFloatArray(); return evolving; }	
 	
 	bool isReady() const;
 	
-	
 	// GLfloat marray[4];
 	
-	MovingCoord marray[4];
+	DynamicFloat marray[4];
 	bool mactive;
+	bool evolving;
 	
-	GLfloat*	getFloatArray();
+	GLfloat* getFloatArray(DynamicFloat* dyns = 0,uint8_t size=4);
+	
+	void outDynFloat(ostream&, DynamicFloat*, uint8_t size);
 	
 };
 
@@ -56,12 +58,17 @@ class Light : public LightElement
 		Light(float x, float y, float z, float a, bool active);
 		virtual ~Light();
 		
-		virtual void setValue(int index, float f);
 		virtual bool render();
-		
+		virtual string read(string& cmd, string &incoming);
+			
 	private:
-		MovingCoord* dest;
-		bool moving;
+		DynamicFloat position[3];
+		
+		std::chrono::time_point<std::chrono::system_clock> last;
+		float rotation_angle;
+		float rotation_speed;
+		float rotation_ray;	// Or 0 if not rotating.
+		char rotation_axis;	// NYI
 };
 
 #endif /* LIGHTELEMENT_H */

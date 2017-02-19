@@ -5,10 +5,10 @@
  * Created on 7 juillet 2015, 17:42
  */
 
+#include "Color.h"
 #include <GL/freeglut_std.h>
 
 #include "FontRenderer.h"
-#include "Color.h"
 
 extern string getWord(string& s, const string &sSeparators = " ");
 FontRenderer* FontRenderer::factory(string& data)

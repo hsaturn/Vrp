@@ -9,6 +9,7 @@
 
 #include "GeneLink.hpp"
 #include "Planet.hpp"
+#include <Color.h>
 
 GeneLink::GeneLink() {
 }

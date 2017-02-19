@@ -3,44 +3,60 @@
 	*/
 #ifndef	_Color_
 #define	_Color_
+#include <GL/glew.h>
 #include <iostream>
 #include <string>
+#include <map>
 
 using namespace std;
 
 class Color
 {
+	typedef struct color
+	{
+		GLfloat r;
+		GLfloat v;
+		GLfloat b;
+		GLfloat alpha;
+	} color;
 public:
-	Color(double r,double v,double b, const string& name="")
+	
+	Color(GLfloat r,GLfloat v,GLfloat b, const string& name="")
 		:
 		mr		(r),
 		mv		(v),
 		mb		(b),
 		ma		(1.0),
-		mname	(name){ };
+		mname	(name),
+		stored	(false) { };
 		
-	Color(double r,double v,double b,double a)
+	Color(GLfloat r,GLfloat v,GLfloat b,GLfloat a)
 		:
 		mr		(r),
 		mv		(v),
 		mb		(b),
-		ma		(a)	{};
+		ma		(a),
+		stored	(false) 	{};
 
 	Color()
 		:
 		mr		(0.5),
 		mv		(0.5),
 		mb		(0.9),
-		ma		(1.0)	{};
+		ma		(1.0),
+		stored	(false) 	{};
 
-	Color(const Color& col,double a)
+	Color(const Color& col,GLfloat a)
 		:
 		mr		(col.mr),
 		mv		(col.mv),
 		mb		(col.mb),
-		ma		(a)	{};
+		ma		(a),
+		stored	(false) {};
+		
+	~Color();
 
-	Color	operator*(const double f) const { return Color(mr*f,mv*f,mb*f);	};
+	Color	operator*(const GLfloat f) const { return Color(mr*f,mv*f,mb*f);	};
 	
 			
 	Color*	Duplicate()	const;
@@ -48,10 +64,10 @@ public:
 	void	render()			const ;
 	void	render(float alpha)	const;
 
-	double r() const { return mr; }
-	double v() const { return mv; }
-	double b() const { return mb; }
-	double alpha() const { return ma; }
+	GLfloat r() const { return mr; }
+	GLfloat v() const { return mv; }
+	GLfloat b() const { return mb; }
+	GLfloat alpha() const { return ma; }
 	
 	bool operator!=(const Color& c) const { return !(*this==c); }
 	bool operator==(const Color& c) const {
@@ -64,13 +80,15 @@ public:
 	// if data=random, random color is returned.
 	static const Color* factory(string &data);
 	static const Color* random();
-
+	static map<string,const Color*> mapNamed;
+	
 private:
-	double	mr;
-	double	mv;
-	double	mb;
-	double	ma;
+	GLfloat	mr;
+	GLfloat	mv;
+	GLfloat	mb;
+	GLfloat	ma;
 	string mname;
+	bool stored;
 
 public:
 	static const Color black;

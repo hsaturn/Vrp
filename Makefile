@@ -1,4 +1,4 @@
-HAVE_SYNTH=0
+HAVE_SYNTH=1
 
 OPT=-std=c++0x -g
 

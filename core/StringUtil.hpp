@@ -43,7 +43,7 @@ public:
 	 * @input string s
 	 * @return bool
 	 **/
-	static bool is_integer(const string& s) { return !s.empty() && s.find_first_not_of("0123456789") == std::string::npos; }
+	static bool is_integer(const string& s) { return !s.empty() && s.find_first_not_of("-0123456789") == std::string::npos; }
 
 	/**
 	 * Simple but fast almost regex matcher.
@@ -88,15 +88,23 @@ public:
 	static int preg_match(string sStrRegex, string s2, bool bAll = true);
 
     /**
-	 * Check if a string contains only 0-9 chars (integer) and a optional dot somewhere
+	 * Check if a string is with a float (almost).
 	 *
 	 * @input string s
 	 * @return bool
 	 **/
 	static bool is_float(const string& s) {
 		return (!s.empty()) &&
-				(s.find_first_not_of("0123456789.") != std::string::npos) &&
-				(std::count(s.begin(), s.end(), '_')<=1); }
+				(s.find_first_not_of("-0123456789.") != std::string::npos); }
+	
+	/**
+	 * Better (but longer) 
+	 * @param s
+	 * @return 
+	 */
+	static bool startsWithFloat(const string& s);
+	
+	static bool startsWith(string&s, const string& start, bool remove=false);
     
     /**
      * Left trim a string

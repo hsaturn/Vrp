@@ -8,9 +8,11 @@
           <in>Cloison.o</in>
           <in>Colib.o</in>
           <in>Column.o</in>
+          <in>Decor.o</in>
           <in>MotorSpeedHook.o</in>
           <in>Navette.o</in>
           <in>Plateau.o</in>
+          <in>Wings.o</in>
         </df>
         <df name="core">
           <df name="commands">
@@ -34,6 +36,7 @@
           </df>
           <in>ClipBoard.o</in>
           <in>Coord.o</in>
+          <in>DynamicFloat.o</in>
           <in>Help.o</in>
           <in>LightElement.o</in>
           <in>Model.o</in>
@@ -126,12 +129,16 @@
         <in>Colib.hpp</in>
         <in>Column.cpp</in>
         <in>Column.hpp</in>
+        <in>Decor.cpp</in>
+        <in>Decor.hpp</in>
         <in>MotorSpeedHook.cpp</in>
         <in>MotorSpeedHook.hpp</in>
         <in>Navette.cpp</in>
         <in>Navette.hpp</in>
         <in>Plateau.cpp</in>
         <in>Plateau.hpp</in>
+        <in>Wings.cpp</in>
+        <in>Wings.hpp</in>
       </df>
       <df name="core">
         <df name="commands">
@@ -164,10 +171,24 @@
           <in>tiny_obj_loader.cpp</in>
           <in>tiny_obj_loader.h</in>
         </df>
+        <df name="new">
+          <in>LightElement.cpp</in>
+          <in>LightElement.h</in>
+        </df>
+        <df name="old">
+          <in>LightElement.cpp</in>
+          <in>LightElement.h</in>
+        </df>
+        <df name="semigood">
+          <in>LightElement.cpp</in>
+          <in>LightElement.h</in>
+        </df>
         <in>ClipBoard.cpp</in>
         <in>ClipBoard.h</in>
         <in>Coord.cpp</in>
         <in>Coord.hpp</in>
+        <in>DynamicFloat.cpp</in>
+        <in>DynamicFloat.hpp</in>
         <in>Help.cpp</in>
         <in>Help.h</in>
         <in>LightElement.cpp</in>

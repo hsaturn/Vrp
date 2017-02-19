@@ -50,7 +50,6 @@ const Color* Color::random()
 	int i=Random::rand()%colors.size();
 	return colors[i];
 }
-
 void	Color::render() const
 {
 	glColor4f(mr,mv,mb,ma);
@@ -64,6 +63,19 @@ void Color::render(float alpha) const
 Color*	Color::Duplicate()	const
 {
 	return	new Color(mr,mv,mb,ma);
+}
+
+Color::~Color()
+{
+	if (stored)
+	{
+		for(auto it=mapNamed.begin(); it!=mapNamed.end(); it++)
+			if (it->second==this)
+			{
+				mapNamed.erase(it);
+				break;
+			}
+	}
 }
 
 float getHexFloat(string &data, int count=1)
@@ -85,23 +97,25 @@ float getHexFloat(string &data, int count=1)
 	return (float)value/256.0;
 }
 
+map<string,const Color*>	Color::mapNamed;
+
 const Color* Color::factory(string& data)
 {
 	string color=StringUtil::getWord(data);
 	if (color.length()==0) return 0;
 	
-	static map<string,const Color*>	mapNamed;
 	
+	Color* newc = 0;
 	static const Color* c=0;
 	
 	if (color=="help")
 	{
 		c = 0;
 		Widget::pushMessage("color help");
-		Widget::pushMessage("  [name:]#rvb[a]");
-		Widget::pushMessage("  [name:]#rrvvbb[aa]");
-		Widget::pushMessage("  [name:]r v b");
-		Widget::pushMessage("  [name:]named_color");
+		Widget::pushMessage("  [name=]#rvb[a]");
+		Widget::pushMessage("  [name=]#rrvvbb[aa]");
+		Widget::pushMessage("  [name=]r v b");
+		Widget::pushMessage("  [name=]named_color");
 	}
 	else if (color!="last")
 	{
@@ -128,7 +142,8 @@ const Color* Color::factory(string& data)
 				size=2;
 			else if (color.length()!=3 && color.length()!=4)
 				return 0;
-			Color* newc = new Color;
+			
+			newc = new Color;
 			newc->mr=getHexFloat(color,size);
 			newc->mv=getHexFloat(color,size);
 			newc->mb=getHexFloat(color,size);
@@ -141,12 +156,12 @@ const Color* Color::factory(string& data)
 		}
 		else
 		{
-			Color* newc = new Color;
+			newc = new Color;
 			newc->mr=StringUtil::getFloat(color);
 			newc->mv=StringUtil::getFloat(data);
 			newc->mb=StringUtil::getFloat(data);
 
-			if (StringUtil::is_float(data))
+			if (StringUtil::startsWithFloat(data))
 				newc->ma=StringUtil::getFloat(data);
 			else
 				newc->ma=1.0;
@@ -155,6 +170,8 @@ const Color* Color::factory(string& data)
 		}
 		if (c!=0 && named.length())
 		{
+			if (newc)
+				newc->stored=true;
 			mapNamed[named]=c;
 		}
 	}

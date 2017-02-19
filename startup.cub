@@ -23,7 +23,7 @@ widget button cbts    +53,+0   47,15 btn_back        "bout."       btn_text : co
 widget button cbtl    -53,+20  47,15 btn_back        "singe"       btn_text : colib.load singe
 widget button cbts    +53,+0   47,15 btn_back        "pommes"      btn_text : colib.load pommes
 # widget button cmdline 4,4  200,15 #00F1          left  "> $_cmdline_"   white
-screen 400 300
+screen 800 600
 event filter mousemove mouseup resize
 var c=off
 var _cmdline=
@@ -31,7 +31,7 @@ widget console 2%,70% 96%,25% #F804 white #AAAA helvetica 10
 translate 0 0 0
 # new galaxy flat 10
 
-scale 0.3
+scale 0.4
 var quality=10
 # new redmap
 
@@ -41,13 +41,15 @@ var quality=10
 
 light on
 
-angley 50
+angley 90
 anglex -10
+translate y -1.2
 
-new colib def
+new colib machine
+colib.center
 
 axis
 
 ambient 0.5
 specular off
-restore machine
+load verre
