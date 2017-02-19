@@ -30,10 +30,8 @@ basic: build/basic.o
 
 
 build/%.o: %.cpp
-	echo "$<, $@, $^ "
 	$(GXX) -c "$<" -o "$@"
 
 build/%.o: %.c
-	echo "$<, $@, $^ "
 	$(GXX) -c "$<" -o "$@"
 
