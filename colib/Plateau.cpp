@@ -38,9 +38,17 @@ namespace Colib
 	Plateau::Plateau(string content, int xc)
 	{
 		mcontent = content;
-		cout << "NEW PLATEAU " << content << endl;
 		string model = StringUtil::getWord(content);
-		pmodel = Model::get(model);
+		bool reload;
+		if (model[0]=='!')
+		{
+			reload = true;
+			model.erase(0,1);
+		}
+		else
+			reload = false;
+		pmodel = Model::get(model, reload);
+			
 		//pmodel = 0;
 		if (pmodel == 0)
 		{
