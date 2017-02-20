@@ -16,6 +16,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include <GLShader.hpp>
 #include "TextureLoader.hpp"
 
 #include <sys/time.h>
@@ -432,11 +433,10 @@ void Model::render() const
 
 	for (size_t i = 0; i < drawObjects.size(); i++)
 	{
+		GLuint shader=0;
 		const DrawObject& o = drawObjects[i];
 		if (o.vb < 1)
-		{
 			continue;
-		}
 
 		glBindBuffer(GL_ARRAY_BUFFER, o.vb);
 		glEnableClientState(GL_VERTEX_ARRAY);
@@ -446,12 +446,26 @@ void Model::render() const
 
 		if ((o.material_id < materials.size()))
 		{
-			string diffuse_texname = materials[o.material_id].diffuse_texname;
+			tinyobj::material_t& material(materials[o.material_id]);
+			string diffuse_texname = material.diffuse_texname;
 			if (textures.find(diffuse_texname) != textures.end())
 			{
 				glBindTexture(GL_TEXTURE_2D, textures[diffuse_texname]);
 			}
+			
+			if (material.shininess)
+			{
+				if (shader == 0)
+				{
+					shader = GLShader::loadGlsl("phong");
+					if (shader)
+						glUseProgram(shader);
+					CheckErrors("Shininess shader loading");
+				}
+			}
+				
 		}
+		
 		glVertexPointer(3, GL_FLOAT, stride, (const void*) 0);
 		glNormalPointer(GL_FLOAT, stride, (const void*) (sizeof (float) * 3));
 		glColorPointer(3, GL_FLOAT, stride, (const void*) (sizeof (float) * 6));
@@ -460,6 +474,7 @@ void Model::render() const
 		glDrawArrays(GL_TRIANGLES, 0, 3 * o.numTriangles);
 		CheckErrors("Model::draw");
 		glBindTexture(GL_TEXTURE_2D, 0);
+		if (shader) glUseProgram(0);
 	}
 }
 
@@ -511,10 +526,11 @@ void Model::main()
 	render();
 }
 
-const Model* Model::get(const string& name)
+const Model* Model::get(const string& name, bool reload)
 {
-	if (models.find(name) != models.end())
-		return models[name];
+	if (!reload)
+		if (models.find(name) != models.end())
+			return models[name];
 
 	string file = "models/" + name + ".obj";
 	Model* model = new Model;
@@ -524,6 +540,11 @@ const Model* Model::get(const string& name)
 	{
 		delete model;
 		model = 0;
+		if (reload)
+		{
+			if (models.find(name) != models.end())
+				model = models[name];
+		}
 	}
 	return model;
 }

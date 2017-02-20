@@ -30,7 +30,7 @@ class Model
 	
 	public:
 		
-		static const Model* get(const string& name);
+		static const Model* get(const string& name, bool reload=false);
 		void renderWireFrame() const;
 		void render() const;
 		void renderBoundingBox() const;

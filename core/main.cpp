@@ -1166,7 +1166,6 @@ void mouse_button(int button, int state, int x, int y)
 		int invert_y = (SCREEN_HEIGHT - y) - 1; // OpenGL viewport coordinates are Cartesian
 		arcball_start(x,invert_y);
 	}
-	cout << "buttonRotate " << buttonRotate << endl;
 	if (button == GLUT_MIDDLE_BUTTON && state == GLUT_DOWN)
 	{
 		buttonTranslate = true;
@@ -1208,7 +1207,6 @@ void mouse_motion(int x, int y)
 {
 	if (buttonRotate)
 	{
-		cout << "button rotate" << endl;
 		Widget::mouseMotion(x, y);
 		int invert_y = (SCREEN_HEIGHT - y) - 1;
 		arcball_move(x,invert_y);
