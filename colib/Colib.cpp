@@ -84,6 +84,18 @@ namespace Colib
 		Decor::render(30*((width_x+200)/30), 0, 30*((length_z+200)/30), 30);
 		glPopMatrix();
 		
+		/*
+		Model::get("pan")->render();
+		glTranslatef(0, 0, -40);
+		Model::get("cactus")->render();
+		glTranslatef(0, 0, -40);
+		Model::get("plant")->render();
+		glTranslatef(0, 0, -40);
+		Model::get("caisse")->render();
+		return false;
+		*/
+		
+		
 		Color::dark_green.render();
 		glBegin(GL_TRIANGLE_FAN);
 		glNormal3i(0, 1, 0);
