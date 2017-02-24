@@ -17,6 +17,7 @@
 #include "Color.h"
 #include "DynamicFloat.hpp"
 #include <iomanip>
+#include <math.h>
 
 LightElement::LightElement(float x, float y, float z, float a, bool active)
 : mactive(active)
