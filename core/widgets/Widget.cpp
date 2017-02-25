@@ -77,11 +77,10 @@ namespace hwidgets
 	Widget* Widget::mouseButton(int button, int state, int x, int y)
 	{
 		Widget* wid = findWidget(x, y);
+		cout << "WID=" << wid << endl;
 
 		if (wid)
-		{
 			wid->mouseClick(button, state, x, y);
-		}
 		return 0;
 	}
 
@@ -555,6 +554,11 @@ namespace hwidgets
 	{
 		if (capture_mouse_widget == this) capture_mouse_widget = 0;
 		if (capture_keybd_widget == this) capture_keybd_widget = 0;
+	}
+	
+	void Widget::init(Event*)
+	{
+		
 	}
 }
 

@@ -32,6 +32,7 @@
 #include "Background.h"
 #include "Help.h"
 #include <Widget.h>
+#include <EventGlut.hpp>
 
 #include "colib/Decor.hpp"
 
@@ -1231,6 +1232,9 @@ int main(int argc, char** argv)
 	//cmdQueue.push_back("rotate left 9000");
 	//cmdQueue.push_back("rotate x");
 	arcball_reset();
+	
+	EventGlut* glutEvent;
+	Widget::init(glutEvent);
 	Widget::setCmdQueue(&cmdQueue);
 	reboot();
 

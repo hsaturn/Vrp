@@ -15,8 +15,10 @@
 
 using namespace std;
 
+
 namespace hwidgets
 {
+	class Event;
 
 	class Coord
 	{
@@ -214,6 +216,7 @@ namespace hwidgets
 			cmdQueue = p;
 		}
 		static void help(const string& what);
+		static void init(Event*);
 
 	  protected:
 

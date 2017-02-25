@@ -13,6 +13,8 @@
 #include "arcball.h"
 #include <iostream>
 
+#define handle_events 0
+
 // =================
 // Drawing the Scene
 // =================
@@ -65,22 +67,6 @@ static void startup_scene()
 	{
 		star[i] = vec( randf(), randf(), randf() ).unit() * 2.0f;
 	}
-}
-
-static void shutdown_scene()
-{
-	// nothing to be done here
-}
-
-static void draw_stars()
-{
-	glBegin( GL_POINTS );
-	glColor3f( 1.0f, 1.0f, 1.0f );
-	for ( int i=0; i < NUM_STARS; ++i )
-	{
-		glVertex3f( star[i].x, star[i].y, star[i].z );
-	}
-	glEnd();
 }
 
 inline vec rotate_x( vec v, float sin_ang, float cos_ang )
@@ -157,13 +143,14 @@ static void draw_sphere()
 	//glutWireSphere(SPHERE_RADIUS,SPHERE_LONG_SLICES,SPHERE_LAT_SLICES);
 }
 
-
+#if handle_events
 static void mouse_motion(int x, int y)
 {
 	int invert_y = (height - y) - 1;
 	arcball_move(x,invert_y);
 	std::cout << "mouse motion " << x << '/' << invert_y << std::endl;
 }
+#endif
 
 static void draw_scene()
 {
@@ -201,6 +188,7 @@ static void drawScene()
     glutSwapBuffers();
 }
 
+#if handle_events
 static void key(unsigned char key, int x, int y)
 {
     switch (key) 
@@ -229,6 +217,7 @@ static void mouse_button(int button, int state, int x, int y)
 		arcball_start(x,invert_y);
 	}
 }
+#endif
 
 // ====
 // Main
@@ -247,12 +236,17 @@ int mainx(int argc, char ** argv)
     glutCreateWindow("Arcball Sample");
 
     glutReshapeFunc(handleResize);
+	
+
     glutDisplayFunc(drawScene);
+	
+#if handle_events
     glutKeyboardFunc(key);
     glutIdleFunc(idle);
     glutMouseFunc(mouse_button);
     glutMotionFunc(mouse_motion);
-
+#endif
+	
     glClearColor(0.0f,0.0f,0.0f,1.0f);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);

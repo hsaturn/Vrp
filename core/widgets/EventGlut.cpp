@@ -14,7 +14,6 @@ using namespace std;
 
 namespace hwidgets
 {
-
 	EventGlut* EventGlut::instance = 0;
 	bool EventGlut::init = false;
 
