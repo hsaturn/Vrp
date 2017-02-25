@@ -1205,9 +1205,9 @@ glm::vec3 get_arcball_vector(int x, int y) {
 
 void mouse_motion(int x, int y)
 {
+	Widget::mouseMotion(x, y);
 	if (buttonRotate)
 	{
-		Widget::mouseMotion(x, y);
 		int invert_y = (SCREEN_HEIGHT - y) - 1;
 		arcball_move(x,invert_y);
 	}

@@ -7,8 +7,8 @@
 
 #include "Widget.h"
 #include <StringUtil.hpp>
-#include "WidgetButton.h"
-#include "WidgetConsole.h"
+#include "Button.h"
+#include "Console.h"
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include <chrono>
@@ -80,17 +80,7 @@ namespace hwidgets
 
 		if (wid)
 		{
-			string event = "mouseup";
-			cout << "SENDING BUTTON TO " << wid->name << endl;
 			wid->mouseClick(button, state, x, y);
-			cout << "SENT BUTTON TO " << wid->name << endl;
-
-			if (state == GLUT_DOWN) event = "mousedown";
-
-			// TODO : Horrible design !!!
-			pushEvent(event, wid->name + ' ' + StringUtil::to_string(button) + ' ' + StringUtil::to_string(state) + ' ' + wid->data);
-			//if (state == GLUT_UP) wid->mouseClick(button, state, x, y);
-			cout << "END" << endl;
 		}
 		return 0;
 	}
@@ -102,7 +92,7 @@ namespace hwidgets
 		if (wid)
 		{
 			msg = wid->name;
-			
+
 			wid->mouseMove(x, y, 0);
 
 			msg += " " + StringUtil::to_string(x - wid->rect()->x1()) + ' ' + StringUtil::to_string(y - wid->rect()->y1());
@@ -130,9 +120,8 @@ namespace hwidgets
 	Widget* Widget::findWidget(int x, int y)
 	{
 		if (capture_mouse_widget)
-			if (capture_mouse_widget->mrect->inside(x,y))
-				return capture_mouse_widget;
-		
+			return capture_mouse_widget;
+
 		for (auto it = widgets.rbegin(); it != widgets.rend(); it++)
 			if ((*it)->mrect->inside(x, y)) return *it;
 
@@ -169,7 +158,7 @@ namespace hwidgets
 
 			if (name == "help")
 			{
-				WidgetButton::factory(name);
+				Button::factory(name);
 			}
 			else
 			{
@@ -177,7 +166,7 @@ namespace hwidgets
 
 				if (rect)
 				{
-					w = WidgetButton::factory(infos);
+					w = Button::factory(infos);
 					if (w)
 					{
 						w->mrect = rect;
@@ -194,7 +183,7 @@ namespace hwidgets
 
 			if (rect)
 			{
-				WidgetConsole* cons = WidgetConsole::factory(infos);
+				Console* cons = Console::factory(infos);
 				if (cons)
 				{
 					cons->mrect = rect;
@@ -544,15 +533,22 @@ namespace hwidgets
 
 	bool Widget::mouseCapture()
 	{
-		capture_mouse_widget = this;
-		cout << "Capturing mouse" << endl;
-		return true;
+		if (capture_mouse_widget != this)
+		{
+			capture_mouse_widget = this;
+			cout << "Capturing mouse" << endl;
+			return true;
+		}
+		return false;
 	}
 
 	void Widget::mouseRelease()
 	{
-		capture_mouse_widget = 0;
-		cout << "Releasing mouse" << endl;
+		if (capture_mouse_widget)
+		{
+			capture_mouse_widget = 0;
+			cout << "Releasing mouse" << endl;
+		}
 	}
 
 	void Widget::releaseCaptures()

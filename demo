@@ -1,0 +1,25 @@
+vars
+{
+  name=colib
+  autosave=on
+  bouding_boxes=0
+  dx=-6
+  dz=-24
+  last_save=demo
+  scale=0.1
+}
+height 200
+back {
+  width 60 { }
+  width 60 { }
+  width 60 { }
+  width 60 { }
+  width 30 { 13 cactus 20 plant }
+  width 30 { 20 caisse }
+  width 30 { 12 wateringcan }
+  width 30 { }
+  width 30 { }
+}
+front {
+}
+END

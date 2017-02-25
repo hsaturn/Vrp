@@ -101,6 +101,7 @@ int main () {
 		" outColor = texture(tex, Texcoord)* vec4(Color, 1.0);" //vec4(1.0, 1.0, 0.5, 1.0);" // changing vec4 numbers changes RGB color to be used
 		// " frag2_colour = vec4(colour2, 1.0);"
 		"}";
+	
 
 	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertexShader, 1, &vertex_shader, NULL); // learn how to use external shader text files

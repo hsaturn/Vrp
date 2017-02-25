@@ -22,7 +22,9 @@ widget button cbtl    -53,+20  47,15 btn_back        "bouts."      btn_text : co
 widget button cbts    +53,+0   47,15 btn_back        "bout."       btn_text : colib.load bouteille
 widget button cbtl    -53,+20  47,15 btn_back        "singe"       btn_text : colib.load singe
 widget button cbts    +53,+0   47,15 btn_back        "pommes"      btn_text : colib.load pommes
-# widget button cmdline 4,4  200,15 #00F1          left  "> $_cmdline_"   white
+widget button remv    -53,+20  47,15 btn_back        "X"           btn_text : colib.remove
+widget button bpan    +53,+0   47,15 btn_back        "Pan"         btn_text : colib.load !pan
+widget button cmdline  4,4  200,15 #00F1          left  "> $_cmdline_"   white
 screen 800 600
 event filter mousemove mouseup resize
 var c=off
@@ -52,4 +54,4 @@ axis
 
 ambient 0.5
 specular off
-load verre
+

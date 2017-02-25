@@ -31,8 +31,8 @@ namespace Colib
 		
 		string s;
 		s = "reverb 30:30 fm 0 100 am 0 100 square 30:30 triangle 100 hook";
-		s = "fm 50 150 fm 80 100  triangle 100 sin 30 hook";
-		s = "define sound { am 70 100 sinus 200:80 sq 300 triangle 400:10 } define motor { sound fm 99 101 sound sin 4 } fm 0 40 motor hook";
+		//s = "fm 50 150 fm 80 100  triangle 100 sin 30 hook";
+		//s = "define sound { am 70 100 sinus 200:80 sq 300 triangle 400:10 } define motor { sound fm 99 101 sound sin 4 } fm 0 40 motor hook";
 		
 		speed_hook->changeSound(s);
 		wings = new Wings();

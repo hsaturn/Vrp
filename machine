@@ -1,0 +1,25 @@
+vars
+{
+  scale=0.1
+}
+height 200
+back {
+  width 30 { }
+  width 30 { }
+  width 30 { }
+  width 30 { }
+  width 30 { }
+  width 30 { }
+  width 30 { }
+  width 30 { }
+  width 30 { }
+  width 30 { }
+  width 30 { }
+  width 30 { }
+  width 30 { }
+  width 30 { }
+  width 30 { }
+}
+front {
+}
+END

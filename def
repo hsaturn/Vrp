@@ -1,0 +1,29 @@
+vars
+{
+  name=colib
+  autosave=on
+  bouding_boxes=0
+  dx=-6
+  dz=-28
+  last_save=toto
+  scale=0.1
+  sound_bati=sinus 200
+  sound_navette=sinus 220
+}
+height 200
+back {
+  width 30 { }
+  width 30 { 13 pommes 15 pommes 17 pommes 20 donuts 22 cube2 }
+  width 30 { 0 chien 13 cube2 }
+  width 30 { 0 bouteilles }
+  width 30 { 0 donuts 12 bouteille }
+  width 30 { 0 pommes 2 cube2 }
+  width 30 { 15 oeufs 17 red }
+  width 60 { }
+  width 60 { }
+  width 60 { }
+  width 60 { }
+}
+front {
+}
+END

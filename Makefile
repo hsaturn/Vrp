@@ -34,7 +34,7 @@ build_dir:
 	@mkdir -p $(BUILD_DIR)
 
 $(BUILD_DIR)/%.o:%.cpp
-	@echo "  Compiling $< in `pwd`"
+	@echo "  Compiling $<"
 	@mkdir -p $(BUILD_DIR)/$(shell dirname $<)
 	@$(CXX) -I$(RENDERER) $(INCLUDES) -MMD -g -Iglm -I/usr/include -I$(shell dirname $<) -Wall -I. $(OPT) -c $< -o $@ -pthread
 

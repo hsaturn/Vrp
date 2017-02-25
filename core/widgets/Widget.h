@@ -148,6 +148,8 @@ namespace hwidgets
 		{
 			return name;
 		}
+		
+		const string& getData() const { return data; }
 
 		/* Return the widget where the mouse is, and inform
 		 * the widget that the mouse is moving over it  */
