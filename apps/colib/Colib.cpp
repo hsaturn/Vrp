@@ -357,7 +357,6 @@ namespace Colib
 		}
 		else if (cmd=="restore")
 		{
-			cout << endl << "--- RESTORING FROM " << incoming << "---" << endl;
 			if (restore(incoming))
 			{
 				incoming=="";
@@ -469,6 +468,7 @@ namespace Colib
 	{
 		if (file.length())
 		{
+			file="data/apps/colib/"+file;
 			setVar("last_save", file);
 			setVar("bouding_boxes", gRenderBoundingBoxes);
 			ofstream output(file.c_str());
@@ -489,12 +489,17 @@ namespace Colib
 	{
 		try
 		{
+			file="data/apps/colib/"+file;
 			ifstream input(file.c_str());
+			if (!input.is_open())
+				throw "Cannot open file "+file;
+			cout <<"restoring from "+file << endl;
 			loadVars(input);
 			while(input.good())
 			{
 				string item;
 				input >> item;
+				cout << "ITEM " << item << endl;
 				if (item=="end")
 					break;
 				else if (item=="height")
@@ -517,6 +522,14 @@ namespace Colib
 		catch(exception &e)
 		{
 			cerr << "Caught exception while restoring " << e.what() << endl;
+		}
+		catch(const char* p)
+		{
+			cerr << "ERROR while restoring : " << p << endl;
+		}
+		catch(const string& s)
+		{
+			cerr << "ERROR while restoring : " << s << endl;
 		}
 		catch(...)
 		{
