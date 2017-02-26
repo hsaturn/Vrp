@@ -1,396 +1,0 @@
-         --- NEW CLASS REGISTERED : cube
-         --- NEW CLASS REGISTERED : vrp
-         --- NEW CLASS REGISTERED : galaxy
-         --- NEW CLASS REGISTERED : redmap
-         --- NEW CLASS REGISTERED : redstone
-         --- NEW CLASS REGISTERED : world
-         --- NEW CLASS REGISTERED : colib
-Running server on port 3333
-STARS : 3
-INCOMMING screen 200 200
-CMD=[screen] incoming=[200 200]
-INCOMMING widget button stop    =10,=25  100,15 btn_back=#F808 "New galaxy" btn_text=white : world.read ouessant.txt
-CMD=[widget] incoming=[button stop    =10,=25  100,15 btn_back=#F808 "New galaxy" btn_text=white : world.read ouessant.txt]
-INCOMMING widget button stop    +0,+20  100,15 btn_back=#F808 "New cube" btn_text=white : new cube
-CMD=[widget] incoming=[button stop    +0,+20  100,15 btn_back=#F808 "New cube" btn_text=white : new cube]
-INCOMMING widget button back    +0,+20   47,15 btn_back       "Back" btn_text       : backward
-CMD=[widget] incoming=[button back    +0,+20   47,15 btn_back       "Back" btn_text       : backward]
-INCOMMING widget button flat    +53,+0   47,15 btn_back       "Flat" btn_text       : flat
-CMD=[widget] incoming=[button flat    +53,+0   47,15 btn_back       "Flat" btn_text       : flat]
-INCOMMING widget button demo    -53,+20   47,15 btn_back        "Add B"        btn_text : colib.add back 60
-CMD=[widget] incoming=[button demo    -53,+20   47,15 btn_back        "Add B"        btn_text : colib.add back 60]
-INCOMMING widget button solve   +53,+0  47,15 btn_back        "Add F"        btn_text : colib.add front 60
-CMD=[widget] incoming=[button solve   +53,+0  47,15 btn_back        "Add F"        btn_text : colib.add front 60]
-INCOMMING widget button demo    -53,+20   47,15 btn_back        "Add B"        btn_text : colib.add back 30
-CMD=[widget] incoming=[button demo    -53,+20   47,15 btn_back        "Add B"        btn_text : colib.add back 30]
-INCOMMING widget button solve   +53,+0  47,15 btn_back        "Add F"        btn_text : colib.add front 30
-CMD=[widget] incoming=[button solve   +53,+0  47,15 btn_back        "Add F"        btn_text : colib.add front 30]
-INCOMMING widget button anon    -53,+20  47,15 btn_back        "Anim"         btn_text : anim x 0.03
-CMD=[widget] incoming=[button anon    -53,+20  47,15 btn_back        "Anim"         btn_text : anim x 0.03]
-INCOMMING anim y 0.028
-CMD=[anim] incoming=[y 0.028]
-INCOMMING widget button anoff   +53,+0   47,15 btn_back        "$c"          btn_text : anim x 0
-CMD=[widget] incoming=[button anoff   +53,+0   47,15 btn_back        "$c"          btn_text : anim x 0]
-INCOMMING anim y 0
-CMD=[anim] incoming=[y 0]
-INCOMMING widget button nxt_col -53,+20  47,15 btn_back        "<"           btn_text : colib.next col
-CMD=[widget] incoming=[button nxt_col -53,+20  47,15 btn_back        "<"           btn_text : colib.next col]
-INCOMMING widget button prv_col +53,+0   47,15 btn_back        ">"           btn_text : colib.prev col
-CMD=[widget] incoming=[button prv_col +53,+0   47,15 btn_back        ">"           btn_text : colib.prev col]
-INCOMMING widget button prv_cel -53,+20  47,15 btn_back        "v"           btn_text : colib.prev cell
-CMD=[widget] incoming=[button prv_cel -53,+20  47,15 btn_back        "v"           btn_text : colib.prev cell]
-INCOMMING widget button nxt_cel +53,+0   47,15 btn_back        "^"           btn_text : colib.next cell
-CMD=[widget] incoming=[button nxt_cel +53,+0   47,15 btn_back        "^"           btn_text : colib.next cell]
-INCOMMING widget button switch  -53,+20  100,15 btn_back       "switch"      btn_text : colib.next side
-CMD=[widget] incoming=[button switch  -53,+20  100,15 btn_back       "switch"      btn_text : colib.next side]
-INCOMMING widget button cput    +0,+20  47,15 btn_back        "put"         btn_text : colib.put
-CMD=[widget] incoming=[button cput    +0,+20  47,15 btn_back        "put"         btn_text : colib.put]
-INCOMMING widget button cget    +53,+0   47,15 btn_back        "get"         btn_text : colib.get
-CMD=[widget] incoming=[button cget    +53,+0   47,15 btn_back        "get"         btn_text : colib.get]
-INCOMMING widget button cdog    -53,+20  47,15 btn_back        "chien"       btn_text : colib.load chien
-CMD=[widget] incoming=[button cdog    -53,+20  47,15 btn_back        "chien"       btn_text : colib.load chien]
-INCOMMING widget button cdon    +53,+0   47,15 btn_back        "donuts"      btn_text : colib.load donuts
-CMD=[widget] incoming=[button cdon    +53,+0   47,15 btn_back        "donuts"      btn_text : colib.load donuts]
-INCOMMING widget button cbtl    -53,+20  47,15 btn_back        "bouts."      btn_text : colib.load bouteilles
-CMD=[widget] incoming=[button cbtl    -53,+20  47,15 btn_back        "bouts."      btn_text : colib.load bouteilles]
-INCOMMING widget button cbts    +53,+0   47,15 btn_back        "bout."       btn_text : colib.load bouteille
-CMD=[widget] incoming=[button cbts    +53,+0   47,15 btn_back        "bout."       btn_text : colib.load bouteille]
-INCOMMING widget button cbtl    -53,+20  47,15 btn_back        "singe"       btn_text : colib.load singe
-CMD=[widget] incoming=[button cbtl    -53,+20  47,15 btn_back        "singe"       btn_text : colib.load singe]
-INCOMMING widget button cbts    +53,+0   47,15 btn_back        "pommes"      btn_text : colib.load pommes
-CMD=[widget] incoming=[button cbts    +53,+0   47,15 btn_back        "pommes"      btn_text : colib.load pommes]
-INCOMMING # widget button cmdline 4,4  200,15 #00F1          left  "> $_cmdline_"   white
-CMD=[#] incoming=[widget button cmdline 4,4  200,15 #00F1          left  "> $_cmdline_"   white]
-INCOMMING screen 400 300
-CMD=[screen] incoming=[400 300]
-INCOMMING event filter mousemove mouseup resize
-CMD=[event] incoming=[filter mousemove mouseup resize]
-INCOMMING var c=off
-CMD=[var] incoming=[c=off]
-INCOMMING var _cmdline=
-CMD=[var] incoming=[_cmdline=]
-INCOMMING widget console 2%,70% 96%,25% #F804 white #AAAA helvetica 10
-CMD=[widget] incoming=[console 2%,70% 96%,25% #F804 white #AAAA helvetica 10]
-INCOMMING translate 0 0 0
-CMD=[translate] incoming=[0 0 0]
-INCOMMING # new galaxy flat 10
-CMD=[#] incoming=[new galaxy flat 10]
-INCOMMING 
-CMD=[] incoming=[]
-INCOMMING scale 0.3
-CMD=[scale] incoming=[0.3]
-INCOMMING var quality=10
-CMD=[var] incoming=[quality=10]
-INCOMMING # new redmap
-CMD=[#] incoming=[new redmap]
-INCOMMING 
-CMD=[] incoming=[]
-INCOMMING # new world 205 205 0.1
-CMD=[#] incoming=[new world 205 205 0.1]
-INCOMMING # world.scale=10
-CMD=[#] incoming=[world.scale=10]
-INCOMMING # world.read ouessant.txt
-CMD=[#] incoming=[world.read ouessant.txt]
-INCOMMING 
-CMD=[] incoming=[]
-INCOMMING light on
-CMD=[light] incoming=[on]
-light : on 5 5 -3 1 
-INCOMMING 
-CMD=[] incoming=[]
-INCOMMING angley 50
-CMD=[angley] incoming=[50]
-INCOMMING anglex -10
-CMD=[anglex] incoming=[-10]
-INCOMMING 
-CMD=[] incoming=[]
-INCOMMING new colib 200
-CMD=[new] incoming=[colib 200]
-BUILDING SOUND GENERATOR
-deleteSound() 0
-Changing sound 
-CHANGING SOUND define sound { am 70 100 sinus 200:80 sq 300 triangle 400:10 sq 600:10 } reverb 30:30 fm 0 80 sound hook
-deleteSound() 0
-Changing sound 
-200 is int.
-COMMAND CORE::CMD OK
-INCOMMING 
-CMD=[] incoming=[]
-colib.exec /
-INCOMMING axis
-CMD=[axis] incoming=[]
-INCOMMING 
-CMD=[] incoming=[]
-colib.exec /
-INCOMMING ambient 0.5
-CMD=[ambient] incoming=[0.5]
-ambient : on 0.5 0.5 0.5 0.8 
-INCOMMING specular off
-CMD=[specular] incoming=[off]
-specular : off 1 1 1 1 
-INCOMMING 
-CMD=[] incoming=[]
-colib.exec /
-INCOMMING echo END OF SCRIPT: startup.cub
-CMD=[echo] incoming=[END OF SCRIPT: startup.cub]
-# END OF SCRIPT: startup.cub
-INCOMMING 
-CMD=[] incoming=[]
-colib.exec /
-INCOMMING echo END OF SCRIPT: macros.cub
-CMD=[echo] incoming=[END OF SCRIPT: macros.cub]
-# END OF SCRIPT: macros.cub
-CUBE_SERVER> l                      CUBE_SERVER> lo                      CUBE_SERVER> loa                      CUBE_SERVER> load                      CUBE_SERVER> load                       CUBE_SERVER> load d                      CUBE_SERVER> load de                      CUBE_SERVER> load der                      CUBE_SERVER> load de                      CUBE_SERVER> load d                      CUBE_SERVER> load                       CUBE_SERVER> load                      CUBE_SERVER> loa                      CUBE_SERVER> lo                      CUBE_SERVER> l                      CUBE_SERVER>                       CUBE_SERVER> r                      CUBE_SERVER> re                      CUBE_SERVER> res                      CUBE_SERVER> rest                      CUBE_SERVER> resto                      CUBE_SERVER> restor                      CUBE_SERVER> restore                      CUBE_SERVER> restore                       CUBE_SERVER> restore d                      CUBE_SERVER> restore de                      CUBE_SERVER> restore def                      CUBE_SERVER>                       INCOMMING restore def
-CMD=[restore] incoming=[def]
-colib.exec restore/def
-
---- RESTORING FROM def---
-VAR  = -19
-VAR d = -6
-VAR d = -24
-VAR sca = 0.1
-NEW PLATEAU chien
-# of vertices  = 951
-# of normals   = 1228
-# of texcoords = 20
-# of materials = 2
-# of shapes    = 7
-shape[0] # of triangles = 1116
-shape[1] # of triangles = 1116
-shape[2] # of triangles = 1116
-shape[3] # of triangles = 1944
-shape[4] # of triangles = 8703
-shape[5] # of triangles = 1116
-shape[6] # of triangles = 1116
-bmin = -17.261143, -20.054813, -21.896053
-bmax = -0.344646, 7.852794, 7.865501
-WIDTH (chien)=29
-BUILDING SOUND GENERATOR
-deleteSound() 0
-Changing sound 
-PLATEAU WIDTH : 30
-NEW PLATEAU bouteilles
-# of vertices  = 240
-# of normals   = 1404
-# of texcoords = 1404
-# of materials = 6
-# of shapes    = 3
-shape[0] # of triangles = 1404
-shape[1] # of triangles = 1404
-shape[2] # of triangles = 1404
-bmin = -16.717369, 0.085371, -4.998885
-bmax = 16.898544, 33.498955, 4.541134
-WIDTH (bouteilles)=9
-BUILDING SOUND GENERATOR
-deleteSound() 0
-Changing sound 
-PLATEAU WIDTH : 30
-NEW PLATEAU donuts
-# of vertices  = 64
-# of normals   = 384
-# of texcoords = 384
-# of materials = 7
-# of shapes    = 1
-shape[0] # of triangles = 1152
-bmin = -10.915046, 0.756757, -11.142061
-bmax = 11.547351, 6.372357, 9.537604
-WIDTH (donuts)=20
-BUILDING SOUND GENERATOR
-deleteSound() 0
-Changing sound 
-PLATEAU WIDTH : 30
-NEW PLATEAU bouteille
-# of vertices  = 80
-# of normals   = 468
-# of texcoords = 468
-# of materials = 8
-# of shapes    = 1
-shape[0] # of triangles = 1404
-bmin = -5.182043, 0.220172, -4.724234
-bmax = 4.352948, 33.498955, 4.724234
-WIDTH (bouteille)=9
-BUILDING SOUND GENERATOR
-deleteSound() 0
-Changing sound 
-PLATEAU WIDTH : 30
-CUBE_SERVER> l                      CUBE_SERVER> lo                      CUBE_SERVER> loa                      CUBE_SERVER> load                      CUBE_SERVER> load                       CUBE_SERVER> load c                      CUBE_SERVER> load cu                      CUBE_SERVER> load cub                      CUBE_SERVER> load cube                      CUBE_SERVER> load cube2                      CUBE_SERVER>                       INCOMMING load cube2
-CMD=[load] incoming=[cube2]
-colib.exec load/cube2
-NEW PLATEAU cube2
-# of vertices  = 8
-# of normals   = 6
-# of texcoords = 4
-# of materials = 10
-# of shapes    = 1
------------------
-IMAGE models/caisse_fragile.png
-  WIDTH  : 450
-  HEIGHT : 395
-shape[0] # of triangles = 108
-bmin = -5.171733, -5.171731, -5.171733
-bmax = 5.171734, 5.171731, 5.171734
-WIDTH (cube2)=10
-BUILDING SOUND GENERATOR
-deleteSound() 0
-Changing sound 
-PLATEAU WIDTH : 30
-Pushing [colib.next col]
-INCOMMING colib.next col
-CMD=[colib.next] incoming=[col]
-[36mMATCH
-colib.exec next/col
-MOVE TO 0x0
-[0mPushing [colib.next col]
-INCOMMING colib.next col
-CMD=[colib.next] incoming=[col]
-[36mMATCH
-colib.exec next/col
-MOVE TO 1x0
-[0mPushing [colib.next col]
-INCOMMING colib.next col
-CMD=[colib.next] incoming=[col]
-[36mMATCH
-colib.exec next/col
-MOVE TO 2x0
-[0mPushing [colib.next col]
-INCOMMING colib.next col
-CMD=[colib.next] incoming=[col]
-[36mMATCH
-colib.exec next/col
-MOVE TO 3x0
-[0mPushing [colib.next col]
-INCOMMING colib.next col
-CMD=[colib.next] incoming=[col]
-[36mMATCH
-colib.exec next/col
-MOVE TO 4x0
-[0mPushing [colib.next col]
-INCOMMING colib.next col
-CMD=[colib.next] incoming=[col]
-[36mMATCH
-colib.exec next/col
-MOVE TO 5x0
-[0mPushing [colib.next col]
-INCOMMING colib.next col
-CMD=[colib.next] incoming=[col]
-[36mMATCH
-colib.exec next/col
-MOVE TO 6x0
-[0mPushing [colib.put]
-INCOMMING colib.put
-CMD=[colib.put] incoming=[]
-[36mMATCH
-colib.exec put/
-Colib.put 
--------------
-from 20 to 30
-Destination etage : 0x22b0b10.0
-Value    : 93
-Target   : 30
-Velocity : 0
-Accel.   : 20
----
-
-[0mCUBE_SERVER> s                      CUBE_SERVER> sv                      Fin déplacement x plateau ! 30.0979
-CUBE_SERVER> s                      CUBE_SERVER> sa                      CUBE_SERVER> sav                      CUBE_SERVER> save                      CUBE_SERVER>                       INCOMMING save
-CMD=[save] incoming=[]
-colib.exec save/
-CUBE_SERVER> r                      CUBE_SERVER> re                      CUBE_SERVER> res                      CUBE_SERVER> rest                      CUBE_SERVER> resto                      CUBE_SERVER> restor                      CUBE_SERVER> restore                      CUBE_SERVER> restore                       CUBE_SERVER> restore d                      CUBE_SERVER> restore de                      CUBE_SERVER> restore def                      CUBE_SERVER>                       INCOMMING restore def
-CMD=[restore] incoming=[def]
-colib.exec restore/def
-
---- RESTORING FROM def---
-VAR  = -19
-VAR d = -6
-VAR d = -24
-VAR sca = 0.1
-deleteSound() 0x2234ee0
-DELETING SOUND1
-deleteSound() 0x228aa40
-DELETING SOUND1
-deleteSound() 0x229a0c0
-DELETING SOUND1
-deleteSound() 0x22b0ca0
-DELETING SOUND1
-deleteSound() 0x2289e80
-DELETING SOUND1
-NEW PLATEAU chien
-WIDTH (chien)=29
-BUILDING SOUND GENERATOR
-deleteSound() 0
-Changing sound 
-PLATEAU WIDTH : 30
-NEW PLATEAU bouteilles
-WIDTH (bouteilles)=9
-BUILDING SOUND GENERATOR
-deleteSound() 0
-Changing sound 
-PLATEAU WIDTH : 30
-NEW PLATEAU donuts
-WIDTH (donuts)=20
-BUILDING SOUND GENERATOR
-deleteSound() 0
-Changing sound 
-PLATEAU WIDTH : 30
-NEW PLATEAU bouteille
-WIDTH (bouteille)=9
-BUILDING SOUND GENERATOR
-deleteSound() 0
-Changing sound 
-PLATEAU WIDTH : 30
-CUBE_SERVER> r                      CUBE_SERVER> re                      CUBE_SERVER> res                      CUBE_SERVER> rest                      CUBE_SERVER> resto                      CUBE_SERVER> restor                      CUBE_SERVER> restore                      CUBE_SERVER> restor                      CUBE_SERVER> resto                      CUBE_SERVER> rest                      CUBE_SERVER> res                      CUBE_SERVER> re                      CUBE_SERVER> r                      CUBE_SERVER>                       CUBE_SERVER>                       CUBE_SERVER> r                      CUBE_SERVER> re                      CUBE_SERVER> res                      CUBE_SERVER> rese                      CUBE_SERVER> reset                      CUBE_SERVER> rese                      CUBE_SERVER> res                      CUBE_SERVER> re                      CUBE_SERVER> r                      CUBE_SERVER>                       CUBE_SERVER>                       CUBE_SERVER>                       CUBE_SERVER>                       CUBE_SERVER> l                      CUBE_SERVER> lo                      CUBE_SERVER> loa                      CUBE_SERVER> load                      CUBE_SERVER> load                       CUBE_SERVER> load c                      CUBE_SERVER> load cu                      CUBE_SERVER> load cub                      CUBE_SERVER> load cube                      CUBE_SERVER> load cube2                      CUBE_SERVER>                       INCOMMING load cube2
-CMD=[load] incoming=[cube2]
-colib.exec load/cube2
-NEW PLATEAU cube2
-WIDTH (cube2)=10
-BUILDING SOUND GENERATOR
-deleteSound() 0
-Changing sound 
-PLATEAU WIDTH : 30
-CUBE_SERVER> p                      CUBE_SERVER> pu                      CUBE_SERVER> put                      CUBE_SERVER>                       INCOMMING put
-CMD=[put] incoming=[]
-colib.exec put/
-Colib.put 
--------------
-from 20 to 30
-Destination etage : 0x22b0ca0.0
-Value    : 93
-Target   : 30
-Velocity : 0
-Accel.   : 20
----
-
-CUBE_SERVER> a                      CUBE_SERVER> am                      CUBE_SERVER> amb                      CUBE_SERVER> ambi                      CUBE_SERVER> ambie                      Fin déplacement x plateau ! 30.0991
-CUBE_SERVER> ambien                      CUBE_SERVER> ambient                      CUBE_SERVER> ambient                       CUBE_SERVER> ambient 0                      CUBE_SERVER> ambient 0.                      CUBE_SERVER> ambient 0.5                      CUBE_SERVER>                       INCOMMING ambient 0.5
-CMD=[ambient] incoming=[0.5]
-ambient : on 0.5 0.5 0.5 0.8 
-CUBE_SERVER> a                      CUBE_SERVER> am                      CUBE_SERVER> amb                      CUBE_SERVER> ambi                      CUBE_SERVER> ambie                      CUBE_SERVER> ambien                      CUBE_SERVER> ambient                      CUBE_SERVER> ambient                       CUBE_SERVER> ambient 0                      CUBE_SERVER> ambient 0.                      CUBE_SERVER> ambient 0.8                      CUBE_SERVER>                       INCOMMING ambient 0.8
-CMD=[ambient] incoming=[0.8]
-ambient : on 0.8 0.8 0.8 0.8 
-CUBE_SERVER> s                      CUBE_SERVER> sa                      CUBE_SERVER> sav                      CUBE_SERVER> save                      CUBE_SERVER> save                       CUBE_SERVER> save d                      CUBE_SERVER> save de                      CUBE_SERVER> save def                      CUBE_SERVER>                       INCOMMING save def
-CMD=[save] incoming=[def]
-colib.exec save/def
-CUBE_SERVER> r                      CUBE_SERVER> re                      CUBE_SERVER> res                      CUBE_SERVER> rest                      CUBE_SERVER> resto                      CUBE_SERVER> restor                      CUBE_SERVER> restore                      CUBE_SERVER>                       INCOMMING restore
-CMD=[restore] incoming=[]
-colib.exec restore/
-
---- RESTORING FROM ---
-CUBE_SERVER> r                      CUBE_SERVER> re                      CUBE_SERVER> res                      CUBE_SERVER> rest                      CUBE_SERVER> resto                      CUBE_SERVER> restor                      CUBE_SERVER> restore                      CUBE_SERVER>                       INCOMMING restore
-CMD=[restore] incoming=[]
-colib.exec restore/
-
---- RESTORING FROM ---
-CUBE_SERVER> r                      CUBE_SERVER> re                      CUBE_SERVER> res                      CUBE_SERVER> rest                      CUBE_SERVER> resto                      CUBE_SERVER> restor                      CUBE_SERVER> restore                      CUBE_SERVER>                       INCOMMING restore
-CMD=[restore] incoming=[]
-colib.exec restore/
-
---- RESTORING FROM ---
-CUBE_SERVER> c                      CUBE_SERVER> ce                      CUBE_SERVER> ce,                      CUBE_SERVER> ce,t                      CUBE_SERVER> ce,                      CUBE_SERVER> ce                      CUBE_SERVER> cen                      CUBE_SERVER> cent                      CUBE_SERVER> cente                      CUBE_SERVER> center                      CUBE_SERVER>                       INCOMMING center
-CMD=[center] incoming=[]
-colib.exec center/
-dx=-6, dz=-28
-CUBE_SERVER> r                      CUBE_SERVER> re                      CUBE_SERVER> res                      CUBE_SERVER> rest                      CUBE_SERVER> restr                      CUBE_SERVER> restre                      CUBE_SERVER> restr                      CUBE_SERVER> rest                      CUBE_SERVER> resto                      CUBE_SERVER> restor                      CUBE_SERVER> restore                      CUBE_SERVER>                       INCOMMING restore
-CMD=[restore] incoming=[]
-colib.exec restore/
-
---- RESTORING FROM ---
