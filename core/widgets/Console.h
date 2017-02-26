@@ -11,29 +11,30 @@
 #include "Widget.h"
 #include "Color.h"
 #include "FontRenderer.h"
+#include "Draggable.hpp"
 
 namespace hwidgets
 {
 
-class WidgetConsole : public Widget
+class Console : public Draggable
 {
   public:
-	virtual ~WidgetConsole(){};
+	virtual ~Console(){};
 
-	static WidgetConsole* factory(string& data);
+	static Console* factory(string& data);
 
   protected:
-	virtual long _render(long);
-	virtual void keyPress(unsigned char key, int x, int y);
-	virtual bool script(const string& cmd);
-	virtual void _help(const string& what);
-	virtual void mouseClick(int button, int state, int x, int y);
+	virtual long _render(long) override;
+	virtual void keyPress(unsigned char key, int x, int y) override;
+	virtual bool script(const string& cmd) override;
+	virtual void _help(const string& what) override;
+	virtual void _mouseClick(int button, int state, int x, int y) override;
 	static void listener(const string& send);
 
   private:
-	WidgetConsole(){};
-	WidgetConsole(const WidgetConsole&);
-	WidgetConsole& operator=(const WidgetConsole&);
+	Console(){};
+	Console(const Console&);
+	Console& operator=(const Console&);
 
 	string cmd;
 	bool redisplay;

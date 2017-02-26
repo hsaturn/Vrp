@@ -5,12 +5,13 @@
  * Created on 7 juillet 2015, 13:34
  */
 
-#include "WidgetConsole.h"
+#include "Console.h"
 #include "Server.h"
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include <sys/socket.h>
 #include "ClipBoard.h"
+#include "Draggable.hpp"
 
 extern string getWord(string& s, const string &sSeparators = " ");
 namespace hwidgets
@@ -21,9 +22,9 @@ namespace hwidgets
 	static bool bStack = true;
 	static bool bHidden = false;
 	
-	list<string> WidgetConsole::display;
+	list<string> Console::display;
 	
-	void WidgetConsole::listener(const string& send)
+	void Console::listener(const string& send)
 	{
 		static string last="";
 		if (true) //send != last)
@@ -34,7 +35,7 @@ namespace hwidgets
 			display.push_back(send);
 		}
 	}
-	void WidgetConsole::mouseClick(int button, int state, int x, int y)
+	void Console::_mouseClick(int button, int state, int x, int y)
 	{
 		if (button == 1)
 		{
@@ -47,12 +48,12 @@ namespace hwidgets
 		}
 	}
 		
-	void WidgetConsole::_help(const string& what)
+	void Console::_help(const string& what)
 	{
 		pushHelp("console [error|commands|events|stack|hidden] [on|off]");
 	}
 	
-	bool WidgetConsole::script(const string& cmd)
+	bool Console::script(const string& cmd)
 	{
 		if (cmd[0]!='@')
 		{
@@ -85,15 +86,15 @@ namespace hwidgets
 		return false;
 	}
 
-	WidgetConsole* WidgetConsole::factory(string& data)
+	Console* Console::factory(string& data)
 	{
 		static bool listener=false;
 		
 		if (listener==false)
 		{
-			Server::addListener(WidgetConsole::listener);
+			Server::addListener(Console::listener);
 		}
-		WidgetConsole* cons=0;
+		Console* cons=0;
 		if (data.substr(0,4)=="help")
 		{
 			Widget::pushMessage("console coord coord coord coord [bgcolor cmdcolor color eventcolor] [font_family font_size]");
@@ -101,7 +102,7 @@ namespace hwidgets
 		else
 		{
 			static int n=0;
-			cons=new WidgetConsole;
+			cons=new Console;
 			cons->setName("console #"+to_string((long long)(++n)));
 			cons->cmdcolor = Color::factory(data);
 			cons->anscolor = Color::factory(data);
@@ -110,7 +111,7 @@ namespace hwidgets
 		return cons;
 	}
 	
-	void WidgetConsole::keyPress(unsigned char key, int x, int y)
+	void Console::keyPress(unsigned char key, int x, int y)
 	{
 		redisplay = true;
 		switch (key) {
@@ -147,7 +148,7 @@ namespace hwidgets
 		cout << "CUBE_SERVER> " << cmd << "                      \r" << flush;
 	}
 	
-	long WidgetConsole::_render(long time)
+	long Console::_render(long time)
 	{
 		string cmdt("> "+cmd);
 		

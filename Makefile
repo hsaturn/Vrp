@@ -8,8 +8,9 @@ OPT:=${OPT} -DHAVE_SYNTH
 endif
 
 LIBS:=${LIBS} -lsfml-graphics
-
-PARTS = core core/model core/widgets Cube Vrp genetic RedStone RedStone/Blocks core/commands Cube/commands world world/Blocks colib
+APPS_FOLDERS:=$(wildcard apps/*)
+APPS:=$(APPS_FOLDERS) apps/RedStone/Blocks  apps/Cube/commands apps/world/Blocks
+PARTS = core core/model core/widgets core/genetic core/commands $(APPS)
 RENDERER:=renderer/opengl
 CXX=g++
 
@@ -19,7 +20,7 @@ SRCE:= $(foreach dir,$(PARTS),$(wildcard $(dir)/*.cpp)) \
 BUILD_DIR=build
 OBJS=$(addprefix $(BUILD_DIR)/,$(SRCE:.cpp=.o))
 DEPS=$(addprefix $(BUILD_DIR)/,$(SRCE:.cpp=.d))
-INC_DIRS=core core/widgets genetic
+INC_DIRS=core core/widgets core/genetic
 INCLUDES:=$(addprefix -I,$(INC_DIRS))
 
 .PHONY:	build_dir
@@ -32,6 +33,7 @@ vrp: $(OBJS)
 
 build_dir:
 	@mkdir -p $(BUILD_DIR)
+	echo "INCLUDES = $(INCLUDES)"
 
 $(BUILD_DIR)/%.o:%.cpp
 	@echo "  Compiling $<"

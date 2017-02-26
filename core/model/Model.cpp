@@ -457,10 +457,11 @@ void Model::render() const
 			{
 				if (shader == 0)
 				{
+					CheckErrors("before Shininess shader loading");
 					shader = GLShader::loadGlsl("phong");
 					if (shader)
 						glUseProgram(shader);
-					CheckErrors("Shininess shader loading");
+					CheckErrors("Shininess shader loading fail");
 				}
 			}
 				
@@ -532,7 +533,7 @@ const Model* Model::get(const string& name, bool reload)
 		if (models.find(name) != models.end())
 			return models[name];
 
-	string file = "models/" + name + ".obj";
+	string file = "data/models/" + name + ".obj";
 	Model* model = new Model;
 	if (model->loadObjAndConvert(file))
 		models[name] = model;

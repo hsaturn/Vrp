@@ -10,6 +10,10 @@
 
 #    include <stdint.h>
 #    include <ostream>
+#    include <map>
+#    include <string>
+
+using namespace std;
 
 namespace hwidgets
 {
@@ -78,7 +82,7 @@ namespace hwidgets
 
 			State state;
 			uint16_t mod;
-			unsigned char key; // ascii
+			uint16_t key; // ascii or const (see below)
 			int mouse_x; // Mouse when event occured (or -1 if unable))
 			int mouse_y;
 
@@ -105,7 +109,36 @@ namespace hwidgets
 	  protected:
 
 		virtual void _update() { };
+
+		static void readKeymap(string keymapfile);
+		static map<uint16_t, uint16_t> keymap;
 	};
+
+	const int KEY_F1 = 0x101;
+	const int KEY_F2 = 0x102;
+	const int KEY_F3 = 0x103;
+	const int KEY_F4 = 0x104;
+	const int KEY_F5 = 0x105;
+	const int KEY_F6 = 0x106;
+	const int KEY_F7 = 0x107;
+	const int KEY_F8 = 0x108;
+	const int KEY_F9 = 0x109;
+	const int KEY_F10 = 0x10a;
+	const int KEY_F11 = 0x10b;
+	const int KEY_F12 = 0x10c;
+	const int KEY_F13 = 0x10d;
+
+	const int KEY_UP = 0x110;
+	const int KEY_LEFT = 0x111;
+	const int KEY_DOWN = 0x112;
+	const int KEY_RIGHT = 0x113;
+
+	const int KEY_PGDOWN = 0x114;
+	const int KEY_PGUP = 0x115;
+
+	const int KEY_HOME = 0x120;
+	const int KEY_END = 0x121;
+	const int KEY_INSERT = 0x122;
 }
 
 #endif /* WIDGETEVENT_HPP */

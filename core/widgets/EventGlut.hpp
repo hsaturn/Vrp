@@ -18,11 +18,9 @@ namespace hwidgets
 	  public:
 		EventGlut();
 		virtual ~EventGlut();
-		
-		virtual void _update() override
-		{
-		}
-		
+
+		virtual void _update() override { }
+
 	  private:
 		// Glut events handlers
 		static void KeyboardFunc(unsigned char, int, int);
@@ -30,6 +28,7 @@ namespace hwidgets
 		static void MouseFunc(int, int, int, int);
 		static void MotionFunc(int, int);
 		static void PassiveMotionFunc(int, int);
+		static void SpecialFunc(int key, int x, int y);
 
 		void updateModifiers();
 

@@ -1,18 +1,21 @@
 #include "Event.hpp"
 #include <iostream>
 #include <iomanip>
+#include <fstream>
+#include <sstream>
 
 using namespace std;
 
 namespace hwidgets
 {
+	map<uint16_t, uint16_t> Event::keymap;
 
 	ostream& operator <<(ostream& out, const Event &e)
 	{
 		out << "Mouse: " << e.mouse << ", Keyboard: " << e.keybd << endl;
 		return out;
 	}
-	
+
 	void outChar(ostream &out, bool cond, char c)
 	{
 		if (cond)
@@ -20,6 +23,7 @@ namespace hwidgets
 		else
 			out << ' ';
 	}
+
 	ostream& operator << (ostream& out, const Event::Mouse &mouse)
 	{
 		out << setw(4) << mouse.x << ',' << setw(4) << mouse.y << ' ';
@@ -29,7 +33,7 @@ namespace hwidgets
 		outChar(out, mouse.button & Event::Mouse::OTHER, 'O');
 		return out;
 	}
-	
+
 	ostream& operator << (ostream& out, const Event::Keybd &kb)
 	{
 		out << kb.mouse_x << ',' << kb.mouse_y << ' ';
@@ -48,14 +52,48 @@ namespace hwidgets
 		out << ' ';
 		return out;
 	}
-	
-	
+
 	bool Event::update()
 	{
 		this->_update();
-		bool ret=changed;
+		bool ret = changed;
 		changed = false;
 		return ret;
+	}
+
+	void Event::readKeymap(string keymapfile)
+	{
+		int rowcount = 0;
+		keymapfile = "data/keymaps/"+keymapfile;
+		ifstream kfile(keymapfile);
+		if (!kfile.is_open())
+		{
+			cerr << "ERROR, keymap file not found : " << keymapfile << "." << endl;
+			return;
+		}
+		while (kfile.good())
+		{
+			uint16_t key;
+			uint16_t mapped;
+
+			string row;
+
+			getline(kfile, row);
+			rowcount++;
+			if (row.length() && row[0] != '#')
+			{
+				stringstream strow;
+				strow << row;
+				strow >> key;
+				strow >> mapped;
+				if (keymap.find(key) != keymap.end())
+				{
+					cerr << "Keymap file " << keymapfile << ", warning duplicate entry at row :" << rowcount << endl;
+				}
+				keymap[key] = mapped;
+			}
+
+		}
 	}
 
 }

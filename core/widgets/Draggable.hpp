@@ -13,10 +13,10 @@
 
 namespace hwidgets
 {
-	class WidgetDraggable : public Widget
+	class Draggable : public Widget
 	{
 	  public:
-		WidgetDraggable();
+		Draggable();
 
 		typedef enum
 		{
@@ -32,16 +32,16 @@ namespace hwidgets
 		
 	  private:
 
-		WidgetDraggable(const WidgetDraggable& orig);
-		WidgetDraggable& operator=(const WidgetDraggable&) ;
+		Draggable(const Draggable& orig);
+		Draggable& operator=(const Draggable&) ;
 
 		string text;
 		bool left;
 		const Color* color;
 
 		enuState state;
-		int start_x;
-		int start_y;
+		int offset_x;
+		int offset_y;
 	} ;
 
 }

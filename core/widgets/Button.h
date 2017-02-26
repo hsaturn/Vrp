@@ -8,30 +8,30 @@
 #ifndef WIDGETBUTTON_H
 #define WIDGETBUTTON_H
 
-#include "WidgetDraggable.hpp"
+#include "Draggable.hpp"
 #include <StringUtil.hpp>
 
 namespace hwidgets
 {
 
-	class WidgetButton : public WidgetDraggable
+	class Button : public Widget
 	{
 	  public:
 
-		virtual ~WidgetButton() { };
+		virtual ~Button() { };
 
-		static WidgetButton* factory(string &data);
+		static Button* factory(string &data);
 		
-		
+		void mouseClick(int button, int state, int x, int y) override;
 
 	  protected:
 		virtual long _render(long);
 
 	  private:
 
-		WidgetButton() { };
-		WidgetButton(const WidgetButton& orig);
-		WidgetButton& operator=(const WidgetButton&) ;
+		Button();;
+		Button(const Button& orig);
+		Button& operator=(const Button&) ;
 
 		string text;
 		bool left;

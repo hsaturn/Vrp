@@ -2,7 +2,6 @@
 
 #include "model/Model.hpp"
 #include "Plateau.hpp"
-#include "Vrp/Planet.hpp"
 #include "Column.hpp"
 #include "Colib.hpp"
 #include "Bati.hpp"

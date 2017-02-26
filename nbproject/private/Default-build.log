@@ -1,0 +1,33 @@
+  Compiling core/Server.cpp
+  Compiling core/arcball_sample.cpp
+  Compiling core/objloader.cpp
+  Compiling core/imageloader.cpp
+  Compiling core/ObjectBuilder.cpp
+  Compiling core/StringUtil.cpp
+  Compiling core/ClipBoard.cpp
+  Compiling core/Random.cpp
+  Compiling core/String.cpp
+  Compiling core/Vector3D.cpp
+  Compiling core/Range.cpp
+  Compiling core/LightElement.cpp
+  Compiling core/ModelOld.cpp
+  Compiling core/Help.cpp
+  Compiling core/arcball.cpp
+  Compiling core/Object.cpp
+  Compiling core/Coord.cpp
+  Compiling core/main.cpp
+core/main.cpp: In function ‘int main(int, char**)’:
+core/main.cpp:1237:25: warning: ‘glutEvent’ may be used uninitialized in this function [-Wmaybe-uninitialized]
+  Widget::init(glutEvent);
+                         ^
+  Compiling core/MovingCoord.cpp
+  Compiling core/DynamicFloat.cpp
+  Compiling core/model/tiny_obj_loader.cpp
+  Compiling core/model/TextureLoader.cpp
+  Compiling core/model/Model.cpp
+  Compiling core/widgets/WidgetDraggable.cpp
+  Compiling core/widgets/Widget.cpp
+core/widgets/Widget.cpp:10:20: fatal error: Button.h: Aucun fichier ou dossier de ce type
+compilation terminated.
+Makefile:37 : la recette pour la cible « build/core/widgets/Widget.o » a échouée
+make: *** [build/core/widgets/Widget.o] Erreur 1

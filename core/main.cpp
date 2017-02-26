@@ -6,7 +6,7 @@
 #include <map>
 #include <sstream>
 #include <cmath>
-#include <Cube/Cube.h>
+#include <apps/Cube/Cube.h>
 #include <Server.h>
 #include <unistd.h>
 #include <sys/signal.h>
@@ -23,7 +23,6 @@
 #include "imageloader.h"
 #include "Random.hpp"
 #include "texture.hpp"
-#include "Vrp/Vrp.hpp"
 #include <ansi_colors.hpp>
 #include "core/arcball.h"
 #include "core/commands/cmd.hpp"
@@ -33,8 +32,6 @@
 #include "Help.h"
 #include <Widget.h>
 #include <EventGlut.hpp>
-
-#include "colib/Decor.hpp"
 
 int SCREEN_WIDTH = 200;
 int SCREEN_HEIGHT = 200;
@@ -48,7 +45,9 @@ const float SPHERE_RADIUS = 5.0f;
 
 using namespace std;
 using namespace hwidgets;
+
 string lastState = "";
+EventGlut* glutEvent;
 
 bool redisplayAsked = false;
 bool backward = true;
@@ -99,7 +98,6 @@ GLuint blue_textureId;
 GLuint green_textureId;
 GLuint yellow_textureId;
 GLuint orange_textureId;
-GLuint _displayListId_smallcube; //The OpenGL id of the display list
 //Makes the image into a texture, and returns the id of the texture
 bool resetTimer = true;
 
@@ -343,163 +341,6 @@ void handleResize(int w, int h)
 	glMatrixMode(GL_MODELVIEW);
 }
 
-void draw_smallcube()
-{
-	return;
-	Image* image = loadBMP("white.bmp");
-	white_textureId = loadTexture(image);
-	delete image;
-
-	Image* image1 = loadBMP("red.bmp");
-	red_textureId = loadTexture(image1);
-	delete image1;
-
-	Image* image2 = loadBMP("blue.bmp");
-	blue_textureId = loadTexture(image2);
-	delete image2;
-
-	Image* image3 = loadBMP("orange.bmp");
-	orange_textureId = loadTexture(image3);
-	delete image3;
-
-	Image* image4 = loadBMP("green.bmp");
-	green_textureId = loadTexture(image4);
-	delete image4;
-
-	Image* image5 = loadBMP("yellow.bmp");
-	yellow_textureId = loadTexture(image5);
-	delete image5;
-
-
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, orange_textureId);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	glBegin(GL_QUADS);
-
-
-	//Top face
-	//glNormal3f(0.0, 1.0f, 0.0f);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(-BOX_SIZE / 2, BOX_SIZE / 2, -BOX_SIZE / 2);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(-BOX_SIZE / 2, BOX_SIZE / 2, BOX_SIZE / 2);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(BOX_SIZE / 2, BOX_SIZE / 2, BOX_SIZE / 2);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(BOX_SIZE / 2, BOX_SIZE / 2, -BOX_SIZE / 2);
-
-	glEnd();
-	glDisable(GL_TEXTURE_2D);
-
-
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, red_textureId);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	glBegin(GL_QUADS);
-	//Bottom face
-
-	//glNormal3f(0.0, -1.0f, 0.0f);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(-BOX_SIZE / 2, -BOX_SIZE / 2, -BOX_SIZE / 2);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(BOX_SIZE / 2, -BOX_SIZE / 2, -BOX_SIZE / 2);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(BOX_SIZE / 2, -BOX_SIZE / 2, BOX_SIZE / 2);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(-BOX_SIZE / 2, -BOX_SIZE / 2, BOX_SIZE / 2);
-
-	glEnd();
-
-
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, green_textureId);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	glBegin(GL_QUADS);
-
-	//Left face
-	//glNormal3f(-1.0, 0.0f, 0.0f);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(-BOX_SIZE / 2, -BOX_SIZE / 2, -BOX_SIZE / 2);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(-BOX_SIZE / 2, -BOX_SIZE / 2, BOX_SIZE / 2);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(-BOX_SIZE / 2, BOX_SIZE / 2, BOX_SIZE / 2);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(-BOX_SIZE / 2, BOX_SIZE / 2, -BOX_SIZE / 2);
-
-	glEnd();
-
-
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, blue_textureId);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	glBegin(GL_QUADS);
-
-	//Right face
-	//glNormal3f(1.0, 0.0f, 0.0f);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(BOX_SIZE / 2, -BOX_SIZE / 2, -BOX_SIZE / 2);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(BOX_SIZE / 2, BOX_SIZE / 2, -BOX_SIZE / 2);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(BOX_SIZE / 2, BOX_SIZE / 2, BOX_SIZE / 2);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(BOX_SIZE / 2, -BOX_SIZE / 2, BOX_SIZE / 2);
-
-	glEnd();
-
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, white_textureId);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	glBegin(GL_QUADS);
-
-	//Front face
-	//glNormal3f(0.0, 0.0f, 1.0f);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(-BOX_SIZE / 2, -BOX_SIZE / 2, BOX_SIZE / 2);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(BOX_SIZE / 2, -BOX_SIZE / 2, BOX_SIZE / 2);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(BOX_SIZE / 2, BOX_SIZE / 2, BOX_SIZE / 2);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(-BOX_SIZE / 2, BOX_SIZE / 2, BOX_SIZE / 2);
-
-	glEnd();
-
-
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, yellow_textureId);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	glBegin(GL_QUADS);
-	//Back face
-	//glNormal3f(0.0, 0.0f, -1.0f);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(-BOX_SIZE / 2, -BOX_SIZE / 2, -BOX_SIZE / 2);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(-BOX_SIZE / 2, BOX_SIZE / 2, -BOX_SIZE / 2);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(BOX_SIZE / 2, BOX_SIZE / 2, -BOX_SIZE / 2);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(BOX_SIZE / 2, -BOX_SIZE / 2, -BOX_SIZE / 2);
-
-	glEnd();
-	//glDisable(GL_TEXTURE_2D);
-
-	//glutSwapBuffers();
-}
-
 void initRendering()
 {
 	glEnable(GL_DEPTH_TEST);
@@ -513,15 +354,6 @@ void initRendering()
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	return;
-
-	//Set up a display list for drawing a cube
-	_displayListId_smallcube = glGenLists(1); //Make room for the display list
-	glNewList(_displayListId_smallcube, GL_COMPILE); //Begin the display list
-	draw_smallcube(); //Add commands for drawing a black area to the display list
-	glEndList(); //End the display list
-
-
 }
 
 float getFloat(string& incoming)
@@ -1227,14 +1059,22 @@ void mousepassivemotion(int x, int y)
 	mouse_motion(x, y);
 }
 
+void testGlutEvent(int value)
+{
+	cout << "testGlutEvent" << endl;
+	if (glutEvent->update())
+	{
+		cout << "EVENT !" << glutEvent << endl;
+	}
+}
+
 int main(int argc, char** argv)
 {
 	//cmdQueue.push_back("rotate left 9000");
 	//cmdQueue.push_back("rotate x");
 	arcball_reset();
 	
-	EventGlut* glutEvent;
-	Widget::init(glutEvent);
+	glutInit(&argc, argv);
 	Widget::setCmdQueue(&cmdQueue);
 	reboot();
 
@@ -1243,16 +1083,15 @@ int main(int argc, char** argv)
 		lPort = atol(argv[1]);
 	else
 		lPort = 3333;
+	string sPort = toString(lPort);
 
 	Widget::setVar("port=" + std::to_string(lPort));
 	server = new Server(lPort);
-	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH | GLUT_MULTISAMPLE);
 	glEnable(GL_MULTISAMPLE_SGIS);
 	glutInitWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-	
-	string sPort = toString(lPort);
 	glutCreateWindow((string("CS ") + sPort).c_str());
+	
 	if (glewInit())
 	{
 		cerr << "Failed to initialize GLEW" << endl;
@@ -1263,6 +1102,13 @@ int main(int argc, char** argv)
 	glutDisplayFunc(drawScene);
 	glutKeyboardFunc(handleKeypress);
 	glutReshapeFunc(handleResize);
+
+	// TEST GLUT EVENT
+	//glutEvent = new EventGlut;
+	Widget::init(glutEvent);
+	//glutTimerFunc(25, testGlutEvent, 0);
+	// TSET
+	
 	glutMouseFunc(mouse_button);
 	glutMotionFunc(mouse_motion);
 	glutPassiveMotionFunc(mousepassivemotion);

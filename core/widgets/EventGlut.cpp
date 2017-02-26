@@ -24,6 +24,8 @@ namespace hwidgets
 			cerr << "=================================" << endl;
 			cerr << "WARNING :EventGlut not tested yet" << endl;
 			cerr << "=================================" << endl;
+			
+			Event::readKeymap("glut_keys.kmap");
 
 			init = true ;
 			instance = new EventGlut;
@@ -33,6 +35,7 @@ namespace hwidgets
 			glutMouseFunc(MouseFunc);
 			glutMotionFunc(MotionFunc);
 			glutPassiveMotionFunc(PassiveMotionFunc);
+			glutSpecialFunc(SpecialFunc);
 		}
 	}
 
@@ -63,6 +66,16 @@ namespace hwidgets
 		instance->keybd.state = Keybd::UP;
 		instance->keybd.mouse_x = mousex;
 		instance->keybd.mouse_y = mousey;
+	}
+	
+	void EventGlut::SpecialFunc(int key, int mousex, int mousey)
+	{
+		if (init==false) return;
+		
+		
+		instance->updateModifiers();
+		instance->keybd.mouse_x = mousex;
+		instance->keybd.mouse_y = mousey;		
 	}
 	
 	void EventGlut::MouseFunc(int button, int state, int x, int y)
