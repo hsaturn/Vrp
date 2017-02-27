@@ -47,7 +47,6 @@ using namespace std;
 using namespace hwidgets;
 
 string lastState = "";
-EventGlut* glutEvent;
 
 bool redisplayAsked = false;
 bool backward = true;
@@ -564,25 +563,72 @@ void calcTranslate(string& incoming, float& v)
 {
 	StringUtil::trim(incoming);
 	if (incoming.length())
-	{
-		// char c=incoming[0];
-/*		if (c=='+' || c=='-')
-		{
-			incoming.erase(0,1);
-			int dv = StringUtil::getFloat(incoming);
-			if (c=='-')
-				v -= dv;
-			else
-				v += dv;
-		}
-		else
- * */
-			v = StringUtil::getFloat(incoming);
-	}
+		v = StringUtil::getFloat(incoming);
 }
+
+void mouse_motion_new(Event* event, Event::Mouse mouse)
+{
+	Widget::mouseMotion(event);	// FIXME Widget has to register events
+	
+	if (buttonRotate)
+	{
+		int invert_y = (SCREEN_HEIGHT - mouse.y) - 1;
+		arcball_move(mouse.x,invert_y);
+	}
+	if (buttonTranslate)
+	{
+		translateX += (translateStartX-mouse.x)*factor_translate;
+		translateY += (translateStartY-mouse.y)*factor_translate;
+		translateStartX = mouse.x;
+		translateStartY = mouse.y;
+	}
+	glutPostRedisplay();
+}
+
+void mouse_button_new(Event* event, Event::Mouse &mouse)
+{
+	buttonRotate = false;
+	buttonTranslate = false;
+	
+	/* si on appuie sur le bouton gauche */
+	if (mouse.buttons.left)
+	{
+		cout << "on " << endl;
+		buttonRotate = true;
+		int invert_y = (SCREEN_HEIGHT - mouse.y) - 1; // OpenGL viewport coordinates are Cartesian
+		arcball_start(mouse.x,invert_y);
+	}
+	if (mouse.buttons.middle)
+	{
+		buttonTranslate = true;
+		translateStartX = mouse.x;
+		translateStartY = mouse.y;
+	}
+		GLint pix[20];
+		glReadPixels(mouse.x/SCREEN_WIDTH, mouse.y/SCREEN_HEIGHT, 1, 1, GL_RED, GL_INT8_NV, pix);	// WAS GL_FLOAT
+
+		if (mouse.buttons.wheel_up)
+			scale /= 0.98;
+		if (mouse.buttons.wheel_down)
+			scale *= 0.98;
+/*	if (Widget::mouseButton(button, state, x, y) == 0 && (button == 4 || button == 3))
+ * */
+}
+
 
 void update(int value)
 {
+	// TODO, obsolete (will be replaced by slots)
+	Event* event = Event::poll();
+	if (event)
+	{
+		cout << *event << endl;
+		if (event->event.type.mouse_button)
+			mouse_button_new(event, event->mouse);
+		else if (event->event.type.mouse_move)
+			mouse_motion_new(event, event->mouse);
+	}
+	
 	string msg = Widget::popMessage();
 	if (msg.length())
 	{
@@ -986,36 +1032,6 @@ horrible:
 	glutTimerFunc(10, update, 0);
 }
 
-void mouse_button(int button, int state, int x, int y)
-{
-	buttonRotate = false;
-	buttonTranslate = false;
-	
-	/* si on appuie sur le bouton gauche */
-	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
-	{
-		cout << "on ";
-		buttonRotate = true;
-		int invert_y = (SCREEN_HEIGHT - y) - 1; // OpenGL viewport coordinates are Cartesian
-		arcball_start(x,invert_y);
-	}
-	if (button == GLUT_MIDDLE_BUTTON && state == GLUT_DOWN)
-	{
-		buttonTranslate = true;
-		translateStartX = x;
-		translateStartY = y;
-	}
-		GLint pix[20];
-		glReadPixels(x/SCREEN_WIDTH, y/SCREEN_HEIGHT, 1, 1, GL_RED, GL_INT8_NV, pix);	// WAS GL_FLOAT
-
-	if (Widget::mouseButton(button, state, x, y) == 0 && (button == 4 || button == 3))
-	{
-		if (button == 4)
-			scale *= 0.98;
-		else
-			scale /= 0.98;
-	}
-}
 
 /**
  * Get a normalized vector from the center of the virtual ball O to a
@@ -1034,38 +1050,6 @@ glm::vec3 get_arcball_vector(int x, int y) {
   else
     P = glm::normalize(P);  // nearest point
   return P;
-}
-
-void mouse_motion(int x, int y)
-{
-	Widget::mouseMotion(x, y);
-	if (buttonRotate)
-	{
-		int invert_y = (SCREEN_HEIGHT - y) - 1;
-		arcball_move(x,invert_y);
-	}
-	if (buttonTranslate)
-	{
-		translateX += (translateStartX-x)*factor_translate;
-		translateY += (translateStartY-y)*factor_translate;
-		translateStartX = x;
-		translateStartY = y;
-	}
-	glutPostRedisplay();
-}
-
-void mousepassivemotion(int x, int y)
-{
-	mouse_motion(x, y);
-}
-
-void testGlutEvent(int value)
-{
-	cout << "testGlutEvent" << endl;
-	if (glutEvent->update())
-	{
-		cout << "EVENT !" << glutEvent << endl;
-	}
 }
 
 int main(int argc, char** argv)
@@ -1104,14 +1088,14 @@ int main(int argc, char** argv)
 	glutReshapeFunc(handleResize);
 
 	// TEST GLUT EVENT
-	//glutEvent = new EventGlut;
-	Widget::init(glutEvent);
+	Widget::init(EventGlut::getInstance());
 	//glutTimerFunc(25, testGlutEvent, 0);
 	// TSET
-	
+	/*
 	glutMouseFunc(mouse_button);
 	glutMotionFunc(mouse_motion);
 	glutPassiveMotionFunc(mousepassivemotion);
+	 * */
 	glutTimerFunc(25, update, 0);
 	atexit(onclose);
 

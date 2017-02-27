@@ -1,4 +1,5 @@
 #include "Event.hpp"
+#include "EventHandler.hpp"
 #include <iostream>
 #include <iomanip>
 #include <fstream>
@@ -8,12 +9,15 @@ using namespace std;
 
 namespace hwidgets
 {
+	Event* Event::instance = 0;
 	map<uint16_t, uint16_t> Event::keymap;
-
-	ostream& operator <<(ostream& out, const Event &e)
+	
+	Event::Event()
 	{
-		out << "Mouse: " << e.mouse << ", Keyboard: " << e.keybd << endl;
-		return out;
+		if (instance==0)
+		{
+			cerr << "WARNING: Event created, but event manager has not been set." << endl;
+		}
 	}
 
 	void outChar(ostream &out, bool cond, char c)
@@ -23,14 +27,32 @@ namespace hwidgets
 		else
 			out << ' ';
 	}
+	
+	ostream& operator <<(ostream& out, const Event &e)
+	{
+		out << "Evt: ";
+		outChar(out, e.event.type.key_down, 'K');
+		outChar(out, e.event.type.key_press, '*');
+		outChar(out, e.event.type.key_up, 'k');
+		out << ' ';
+		outChar(out, e.event.type.mouse_button, 'B');
+		outChar(out, e.event.type.mouse_move, '#');
+		out << " Mouse: " << e.mouse << ", Keyboard: " << e.keybd << endl;
+		return out;
+	}
+
 
 	ostream& operator << (ostream& out, const Event::Mouse &mouse)
 	{
 		out << setw(4) << mouse.x << ',' << setw(4) << mouse.y << ' ';
-		outChar(out, mouse.button & Event::Mouse::LEFT, 'L');
-		outChar(out, mouse.button & Event::Mouse::MIDDLE, 'M');
-		outChar(out, mouse.button & Event::Mouse::RIGHT, 'R');
-		outChar(out, mouse.button & Event::Mouse::OTHER, 'O');
+		int btn='0';
+		for(uint16_t i=1; i<4096; i<<=1, btn++)
+			if (mouse.buttons.all & i)
+				cout << (char)btn;
+			else
+				cout << '-';
+		cout << ' ';
+			
 		return out;
 	}
 
@@ -53,18 +75,23 @@ namespace hwidgets
 		return out;
 	}
 
-	bool Event::update()
+	Event* Event::poll()
 	{
-		this->_update();
-		bool ret = changed;
-		changed = false;
+		Event* ret = 0;
+		if (instance)
+		{
+			instance->_poll();
+			EventHandler::dispatch(instance);
+			if (instance->event.all)
+				ret = instance;
+		}
 		return ret;
 	}
 
 	void Event::readKeymap(string keymapfile)
 	{
 		int rowcount = 0;
-		keymapfile = "data/keymaps/"+keymapfile;
+		keymapfile = "data/keymaps/" + keymapfile;
 		ifstream kfile(keymapfile);
 		if (!kfile.is_open())
 		{

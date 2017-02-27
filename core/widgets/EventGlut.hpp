@@ -9,6 +9,9 @@
 #ifndef EVENTGLUT_HPP
 #    define EVENTGLUT_HPP
 #    include "Event.hpp"
+#include <queue>
+
+using namespace std;
 
 namespace hwidgets
 {
@@ -16,12 +19,15 @@ namespace hwidgets
 	class EventGlut : public Event
 	{
 	  public:
-		EventGlut();
 		virtual ~EventGlut();
 
-		virtual void _update() override { }
+		virtual void _poll() override;
 
+		static Event* getInstance();
+		
 	  private:
+		EventGlut();
+		
 		// Glut events handlers
 		static void KeyboardFunc(unsigned char, int, int);
 		static void KeyboardUpFunc(unsigned char, int, int);
@@ -32,8 +38,10 @@ namespace hwidgets
 
 		void updateModifiers();
 
-		static EventGlut* instance;
+		EventType current_event;	// raz on _poll
+		
 		static bool init;
+		static map<uint16_t, uint16_t>	mapButtons;
 	};
 }
 

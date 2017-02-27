@@ -14,17 +14,16 @@ using namespace std;
 
 namespace hwidgets
 {
-	EventGlut* EventGlut::instance = 0;
 	bool EventGlut::init = false;
+	map<uint16_t, uint16_t> EventGlut::mapButtons;
 
-	EventGlut::EventGlut()
+	EventGlut::EventGlut() { }
+
+	Event* EventGlut::getInstance()
 	{
-		if (init == false)
+		if (init == false && instance == 0)
 		{
-			cerr << "=================================" << endl;
-			cerr << "WARNING :EventGlut not tested yet" << endl;
-			cerr << "=================================" << endl;
-			
+			readEvt("glut_buttons", mapButtons);
 			Event::readKeymap("glut_keys.kmap");
 
 			init = true ;
@@ -37,6 +36,7 @@ namespace hwidgets
 			glutPassiveMotionFunc(PassiveMotionFunc);
 			glutSpecialFunc(SpecialFunc);
 		}
+		return instance;
 	}
 
 	EventGlut::~EventGlut()
@@ -47,87 +47,111 @@ namespace hwidgets
 			init = false;
 		}
 	}
-	
+
+	void EventGlut::_poll()
+	{
+		event.all = current_event.all;
+		current_event.all = 0;
+	}
+
 	void EventGlut::KeyboardFunc(unsigned char key, int mousex, int mousey)
 	{
-		if (init==false) return;
-		instance->updateModifiers();
-		instance->keybd.key = key;
-		instance->keybd.state = Keybd::DOWN;
-		instance->keybd.mouse_x = mousex;
-		instance->keybd.mouse_y = mousey;
+		if (init == false) return;
+		EventGlut* glut = dynamic_cast<EventGlut*> (instance);
+		glut->current_event.type.key_down = true;
+		glut->updateModifiers();
+		glut->keybd.key = key;
+		glut->keybd.state = Keybd::DOWN;
+		glut->keybd.mouse_x = mousex;
+		glut->keybd.mouse_y = mousey;
 	}
-	
+
 	void EventGlut::KeyboardUpFunc(unsigned char key, int mousex, int mousey)
 	{
-		if (init==false) return;
-		instance->updateModifiers();
-		instance->keybd.key = key;
-		instance->keybd.state = Keybd::UP;
-		instance->keybd.mouse_x = mousex;
-		instance->keybd.mouse_y = mousey;
+		if (init == false) return;
+		EventGlut* glut = dynamic_cast<EventGlut*> (instance);
+		glut->current_event.type.key_up = true;
+		glut->updateModifiers();
+		glut->keybd.key = key;
+		glut->keybd.state = Keybd::UP;
+		glut->keybd.mouse_x = mousex;
+		glut->keybd.mouse_y = mousey;
 	}
-	
+
 	void EventGlut::SpecialFunc(int key, int mousex, int mousey)
 	{
-		if (init==false) return;
-		
-		
-		instance->updateModifiers();
-		instance->keybd.mouse_x = mousex;
-		instance->keybd.mouse_y = mousey;		
+		if (init == false) return;
+		EventGlut* glut = dynamic_cast<EventGlut*> (instance);
+		glut->current_event.type.key_down = true;
+		glut->updateModifiers();
+		glut->keybd.mouse_x = mousex;
+		glut->keybd.mouse_y = mousey;
 	}
-	
+
 	void EventGlut::MouseFunc(int button, int state, int x, int y)
 	{
 		if (!init) return;
-		instance->updateModifiers();
-		instance->mouse.x = x;
-		instance->mouse.y = y;
-		switch (button)
+
+		EventGlut* glut = dynamic_cast<EventGlut*> (instance);
+		Event::Mouse &mouse = glut->mouse;
+
+		glut->current_event.type.mouse_button = true;
+		glut->updateModifiers();
+		mouse.x = x;
+		mouse.y = y;
+		
+		auto it = mapButtons.find(button);
+		if (it != mapButtons.end())
 		{
-			case GLUT_LEFT_BUTTON:
-				instance->mouse.button = instance->mouse.LEFT;
-				break;
-			case GLUT_MIDDLE_BUTTON:
-				instance->mouse.button = instance->mouse.MIDDLE;
-				break;
-			case GLUT_RIGHT_BUTTON:
-				instance->mouse.button = instance->mouse.RIGHT;
-				break;
-			default:
-				instance->mouse.button = instance->mouse.NONE;
+			cout << button << "/" << state << endl;
+			uint16_t last_button = it->second;
+			mouse.button_down = state==GLUT_DOWN;
+			
+			mouse.last_button = last_button;
+			if (state == GLUT_DOWN)
+				mouse.buttons.all |= last_button;
+			else
+				mouse.buttons.all &= ~last_button;
 		}
-		instance->mouse.state = state;
+		else
+		{
+				mouse.last_button = Event::Mouse::NONE;
+				cerr << "Glut event error : unknown button " << button << endl;
+		}
 	}
 
 	void EventGlut::MotionFunc(int x, int y)
 	{
 		if (!init) return;
-		instance->changed = true;
-		instance->updateModifiers();
-		instance->mouse.x = x;
-		instance->mouse.y = y;
+		EventGlut* glut = dynamic_cast<EventGlut*> (instance);
+		glut->current_event.type.mouse_move = true;
+		glut->updateModifiers();
+		glut->mouse.x = x;
+		glut->mouse.y = y;
 	}
 
 	void EventGlut::PassiveMotionFunc(int x, int y)
 	{
 		if (!init) return;
-		instance->changed = true;
-		instance->updateModifiers();
-		instance->mouse.button = instance->mouse.NONE;
-		instance->mouse.x = x;
-		instance->mouse.y = y;
+		EventGlut* glut = dynamic_cast<EventGlut*> (instance);
+		glut->current_event.type.mouse_move = true;
+		glut->updateModifiers();
+		glut->mouse.buttons.all = 0;
+		glut->mouse.x = x;
+		glut->mouse.y = y;
 	}
-	
+
 	void EventGlut::updateModifiers()
 	{
-		auto get=glutGetModifiers();
+		auto get = glutGetModifiers();
 		uint16_t amod = keybd.mod;
 		keybd.mod = keybd.NONE;
 		if (get & GLUT_ACTIVE_CTRL)		keybd.mod |= keybd.CTRL;
 		if (get & GLUT_ACTIVE_SHIFT)	keybd.mod |= keybd.SHIFT;
 		if (get & GLUT_ACTIVE_ALT)		keybd.mod |= keybd.ALT;
-		changed = (keybd.mod != amod);
+
+		// @FIXME -> should detect key up / down
+		if (keybd.mod != amod)
+			event.type.key_down = true;
 	}
 }

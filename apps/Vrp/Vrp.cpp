@@ -157,7 +157,7 @@ bool Vrp::_render(bool resetTimer)
 			if (getLong("pause") == 0)
 			{
 				cout << "----------------" << endl;
-				if (algo->step())	// FIXME compute while rendering is bad !
+				if (algo->step())	// FIXME computing while rendering is bad !
 					best(server);
 				if (getLong("fast"))
 					redisplayAsked = true;

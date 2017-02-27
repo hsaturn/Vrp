@@ -122,7 +122,7 @@ bool Galaxy::_render(bool resetTimer) {
 		if (names)
 			planet->renderName();
 	}
-	return false;	// TODO ?
+	return false;
 }
 
 const Planet* Galaxy::getPlanet(const string& planetName) const

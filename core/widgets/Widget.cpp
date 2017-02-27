@@ -9,10 +9,11 @@
 #include <StringUtil.hpp>
 #include "Button.h"
 #include "Console.h"
+#include "EventHandler.hpp"
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include <chrono>
-
+#include <sstream>
 
 namespace hwidgets
 {
@@ -50,7 +51,8 @@ namespace hwidgets
 			if (it != eventsAllowed.end())
 				bOk = it->second;
 		}
-		if (bOk) pushMessage("#EVENT " + event + ' ' + msg);
+		if (bOk)
+			pushMessage("#EVENT " + event + ' ' + msg);
 	}
 
 	void Widget::pushHelp(string help, string msg)
@@ -74,32 +76,23 @@ namespace hwidgets
 		return msg;
 	}
 
-	Widget* Widget::mouseButton(int button, int state, int x, int y)
+	Widget* Widget::mouseMotion(Event* event)
 	{
-		Widget* wid = findWidget(x, y);
-		cout << "WID=" << wid << endl;
-
-		if (wid)
-			wid->mouseClick(button, state, x, y);
-		return 0;
-	}
-
-	Widget* Widget::mouseMotion(int x, int y)
-	{
-		Widget* wid = findWidget(x, y);
-		string msg;
+		Event::Mouse &mouse=event->mouse;
+		Widget* wid = findWidget(mouse.x, mouse.y);
+		stringstream msg;
 		if (wid)
 		{
-			msg = wid->name;
+			msg << wid->name;
 
-			wid->mouseMove(x, y, 0);
+			wid->mouseMove(event);
 
-			msg += " " + StringUtil::to_string(x - wid->rect()->x1()) + ' ' + StringUtil::to_string(y - wid->rect()->y1());
+			msg << ' ' << (mouse.x - wid->rect()->x1()) << ' ' << (mouse.y - wid->rect()->y1());
 		}
 		else
-			msg = "root";
-		msg += " " + StringUtil::to_string(x) + ' ' + StringUtil::to_string(y);
-		pushEvent("mousemove", msg);
+			msg << "root";
+		msg << ' ' << mouse.x <<  ' ' << mouse.y;
+		pushEvent("mousemove", msg.str());
 		return 0;
 	}
 
@@ -110,6 +103,7 @@ namespace hwidgets
 			w = capture_keybd_widget;
 		else
 			w = findWidget(x, y);
+		
 		if (w)
 		{
 			w->keyPress(key, x, y);
@@ -555,10 +549,31 @@ namespace hwidgets
 		if (capture_mouse_widget == this) capture_mouse_widget = 0;
 		if (capture_keybd_widget == this) capture_keybd_widget = 0;
 	}
-	
+
 	void Widget::init(Event*)
 	{
-		
+		Event::EventType mouse;
+		mouse.type.mouse_button = true;
+		EventHandler::connect(Widget::mouseHandler, mouse);
+
+		Event::EventType keyboard;
+		keyboard.type.key_down = true;
+		keyboard.type.key_press = true;
+		keyboard.type.key_up = true;
+		EventHandler::connect(Widget::keyboardHandler, keyboard);
+	}
+
+	void Widget::mouseHandler(Event* evt)
+	{
+		Widget* wid = findWidget(evt->mouse.x, evt->mouse.y);
+		cout << "WID=" << wid << endl;
+
+		if (wid)
+			wid->mouseClick(evt);
+	}
+
+	void Widget::keyboardHandler(Event*)
+	{
+		cout << "YEEPEE KEYBD" << endl;
 	}
 }
-

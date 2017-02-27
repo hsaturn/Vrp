@@ -12,6 +12,7 @@
 #include <sys/socket.h>
 #include "ClipBoard.h"
 #include "Draggable.hpp"
+#include "Event.hpp"
 
 extern string getWord(string& s, const string &sSeparators = " ");
 namespace hwidgets
@@ -35,9 +36,9 @@ namespace hwidgets
 			display.push_back(send);
 		}
 	}
-	void Console::_mouseClick(int button, int state, int x, int y)
-	{
-		if (button == 1)
+	void Console::mouseClick(Event* event)
+	{;
+		if (event->mouse.buttons.middle)
 		{
 			string s=ClipBoard::get();
 			while (s.length())

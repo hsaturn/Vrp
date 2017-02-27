@@ -1,4 +1,5 @@
 #include "Draggable.hpp"
+#include "Event.hpp"
 #include <GL/freeglut_std.h>
 
 namespace hwidgets
@@ -6,35 +7,34 @@ namespace hwidgets
  	Draggable::Draggable()
 	: state(STATE_IDLE) { }
 
-	void Draggable::mouseClick(int button, int bstate, int x, int y)
+	void Draggable::mouseClick(Event* event)
 	{
-		bool btnDrag = button & GLUT_RIGHT_BUTTON;
-		if (state == STATE_MOVING && (btnDrag == false || bstate != GLUT_DOWN))
+		Event::Mouse &mouse=event->mouse;
+		bool btnDrag = mouse.buttons.right;
+		if (btnDrag == false && state == STATE_MOVING)
 		{
 			state = STATE_IDLE;
 			mouseRelease();
 			// TODO raise widgetMoved();
 		}
-		else if (state == STATE_IDLE && (btnDrag && bstate == GLUT_DOWN))
+		else if (state == STATE_IDLE && btnDrag )
 		{
-			offset_x = mrect->x1() - x;
-			offset_y = mrect->y1() - y;
+			offset_x = mrect->x1() - mouse.x;
+			offset_y = mrect->y1() - mouse.y;
 			state = STATE_MOVING;
 			mouseCapture();
 		}
-		else
-			_mouseClick(button, bstate, x, y);
 	}
 
-	void Draggable::mouseMove(int x, int y, Widget* parent)
+	void Draggable::mouseMove(Event* event)
 	{
+		
 		if (state == STATE_MOVING)
 		{
-			mrect->setX(x + offset_x);
-			mrect->setY(y + offset_y);
+			Event::Mouse &mouse = event->mouse;
+			mrect->setX(mouse.x + offset_x);
+			mrect->setY(mouse.y + offset_y);
 		}
-		else
-			_mouseMove(x, y, parent);
 	}
 
 }

@@ -312,7 +312,6 @@ namespace detail
 	//! \param[in]  y Floating point scalar or vector.
 	//! \param[in]  a Floating point or boolean scalar or vector.
 	//!
-	/// \todo Test when 'a' is a boolean.
 	///
 	/// @see gtx_simd_vec4
 	detail::fvec4SIMD mix(

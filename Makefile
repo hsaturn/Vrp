@@ -33,7 +33,6 @@ vrp: $(OBJS)
 
 build_dir:
 	@mkdir -p $(BUILD_DIR)
-	echo "INCLUDES = $(INCLUDES)"
 
 $(BUILD_DIR)/%.o:%.cpp
 	@echo "  Compiling $<"

@@ -6,6 +6,7 @@
  */
 
 #include "Button.h"
+#include "Event.hpp"
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include <GL/freeglut_std.h>
@@ -76,15 +77,16 @@ namespace hwidgets
 
 	Button::Button() { }
 
-	void Button::mouseClick(int button, int state, int x, int y)
+	void Button::mouseClick(Event* event)
 	{
-		if (button == GLUT_LEFT_BUTTON)
+		Event::Mouse &mouse = event->mouse;
+		if (mouse.last_button == mouse.LEFT)
 		{
-			cout << "click " << button << "/" << GLUT_LEFT_BUTTON << endl;
-			string event = "mouseup";
-			if (state == GLUT_DOWN)
-				event="mousedown";
-			pushEvent(event, getName() + ' ' + StringUtil::to_string(button) + ' ' + StringUtil::to_string(state) + ' ' + getData());
+			cout << "click left button on wid button" << endl;
+			string sevent = "mouseup";
+			if (mouse.button_down)
+				sevent="mousedown";
+			pushEvent(sevent, getName() + ' ' + StringUtil::to_string(mouse.last_button) + ' ' + StringUtil::to_string(mouse.button_down) + ' ' + getData());
 		}
 	}
 }

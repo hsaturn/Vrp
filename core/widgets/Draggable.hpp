@@ -24,12 +24,9 @@ namespace hwidgets
 			STATE_MOVING
 		} enuState;
 
-		void mouseClick(int button, int state, int x, int y) final override;
-		void mouseMove(int x, int y, Widget* parent) final override;
+		void mouseClick(Event *) final override;
+		void mouseMove(Event *) final override;
 
-		virtual void _mouseClick(int button, int state, int x, int y){};
-		virtual void _mouseMove(int x, int y, Widget* parent){};
-		
 	  private:
 
 		Draggable(const Draggable& orig);

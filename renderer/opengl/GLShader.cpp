@@ -51,13 +51,6 @@ std::string GLShader::readFile(string filePath)
 			content.append(line + "\n");
 	}
 
-	if (bpart)
-	{
-		cout << "PART " << filePath << ' ' << part << endl;
-		cout << content << endl;
-		cout << endl;
-	}
-
 	fileStream.close();
 	return content;
 }
@@ -103,7 +96,7 @@ GLuint GLShader::load(string vertex_path, string fragment_path, string key)
 	int logLength;
 
 	// Compile vertex shader
-	std::cout << "Compiling vertex shader." << vertex_path << std::endl;
+	std::cout << "Compiling vertex shader " << key << vertex_path << std::endl;
 	glShaderSource(vertShader, 1, &vertShaderSrc, NULL);
 	glCompileShader(vertShader);
 
@@ -115,7 +108,7 @@ GLuint GLShader::load(string vertex_path, string fragment_path, string key)
 	if (vertShaderError.size() > 1) std::cout << &vertShaderError[0] << std::endl;
 
 	// Compile fragment shader
-	std::cout << "Compiling fragment shader." << fragment_path << std::endl;
+	std::cout << "Compiling fragment shader " << key << fragment_path << std::endl;
 	glShaderSource(fragShader, 1, &fragShaderSrc, NULL);
 	glCompileShader(fragShader);
 
@@ -126,7 +119,7 @@ GLuint GLShader::load(string vertex_path, string fragment_path, string key)
 	glGetShaderInfoLog(fragShader, logLength, NULL, &fragShaderError[0]);
 	if (fragShaderError.size() > 1) std::cout << &fragShaderError[0] << std::endl;
 
-	std::cout << "Linking program" << std::endl;
+	std::cout << "Linking program " << key << std::endl;
 	GLuint program = glCreateProgram();
 	glAttachShader(program, vertShader);
 	glAttachShader(program, fragShader);
@@ -143,7 +136,6 @@ GLuint GLShader::load(string vertex_path, string fragment_path, string key)
 	}
 	else
 	{
-		cout << "Storing shader as [" << key << "]" << endl;
 		shaders[key] = program;
 		if (program == 0)
 			cerr << "Bad to return 0 on error, we had a real program with ID 0 !" << endl;

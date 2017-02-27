@@ -8,6 +8,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <iostream>
+#include <sstream>
 #include <limits>
 #include <map>
 #include <string>
@@ -62,11 +63,18 @@ static bool FileExists(const string &abs_filename)
 
 static void CheckErrors(string desc)
 {
+	static string last_error;
+	
 	GLenum e = glGetError();
 	if (e != GL_NO_ERROR)
 	{
-		fprintf(stderr, "OpenGL error in \"%s\": %d (%d)\n", desc.c_str(), e, e);
-		//exit(20);
+		stringstream err;
+		err << desc << ": (" << e << ')';
+		if (err.str() != last_error)
+		{
+			last_error = err.str();
+			cerr << "OpenGL error in " << last_error << endl;
+		}
 	}
 }
 
@@ -144,13 +152,14 @@ bool Model::loadObjAndConvert(const string& file)
 		return false;
 	}
 
+#if 0
 	cout << "MODEL " << file << endl;
 	cout << "# of vertices  = " << (int) (attrib.vertices.size()) / 3 << endl;
 	cout << "# of normals   = " << (int) (attrib.normals.size()) / 3 << endl;
 	cout << "# of texcoords = " << (int) (attrib.texcoords.size()) / 2 << endl;
 	cout << "# of materials = " << (int) materials.size() << endl;
 	cout << "# of shapes    = " << (int) shapes.size() << endl;
-
+#endif
 	// Append `default` material
 	materials.push_back(tinyobj::material_t());
 

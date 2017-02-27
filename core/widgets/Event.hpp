@@ -12,6 +12,10 @@
 #    include <ostream>
 #    include <map>
 #    include <string>
+#    include <fstream>
+#    include <sstream>
+#    include <iostream>
+#include <queue>
 
 using namespace std;
 
@@ -22,32 +26,99 @@ namespace hwidgets
 	{
 	  public:
 
-		Event() { };
+		Event();
 
 		virtual ~Event() { };
+
+		typedef union EventType
+		{
+
+			struct
+			{
+				bool mouse_move : 1; // Mouse has moved
+				bool mouse_button : 1;
+				bool mouse_button_up : 1; // Mouse button state changed
+				bool mouse_button_down : 1;
+				bool key_up : 1;
+				bool key_down : 1;
+				bool key_press : 1;
+			} type;
+			uint8_t all;
+
+			friend bool operator ==(const EventType& p, const EventType &q)
+			{
+				return p.all == q.all;
+			}
+
+			friend bool operator !=(const EventType& p, const EventType &q)
+			{
+				return p.all == q.all;
+			}
+
+			template <class KEY, class DATA>
+			bool readEvt(string file, map<KEY, DATA> &);
+		} EventType;
+
+		EventType event;
 
 		class Mouse
 		{
 		  public:
+			static const uint16_t NONE = 0;
+			static const uint16_t LEFT = 1;
+			static const uint16_t MIDDLE = 2;
+			static const uint16_t RIGHT = 4;
+			static const uint16_t WHEEL_UP = 8;
+			static const uint16_t WHEEL_DOWN = 16;
+			static const uint16_t BTN_5 = 32;
+			static const uint16_t BTN_6 = 64;
+			static const uint16_t BTN_7 = 128;
+			static const uint16_t BTN_8 = 256;
+			static const uint16_t BTN_9 = 512;
+			static const uint16_t BTN_10 = 1024;
+			static const uint16_t BTN_11 = 2048;
+			static const uint16_t BTN_12 = 4096;
 
-			typedef enum
-			{
-				DOWN, UP, CLICK
-			} mstate;
+			// Last Modified button
+			uint16_t last_button;
+			bool button_down;
 
-			typedef enum
+			/**
+			 * Value of all mouse buttons
+			 */
+			union
 			{
-				NONE = 0, LEFT = 1, MIDDLE = 2, RIGHT = 4, WHEEL = 8, OTHER = 16
-			} Button;
-			Button button;
-			int state; // 1 : down, -1 down (for wheel opposite direction)
+
+				struct
+				{
+					bool left : 1;
+					bool middle : 1;
+					bool right : 1;
+					bool wheel_up : 1;
+					bool wheel_down : 1;
+					bool btn_5 : 1;
+					bool btn_6 : 1;
+					bool btn_7 : 1;
+					bool btn_8 : 1;
+					bool btn_9 : 1;
+					bool btn_10 : 1;
+					bool btn_11 : 1;
+					bool btn_12 : 1;
+				};
+				uint16_t all;
+			} buttons;
+
+			/**
+			 * Number of last event button
+			 */
+			uint16_t button;
+
 			int x;
 			int y;
 
 			bool operator ==(const Mouse &event) const
 			{
-				return event.button == button &&
-					event.state == state &&
+				return event.buttons.all == buttons.all &&
 					event.x == x &&
 					event.y == y;
 			}
@@ -97,21 +168,26 @@ namespace hwidgets
 
 		Mouse mouse;
 		Keybd keybd;
-		bool changed;
 
+		static void init(Event* inst)
+		{
+			instance = inst;
+		}
 		/**
 		 * 
-		 * @return true if event has changed
+		 * @return ptr on event when occurs
 		 */
-		bool update();
+		static Event* poll();
 		friend std::ostream& operator <<(std::ostream&, const Event&);
 
 	  protected:
 
-		virtual void _update() { };
+		virtual void _poll() { };
 
 		static void readKeymap(string keymapfile);
 		static map<uint16_t, uint16_t> keymap;
+		static queue<Event> events;
+		static Event* instance;
 	};
 
 	const int KEY_F1 = 0x101;
@@ -139,6 +215,38 @@ namespace hwidgets
 	const int KEY_HOME = 0x120;
 	const int KEY_END = 0x121;
 	const int KEY_INSERT = 0x122;
+
+	template <class KEY, class DATA>
+	bool readEvt(string file, map<KEY, DATA> &values)
+	{
+		file = "data/core/events/" + file + ".evt";
+		ifstream evt(file.c_str());
+		if (evt.is_open())
+		{
+			while (evt.good())
+			{
+				string row;
+				getline(evt, row);
+				if (row.length() && row[0] != '#')
+				{
+					KEY key;
+					DATA data;
+					stringstream rd;
+					rd << row;
+					rd >> key;
+					rd >> data;
+					if (values.find(key) != values.end())
+						cerr << "Warning: duplicate entry " << key << " in file " << file << "." << endl;
+					values[key] = data;
+				}
+			}
+			return true;
+		}
+		else
+			cerr << "ERROR: Unable to open event data file " << file << endl;
+
+		return false;
+	}
 }
 
 #endif /* WIDGETEVENT_HPP */

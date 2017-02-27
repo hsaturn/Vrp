@@ -16,7 +16,7 @@
 namespace hwidgets
 {
 
-class Console : public Draggable
+class Console : public Widget
 {
   public:
 	virtual ~Console(){};
@@ -28,7 +28,7 @@ class Console : public Draggable
 	virtual void keyPress(unsigned char key, int x, int y) override;
 	virtual bool script(const string& cmd) override;
 	virtual void _help(const string& what) override;
-	virtual void _mouseClick(int button, int state, int x, int y) override;
+	virtual void mouseClick(Event*) override;
 	static void listener(const string& send);
 
   private:
