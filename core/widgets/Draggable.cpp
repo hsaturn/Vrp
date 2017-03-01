@@ -7,9 +7,9 @@ namespace hwidgets
  	Draggable::Draggable()
 	: state(STATE_IDLE) { }
 
-	void Draggable::mouseClick(Event* event)
+	void Draggable::mouseClick(Event &event)
 	{
-		Event::Mouse &mouse=event->mouse;
+		Event::Mouse &mouse=event.mouse;
 		bool btnDrag = mouse.buttons.right;
 		if (btnDrag == false && state == STATE_MOVING)
 		{
@@ -26,12 +26,12 @@ namespace hwidgets
 		}
 	}
 
-	void Draggable::mouseMove(Event* event)
+	void Draggable::mouseMove(Event &event)
 	{
 		
 		if (state == STATE_MOVING)
 		{
-			Event::Mouse &mouse = event->mouse;
+			Event::Mouse &mouse = event.mouse;
 			mrect->setX(mouse.x + offset_x);
 			mrect->setY(mouse.y + offset_y);
 		}

@@ -24,8 +24,8 @@ namespace hwidgets
 			STATE_MOVING
 		} enuState;
 
-		void mouseClick(Event *) final override;
-		void mouseMove(Event *) final override;
+		virtual void mouseClick(Event &) final override;
+		virtual void mouseMove(Event &) final override;
 
 	  private:
 

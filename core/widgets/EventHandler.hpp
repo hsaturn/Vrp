@@ -22,22 +22,20 @@ namespace hwidgets
 	class EventHandler
 	{
 	  public:
-		typedef void (*EventHandlerHook)(Event*);
+		typedef void (*EventHandlerHook)(Event &);
 
 		class EventHandlerEntry
 		{
 		  public:
-			Event::EventType event_mask;
-			Event::EventType last_event;
+			Event::Type event_mask;
 		};
 
-		static void connect(EventHandlerHook handler, Event::EventType& e);
+		static void connect(EventHandlerHook handler, const Event::Type& e);
 		static void disconnect(EventHandlerHook handler);
-		static void dispatch(Event *);
+		static void dispatch(Event &);
 
 	  protected:
 		EventHandler();
-		;
 
 		static map<EventHandlerHook, EventHandlerEntry> handlers;
 	};

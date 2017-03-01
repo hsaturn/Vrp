@@ -7,6 +7,7 @@
 #include "Cloison.hpp"
 #include "Column.hpp"
 #include "MotorSpeedHook.hpp"
+#include "GLShader.hpp"
 
 namespace Colib {
 	
@@ -85,6 +86,7 @@ namespace Colib {
 	}
 
 	bool Bati::render() {
+		glUseProgram(GLShader::loadGlsl("phong"));
 		Color::red.render();
 		h.update();
 		
@@ -127,7 +129,7 @@ namespace Colib {
 				glPopMatrix();
 			}
 		}
-		
+		glUseProgram(0);
 		return bRet;
 	}
 	

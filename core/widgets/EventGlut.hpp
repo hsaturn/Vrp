@@ -21,7 +21,7 @@ namespace hwidgets
 	  public:
 		virtual ~EventGlut();
 
-		virtual void _poll() override;
+		virtual void update() override;
 
 		static Event* getInstance();
 		
@@ -36,12 +36,11 @@ namespace hwidgets
 		static void PassiveMotionFunc(int, int);
 		static void SpecialFunc(int key, int x, int y);
 
-		void updateModifiers();
+		static Modifier getModifiers();
 
-		EventType current_event;	// raz on _poll
-		
 		static bool init;
 		static map<uint16_t, uint16_t>	mapButtons;
+		static Mouse::Buttons buttons;
 	};
 }
 

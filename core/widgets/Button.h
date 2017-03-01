@@ -22,7 +22,7 @@ namespace hwidgets
 
 		static Button* factory(string &data);
 		
-		void mouseClick(Event*) override;
+		void mouseClick(Event&) override;
 
 	  protected:
 		virtual long _render(long);

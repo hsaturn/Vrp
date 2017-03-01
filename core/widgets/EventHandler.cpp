@@ -7,11 +7,10 @@ namespace hwidgets
 	
 	EventHandler::EventHandler() { }
 
-	void EventHandler::connect(EventHandlerHook handler, Event::EventType & e)
+	void EventHandler::connect(EventHandlerHook handler, const Event::Type & e)
 	{
 		EventHandlerEntry entry;
 		entry.event_mask = e;
-		entry.last_event.all = 0;
 		handlers[handler] = entry;
 	}
 
@@ -22,15 +21,12 @@ namespace hwidgets
 			handlers.erase(it);
 	}
 	
-	void EventHandler::dispatch(Event* e)
+	void EventHandler::dispatch(Event &e)
 	{
 		for(auto it : handlers)
 		{
-			if ((e->event.all & it.second.event_mask.all) != it.second.last_event.all)
-			{
+			if (e.type & it.second.event_mask)
 				it.first(e);
-				it.second.last_event.all = e->event.all & it.second.event_mask.all;
-			}
 		}
 	}
 }

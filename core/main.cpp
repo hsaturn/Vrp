@@ -566,7 +566,7 @@ void calcTranslate(string& incoming, float& v)
 		v = StringUtil::getFloat(incoming);
 }
 
-void mouse_motion_new(Event* event, Event::Mouse mouse)
+void mouse_motion_new(Event &event, Event::Mouse mouse)
 {
 	Widget::mouseMotion(event);	// FIXME Widget has to register events
 	
@@ -585,11 +585,11 @@ void mouse_motion_new(Event* event, Event::Mouse mouse)
 	glutPostRedisplay();
 }
 
-void mouse_button_new(Event* event, Event::Mouse &mouse)
+void mouse_button_new(Event &event, Event::Mouse &mouse)
 {
 	buttonRotate = false;
 	buttonTranslate = false;
-	
+
 	/* si on appuie sur le bouton gauche */
 	if (mouse.buttons.left)
 	{
@@ -618,15 +618,16 @@ void mouse_button_new(Event* event, Event::Mouse &mouse)
 
 void update(int value)
 {
+	Event event;
 	// TODO, obsolete (will be replaced by slots)
-	Event* event = Event::poll();
-	if (event)
+	Event::poll(event);
+	if (event.type != Event::EVT_NONE)
 	{
-		cout << *event << endl;
-		if (event->event.type.mouse_button)
-			mouse_button_new(event, event->mouse);
-		else if (event->event.type.mouse_move)
-			mouse_motion_new(event, event->mouse);
+		cout << event << endl;
+		if (event.type == Event::EVT_MOUSE_DOWN)
+			mouse_button_new(event, event.mouse);
+		else if (event.type == Event::EVT_MOUSE_MOVE)
+			mouse_motion_new(event, event.mouse);
 	}
 	
 	string msg = Widget::popMessage();
@@ -1088,7 +1089,7 @@ int main(int argc, char** argv)
 	glutReshapeFunc(handleResize);
 
 	// TEST GLUT EVENT
-	Widget::init(EventGlut::getInstance());
+	Event::init(EventGlut::getInstance());
 	//glutTimerFunc(25, testGlutEvent, 0);
 	// TSET
 	/*

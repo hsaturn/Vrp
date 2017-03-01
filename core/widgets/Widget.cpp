@@ -76,9 +76,9 @@ namespace hwidgets
 		return msg;
 	}
 
-	Widget* Widget::mouseMotion(Event* event)
+	Widget* Widget::mouseMotion(Event &event)
 	{
-		Event::Mouse &mouse=event->mouse;
+		Event::Mouse &mouse=event.mouse;
 		Widget* wid = findWidget(mouse.x, mouse.y);
 		stringstream msg;
 		if (wid)
@@ -550,29 +550,22 @@ namespace hwidgets
 		if (capture_keybd_widget == this) capture_keybd_widget = 0;
 	}
 
-	void Widget::init(Event*)
+	void Widget::init()
 	{
-		Event::EventType mouse;
-		mouse.type.mouse_button = true;
-		EventHandler::connect(Widget::mouseHandler, mouse);
-
-		Event::EventType keyboard;
-		keyboard.type.key_down = true;
-		keyboard.type.key_press = true;
-		keyboard.type.key_up = true;
-		EventHandler::connect(Widget::keyboardHandler, keyboard);
+		EventHandler::connect(Widget::mouseHandler, Event::Type::EVT_MOUSE_ALL);
+		EventHandler::connect(Widget::keyboardHandler, Event::Type::EVT_KEY_ALL);
 	}
 
-	void Widget::mouseHandler(Event* evt)
+	void Widget::mouseHandler(Event &evt)
 	{
-		Widget* wid = findWidget(evt->mouse.x, evt->mouse.y);
+		Widget* wid = findWidget(evt.mouse.x, evt.mouse.y);
 		cout << "WID=" << wid << endl;
 
 		if (wid)
 			wid->mouseClick(evt);
 	}
 
-	void Widget::keyboardHandler(Event*)
+	void Widget::keyboardHandler(Event &)
 	{
 		cout << "YEEPEE KEYBD" << endl;
 	}

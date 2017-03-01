@@ -77,16 +77,16 @@ namespace hwidgets
 
 	Button::Button() { }
 
-	void Button::mouseClick(Event* event)
+	void Button::mouseClick(Event &event)
 	{
-		Event::Mouse &mouse = event->mouse;
-		if (mouse.last_button == mouse.LEFT)
+		Event::Mouse &mouse = event.mouse;
+		if (mouse.button == mouse.BTN_LEFT)
 		{
 			cout << "click left button on wid button" << endl;
 			string sevent = "mouseup";
-			if (mouse.button_down)
+			if (event.type==Event::EVT_MOUSE_DOWN)
 				sevent="mousedown";
-			pushEvent(sevent, getName() + ' ' + StringUtil::to_string(mouse.last_button) + ' ' + StringUtil::to_string(mouse.button_down) + ' ' + getData());
+			pushEvent(sevent, getName() + ' ' + StringUtil::to_string(mouse.button) + ' ' + StringUtil::to_string(mouse.button) + ' ' + getData());
 		}
 	}
 }

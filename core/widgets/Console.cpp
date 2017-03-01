@@ -36,9 +36,9 @@ namespace hwidgets
 			display.push_back(send);
 		}
 	}
-	void Console::mouseClick(Event* event)
+	void Console::mouseClick(Event &event)
 	{;
-		if (event->mouse.buttons.middle)
+		if (event.mouse.buttons.middle)
 		{
 			string s=ClipBoard::get();
 			while (s.length())

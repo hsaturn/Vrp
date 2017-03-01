@@ -155,7 +155,7 @@ namespace hwidgets
 
 		/* Return the widget where the mouse is, and inform
 		 * the widget that the mouse is moving over it  */
-		static Widget* mouseMotion(Event*);
+		static Widget* mouseMotion(Event&);
 		static Widget* mouseButton(int button, int state, int x, int y);
 
 		/* infos = type name rectangle [type dependant data] */
@@ -216,22 +216,22 @@ namespace hwidgets
 			cmdQueue = p;
 		}
 		static void help(const string& what);
-		static void init(Event*);
+		static void init();
 		
 	  protected:
 
 		Widget() : mrect(0) { };
 		long render(long ticks);
 		
-		static void keyboardHandler(Event *);
-		static void mouseHandler(Event *);
+		static void keyboardHandler(Event &);
+		static void mouseHandler(Event &);
 
 		/*
 		 * mouseOver event, x and y are % relative to widget position
 		 */
-		virtual void mouseMove(Event*) { };
+		virtual void mouseMove(Event &) { };
 
-		virtual void mouseClick(Event*) { };
+		virtual void mouseClick(Event &) { };
 
 		virtual void keyPress(unsigned char key, int x, int y){};
 
