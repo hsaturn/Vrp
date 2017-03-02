@@ -2,7 +2,6 @@
 
 namespace hwidgets
 {
-
 	map<EventHandler::EventHandlerHook, EventHandler::EventHandlerEntry> EventHandler::handlers;
 	
 	EventHandler::EventHandler() { }

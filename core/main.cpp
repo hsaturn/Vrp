@@ -585,11 +585,8 @@ void mouse_motion_new(Event &event, Event::Mouse mouse)
 	glutPostRedisplay();
 }
 
-void mouse_button_new(Event &event, Event::Mouse &mouse)
+void mouse_button_click(Event &event, Event::Mouse &mouse)
 {
-	buttonRotate = false;
-	buttonTranslate = false;
-
 	/* si on appuie sur le bouton gauche */
 	if (mouse.buttons.left)
 	{
@@ -623,11 +620,16 @@ void update(int value)
 	Event::poll(event);
 	if (event.type != Event::EVT_NONE)
 	{
-		cout << event << endl;
+		//cout << event << endl;
 		if (event.type == Event::EVT_MOUSE_DOWN)
-			mouse_button_new(event, event.mouse);
+			mouse_button_click(event, event.mouse);
 		else if (event.type == Event::EVT_MOUSE_MOVE)
 			mouse_motion_new(event, event.mouse);
+		else if (event.type == Event::EVT_MOUSE_UP)
+		{
+			buttonRotate = false;
+			buttonTranslate = false;
+		}
 	}
 	
 	string msg = Widget::popMessage();

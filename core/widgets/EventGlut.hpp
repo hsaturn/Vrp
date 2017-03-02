@@ -40,7 +40,7 @@ namespace hwidgets
 
 		static bool init;
 		static map<uint16_t, uint16_t>	mapButtons;
-		static Mouse::Buttons buttons;
+		static Mouse::Buttons curr_buttons;
 	};
 }
 

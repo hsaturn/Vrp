@@ -57,7 +57,7 @@ namespace hwidgets {
 
 	ostream& operator << (ostream& out, const Event::Mouse &mouse)
 	{
-		out << setw(4) << mouse.x << ',' << setw(4) << mouse.y << ' ';
+		out << setw(4) << mouse.x << "x, " << setw(4) << mouse.y << "y Btns: ";
 		int btn = '0';
 		for (uint16_t i = 1; i < 4096; i <<= 1, btn++)
 			if (mouse.buttons.all & i)

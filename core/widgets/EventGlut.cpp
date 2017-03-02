@@ -15,7 +15,7 @@ using namespace std;
 namespace hwidgets {
 	bool EventGlut::init = false;
 	map<uint16_t, uint16_t> EventGlut::mapButtons;
-	Event::Mouse::Buttons EventGlut::buttons;
+	Event::Mouse::Buttons EventGlut::curr_buttons;
 
 	EventGlut::EventGlut() { }
 
@@ -106,20 +106,21 @@ namespace hwidgets {
 		auto it = mapButtons.find(button);
 		if (it != mapButtons.end())
 		{
-			cout << button << "/" << state << endl;
+			cout << button << "/" << state << " map=" << it->second << endl;
 			evt.mouse.button =  it->second;
 			if (state == GLUT_DOWN)
 			{
-				buttons.all |= it->second;
+				curr_buttons.all |= it->second;
 				cout << "DOWN" << endl;
 			}
 			else
 			{
-				cout << "[ " << buttons.all << " x=" << it->second << " ";
-				buttons.all &= ~it->second;
-				cout << " UP " << buttons.all << endl;
+				cout << "[ " << curr_buttons.all << " x=" << it->second << " ";
+				curr_buttons.all &= ~it->second;
+				cout << " UP " << curr_buttons.all << " o" << oct << (~it->second) << dec << endl;
 			}
-			evt.buttons.all = buttons.all;
+			evt.mouse.buttons = curr_buttons;
+			cout << evt << endl;
 		}
 		else
 		{
@@ -133,28 +134,29 @@ namespace hwidgets {
 	{
 		if (!init) return;
 		
-		EventGlut mouse;
+		EventGlut evt;
 		
-		mouse.type = Event::EVT_MOUSE_DOWN;
-		mouse.mod = getModifiers();
-		mouse.buttons = buttons;
-		mouse.mouse.x = x;
-		mouse.mouse.y = y;
+		evt.type = Event::EVT_MOUSE_MOVE;
+		evt.mod = getModifiers();
+		evt.mouse.buttons = curr_buttons;
+		evt.mouse.x = x;
+		evt.mouse.y = y;
+		events.push(evt);
 	}
 
 	void EventGlut::PassiveMotionFunc(int x, int y)
 	{
 		if (!init) return;
 		
-		EventGlut mouse;
+		EventGlut evt;
 		
-		mouse.type = Event::EVT_MOUSE_MOVE;
-		mouse.mod = getModifiers();
-		buttons.all = Mouse::BTN_NONE;
-		mouse.buttons = buttons;
-		mouse.mouse.x = x;
-		mouse.mouse.y = y;
-		events.push(mouse);
+		evt.type = Event::EVT_MOUSE_MOVE;
+		evt.mod = getModifiers();
+		curr_buttons.all = Mouse::BTN_NONE;
+		evt.mouse.buttons = curr_buttons;
+		evt.mouse.x = x;
+		evt.mouse.y = y;
+		events.push(evt);
 	}
 
 	Event::Modifier EventGlut::getModifiers()
