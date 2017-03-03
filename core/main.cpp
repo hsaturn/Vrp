@@ -6,13 +6,14 @@
 #include <map>
 #include <sstream>
 #include <cmath>
+#include <string>
+#include <list>
+
 #include <apps/Cube/Cube.h>
 #include <Server.h>
 #include <unistd.h>
 #include <sys/signal.h>
 #include <sys/wait.h>
-#include <string>
-#include <list>
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include "LightElement.h"
@@ -20,9 +21,7 @@
 #include <glm/glm.hpp>  
 #include <glm/gtc/matrix_transform.hpp> 
 #include <glm/gtc/type_ptr.hpp>
-#include "imageloader.h"
 #include "Random.hpp"
-#include "texture.hpp"
 #include <ansi_colors.hpp>
 #include "core/arcball.h"
 #include "core/commands/cmd.hpp"
@@ -30,6 +29,7 @@
 #include "StringUtil.hpp"
 #include "Background.h"
 #include "Help.h"
+#include "EventHandler.hpp"
 #include <Widget.h>
 #include <EventGlut.hpp>
 
@@ -195,121 +195,9 @@ void reboot()
 	run("macros.cub");
 }
 
-void drawBackground2()
-{
-	static GLint tt = 0;
-	if (tt == 0)
-	{
-		Image* image = loadBMP("textures/background.bmp");
-		tt = loadTexture(image);
-		delete image;
-	}
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-	glOrtho(0, 1, 0, 1, 0, 1);
-
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	glLoadIdentity();
-
-	// No depth buffer writes for background.
-	glDepthMask(false);
-
-	glBindTexture(GL_TEXTURE_2D, tt);
-	glBegin(GL_QUADS);
-	{
-		glTexCoord2f(0, 0);
-		glVertex2f(0, 0);
-		glTexCoord2f(0, 1);
-		glVertex2f(0, 1);
-		glTexCoord2f(1, 1);
-		glVertex2f(1, 1);
-		glTexCoord2f(1, 0);
-		glVertex2f(1, 0);
-	}
-	glEnd();
-
-	glDepthMask(true);
-
-	glPopMatrix();
-	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
-	glMatrixMode(GL_MODELVIEW);
-}
-
-void drawBackground()
-{
-	glPushMatrix();
-	glLoadIdentity();
-	glOrtho(0, 1, 0, 1, 0, 1);
-	if (white_textureId == 0)
-	{
-		Image* image = loadBMP("background.bmp");
-		white_textureId = loadTexture(image);
-		delete image;
-	}
-
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, white_textureId);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	glBegin(GL_QUADS);
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex2f(-1.0f, -1.0f);
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex2f(-1.0f, 1.0f);
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex2f(1.0f, 1.0f);
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex2f(10.0f, -10.0f);
-	glEnd();
-
-	glPopMatrix();
-}
-
 string getWord(string& s, const string &sSeparators)
 {
-	string sWord;
-	trim(s);
-
-	if (s.length())
-	{
-		string::size_type iPos = string::npos;
-
-		for (string::size_type i = 0; i < sSeparators.length(); i++)
-		{
-			string::size_type i1 = s.find(sSeparators[i]);
-
-			if (i1 != string::npos)
-			{
-				if (iPos == string::npos || iPos > i1)
-				{
-					iPos = i1;
-				}
-			}
-		}
-
-		if (iPos != string::npos)
-		{
-			sWord = s.substr(0, iPos);
-			s.erase(0, iPos + 1);
-			trim(s);
-		}
-		else
-		{
-			sWord = s;
-			s = "";
-		}
-	}
-	return sWord;
-}
-
-void handleKeypress(unsigned char key, int x, int y)
-{
-	static string cmd;
-
-	Widget::handleKeypress(key, x, y);
+	return StringUtil::getWord(s, sSeparators);
 }
 
 void handleResize(int w, int h)
@@ -612,26 +500,24 @@ void mouse_button_click(Event &event, Event::Mouse &mouse)
  * */
 }
 
+void mouseEvent(Event& event)
+{
+	//cout << event << endl;
+	if (event.type == Event::EVT_MOUSE_DOWN)
+		mouse_button_click(event, event.mouse);
+	else if (event.type == Event::EVT_MOUSE_MOVE)
+		mouse_motion_new(event, event.mouse);
+	else if (event.type == Event::EVT_MOUSE_UP)
+	{
+		buttonRotate = false;
+		buttonTranslate = false;
+	}
+}
+
 
 void update(int value)
 {
-	Event event;
-	// TODO, obsolete (will be replaced by slots)
-	Event::poll(event);
-	if (event.type != Event::EVT_NONE)
-	{
-		//cout << event << endl;
-		if (event.type == Event::EVT_MOUSE_DOWN)
-			mouse_button_click(event, event.mouse);
-		else if (event.type == Event::EVT_MOUSE_MOVE)
-			mouse_motion_new(event, event.mouse);
-		else if (event.type == Event::EVT_MOUSE_UP)
-		{
-			buttonRotate = false;
-			buttonTranslate = false;
-		}
-	}
-	
+
 	string msg = Widget::popMessage();
 	if (msg.length())
 	{
@@ -1062,6 +948,7 @@ int main(int argc, char** argv)
 	arcball_reset();
 	
 	glutInit(&argc, argv);
+	Widget::init();
 	Widget::setCmdQueue(&cmdQueue);
 	reboot();
 
@@ -1087,18 +974,10 @@ int main(int argc, char** argv)
 	initRendering();
 
 	glutDisplayFunc(drawScene);
-	glutKeyboardFunc(handleKeypress);
 	glutReshapeFunc(handleResize);
 
-	// TEST GLUT EVENT
 	Event::init(EventGlut::getInstance());
-	//glutTimerFunc(25, testGlutEvent, 0);
-	// TSET
-	/*
-	glutMouseFunc(mouse_button);
-	glutMotionFunc(mouse_motion);
-	glutPassiveMotionFunc(mousepassivemotion);
-	 * */
+	EventHandler::connect(mouseEvent, Event::EVT_MOUSE_ALL);
 	glutTimerFunc(25, update, 0);
 	atexit(onclose);
 
