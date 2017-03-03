@@ -1,0 +1,25 @@
+# GLUT SPECIAL KEY => Event KEY
+1	0x101	    # F1
+2	0x102	    # F2
+3	0x103	    # F3
+4	0x104	    # F4
+5	0x105	    # F5
+6	0x106	    # F6
+7	0x107	    # F7
+8	0x108	    # F8
+9	0x109	    # F9
+10	0x10a	    # F10
+11	0x10b	    # F11
+12	0x10c	    # F12
+101	0x110	    # CURSOR UP
+100	0x111	    # CURSOR LEFT
+103	0x112	    # CURSOR DOWN
+102	0x113	    # CURSOR RIGHT
+104	0x114	    # PG DOWN
+105	0x115	    # PG UP
+108	0x122	    # INSERT
+112	0x270	    # rshift
+113	0x271	    # lshift
+114	0x272	    # left ctrl
+115	0x273	    # right ctrl
+116	0x203	    # alt (left)
