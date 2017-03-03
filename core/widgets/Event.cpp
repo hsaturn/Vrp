@@ -11,6 +11,7 @@ namespace hwidgets {
 	Event* Event::instance = 0;
 	map<uint16_t, uint16_t> Event::keymap;
 	queue<Event> Event::events;
+	bool Event::_polling_mode = false;
 
 	Event::Event()
 	{
@@ -69,7 +70,7 @@ namespace hwidgets {
 		return out;
 	}
 
-	void Event::poll(Event &evt)
+	bool Event::poll(Event &evt)
 	{
 		if (instance)
 		{
@@ -80,14 +81,24 @@ namespace hwidgets {
 				evt = events.front();
 				events.pop();
 				EventHandler::dispatch(evt);
+				return evt.type != EVT_NONE;
 			}
 		}
+		return false;
+	}
+	
+	void Event::processEvent(Event& event)
+	{
+		if (_polling_mode)
+			events.push(event);
+		else
+			EventHandler::dispatch(event);
 	}
 
-	void Event::readKeymap(string keymapfile)
+	void Event::readMap(string keymapfile, map<uint16_t, uint16_t>& kmap)
 	{
 		int rowcount = 0;
-		keymapfile = "data/keymaps/" + keymapfile;
+		keymapfile = "data/core/events/" + keymapfile;
 		ifstream kfile(keymapfile);
 		if (!kfile.is_open())
 		{
@@ -109,11 +120,19 @@ namespace hwidgets {
 				strow << row;
 				strow >> key;
 				strow >> mapped;
-				if (keymap.find(key) != keymap.end())
+				if (mapped==0 && !strow.eof() && strow.peek()=='x')
+				{
+					char c;
+					strow >> c;
+					strow >> hex >> mapped >> dec;
+				}
+				else
+					cout << "key " << key << " mapped:" << mapped << endl;
+				if (kmap.find(key) != kmap.end())
 				{
 					cerr << "Keymap file " << keymapfile << ", warning duplicate entry at row :" << rowcount << endl;
 				}
-				keymap[key] = mapped;
+				kmap[key] = mapped;
 			}
 
 		}

@@ -127,7 +127,7 @@ namespace hwidgets
 
 		Mouse mouse;
 
-		enum Key
+		enum Key : uint16_t
 		{
 			KEY_F1 = 0x101,
 			KEY_F2 = 0x102,
@@ -154,36 +154,57 @@ namespace hwidgets
 			KEY_HOME = 0x120,
 			KEY_END = 0x121,
 			KEY_INSERT = 0x122,
-
+			
 			// 0x200 + Modifier
 			KEY_CTRL = 0x230,
 			KEY_SHIFT = 0x20C,
+			KEY_RSHIFT = 0x270,
+			KEY_LSHIFT = 0x271,
+			KEY_LCTRL = 0x272,
+			KEY_RCTRL = 0x273,
 			KEY_ALT = 0x203,
 			KEY_MENU = 0x240,
 			KEY_WINDOW = 0x280,
 		} ;
 
-		Key key; // ascii or const (see below)
+		uint16_t key; // ascii or const (see below)
 
-		static void init(Event* inst)
+		/**
+		 * @param inst Event manager
+		 * @param polling_mode true if pool mode, else, use EventHandler::connect to
+		 * handle events.
+		 */
+		static void init(Event* inst, bool polling_mode = false)
 		{
 			instance = inst;
+			_polling_mode = polling_mode;
 		}
 		/**
 		 * 
 		 * @return ptr on event when occurs
 		 */
-		static void poll(Event &e);
+		static bool poll(Event &e);
+		
 		friend std::ostream& operator <<(std::ostream&, const Event&) ;
 
 	  protected:
+		
+		/**
+		 * Derived classes call this to process event
+		 * This method will either store or dispatch the event.
+		 * @param event
+		 */
+		static void processEvent(Event& event);
 
 		virtual void update() { };
 
-		static void readKeymap(string keymapfile);
+		static void readMap(string keymapfile, map<uint16_t, uint16_t>&);
 		static map<uint16_t, uint16_t> keymap;
-		static queue<Event> events;
 		static Event* instance;
+		
+	  private:
+		static bool _polling_mode;
+		static queue<Event> events;
 	} ;
 
 	template <class KEY, class DATA>

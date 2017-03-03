@@ -209,7 +209,6 @@ namespace hwidgets
 		static string getVar(string);
 		static void clear();
 
-		static void handleKeypress(unsigned char key, int x, int y);
 
 		static void setCmdQueue(list<string>* p)
 		{
@@ -223,7 +222,7 @@ namespace hwidgets
 		Widget() : mrect(0) { };
 		long render(long ticks);
 		
-		static void keyboardHandler(Event &);
+		static void handleKeypress(Event &key);
 		static void mouseHandler(Event &);
 
 		/*
@@ -233,7 +232,7 @@ namespace hwidgets
 
 		virtual void mouseClick(Event &) { };
 
-		virtual void keyPress(unsigned char key, int x, int y){};
+		virtual void keyPress(Event& key){};
 
 		virtual bool script(const string& s)
 		{

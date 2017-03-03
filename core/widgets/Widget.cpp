@@ -13,6 +13,7 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include <chrono>
+#include <iostream>
 #include <sstream>
 
 namespace hwidgets
@@ -78,7 +79,7 @@ namespace hwidgets
 
 	Widget* Widget::mouseMotion(Event &event)
 	{
-		Event::Mouse &mouse=event.mouse;
+		Event::Mouse &mouse = event.mouse;
 		Widget* wid = findWidget(mouse.x, mouse.y);
 		stringstream msg;
 		if (wid)
@@ -96,17 +97,17 @@ namespace hwidgets
 		return 0;
 	}
 
-	void Widget::handleKeypress(unsigned char key, int x, int y)
+	void Widget::handleKeypress(Event& key)
 	{
 		Widget* w;
 		if (capture_keybd_widget)
 			w = capture_keybd_widget;
 		else
-			w = findWidget(x, y);
-		
+			w = findWidget(key.mouse.x, key.mouse.y);
+
 		if (w)
 		{
-			w->keyPress(key, x, y);
+			w->keyPress(key);
 		}
 	}
 
@@ -552,21 +553,22 @@ namespace hwidgets
 
 	void Widget::init()
 	{
-		EventHandler::connect(Widget::mouseHandler, Event::Type::EVT_MOUSE_ALL);
-		EventHandler::connect(Widget::keyboardHandler, Event::Type::EVT_KEY_ALL);
+		static bool done = false;
+		if (done)
+			cerr << "Widget::init already made" << endl;
+		else
+		{
+			EventHandler::connect(Widget::mouseHandler, Event::Type::EVT_MOUSE_ALL);
+			EventHandler::connect(Widget::handleKeypress, Event::Type::EVT_KEYBD_DOWN);
+		}
+		done=true;
 	}
 
 	void Widget::mouseHandler(Event &evt)
 	{
 		Widget* wid = findWidget(evt.mouse.x, evt.mouse.y);
-		cout << "WID=" << wid << endl;
 
 		if (wid)
 			wid->mouseClick(evt);
-	}
-
-	void Widget::keyboardHandler(Event &)
-	{
-		cout << "YEEPEE KEYBD" << endl;
 	}
 }

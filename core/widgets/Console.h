@@ -25,7 +25,7 @@ class Console : public Widget
 
   protected:
 	virtual long _render(long) override;
-	virtual void keyPress(unsigned char key, int x, int y) override;
+	virtual void keyPress(Event& key) override;
 	virtual bool script(const string& cmd) override;
 	virtual void _help(const string& what) override;
 	virtual void mouseClick(Event&) override;
