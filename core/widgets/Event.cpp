@@ -1,5 +1,7 @@
 #include "Event.hpp"
 #include "EventHandler.hpp"
+#include "StringUtil.hpp"
+
 #include <iostream>
 #include <iomanip>
 #include <fstream>
@@ -7,7 +9,8 @@
 
 using namespace std;
 
-namespace hwidgets {
+namespace hwidgets
+{
 	Event* Event::instance = 0;
 	map<uint16_t, uint16_t> Event::keymap;
 	queue<Event> Event::events;
@@ -86,7 +89,7 @@ namespace hwidgets {
 		}
 		return false;
 	}
-	
+
 	void Event::processEvent(Event& event)
 	{
 		if (_polling_mode)
@@ -120,7 +123,7 @@ namespace hwidgets {
 				strow << row;
 				strow >> key;
 				strow >> mapped;
-				if (mapped==0 && !strow.eof() && strow.peek()=='x')
+				if (mapped == 0 && !strow.eof() && strow.peek() == 'x')
 				{
 					char c;
 					strow >> c;
@@ -138,4 +141,67 @@ namespace hwidgets {
 		}
 	}
 
+	bool operator < (const Shortcut& a, const Shortcut& b)
+	{
+		if (a.mod < b.mod)
+			return true;
+		if (a.mod > b.mod)
+			return false;
+		return a.key < b.key;
+	}
+
+	void Shortcut::checkMod(string& s, const string key, Event::Modifier newmod)
+	{
+		if (s.length() >= key.length())
+		{
+			if (s.substr(0, key.length()) == key)
+			{
+				cout << "=" << key << endl;
+				mod = (Event::Modifier)(mod | newmod);
+				s.erase(0, key.length());
+				if (s[0] == '+')
+					s.erase(0, 1);
+			}
+		}
+	}
+
+	bool Shortcut::set(string & skey)
+	{
+		mod = (Event::Modifier)0;
+		string::size_type t = 0;
+		while (skey.length() != t)
+		{
+			checkMod(skey, "ALT"	, Event::Modifier::ALT);
+			checkMod(skey, "LALT"	, Event::Modifier::L_ALT);
+			checkMod(skey, "RALT"	, Event::Modifier::R_ALT);
+			checkMod(skey, "SHIFT"	, Event::Modifier::SHIFT);
+			checkMod(skey, "LSHIFT"	, Event::Modifier::L_SHIFT);
+			checkMod(skey, "RSHIFT"	, Event::Modifier::R_SHIFT);
+			checkMod(skey, "MENU"	, Event::Modifier::MENU);
+			checkMod(skey, "WIN"	, Event::Modifier::WINDOW);
+
+			if (skey.substr(0, 2) == "0x")
+				key = StringUtil::getLong(skey);
+
+			if (skey[0] == '\'')	// FIXME dual usage with 0x
+				if (skey.length() >= 3 && skey[2] == '\'')
+				{
+					key = skey[1];
+					skey.erase(0, 3);
+				}
+			if (skey[0] == ' ')
+				skey.erase(0, 1);
+
+			t = skey.length();
+
+		}
+		// FIXME detect if key not set
+		if (skey.length())
+		{
+			// FIXME bad error reporting
+			cerr << "Error syntax in shortcut (" << skey << ")." << endl;
+			return false;
+		}
+		return true;
+	}
 }

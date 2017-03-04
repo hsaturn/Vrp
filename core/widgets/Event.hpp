@@ -238,6 +238,37 @@ namespace hwidgets
 
 		return false;
 	}
+	
+	class Shortcut
+	{
+	  public:
+		Event::Modifier mod;
+		uint16_t key;
+		
+		/**
+		 * 
+		 * @param  s = [MOD[+MOD...]]key
+		 *         mod = ALT | LALT | RALT | SHIFT | LSHIFT | RSHIFT | CTRL | RCTRL | LCTRL | WIN | MENU
+		 *         key = 0xXXX | 'X' | nnn
+		 * @return true if s is a valid shortcut string 
+		 */
+		bool set(string&);
+		
+		
+		bool operator == (const Event& evt)
+		{
+			return evt.mod == mod && evt.key == key;
+		}
+		
+		bool operator == (const Shortcut &c)
+		{
+			return c.mod == mod && c.key == key;
+		}
+	  private:
+		void checkMod(string& s, const string key, Event::Modifier newmod);
+	};
+
+	bool operator < (const Shortcut& a, const Shortcut& b);
 }
 
 #endif /* WIDGETEVENT_HPP */

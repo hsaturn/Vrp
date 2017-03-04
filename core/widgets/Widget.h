@@ -12,14 +12,13 @@
 #include <map>
 #include <string>
 #include "Color.h"
+#include "Event.hpp"
 
 using namespace std;
 
 
 namespace hwidgets
 {
-	class Event;
-
 	class Coord
 	{
 	  public:
@@ -157,6 +156,8 @@ namespace hwidgets
 		 * the widget that the mouse is moving over it  */
 		static Widget* mouseMotion(Event&);
 		static Widget* mouseButton(int button, int state, int x, int y);
+		
+		static void registerShortcut(Shortcut &a, Widget* w);
 
 		/* infos = type name rectangle [type dependant data] */
 		static Widget* factory(string& infos);
@@ -262,7 +263,7 @@ namespace hwidgets
 		void releaseCaptures();
 		
 	  protected:
-		Rectangle* mrect;
+		Rectangle*	mrect;
 
 	  private:
 		static list<Widget*>		widgets;
@@ -277,7 +278,9 @@ namespace hwidgets
 		string name;
 		string data;	// Additionnal widget data
 
-		static map<string, bool>	eventsAllowed;
+		static map<string, bool>		eventsAllowed;
+		static map<Shortcut, Widget*>	shortcuts;
+		
 	} ;
 
 }

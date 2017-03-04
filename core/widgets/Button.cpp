@@ -39,6 +39,18 @@ namespace hwidgets
 
 			w->text = StringUtil::getStringWord(infos, true);
 			w->color = Color::factory(infos);
+
+			if (infos.substr(0, 5) == "short")
+			{
+				StringUtil::getWord(infos, '=');
+				string key = StringUtil::getWord(infos);
+				Shortcut shortcut;
+				if (shortcut.set(key))
+				{
+					cout << "Registering shortcut " << shortcut.mod << ',' << (int)shortcut.key << endl;
+					registerShortcut( shortcut, w);
+				}
+			}
 		}
 		return w;
 	}
@@ -84,8 +96,8 @@ namespace hwidgets
 		{
 			cout << "click left button on wid button" << endl;
 			string sevent = "mouseup";
-			if (event.type==Event::EVT_MOUSE_DOWN)
-				sevent="mousedown";
+			if (event.type == Event::EVT_MOUSE_DOWN)
+				sevent = "mousedown";
 			pushEvent(sevent, getName() + ' ' + StringUtil::to_string(mouse.button) + ' ' + StringUtil::to_string(mouse.button) + ' ' + getData());
 		}
 	}

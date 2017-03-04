@@ -25,6 +25,7 @@ namespace hwidgets
 	Widget* Widget::capture_keybd_widget = 0;
 	list<string> Widget::pending_messages;
 	list<string>* Widget::cmdQueue = 0;
+	map<Shortcut, Widget*> Widget::shortcuts;
 
 	int Widget::screen_width = -1;
 	int Widget::screen_height = -1;
@@ -33,6 +34,9 @@ namespace hwidgets
 	{
 		if (mrect) delete mrect;
 		releaseCaptures();
+		
+		// FIXME DELETE FROM list<Widget*>
+		// FIXME DELETE FROM map<shortcut, Widget*>
 	}
 
 	void Widget::clear()
@@ -96,18 +100,48 @@ namespace hwidgets
 		pushEvent("mousemove", msg.str());
 		return 0;
 	}
+	
+	void Widget::registerShortcut(Shortcut &a, Widget* w)
+	{
+		auto it = shortcuts.find(a);
+		if (it != shortcuts.end())
+		{
+			// FIXME dump shortcut
+			cerr << "Shortcut already registered." << endl;
+		}
+		else
+			cerr << "SHORTCUT " << a.key << " for " << w->getName() << endl;
+		shortcuts[a] = w;
+	}
 
 	void Widget::handleKeypress(Event& key)
 	{
 		Widget* w;
-		if (capture_keybd_widget)
-			w = capture_keybd_widget;
-		else
-			w = findWidget(key.mouse.x, key.mouse.y);
-
-		if (w)
+		Shortcut k;
+		k.mod = key.mod;
+		k.key = key.key;
+		cout << "KEY " << k.mod << "," << (int) k.key << endl;
+		auto it = shortcuts.find(k);
+		if (it != shortcuts.end())
 		{
-			w->keyPress(key);
+			cout << "ShortCut" << endl;
+			w = it->second;
+			Event toto = key;
+			toto.mouse.buttons.left = true;
+			toto.mouse.button = Event::Mouse::BTN_LEFT;
+			toto.type = Event::EVT_MOUSE_DOWN;
+			cerr << "Widget::Shortcut " << w->getName() << endl;
+			w->mouseClick(toto);
+		}
+		else
+		{
+			if (capture_keybd_widget)
+				w = capture_keybd_widget;
+			else
+				w = findWidget(key.mouse.x, key.mouse.y);
+
+			if (w)
+				w->keyPress(key);
 		}
 	}
 
