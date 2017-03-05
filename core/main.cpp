@@ -9,6 +9,7 @@
 #include <string>
 #include <list>
 
+#include <X11/Xlib.h>
 #include <apps/Cube/Cube.h>
 #include <Server.h>
 #include <unistd.h>
@@ -364,6 +365,12 @@ void drawScene()
 //	glTranslatef( eye.x, eye.y, eye.z ); //glTranslatef(cubex, cubey, cubez);
 	// git grrr
 
+    arcball_rotate();
+//	glMultMatrixf(glm::value_ptr(orient));
+	
+	glScalef(scale, scale, scale);
+	glRotatef(_anglex, 1.0, 0.0, 0.0);
+	glRotatef(_angley, 0.0, 1.0, 0.0);
 	if (material)
 	{
 		glEnable(GL_COLOR_MATERIAL);
@@ -388,12 +395,6 @@ void drawScene()
 		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor.getFloatArray());
 	}
 
-    arcball_rotate();
-//	glMultMatrixf(glm::value_ptr(orient));
-	
-	glScalef(scale, scale, scale);
-	glRotatef(_anglex, 1.0, 0.0, 0.0);
-	glRotatef(_angley, 0.0, 1.0, 0.0);
 	
 	// Tentative désespérée de réflection ...
 #if REFLEXION
@@ -943,6 +944,7 @@ glm::vec3 get_arcball_vector(int x, int y) {
 
 int main(int argc, char** argv)
 {
+	XInitThreads();
 	//cmdQueue.push_back("rotate left 9000");
 	//cmdQueue.push_back("rotate x");
 	arcball_reset();

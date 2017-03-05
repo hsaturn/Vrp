@@ -19,7 +19,7 @@ bool StringUtil::mbInit = false;
 
 void StringUtil::removeQuotes(string &s)
 {
-	while (s.find('\'')!=string::npos)
+	while (s.find('\'') != string::npos)
 	{
 		s[s.find('\'')] = ' ';
 	}
@@ -27,7 +27,7 @@ void StringUtil::removeQuotes(string &s)
 
 void StringUtil::removeDoubleQuotes(string &s)
 {
-	while (s.find('"')!=string::npos)
+	while (s.find('"') != string::npos)
 	{
 		s[s.find('"')] = ' ';
 	}
@@ -39,23 +39,23 @@ int StringUtil::preg_match(string sStrRegex, string s2, bool bAll)
 
 	if (bAll)
 	{
-		sStrRegex = "^"+sStrRegex+"$";
+		sStrRegex = "^" + sStrRegex + "$";
 	}
 	int iResult;
 
-	iResult = regcomp(&tpReg, sStrRegex.c_str(), REG_NOSUB|REG_EXTENDED);
+	iResult = regcomp(&tpReg, sStrRegex.c_str(), REG_NOSUB | REG_EXTENDED);
 
-	if (iResult==0)
+	if (iResult == 0)
 	{
 		int match;
 
 		match = regexec(&tpReg, s2.c_str(), 0, NULL, 0);
 		regfree(&tpReg);
-		if (match==0)
+		if (match == 0)
 		{
 			iResult = 1;
 		}
-		else if (match==REG_NOMATCH)
+		else if (match == REG_NOMATCH)
 		{
 			iResult = 0;
 		}
@@ -71,29 +71,29 @@ int StringUtil::preg_match(string sStrRegex, string s2, bool bAll)
 int StringUtil::match(string sR, string s)
 {
 	// cout << "match(" << sR << ',' << s << ')' << endl;
-	if (sR.length()==0)
+	if (sR.length() == 0)
 	{
-		return s.length()==0;
+		return s.length() == 0;
 	}
 	else
 	{
 		switch (sR[0])
 		{
 			case '$':
-				return s[0]==0;
+				return s[0] == 0;
 				break;
 
 			case '[':
 			{
 				string::size_type iPos = sR.find(']');
-				if (iPos==string::npos)
+				if (iPos == string::npos)
 				{
-					cerr<<"missing closing braket ("<<sR<<")"<<endl;
+					cerr << "missing closing braket (" << sR << ")" << endl;
 					return false;
 				}
 				bool bRet = false;
-				int iOneOrGt = (sR[iPos+1]=='+'?1:0);
-				int iMulti = (sR[iPos+1]=='*'?1:iOneOrGt);
+				int iOneOrGt = (sR[iPos + 1] == '+' ? 1 : 0);
+				int iMulti = (sR[iPos + 1] == '*' ? 1 : iOneOrGt);
 
 				bool bOk;
 				string::size_type i;
@@ -105,9 +105,9 @@ int StringUtil::match(string sR, string s)
 					bOk = false;
 					bool bNot = false;
 
-					if (sR[1]=='^')
+					if (sR[1] == '^')
 					{
-						if ((s.length()==0)&&iMulti==0)
+						if ((s.length() == 0) && iMulti == 0)
 						{
 							return false;
 						}
@@ -122,34 +122,34 @@ int StringUtil::match(string sR, string s)
 					}
 
 					// cout << "while [" << sR << "," << s << ']' << endl;
-					while (sR[i]!=']')
+					while (sR[i] != ']')
 					{
-						if (sR[i+1]=='-')
+						if (sR[i + 1] == '-')
 						{
 							char cStart = sR[i];
-							char cEnd = sR[i+2];
+							char cEnd = sR[i + 2];
 							if (bNot)
 							{
-								bOk = bOk&&(c<cStart||c>cEnd);
+								bOk = bOk && (c < cStart || c > cEnd);
 							}
 							else
 							{
-								bOk = bOk||(c>=cStart&&c<=cEnd);
+								bOk = bOk || (c >= cStart && c <= cEnd);
 							}
 							i += 2;
-							if (i>iPos)
+							if (i > iPos)
 							{
-								cerr<<"bad [x-y] syntax"<<endl;
+								cerr << "bad [x-y] syntax" << endl;
 								return false;
 							}
 						}
 						else if (bNot)
 						{
-							bOk = bOk&&c!=sR[i];
+							bOk = bOk && c != sR[i];
 						}
 						else
 						{
-							bOk = bOk||c==sR[i];
+							bOk = bOk || c == sR[i];
 						}
 						i++;
 					}
@@ -157,31 +157,31 @@ int StringUtil::match(string sR, string s)
 					{
 						s.erase(0, 1);
 						// cout << "bOk [" << sR << "," << s << ']' << endl;
-						if (match(sR.substr(iPos+1+iMulti), s))
+						if (match(sR.substr(iPos + 1 + iMulti), s))
 						{
 							return true;
 						}
 					}
-					bRet = bRet||bOk;
-				} while (bOk&&iMulti&&s.length()!=0);
-				if (sR[i+1]=='*')
+					bRet = bRet || bOk;
+				} while (bOk && iMulti && s.length() != 0);
+				if (sR[i + 1] == '*')
 				{
-					return bRet&&match(sR.substr(i+2), s);
+					return bRet && match(sR.substr(i + 2), s);
 				}
 				else
 				{
-					return bRet&&match(sR.substr(i+1), s);
+					return bRet && match(sR.substr(i + 1), s);
 				}
 			}
 				break;
 
 
 			case '.':
-				if (sR[1]=='*')
+				if (sR[1] == '*')
 				{
 					// cout << sR << "(*)";
 					sR.erase(0, 2);
-					if (s.length()==0) return true;
+					if (s.length() == 0) return true;
 					while (s.length())
 					{
 						if (match(sR, s))
@@ -203,11 +203,11 @@ int StringUtil::match(string sR, string s)
 				sR.erase(0, 1);
 
 			default:
-				if ((s.length()==0)||((sR[0]!=s[0])&&sR[1]!='*'))
+				if ((s.length() == 0) || ((sR[0] != s[0]) && sR[1] != '*'))
 				{
 					return false;
 				}
-				else if (sR[1]=='*')
+				else if (sR[1] == '*')
 				{
 					do
 					{
@@ -216,7 +216,7 @@ int StringUtil::match(string sR, string s)
 						{
 							return true;
 						}
-					} while (s.length() && (sR[0]==s[0]));
+					} while (s.length() && (sR[0] == s[0]));
 
 					return match(sR.substr(2), s);
 				}
@@ -239,11 +239,11 @@ void StringUtil::epure(string& sSrce)
 	typedef CharConvert::const_iterator const_iterator;
 	static CharConvert m;
 
-	if (mbInit==false)
+	if (mbInit == false)
 	{
 		mbInit = true;
 
-		for (unsigned char c = 1; c<31; c++)
+		for (unsigned char c = 1; c < 31; c++)
 		{
 			m[c] = ' ';
 		}
@@ -328,17 +328,17 @@ void StringUtil::epure(string& sSrce)
 
 	unsigned int i = 0;
 	//cout << sSrce << endl;
-	while (i<sSrce.length())
+	while (i < sSrce.length())
 	{
 		// cout << ' ' << (int)sSrce[i]<< sSrce[i];
-		if (sSrce[i]==-17&&sSrce[i+1]==-65)
+		if (sSrce[i] == -17 && sSrce[i + 1] == -65)
 		{
 			sSrce.erase(i, 2);
 		}
 		else
 		{
 			const_iterator oit = m.find((char) sSrce[i]);
-			if (oit!=m.end())
+			if (oit != m.end())
 			{
 				sSrce.erase(i, 1);
 				sSrce.insert(i, oit->second);
@@ -356,22 +356,22 @@ int StringUtil::LevenshteinDistance(const string &s1, const string &s2)
 	string::size_type N1 = s1.length();
 	string::size_type N2 = s2.length();
 	string::size_type i, j;
-	vector<int> T(N2+1);
+	vector<int> T(N2 + 1);
 
-	for (i = 1; i<=N2; i++)
+	for (i = 1; i <= N2; i++)
 		T[i] = i;
 
-	for (i = 0; i<N1; i++)
+	for (i = 0; i < N1; i++)
 	{
-		T[0] = i+1;
+		T[0] = i + 1;
 		int corner = i;
-		for (j = 0; j<N2; j++)
+		for (j = 0; j < N2; j++)
 		{
-			int upper = T[j+1];
-			if (s1[i]==s2[j])
-				T[j+1] = corner;
+			int upper = T[j + 1];
+			if (s1[i] == s2[j])
+				T[j + 1] = corner;
 			else
-				T[j+1] = min(T[j], min(upper, corner))+1;
+				T[j + 1] = min(T[j], min(upper, corner)) + 1;
 			corner = upper;
 		}
 	}
@@ -380,23 +380,23 @@ int StringUtil::LevenshteinDistance(const string &s1, const string &s2)
 
 void StringUtil::toLower(string& str)
 {
-	for (unsigned int i = 0; i<str.length(); i++)
-		if (str[i]>=0x41&&str[i]<=0x5A)
-			str[i] = str[i]+0x20;
+	for (unsigned int i = 0; i < str.length(); i++)
+		if (str[i] >= 0x41 && str[i] <= 0x5A)
+			str[i] = str[i] + 0x20;
 }
 
 void StringUtil::upperFirst(string& str, bool bAll)
 {
 	bool bSpace = true;
 
-	for (unsigned int i = 0; i<str.length(); i++)
+	for (unsigned int i = 0; i < str.length(); i++)
 	{
-		if (str[i]=='_')
+		if (str[i] == '_')
 		{
 			str[i] = ' ';
 			bSpace = bAll;
 		}
-		else if (str[i]==' ')
+		else if (str[i] == ' ')
 		{
 			bSpace = bAll;
 		}
@@ -410,7 +410,7 @@ void StringUtil::upperFirst(string& str, bool bAll)
 
 void StringUtil::toUpper(string& str)
 {
-	for (unsigned int i = 0; i<str.length(); i++)
+	for (unsigned int i = 0; i < str.length(); i++)
 	{
 		str[i] = toupper(str[i]);
 	}
@@ -420,41 +420,81 @@ void StringUtil::toUpper(string& str)
 
 std::string trim(std::string& s, const std::string& drop = " ")
 {
-	std::string r = s.erase(s.find_last_not_of(drop)+1);
+	std::string r = s.erase(s.find_last_not_of(drop) + 1);
 
 	return r.erase(0, r.find_first_not_of(drop));
 }
 
-void StringUtil::trim(string& s, bool bWithCr)
+void StringUtil::trim(string &s, bool bWithCr)
 {
-	while (s.length()>0&&(s[0]==' '||(bWithCr&&(s[0]==13||s[0]==10))))
+	while (s.length() > 0 && (s[0] == ' ' || (bWithCr && (s[0] == 13 || s[0] == 10))))
 		s.erase(0, 1);
-	while (s.length()>0&&(s[s.length()-1]==' '||(bWithCr&&(s[s.length()-1]==13||s[s.length()-1]==10))))
-		s.erase(s.length()-1, 1);
+	while (s.length() > 0 && (s[s.length() - 1] == ' ' || (bWithCr && (s[s.length() - 1] == 13 || s[s.length() - 1] == 10))))
+		s.erase(s.length() - 1, 1);
+}
+
+long StringUtil::getHexLong(string &s)
+{
+	long l = 0;
+	long sign = 1;
+
+	if (s.substr(0, 2) == "0x")
+	{
+		string::size_type i = 0;
+		s.erase(0, 2);
+
+		if (s[0] == '-')
+		{
+			sign = -1;
+			s.erase(0, 1);
+		}
+		else if (s[0] == '+')
+			s.erase(0, 1);
+
+		trim(s);
+
+		while (s.length() && isxdigit(s[i]))
+		{
+			l <<= 4;
+			if (isdigit(s[i]))
+				l += s[i] - '0';
+			else if (s[i] >= 'a')
+				l += s[i] - 'a' + 10;
+			else
+				l += s[i] - 'A' + 10;
+			i++;
+		}
+		s.erase(0,i+1);
+		
+		trim(s);
+	}
+	return l*sign;
 }
 
 long StringUtil::getLong(string& s)
 {
+	if (s.substr(0, 2) == "0x")
+		return StringUtil::getHexLong(s);
 	string::size_type i = 0;
 	long l = 0;
 	long sign = 1;
 
-	if (s[0]=='-')
+	if (s[0] == '-')
 	{
 		sign = -1;
 		s.erase(0, 1);
 	}
-	else if (s[0]=='+')
+	else if (s[0] == '+')
 		s.erase(0, 1);
 
 	trim(s);
 
-	while (s.length()&&isdigit(s[i++]));
+	while (s.length() && isdigit(s[i++]));
 
 	if (isdigit(s[0]))
 	{
 		l = atol(s.substr(0, i).c_str());
-		s.erase(0, i-1);
+		s.erase(0, i - 1);
 	}
 
 	trim(s);
@@ -471,21 +511,21 @@ float StringUtil::getFloat(string& s)
 
 	trim(s);
 
-	if (s[0]=='-')
+	if (s[0] == '-')
 	{
 		s.erase(0, 1);
 		fSign = -1;
 	}
-	else if (s[0]=='+')
+	else if (s[0] == '+')
 		s.erase(0, 1);
 
-	while (s.length() && (isdigit(s[i])||(bDot&&s[i]=='.')))
+	while (s.length() && (isdigit(s[i]) || (bDot && s[i] == '.')))
 	{
-		if (s[i]=='.') bDot = false;
+		if (s[i] == '.') bDot = false;
 		i++;
 	}
 
-	if (isdigit(s[0])||s[i]=='.')
+	if (isdigit(s[0]) || s[i] == '.')
 	{
 		f = atof(s.substr(0, i).c_str());
 		s.erase(0, i);
@@ -505,23 +545,23 @@ string StringUtil::getWord(string& s, const string &sSeparators)
 	{
 		string::size_type iPos = string::npos;
 
-		for (string::size_type i = 0; i<sSeparators.length(); i++)
+		for (string::size_type i = 0; i < sSeparators.length(); i++)
 		{
 			string::size_type i1 = s.find(sSeparators[i]);
 
-			if (i1!=string::npos)
+			if (i1 != string::npos)
 			{
-				if (iPos==string::npos||iPos>i1)
+				if (iPos == string::npos || iPos > i1)
 				{
 					iPos = i1;
 				}
 			}
 		}
 
-		if (iPos!=string::npos)
+		if (iPos != string::npos)
 		{
 			sWord = s.substr(0, iPos);
-			s.erase(0, iPos+1);
+			s.erase(0, iPos + 1);
 			trim(s);
 		}
 		else
@@ -543,24 +583,24 @@ string StringUtil::getWord(string& s, char cSep, char cSep2)
 		string::size_type i1 = s.find(cSep);
 		string::size_type i2 = string::npos;
 
-		if (i1==string::npos&&i2==string::npos&&s.length())
+		if (i1 == string::npos && i2 == string::npos && s.length())
 		{
-			i1 = s.length()+1;
+			i1 = s.length() + 1;
 		}
 
-		if (cSep2!=0) i2 = s.find(cSep2);
+		if (cSep2 != 0) i2 = s.find(cSep2);
 
-		if (i1!=string::npos&&i2!=string::npos)
+		if (i1 != string::npos && i2 != string::npos)
 		{
-			if (i1>i2) i1 = i2;
+			if (i1 > i2) i1 = i2;
 		}
-		else if (i1==string::npos)
+		else if (i1 == string::npos)
 			i1 = i2;
 
-		if (i1!=string::npos)
+		if (i1 != string::npos)
 		{
 			sWord = s.substr(0, i1);
-			s.erase(0, i1+1);
+			s.erase(0, i1 + 1);
 			trim(s);
 		}
 	}
@@ -570,7 +610,7 @@ string StringUtil::getWord(string& s, char cSep, char cSep2)
 
 bool StringUtil::checkCharRemove(string& s, char c)
 {
-	if (s.length()>0&&s[0]==c)
+	if (s.length() > 0 && s[0] == c)
 	{
 		s.erase(0, 1);
 
@@ -584,11 +624,11 @@ bool StringUtil::expectWord(string& s, const string& sWord)
 {
 	trim(s);
 
-	if (s.substr(0, sWord.length())==sWord)
+	if (s.substr(0, sWord.length()) == sWord)
 	{
-		char c = s[sWord.length()]|32;
+		char c = s[sWord.length()] | 32;
 
-		if (c<='a'||c>='z')
+		if (c <= 'a' || c >= 'z')
 		{
 			s.erase(0, sWord.length());
 			trim(s);
@@ -602,7 +642,7 @@ bool StringUtil::expectWord(string& s, const string& sWord)
 
 bool StringUtil::expectChar(string& s, char c)
 {
-	if (s[0]==c)
+	if (s[0] == c)
 	{
 		s.erase(0, 1);
 		return true;
@@ -616,15 +656,15 @@ string StringUtil::unserialize(string& s)
 	trim(s);
 	string::size_type iSpc = s.find(' ');
 
-	if (iSpc==string::npos)
+	if (iSpc == string::npos)
 	{
-		throw string("unable to unserialize [")+s.substr(0, 20)+string("...]");
+		throw string("unable to unserialize [") + s.substr(0, 20) + string("...]");
 	}
 
 	string::size_type lSize = atol(s.substr(0, iSpc).c_str());
 	//     cout << "lsize " << lSize << endl;
-	string sRet = s.substr(iSpc+1, lSize);
-	s.erase(0, iSpc+lSize+1);
+	string sRet = s.substr(iSpc + 1, lSize);
+	s.erase(0, iSpc + lSize + 1);
 
 	return sRet;
 }
@@ -659,17 +699,17 @@ string StringUtil::getString(string& s, bool bRemoveQuotes)
 		char cQuote = s[0];
 		string::size_type iPos = s.find(cQuote, 1);
 
-		if (iPos!=string::npos)
+		if (iPos != string::npos)
 		{
 			if (bRemoveQuotes)
 			{
-				sResult = s.substr(1, iPos-1);
+				sResult = s.substr(1, iPos - 1);
 			}
 			else
 			{
-				sResult = s.substr(0, iPos+1);
+				sResult = s.substr(0, iPos + 1);
 			}
-			s.erase(0, iPos+1);
+			s.erase(0, iPos + 1);
 		}
 	}
 
@@ -678,7 +718,7 @@ string StringUtil::getString(string& s, bool bRemoveQuotes)
 
 string StringUtil::getStringWord(string& s, bool bRemoveQuotes)
 {
-	if (s[0]=='\''||s[0]=='"')
+	if (s[0] == '\'' || s[0] == '"')
 	{
 		return getString(s, bRemoveQuotes);
 	}
@@ -694,11 +734,11 @@ string StringUtil::getIdentifier(string& s)
 	string sResult = "";
 	trim(s);
 
-	for (string::const_iterator oit = s.begin(); oit!=s.end(); oit++)
+	for (string::const_iterator oit = s.begin(); oit != s.end(); oit++)
 	{
 		char c = *oit;
 
-		if (isalpha(c)||(bMore&&(c=='_'||isdigit(c))))
+		if (isalpha(c) || (bMore && (c == '_' || isdigit(c))))
 		{
 			sResult += c;
 			bMore = true;
@@ -724,19 +764,19 @@ string StringUtil::getToken(const string& s, uint8_t iCol, char cSep)
 {
 	string::size_type i1 = 0;
 	string::size_type i2 = s.find(cSep);
-	while (iCol>0&&(i1!=string::npos))
+	while (iCol > 0 && (i1 != string::npos))
 	{
-		i1 = i2+1;
+		i1 = i2 + 1;
 		i2 = s.find(cSep, i1);
-		if (i2==string::npos)
+		if (i2 == string::npos)
 		{
-			i2 = s.length()+1;
-			if (iCol>1) return "";
+			i2 = s.length() + 1;
+			if (iCol > 1) return "";
 			break;
 		}
 		iCol--;
 	}
-	if (i1!=string::npos&&i2!=string::npos) return s.substr(i1, i2-i1);
+	if (i1 != string::npos && i2 != string::npos) return s.substr(i1, i2 - i1);
 	return "";
 }
 
@@ -752,16 +792,16 @@ bool StringUtil::isWindows1252(const char* p)
 		if
 			(
 			// oe
-			(c==0x9C)
+			(c == 0x9C)
 			||
 			// apostrophe ’
-			(c==0x92)
+			(c == 0x92)
 			||
 			// tm
-			(c==0x99)
+			(c == 0x99)
 			||
 			// €		  CONFLIT AVEC
-			((c1==0x80) && (c!=0xc3))
+			((c1 == 0x80) && (c != 0xc3))
 			)
 		{
 			return true;
@@ -780,7 +820,7 @@ string StringUtil::windows1252ToUtf8(const string &s)
 {
 	string sOut(s);
 
-	for (string::size_type iPos = 0; iPos<sOut.length(); iPos++)
+	for (string::size_type iPos = 0; iPos < sOut.length(); iPos++)
 	{
 		switch ((unsigned char) sOut[iPos])
 		{
@@ -802,63 +842,63 @@ string StringUtil::isoToUtf8(const string& s)
 	string sOut;
 	unsigned long iLen = s.length();
 
-	for (unsigned long i = 0; i<iLen; i++)
+	for (unsigned long i = 0; i < iLen; i++)
 	{
 		unsigned char in = s[i];
 
-		if (in<128)
+		if (in < 128)
 		{
 			sOut += in;
 		}
-		else if (in==0xe9)
+		else if (in == 0xe9)
 		{
 			sOut += (unsigned char) 0xc3;
 			sOut += (unsigned char) 0xa9;
 		}
-		else if (in==0xBD) // oe
+		else if (in == 0xBD) // oe
 		{
 			sOut += (unsigned char) 0xC5;
 			sOut += (unsigned char) 0x93;
 		}
-		else if (in==0xA4)
+		else if (in == 0xA4)
 		{
 			sOut += "€"; // TODO non testé
 		}
-		else if (in==0xe7) // ç
+		else if (in == 0xe7) // ç
 		{
 			sOut += (unsigned char) 0xc3;
 			sOut += (unsigned char) 0xa7;
 		}
 			// Cette partie concerne le range 0x80...0x9F qui est une zone non utilisée de iso, mais utilisée par win 1252
 			// -> petite bidouille pour faciliter windows1252toUtf8
-		else if (in==0x92) // ' win1252
+		else if (in == 0x92) // ' win1252
 		{
 			sOut += (unsigned char) 0xe2;
 			sOut += (unsigned char) 0x80;
 			sOut += (unsigned char) 0x99;
 		}
-		else if (in==0x99) // tm win1252
+		else if (in == 0x99) // tm win1252
 		{
 			sOut += "&trade;";
 		}
-		else if ((in==0xA0)||(in==0xC2)) // no-break space
+		else if ((in == 0xA0) || (in == 0xC2)) // no-break space
 		{
 			sOut += (unsigned char) 0x20;
 		}
-		else if ((in==0xfb))
+		else if ((in == 0xfb))
 		{
 			sOut += (unsigned char) 0xc3;
 			sOut += (unsigned char) 0xbb;
 		}
-		else if (in==0xae)
+		else if (in == 0xae)
 		{
 			sOut += (unsigned char) 0xc2;
 			sOut += (unsigned char) 0xae;
 		}
 		else
 		{
-			sOut += (char) (0xc2+(in>0xbf));
-			sOut += (char) ((in&0x3f)+0x80);
+			sOut += (char) (0xc2 + (in > 0xbf));
+			sOut += (char) ((in & 0x3f) + 0x80);
 		}
 	}
 
@@ -870,41 +910,41 @@ string StringUtil::utf8ToIso(const string& s)
 	string sOut;
 	unsigned long iLen = s.length();
 
-	for (unsigned long i = 0; i<iLen; i++)
+	for (unsigned long i = 0; i < iLen; i++)
 	{
 		unsigned char in = s[i];
 
-		if ((unsigned int) (in)<128)
+		if ((unsigned int) (in) < 128)
 		{
 			sOut += in;
 		}
-		else if ((unsigned int) (in)==0xC2)
+		else if ((unsigned int) (in) == 0xC2)
 		{
 			i++;
 			sOut += (char) (in);
 		}
-		else if ((unsigned int) (in)==0xC3)
+		else if ((unsigned int) (in) == 0xC3)
 		{
 			i++;
-			sOut += (char) (s[i]+0x40);
+			sOut += (char) (s[i] + 0x40);
 		}
-		else if ((unsigned int) (in)==0xDF)
+		else if ((unsigned int) (in) == 0xDF)
 		{
 			i += 1;
 		}
-		else if ((unsigned int) (in)==0xEF)
+		else if ((unsigned int) (in) == 0xEF)
 		{
 			i += 2;
 		}
-		else if ((unsigned int) (in)==0xF7)
+		else if ((unsigned int) (in) == 0xF7)
 		{
 			i += 3;
 		}
-		else if ((unsigned int) (in)==0xFB)
+		else if ((unsigned int) (in) == 0xFB)
 		{
 			i += 4;
 		}
-		else if ((unsigned int) (in)==0xFD)
+		else if ((unsigned int) (in) == 0xFD)
 		{
 			i += 5;
 		}
@@ -921,9 +961,9 @@ bool StringUtil::isUtf8(const char* s)
 	{
 		unsigned char c = (unsigned char) (*bytes++);
 
-		if (c>128)
+		if (c > 128)
 		{
-			if (c==0xC2||c==0xC3||c==0xDF||c==0xEF||c==0xF7||c==0xFB||c==0xFD)
+			if (c == 0xC2 || c == 0xC3 || c == 0xDF || c == 0xEF || c == 0xF7 || c == 0xFB || c == 0xFD)
 			{
 				return true;
 			}
@@ -941,21 +981,21 @@ bool StringUtil::isIso(const char* p)
 	while ((c = (unsigned char) *p++))
 	{
 		unsigned char c1 = (unsigned char) p[0];
-		unsigned char c2 = c1?(unsigned char) p[1]:0;
+		unsigned char c2 = c1 ? (unsigned char) p[1] : 0;
 
 		//cout << "[" << c << "]" << hex << int(c) << dec;
 
 		if
 			(
-			(c>=128)
+			(c >= 128)
 			&&
 			(
-			c==0xa3||c==0xb2||c==0xb5||c==0xc8||c==0xc9||c==0xca||
-			(c==0xe0&&(c1<0xA0||c1>0xBF))||// extension utf8
-			(c==0xe2&&(c1<0x80||c1>0xBF) && (c2<0x80||c2>0xBF))||// extension utf8
-			(c1==0xA0&&c!=0xc3)||(c==0xc2&&c1==0xa0)||
-			(c1==0xae&&c!=0xc3)||
-			c==0xe4||c==0xe8||c==0xee||c==0x6f||c==0xf4||c==0xe6||c==0xe7||c==0x92||c==0xfb||c==0xae||c==0xe9
+			c == 0xa3 || c == 0xb2 || c == 0xb5 || c == 0xc8 || c == 0xc9 || c == 0xca ||
+			(c == 0xe0 && (c1 < 0xA0 || c1 > 0xBF)) || // extension utf8
+			(c == 0xe2 && (c1 < 0x80 || c1 > 0xBF) && (c2 < 0x80 || c2 > 0xBF)) || // extension utf8
+			(c1 == 0xA0 && c != 0xc3) || (c == 0xc2 && c1 == 0xa0) ||
+			(c1 == 0xae && c != 0xc3) ||
+			c == 0xe4 || c == 0xe8 || c == 0xee || c == 0x6f || c == 0xf4 || c == 0xe6 || c == 0xe7 || c == 0x92 || c == 0xfb || c == 0xae || c == 0xe9
 			)
 			)
 		{
@@ -971,16 +1011,16 @@ bool StringUtil::isIso(const char* p)
 
 bool StringUtil::startsWith(string&s, const string& start, bool remove)
 {
-	string::size_type ps=0;
-	string::size_type pstart=0;
-	
-	while(s.length()>ps && s[ps]==' ') ps++;
+	string::size_type ps = 0;
+	string::size_type pstart = 0;
 
-	if (s.length()>ps)
-		if (s.substr(ps, start.length())==start)
+	while (s.length() > ps && s[ps] == ' ') ps++;
+
+	if (s.length() > ps)
+		if (s.substr(ps, start.length()) == start)
 		{
 			if (remove)
-				s.erase(0,ps+start.length());
+				s.erase(0, ps + start.length());
 			return true;
 		}
 	return false;
@@ -988,17 +1028,17 @@ bool StringUtil::startsWith(string&s, const string& start, bool remove)
 
 bool StringUtil::startsWithFloat(const string& s)
 {
-	bool sign=false;
-	for(auto it: s)
+	bool sign = false;
+	for (auto it : s)
 	{
-		if (it==' ' && sign==false)
+		if (it == ' ' && sign == false)
 			continue;
-		if (it=='-' && sign==false)
+		if (it == '-' && sign == false)
 		{
-			sign=true;
+			sign = true;
 			continue;
 		}
-		if ((it>='0' && it<='9') || it=='.')
+		if ((it >= '0' && it <= '9') || it == '.')
 			return true;
 		return false;
 	}

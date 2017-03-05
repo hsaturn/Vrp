@@ -30,6 +30,7 @@ public:
 	static void upperFirst(string& s, bool bAll=true);
     
     static long getLong(string& s);
+	static long getHexLong(string& s);
 	static float getFloat(string &s);
     static string getWord(string& s, char cSep=' ', char cSep2=0);
     /*
