@@ -27,7 +27,7 @@ namespace Colib {
 		column_dest = 0;
 		etage_dest = 0;
 		
-		//changeSound("bati define sound { am 70 100 sinus 200:80 sq 300 triangle 400:10 sq 600:10 } reverb 30:30 fm 0 80 sound hook");
+		changeSound("bati define sound { am 70 100 sinus 200:80 sq 300 sq 600:10 } reverb 30:30 fm 0 80 sound hook");
 	}
 	
 	Bati::~Bati()

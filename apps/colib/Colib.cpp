@@ -50,6 +50,7 @@ namespace Colib
 				cerr << "Error while restoring Colib from " << sheight << " file." << endl;
 			}
 		}
+		
 		return pcolib;
 	}
 	
@@ -194,7 +195,6 @@ namespace Colib
 		}
 	}
 
-	
 	Object::ExecResult Colib::_execute(Server* server, string cmd, string incoming, const string& org, CmdQueue&)
 	{
 		string error="";
