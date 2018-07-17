@@ -2,6 +2,9 @@ apt install libglew-dev freeglut3-dev libsfml-dev libglfw3-dev
 apt install libsdl2-dev 
 libsdl2-mixer-dev libsdl-mixer1.2-dev
 SaturnLib https://github.com/hsaturn/SaturnLib.git
+    cmake .
+    make
+    sudo make install
 synth https://github.com/hsaturn/synth.git
     cmake .
     make
