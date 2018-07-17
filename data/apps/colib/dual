@@ -1,0 +1,30 @@
+vars
+{
+  name=colib
+  autosave=on
+  bouding_boxes=0
+  dx=-6
+  dz=-24
+  last_save=data/apps/colib/dual
+  scale=0.1
+}
+height 200
+back {
+  width 60 { 21 sac3_60 }
+  width 60 { 14 carton }
+  width 60 { 14 sac60 22 sac2_60 30 sac4_60 }
+  width 60 { 17 sac3_60 }
+  width 30 { 13 caisse }
+  width 30 { 21 sac }
+  width 30 { 20 pommes 22 sac }
+  width 30 { 17 sac }
+  width 30 { }
+}
+front {
+  width 60 { }
+  width 60 { }
+  width 30 { 21 sac }
+  width 30 { }
+  width 30 { }
+}
+END

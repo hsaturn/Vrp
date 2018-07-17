@@ -1,0 +1,30 @@
+vars
+{
+  name=colib
+  bouding_boxes=0
+  dx=-6
+  dz=-24
+  last_save=data/apps/colib/test
+  scale=0.1
+}
+height 200
+back {
+  width 30 { 0 caisse }
+  width 30 { }
+  width 30 { }
+  width 30 { }
+  width 30 { }
+  width 30 { 5 pommes }
+  width 30 { 13 bouteille }
+  width 30 { 5 singe }
+  width 30 { }
+  width 30 { }
+  width 30 { }
+  width 30 { }
+  width 30 { }
+  width 30 { }
+  width 30 { }
+}
+front {
+}
+END

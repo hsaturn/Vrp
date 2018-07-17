@@ -1,0 +1,30 @@
+vars
+{
+  name=colib
+  bouding_boxes=0
+  dx=-6
+  dz=-24
+  last_save=data/apps/colib/single
+  scale=0.1
+}
+height 200
+back {
+  width 30 { 12 sac 20 pommes }
+  width 30 { }
+  width 30 { }
+  width 30 { }
+  width 30 { }
+  width 30 { }
+  width 30 { }
+  width 30 { }
+  width 30 { }
+  width 30 { }
+  width 30 { 12 caisse }
+  width 30 { }
+  width 30 { }
+  width 30 { }
+  width 30 { }
+}
+front {
+}
+END
