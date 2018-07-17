@@ -35,16 +35,16 @@ namespace Colib {
 	class Bati;
 	class Column;
 	
-	class Colib : public Object {
+	class Colib : public Application {
 
-		class ColibBuilder : public ObjectBuilder {
+		class ColibBuilder : public ApplicationBuilder {
 		public:
 
-			ColibBuilder();
-
+			ColibBuilder() : ApplicationBuilder("colib") {};
+			
 			virtual ~ColibBuilder() {}
 
-			Object* build(const string& name, string& incoming);
+			Application* build(const string& name, string& incoming);
 		};
 		
 		virtual void _help(Help&);

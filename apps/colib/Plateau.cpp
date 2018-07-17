@@ -9,7 +9,6 @@
 #include "Color.h"
 #include "StringUtil.hpp"
 #include <GL/glew.h>
-#include <ModelOld.hpp>
 #include <model/Model.hpp>
 #include <libsynth.hpp>
 #include "MotorSpeedHook.hpp"
@@ -158,11 +157,11 @@ namespace Colib
 		}
 		else
 		{
-			float x1,x2,y1,y2,z1,z2;
+			float x1,x2,y1,z1,z2; // ,y2
 			x1 = x-Column::DEPTH_X/2;
 			x2 = x+Column::DEPTH_X/2;
 			y1 = cy+0.01;
-			y2 = cy+THICKNESS;
+			//y2 = cy+THICKNESS;
 			z1 = cz-width_z/2;
 			z2 = cz+width_z/2;
 

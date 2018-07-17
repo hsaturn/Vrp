@@ -28,9 +28,7 @@ namespace Colib
 	Colib::ColibBuilder Colib::builder;
 	bool Colib::gRenderBoundingBoxes=false;
 	
-	Colib::ColibBuilder::ColibBuilder() : ObjectBuilder("colib"){}
-	
-	Object* Colib::ColibBuilder::build(const string& name, string& incoming)
+	Application* Colib::ColibBuilder::build(const string& name, string& incoming)
 	{
 		Colib* pcolib;
 		string sheight = StringUtil::getWord(incoming);
@@ -55,7 +53,7 @@ namespace Colib
 	}
 	
 	Colib::Colib(const string& name, int initial_height)
-	: Object(name), height(initial_height)
+	: Application(name), height(initial_height)
 	{
 		last_ready = false;
 		list_columns = 0;
@@ -95,7 +93,6 @@ namespace Colib
 		Model::get("caisse")->render();
 		return false;
 		*/
-		
 		
 		Color::dark_green.render();
 		glBegin(GL_TRIANGLE_FAN);
@@ -195,7 +192,7 @@ namespace Colib
 		}
 	}
 
-	Object::ExecResult Colib::_execute(Server* server, string cmd, string incoming, const string& org, CmdQueue&)
+	Application::ExecResult Colib::_execute(Server* server, string cmd, string incoming, const string& org, CmdQueue&)
 	{
 		string error="";
 		ExecResult ret = EXEC_OK;
@@ -417,7 +414,7 @@ namespace Colib
 					error = "Position courante incorrecte";
 			}
 			else
-				ret = Object::EXEC_BUSY;
+				ret = Application::EXEC_BUSY;
 		}
 		else if (cmd=="drop" || cmd=="remove")
 		{

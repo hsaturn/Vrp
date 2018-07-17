@@ -34,7 +34,7 @@ IndividualFactory::~IndividualFactory() {
 }
 
 Galaxy* IndividualFactory::galaxy() const {
-	return dynamic_cast<Galaxy*> (ObjectBuilder::getInstance(mgalaxyName));
+	return dynamic_cast<Galaxy*> (ApplicationBuilder::getInstance(mgalaxyName));
 }
 
 Population::type IndividualFactory::build() {

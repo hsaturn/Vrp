@@ -18,7 +18,7 @@ namespace RedStone
 	RedMap::RedMapBuilder RedMap::builder;
 	
 	RedMap::RedMap(const string& name, string &incoming)
-	: Object(name)
+	: Application(name)
 	{
 		for(int x=-X; x<X; x++)
 			for(int z=-Z; z<Z; z++)
@@ -76,7 +76,7 @@ namespace RedStone
 		return false;
 	}
 	
-	Object::ExecResult RedMap::_execute(Server*, string cmd, string incoming, const string& org, CmdQueue&)
+	Application::ExecResult RedMap::_execute(Server*, string cmd, string incoming, const string& org, CmdQueue&)
 	{
 		ExecResult ret = EXEC_UNKNOWN;
 		

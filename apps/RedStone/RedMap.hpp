@@ -19,20 +19,11 @@ using namespace std;
 
 namespace RedStone {
 
-	class RedMap : public Object {
+	class RedMap : public Application {
 
-		class RedMapBuilder : public ObjectBuilder {
-		public:
+		APPLICATION_BUILDER("redmap", RedMap);
 
-			RedMapBuilder() : ObjectBuilder("redmap") {}
-
-			virtual ~RedMapBuilder() {}
-
-			Object* build(const string& name, string& incoming) {
-				return new RedMap(name, incoming);
-			}
-		};
-	public:
+	  public:
 		RedMap(const string &name, string& incoming);
 
 		virtual ~RedMap() ;

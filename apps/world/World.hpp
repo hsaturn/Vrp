@@ -20,19 +20,10 @@ using namespace std;
 namespace World {
 
 	class Map;
-	class World : public Object {
+	class World : public Application {
+		
+		APPLICATION_BUILDER("world", World);
 
-		class WorldBuilder : public ObjectBuilder {
-		public:
-
-			WorldBuilder() : ObjectBuilder("world") {}
-
-			virtual ~WorldBuilder() {}
-
-			Object* build(const string& name, string& incoming) {
-				return new World(name, incoming);
-			}
-		};
 	public:
 		World(const string &name, string& incoming);
 

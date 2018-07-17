@@ -20,7 +20,7 @@ namespace World
 	World::WorldBuilder World::builder;
 	
 	World::World(const string& name, string &incoming)
-	: Object(name)
+	: Application(name)
 	{
 		int width = StringUtil::getLong(incoming);
 		int length = StringUtil::getLong(incoming);
@@ -50,7 +50,7 @@ namespace World
 		return bRet;
 	}
 	
-	Object::ExecResult World::_execute(Server*, string cmd, string incoming, const string& org, CmdQueue&)
+	Application::ExecResult World::_execute(Server*, string cmd, string incoming, const string& org, CmdQueue&)
 	{
 		ExecResult ret = EXEC_UNKNOWN;
 		

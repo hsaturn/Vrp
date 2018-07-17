@@ -38,7 +38,7 @@ const float flaty_org = 4.8;
 const float flatz_org = 4.0;
 const float flats_org = 1.0;
 
-Cube::Cube(const string& name, string& incoming) : Object(name) {
+Cube::Cube(const string& name, string& incoming) : Application(name) {
 	fillPatterns();
 	backward = true;
 	
@@ -567,7 +567,7 @@ Face::Dir Cube::getDir(string& incoming, string& dir)
 	return Face::NONE;
 }
 
-Object::ExecResult Cube::_execute(Server* server, string cmd, string incoming, const string& org, CmdQueue& cmdQueue) {
+Application::ExecResult Cube::_execute(Server* server, string cmd, string incoming, const string& org, CmdQueue& cmdQueue) {
 	if (!isReady())
 		return EXEC_BUSY;
 	

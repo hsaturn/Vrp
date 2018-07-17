@@ -45,7 +45,7 @@ namespace Colib
 		float getXRight() const;
 		float getCenterX() const;
 		
-		Object::ExecResult moveTo(int col_nr, int h, bool back);
+		Application::ExecResult moveTo(int col_nr, int h, bool back);
 		static const int THICKNESS = 10;
 		
 		Plateau* getPlateau();

@@ -1,42 +1,33 @@
 #ifndef Cube_H
-#define Cube_H
+#    define Cube_H
 
-#include "Face.h"
-#include <string>
+#    include "Face.h"
+#    include <string>
 
-#include <Object.h>
-#include <ObjectBuilder.hpp>
+#    include <Object.h>
+#    include <ObjectBuilder.hpp>
 
 using namespace std;
 
-class Cube : public Object {
+class Cube : public Application
+{
+	APPLICATION_BUILDER("cube", Cube);
 
-	class CubeBuilder : public ObjectBuilder {
-	public:
-
-		CubeBuilder() : ObjectBuilder("cube") {}
-
-		virtual ~CubeBuilder() {};
-
-		Object* build(const string& name, string& incoming) {
-			return new Cube(name, incoming);
-		}
-	};
-
-public:
+  public:
 	Cube(const string& name, string& incoming);
 
-	virtual ~Cube() {
-	}
+	virtual ~Cube() { }
 
 
 	void renderFlat(float size = 0.7);
 
-	Face* face(int i) {
+	Face* face(int i)
+	{
 		return &faces[redir[i]];
 	}
 
-	const Face* face(int i) const {
+	const Face* face(int i) const
+	{
 		return &faces[redir[i]];
 	}
 
@@ -76,30 +67,32 @@ public:
 
 	void reboot();
 
-	int totalMoves() const {
+	int totalMoves() const
+	{
 		return total_moves;
 	}
 
-	string learned() const {
+	string learned() const
+	{
 		return slearn;
 	}
-	
+
 	Face::Dir getDir(string& incoming, string& dir);
-	
+
 	virtual void renderHud();
-	
-protected:
+
+  protected:
 	virtual void _help(Help&);
 	virtual ExecResult _execute(Server* server, string cmd, string incoming, const string& org, CmdQueue&);
 	virtual bool _render(bool resetTimer);
-	
-private:
+
+  private:
 	bool has(const Color&) const;
 	bool has(const Color&, const Color&) const;
 	bool has(const Color&, const Color&, const Color&) const;
 
 	void updateAngle(int& target, float& angle, float timems);
-	
+
 	void renderCube(float time);
 
 	Face faces[6];
@@ -119,12 +112,12 @@ private:
 	int total_moves;
 	string slearn;
 	bool learn;
-	
+
 	// display vars
-	
+
 	bool backward;
 	float back_x, back_y, back_z, back_s;
-	
+
 	bool flat;
 	float flatx, flaty, flatz, flats;
 

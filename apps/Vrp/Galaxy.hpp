@@ -17,20 +17,9 @@ using namespace std;
 
 class Planet;
 
-class Galaxy : public Object {
+class Galaxy : public Application {
 
-	class GalaxyBuilder : public ObjectBuilder {
-	public:
-
-		GalaxyBuilder() : ObjectBuilder("galaxy"){}
-
-		virtual ~GalaxyBuilder() {};
-
-		Object* build(const string& name, string& incoming) {
-			return new Galaxy(name, incoming);
-		}
-	};
-	
+	APPLICATION_BUILDER("galaxy", Galaxy);
 	
 public:
 	Galaxy(const string& name, string& incoming);

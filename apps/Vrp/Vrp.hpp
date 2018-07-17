@@ -18,20 +18,10 @@ using namespace genetic;
 
 class Galaxy;
 
-class Vrp : public Object {
+class Vrp : public Application {
 
-	class VrpBuilder : public ObjectBuilder {
-	public:
-
-		VrpBuilder() : ObjectBuilder("vrp") {}
-
-		virtual ~VrpBuilder() {}
-
-		Object* build(const string& name, string& incoming) {
-			return new Vrp(name, incoming);
-		}
-	};
-
+	APPLICATION_BUILDER("vrp", Vrp);
+	
 public:
 	Vrp(const string& name, string &incoming);
 
@@ -39,7 +29,7 @@ public:
 	};
 
 	virtual bool _render(bool resetTimer);
-	virtual Object::ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);
+	virtual Application::ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);
 	virtual void _help(Help&);
 	void best(Server*);
 	void pop();

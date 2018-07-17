@@ -19,7 +19,7 @@ static const float max_planet_ray = 3;
 
 Galaxy::GalaxyBuilder Galaxy::builder;
 
-Galaxy::Galaxy(const string& name, string& incoming) : Object(name) {
+Galaxy::Galaxy(const string& name, string& incoming) : Application(name) {
 	bool bFlat = 0;
 	bool bSphere = 0;
 	cout << "Planet Incoming = " << incoming << endl;
@@ -134,7 +134,7 @@ const Planet* Galaxy::getPlanet(const string& planetName) const
 	return 0;
 }
 
-Object::ExecResult Galaxy::_execute(Server* svr, string cmd, string incoming, const string& org, CmdQueue&) {
+Application::ExecResult Galaxy::_execute(Server* svr, string cmd, string incoming, const string& org, CmdQueue&) {
 	if (cmd == "distance") {
 		cout << "incoming distance (" << incoming << ")" << endl;
 		const Planet* p1 = getPlanet(StringUtil::getWord(incoming));

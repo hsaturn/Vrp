@@ -12,12 +12,12 @@ namespace RedStone
 	RedStone::RedStoneBuilder RedStone::builder;
 	
 	RedStone::RedStone(const string& name, string& incoming)
-	: Object(name)
+	: Application(name)
 	{
 		
 	}
 	
-	Object::ExecResult RedStone::_execute(Server*, string cmd, string incoming, const string& org, CmdQueue&)
+	Application::ExecResult RedStone::_execute(Server*, string cmd, string incoming, const string& org, CmdQueue&)
 	{
 		return EXEC_UNKNOWN;
 	}

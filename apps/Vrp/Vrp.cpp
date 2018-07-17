@@ -25,7 +25,7 @@ using namespace std;
 Vrp::VrpBuilder Vrp::builder;
 
 Vrp::Vrp(const string& name, string& incoming)
-: Object(name),
+: Application(name),
 algo(0)
 {
 	setVar("render_best", 1);
@@ -36,7 +36,7 @@ algo(0)
 
 Galaxy* Vrp::galaxy()
 {
-	Galaxy* g = dynamic_cast<Galaxy*> (ObjectBuilder::getInstance(mgalaxyName));
+	Galaxy* g = dynamic_cast<Galaxy*> (ApplicationBuilder::getInstance(mgalaxyName));
 	if (g == 0)
 		galaxyPtr = 0;
 	return g;
@@ -51,7 +51,7 @@ void Vrp::_help(Help& help)
 	help.add("vrp vars : fast");
 }
 
-Object::ExecResult Vrp::_execute(Server* server, string cmd, string incoming, const string& org, CmdQueue&)
+Application::ExecResult Vrp::_execute(Server* server, string cmd, string incoming, const string& org, CmdQueue&)
 {
 	ExecResult ret = EXEC_OK;
 	if (cmd == "solve")
