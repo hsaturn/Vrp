@@ -16,9 +16,9 @@ using namespace genetic;
 class CrossOver : public AbstractCrossOver {
 public:
 	CrossOver();
-	virtual ~CrossOver();
+	~CrossOver() override;
 	
-	virtual int crossOver(Population::type &p1, Population::type &p2);
+	int crossOver(Population::type &p1, Population::type &p2) override;
 	
 private:
 	CrossOver(const CrossOver& orig);

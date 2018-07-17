@@ -13,8 +13,8 @@
 class SmartIndividual : public Individual{
 public:
 	SmartIndividual();
-	virtual ~SmartIndividual(){};
-	virtual void createGenes(Galaxy*);
+	~SmartIndividual() override {};
+	void createGenes(Galaxy*) override;
 
 protected:
 	

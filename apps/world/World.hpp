@@ -27,11 +27,11 @@ namespace World {
 	public:
 		World(const string &name, string& incoming);
 
-		virtual ~World() ;
+		~World() override;
 
-		virtual bool _render(bool resetTimer);
-		virtual ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);
-		virtual void _help(Help&);
+		bool _render(bool resetTimer);
+		ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&) override;
+		void _help(Help&) override;
 		
 	private:
 

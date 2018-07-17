@@ -21,9 +21,9 @@ public:
 			AdaptatorFunction*,
 			int populationSize,
 			Galaxy*);
-	virtual ~GeneticVrp();
+	~GeneticVrp() override;
 
-	virtual void elitism(Population* newPopulation);
+	void elitism(Population* newPopulation) override;
 
 private:
 	Galaxy* mgalaxy;

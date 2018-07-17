@@ -27,7 +27,6 @@ Server::~Server()
 {
 	cout << "SERVER STOP" << endl;
 	stop();
-	thr->join();
 }
 
 void Server::addListener(sendListener f)
@@ -155,7 +154,11 @@ void Server::stop()
 		Server::ServerThread* thr=*it;
 		thr->stop();
 	}
+	cout << "OK" << endl;
 	portno=0;
+	cout << "JOIN" << endl;
+	thr->detach();
+	cout << "OK2" << endl;
 }
 
 void Server::send(string s)
@@ -190,10 +193,20 @@ void Server::ServerThread::run()
 
 void Server::ServerThread::stop()
 {
-	connect=false;
-	cout << "  JOINING THREAD...";
-	thr->join();
-	cout << "  JOINED" << endl;
+	if (isok())
+	{
+		connect=false;
+		thr->join();
+		cout << "  JOINED" << endl;
+	}
+}
+
+bool Server::ServerThread::isok() const
+{
+	if (thr)
+		return true;
+	cerr << "ATTEMPTING OPERATION ON NULL THREAD" << endl;
+	return false;
 }
 
 void Server::remove(Server::ServerThread* thr)

@@ -22,8 +22,8 @@ class RainbowRing : public AbstractRing
 {
 public:
 	RainbowRing() : AbstractRing() {}
-	virtual ~RainbowRing() {};
-	virtual void render(int quality, float ray) const;
+	~RainbowRing() override {};
+	void render(int quality, float ray) const override;
 };
 #endif	/* RING_HPP */
 

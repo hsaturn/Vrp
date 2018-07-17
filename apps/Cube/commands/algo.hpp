@@ -15,9 +15,9 @@ namespace core
 	class algo : public cmd {
 	public:
 		algo();
-		virtual ~algo(){};
+		~algo() override {};
 
-		virtual bool run(Server* psvr, string &sCmd, string& sArgs, stringstream& out, stringstream& err);
+		bool run(Server* psvr, string &sCmd, string& sArgs, stringstream& out, stringstream& err) override;
 
 	};
 

@@ -5,18 +5,18 @@ vars
   bouding_boxes=0
   dx=-6
   dz=-24
-  last_save=demo
+  last_save=data/apps/colib/demo
   scale=0.1
 }
 height 200
 back {
   width 60 { }
   width 60 { }
-  width 60 { }
-  width 60 { }
-  width 30 { 13 cactus 20 plant }
-  width 30 { 20 caisse }
-  width 30 { 12 wateringcan }
+  width 60 { 14 sac60 22 sac2_60 }
+  width 60 { 17 sac3_60 }
+  width 30 { 13 caisse }
+  width 30 { 20 sac }
+  width 30 { 12 wateringcan 20 pommes }
   width 30 { }
   width 30 { }
 }

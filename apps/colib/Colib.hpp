@@ -42,12 +42,12 @@ namespace Colib {
 
 			ColibBuilder() : ApplicationBuilder("colib") {};
 			
-			virtual ~ColibBuilder() {}
+			~ColibBuilder() override {}
 
 			Application* build(const string& name, string& incoming);
 		};
 		
-		virtual void _help(Help&);
+		void _help(Help&) override;
 		
 		bool save(string file);
 		bool restore(string file);
@@ -58,10 +58,10 @@ namespace Colib {
 		
 		Colib(const string &name, int height);
 
-		virtual ~Colib() ;
+		~Colib() override;
 
-		virtual bool _render(bool resetTimer);
-		virtual ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);
+		bool _render(bool resetTimer) override;
+		ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);
 		
 		Column* getColumn(unsigned int nr, bool back=true) const;
 		/**

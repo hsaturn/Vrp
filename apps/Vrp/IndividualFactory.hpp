@@ -21,9 +21,9 @@ class IndividualFactory : public AbstractIndividualFactory {
 public:
 	IndividualFactory(string galaxyName, string params);
 	IndividualFactory(const IndividualFactory& orig);
-	virtual ~IndividualFactory();
+	~IndividualFactory() override;
 
-	virtual Population::type build();
+	Population::type build() override;
 	Galaxy* galaxy() const;
 	
 private:

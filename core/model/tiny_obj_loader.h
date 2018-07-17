@@ -1747,7 +1747,7 @@ fail:
 		attrib->vertices.swap(v);
 		attrib->normals.swap(vn);
 		attrib->texcoords.swap(vt);
-
+		
 		return true;
 	}
 

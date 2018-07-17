@@ -18,9 +18,9 @@ class Galaxy;
 class FitnessScore : public AdaptatorFunction {
 public:
 	FitnessScore(){};
-	virtual ~FitnessScore();
+	~FitnessScore() override;
 	
-	virtual float fitnessScore(Population::type) const;
+	float fitnessScore(Population::type) const override;
 
 private:
 	FitnessScore(const FitnessScore& orig);

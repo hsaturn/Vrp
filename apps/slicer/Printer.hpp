@@ -29,10 +29,10 @@ namespace slicer
 	{
 	  public:
 		Printer(Slicer* parent, string config);
-		virtual ~Printer();
+		~Printer() override;
 
 		Application::ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&) override;
-		void _help(Help&) override;
+		void _help(Help&)			  override;
 		bool _render(bool resetTimer) override;
 		
 		bool load(string);

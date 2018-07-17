@@ -24,9 +24,9 @@
 
 using namespace std;
 
-vector<tinyobj::material_t>	Model::materials;
-map<string, GLuint>			Model::textures;
-map<const string, Model*>	Model::models;
+vector<tinyobj::material_t> Model::materials;
+map<string, GLuint> Model::textures;
+map<const string, Model*> Model::models;
 
 int width = 768;
 int height = 768;
@@ -64,7 +64,7 @@ static bool FileExists(const string &abs_filename)
 static void CheckErrors(string desc)
 {
 	static string last_error;
-	
+
 	GLenum e = glGetError();
 	if (e != GL_NO_ERROR)
 	{
@@ -116,7 +116,7 @@ Model::~Model()
 	cerr << "deleting model" << endl;
 }
 
-void  my_assert_sup(int i, int j)
+void my_assert_sup(int i, int j)
 {
 	if (j < 0)
 		cerr << "Model my_assert error " << i << ',' << j << endl;
@@ -125,8 +125,9 @@ void  my_assert_sup(int i, int j)
 	assert(i > j);
 }
 
-bool Model::loadObjAndConvert(const string& file)
+bool Model::loadObjAndConvert(const string& file, vector<Triangle>* triangles)
 {
+	filename = file;
 	tinyobj::attrib_t attrib;
 	vector<tinyobj::shape_t> shapes;
 
@@ -154,11 +155,11 @@ bool Model::loadObjAndConvert(const string& file)
 
 #if 0
 	cout << "MODEL " << file << endl;
-	cout << "# of vertices  = " << (int) (attrib.vertices.size()) / 3 << endl;
-	cout << "# of normals   = " << (int) (attrib.normals.size()) / 3 << endl;
-	cout << "# of texcoords = " << (int) (attrib.texcoords.size()) / 2 << endl;
-	cout << "# of materials = " << (int) materials.size() << endl;
-	cout << "# of shapes    = " << (int) shapes.size() << endl;
+	cout << "# of vertices  = " << (int)(attrib.vertices.size()) / 3 << endl;
+	cout << "# of normals   = " << (int)(attrib.normals.size()) / 3 << endl;
+	cout << "# of texcoords = " << (int)(attrib.texcoords.size()) / 2 << endl;
+	cout << "# of materials = " << (int)materials.size() << endl;
+	cout << "# of shapes    = " << (int)shapes.size() << endl;
 #endif
 	// Append `default` material
 	materials.push_back(tinyobj::material_t());
@@ -205,10 +206,13 @@ bool Model::loadObjAndConvert(const string& file)
 	bmax[0] = bmax[1] = bmax[2] = -numeric_limits<float>::max();
 
 	{
+		cout << "Shape size " << shapes.size() << endl;
 		for (size_t s = 0; s < shapes.size(); s++)
 		{
 			DrawObject o;
-			vector<float> vb;  // pos(3float), normal(3float), color(3float)
+			vector<float> vb; // pos(3float), normal(3float), color(3float)
+			cout << "shapes[" << s << "].mesh.indices.size()=" << shapes[s].mesh.indices.size() << endl;
+			
 			for (size_t f = 0; f < shapes[s].mesh.indices.size() / 3; f++)
 			{
 				tinyobj::index_t idx0 = shapes[s].mesh.indices[3 * f + 0];
@@ -217,7 +221,7 @@ bool Model::loadObjAndConvert(const string& file)
 
 				int current_material_id = shapes[s].mesh.material_ids[f];
 
-				if ((current_material_id < 0) || (current_material_id >= static_cast<int> (materials.size())))
+				if ((current_material_id < 0) || (current_material_id >= static_cast<int>(materials.size())))
 				{
 					// Invaid material ID. Use default material.
 					current_material_id = materials.size() - 1; // Default material is added to the last item in `materials`.
@@ -304,6 +308,8 @@ bool Model::loadObjAndConvert(const string& file)
 					n[2][1] = n[0][1];
 					n[2][2] = n[0][2];
 				}
+				
+				float gx=0,gy=0,gz=0;
 
 				for (int k = 0; k < 3; k++)
 				{
@@ -312,6 +318,10 @@ bool Model::loadObjAndConvert(const string& file)
 					vb.push_back(v[k][1]);
 					vb.push_back(v[k][2]);
 					
+					gx += v[k][0];
+					gy += v[k][1];
+					gz += v[k][2];
+
 					// NORMAL
 					vb.push_back(n[k][0]);
 					vb.push_back(n[k][1]);
@@ -342,7 +352,6 @@ bool Model::loadObjAndConvert(const string& file)
 						vb.push_back(c[0] * 0.5 + 0.5);
 						vb.push_back(c[1] * 0.5 + 0.5);
 						vb.push_back(c[2] * 0.5 + 0.5);
-
 					}
 					else
 					{
@@ -355,17 +364,31 @@ bool Model::loadObjAndConvert(const string& file)
 						}
 						else
 						{
-							vb.push_back( materials[current_material_id].diffuse[0]);
-							vb.push_back( materials[current_material_id].diffuse[1]);
-							vb.push_back( materials[current_material_id].diffuse[2]);
+							vb.push_back(materials[current_material_id].diffuse[0]);
+							vb.push_back(materials[current_material_id].diffuse[1]);
+							vb.push_back(materials[current_material_id].diffuse[2]);
 						}
 					}
 
-					// ??????
+					// ?????? texture coords
 					vb.push_back(tc[k][0]);
 					vb.push_back(tc[k][1]);
 				}
+
+				gx /= 3.0;
+				gy /= 3.0;
+				gz /= 3.0;
+				normals.push_back(gx);
+				normals.push_back(gy);
+				normals.push_back(gz);
+				
+				int kk=0;
+				normals.push_back(gx+n[kk][0]);
+				normals.push_back(gy+n[kk][1]);
+				normals.push_back(gz+n[kk][2]);
 			}
+			
+			cout << "ormals " << normals.size() << endl;
 
 			o.vb = 0;
 			o.numTriangles = 0;
@@ -387,9 +410,8 @@ bool Model::loadObjAndConvert(const string& file)
 				glBindBuffer(GL_ARRAY_BUFFER, o.vb);
 				glBufferData(GL_ARRAY_BUFFER, vb.size() * sizeof (float), &vb.at(0),
 							GL_STATIC_DRAW);
-				o.numTriangles = vb.size() / (3 + 3 + 3 + 2) * 3;
-				printf("shape[%d] # of triangles = %d\n", static_cast<int> (s),
-					o.numTriangles);
+				o.numTriangles = vb.size() / ((3 + 3 + 3 + 2) * 3);
+				cout << "shape[" << s << "], triangles: " << o.numTriangles << endl;
 			}
 
 			drawObjects.push_back(o);
@@ -398,7 +420,7 @@ bool Model::loadObjAndConvert(const string& file)
 
 	// printf("bmin = %f, %f, %f\n", bmin[0], bmin[1], bmin[2]);
 	// printf("bmax = %f, %f, %f\n", bmax[0], bmax[1], bmax[2]);
-	
+
 	return true;
 }
 static const GLsizei stride = (3 + 3 + 3 + 2) * sizeof (float);
@@ -429,7 +451,7 @@ void Model::renderBoundingBox() const
 	glEnd();
 }
 
-void Model::render() const
+void Model::render(bool bnormals) const
 {
 	glMatrixMode(GL_MODELVIEW);
 	glPolygonMode(GL_FRONT, GL_FILL);
@@ -442,7 +464,7 @@ void Model::render() const
 
 	for (size_t i = 0; i < drawObjects.size(); i++)
 	{
-		GLuint shader=0;
+		GLuint shader = 0;
 		const DrawObject& o = drawObjects[i];
 		if (o.vb < 1)
 			continue;
@@ -455,13 +477,13 @@ void Model::render() const
 
 		if ((o.material_id < materials.size()))
 		{
-			tinyobj::material_t& material(materials[o.material_id]);
+			tinyobj::material_t & material(materials[o.material_id]);
 			string diffuse_texname = material.diffuse_texname;
 			if (textures.find(diffuse_texname) != textures.end())
 			{
 				glBindTexture(GL_TEXTURE_2D, textures[diffuse_texname]);
 			}
-			
+
 			if (material.shininess)
 			{
 				if (shader == 0)
@@ -473,15 +495,37 @@ void Model::render() const
 					CheckErrors("Shininess shader loading fail");
 				}
 			}
-				
+		}
+
+		glVertexPointer(3, GL_FLOAT, stride, (const void*)0);
+		glNormalPointer(GL_FLOAT, stride, (const void*)(sizeof (float) * 3));
+		glColorPointer(3, GL_FLOAT, stride, (const void*)(sizeof (float) * 6));
+		glTexCoordPointer(2, GL_FLOAT, stride, (const void*)(sizeof (float) * 9));
+		glDrawArrays(GL_TRIANGLES, 0, 3 * o.numTriangles);
+		glColor3f(1.0, 1.0, 1.0);
+		glBegin(GL_LINES);
+		
+		if (bnormals)
+		{
+			auto it = normals.begin();
+			while(it != normals.end())
+			{
+				float x,y,z;
+
+				x=*it++;
+				y=*it++;
+				z=*it++;
+				glVertex3f(x, y, z);
+
+				x=*it++;
+				y=*it++;
+				z=*it++;
+				glVertex3f(x, y, z);
+			}
 		}
 		
-		glVertexPointer(3, GL_FLOAT, stride, (const void*) 0);
-		glNormalPointer(GL_FLOAT, stride, (const void*) (sizeof (float) * 3));
-		glColorPointer(3, GL_FLOAT, stride, (const void*) (sizeof (float) * 6));
-		glTexCoordPointer(2, GL_FLOAT, stride, (const void*) (sizeof (float) * 9));
+		glEnd();
 
-		glDrawArrays(GL_TRIANGLES, 0, 3 * o.numTriangles);
 		CheckErrors("Model::draw");
 		glBindTexture(GL_TEXTURE_2D, 0);
 		if (shader) glUseProgram(0);
@@ -509,10 +553,10 @@ void Model::renderWireFrame() const
 		glEnableClientState(GL_NORMAL_ARRAY);
 		glDisableClientState(GL_COLOR_ARRAY);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-		glVertexPointer(3, GL_FLOAT, stride, (const void*) 0);
-		glNormalPointer(GL_FLOAT, stride, (const void*) (sizeof (float) * 3));
-		glColorPointer(3, GL_FLOAT, stride, (const void*) (sizeof (float) * 6));
-		glTexCoordPointer(2, GL_FLOAT, stride, (const void*) (sizeof (float) * 9));
+		glVertexPointer(3, GL_FLOAT, stride, (const void*)0);
+		glNormalPointer(GL_FLOAT, stride, (const void*)(sizeof (float) * 3));
+		glColorPointer(3, GL_FLOAT, stride, (const void*)(sizeof (float) * 6));
+		glTexCoordPointer(2, GL_FLOAT, stride, (const void*)(sizeof (float) * 9));
 
 		glDrawArrays(GL_TRIANGLES, 0, 3 * o.numTriangles);
 		CheckErrors("drawarrays");

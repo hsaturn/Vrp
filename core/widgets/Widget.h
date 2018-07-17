@@ -11,19 +11,25 @@
 #include <list>
 #include <map>
 #include <string>
+#include <functional>
+
 #include "Color.h"
 #include "Event.hpp"
+#include "Widgets.hpp"
 
 using namespace std;
 
-
 namespace hwidgets
 {
+	class WidRect;
+	
+	WidRect* getScreen();
+	
 	class Coord
 	{
 	  public:
 
-		Coord() : x(0), y(0), percent(false) { };
+		Coord(WidRect* rect_parent) : x(0), y(0), percent(false), parent(rect_parent) { };
 
 		Coord(float _x, float _y, bool absolute)
 		:
@@ -33,11 +39,11 @@ namespace hwidgets
 		 * data = one of these:
 		 *      x% y%	relative coords in screen width/height
 		 *		x  y    absolute coords in screen width/height
+		 *		rect	parent if any
 		 */
-		static Coord* factory(string &data);
+		static Coord* factory(string &data, WidRect* rect_parent);
 
 		static float absoluteToPercent(float coord, int size);
-
 
 		// return true if absolute x >= this.x
 		bool xge(int x) const;
@@ -61,9 +67,12 @@ namespace hwidgets
 		{
 			return !percent;
 		};
+		
+		float getParentWidth() const;
+		float getParentHeight() const;
 
 		void add(const Coord* c);
-
+		
 	  private:
 		int absolute(float coord, int size) const;
 		float getPercent(float coord, int size) const;
@@ -74,75 +83,20 @@ namespace hwidgets
 		float x;
 		float y;
 		bool percent;
-	} ;
-
-	class Rectangle
-	{
-	  public:
-
-		static Rectangle* factory(string &data);
-
-		bool inside(int x, int y) const
-		{
-			return x >= x1() && x <= x2() && y >= y1() && y <= y2();
-		}
-
-		bool render() const;
-
-		int width() const
-		{
-			return c2->getAbsoluteX();
-		}
-
-		int height() const
-		{
-			return c2->getAbsoluteY();
-		}
-
-		int x1() const
-		{
-			return c1->getAbsoluteX();
-		}
-
-		int x2() const
-		{
-			return c1->getAbsoluteX() + c2->getAbsoluteX();
-		}
-
-		int y1() const
-		{
-			return c1->getAbsoluteY();
-		}
-
-		int y2() const
-		{
-			return c1->getAbsoluteY() + c2->getAbsoluteY();
-		}
-		
-		void setX(int x) { c1->setAbsoluteX(x); }
-		void setY(int y) { c1->setAbsoluteY(y); }
-		/*
-		void setX(int x) { x1 = x; };
-		void setY(int y) { y1 = y; };
-		void setWidth(int w) { x2 = x1 + w; }
-		void setHeight(int h) { y2 = y1 + h;
-		*/
-
-	  private:
-
-		Rectangle() { };
-
-		Rectangle(const Rectangle&);
-		Rectangle& operator=(const Rectangle&) ;
-
-		Coord*	c1;
-		Coord*	c2;
-		const Color*	color;
-	} ;
+		WidRect* parent;
+	};
 
 	class Widget
 	{
 	  public:
+		typedef function<void(const string& what)> helpFun;
+		typedef function<Widget* (string &data)> factoryFun;
+		typedef struct 
+		{
+			helpFun help;
+			factoryFun factory;
+		} widgetFuns;
+		
 		virtual ~Widget();
 
 		const string& getName() const
@@ -151,6 +105,8 @@ namespace hwidgets
 		}
 		
 		const string& getData() const { return data; }
+		
+		static void registerWidgetClass(const string& wclass, helpFun, factoryFun);
 
 		/* Return the widget where the mouse is, and inform
 		 * the widget that the mouse is moving over it  */
@@ -160,7 +116,7 @@ namespace hwidgets
 		static void registerShortcut(Shortcut &a, Widget* w);
 
 		/* infos = type name rectangle [type dependant data] */
-		static Widget* factory(string& infos);
+		static Widget* factory(string& infos, Widget* parent=0);
 
 		static long renderAll();
 		static bool onCommand(const string&);
@@ -172,31 +128,19 @@ namespace hwidgets
 		 */
 		static void handleResize(int w, int h);
 
-		static int screenWidth()
-		{
-			return screen_width;
-		}
+		static int screenWidth(WidRect* parent = 0);
 
-		static int screenHeight()
-		{
-			return screen_height;
-		}
+		static int screenHeight(WidRect* parent = 0);
+	
 		static void pushHelp(string help, string msg = "");
 		static void pushMessage(string);
 		static void pushEvent(string evt, string msg);
 		static string popMessage();
 
-		int width()
-		{
-			return mrect->width();
-		}
+		int width();
+		int height();
 
-		int height()
-		{
-			return mrect->height();
-		}
-
-		const Rectangle* rect() const
+		const WidRect* rect() const
 		{
 			return mrect;
 		}
@@ -217,6 +161,7 @@ namespace hwidgets
 		}
 		static void help(const string& what);
 		static void init();
+
 		
 	  protected:
 
@@ -263,17 +208,16 @@ namespace hwidgets
 		void releaseCaptures();
 		
 	  protected:
-		Rectangle*	mrect;
+		WidRect*	mrect;
 
 	  private:
 		static list<Widget*>		widgets;
 		static Widget*				capture_mouse_widget;
 		static Widget*				capture_keybd_widget;
+		static Widget*				hover_widget;
 		static Widget*				keyboad_capture;
 		static list<string>			pending_messages;
 		static map<string, string>	vars;
-		static int screen_width;
-		static int screen_height;
 
 		string name;
 		string data;	// Additionnal widget data
@@ -281,8 +225,19 @@ namespace hwidgets
 		static map<string, bool>		eventsAllowed;
 		static map<Shortcut, Widget*>	shortcuts;
 		
-	} ;
-
+		static map<const string, widgetFuns>	*mapRegisteredWidgets;
+		
+	};
+	
+#define WIDGET_REGISTER(name, wclass) \
+	class WidgetRegistration##wclass{\
+		public:\
+		WidgetRegistration##wclass() {\
+			Widget::registerWidgetClass(name, wclass::help, wclass::factory);\
+		}\
+	};\
+	WidgetRegistration##wclass _widgetRegistration##wclass;
+	
 }
 #endif /* WIDGET_H */
 

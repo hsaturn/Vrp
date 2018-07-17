@@ -16,7 +16,7 @@ class Cube : public Application
   public:
 	Cube(const string& name, string& incoming);
 
-	virtual ~Cube() { }
+	~Cube() override { }
 
 
 	void renderFlat(float size = 0.7);
@@ -79,12 +79,12 @@ class Cube : public Application
 
 	Face::Dir getDir(string& incoming, string& dir);
 
-	virtual void renderHud();
+	void renderHud() override;
 
   protected:
-	virtual void _help(Help&);
-	virtual ExecResult _execute(Server* server, string cmd, string incoming, const string& org, CmdQueue&);
-	virtual bool _render(bool resetTimer);
+	void _help(Help&) override;
+	ExecResult _execute(Server* server, string cmd, string incoming, const string& org, CmdQueue&) override;
+	bool _render(bool resetTimer) override;
 
   private:
 	bool has(const Color&) const;

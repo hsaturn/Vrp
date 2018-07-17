@@ -24,7 +24,7 @@ namespace core
 	  bool bRet = false;
 	  
 	  string obj_class = StringUtil::getWord(sArgs);
-	  Object* object = ObjectBuilder::buildInstance(obj_class, sArgs);
+	  Application* object = ApplicationBuilder::buildInstance(obj_class, sArgs);
 
 	  if (object)
 	  {

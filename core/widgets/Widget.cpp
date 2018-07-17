@@ -6,35 +6,54 @@
  */
 
 #include "Widget.h"
-#include <StringUtil.hpp>
-#include "Button.h"
-#include "Console.h"
-#include "EventHandler.hpp"
+
 #include <GL/glew.h>
 #include <GL/glut.h>
+
 #include <chrono>
 #include <iostream>
 #include <sstream>
 
+#include <StringUtil.hpp>
+#include "Button.h"
+#include "Console.h"
+#include "EventHandler.hpp"
+#include "ansi_colors.hpp"
+#include "WidRect.hpp"
+
 namespace hwidgets
 {
-	map<string, bool>	Widget::eventsAllowed;
+	WIDGET_REGISTER("button", Button);
+
+	WidRect* screen = 0;
+	map<string, bool> Widget::eventsAllowed;
 	map<string, string> Widget::vars;
 	list<Widget*> Widget::widgets;
-	Widget*	Widget::capture_mouse_widget = 0;
+	Widget* Widget::capture_mouse_widget = 0;
 	Widget* Widget::capture_keybd_widget = 0;
+	Widget* Widget::hover_widget = 0;
 	list<string> Widget::pending_messages;
 	list<string>* Widget::cmdQueue = 0;
 	map<Shortcut, Widget*> Widget::shortcuts;
+	map<const string, Widget::widgetFuns>* Widget::mapRegisteredWidgets = 0;
 
-	int Widget::screen_width = -1;
-	int Widget::screen_height = -1;
+	WidRect* getScreen()
+	{
+		if (screen == 0)
+		{
+			string data = "0,0 0,0";
+			screen = WidRect::factory(data, 0);
+			if (screen == 0)
+				cerr << Ansi::red() << "getScreen failed" << Ansi::reset() << endl;
+		}
+		return screen;
+	}
 
 	Widget::~Widget()
 	{
 		if (mrect) delete mrect;
 		releaseCaptures();
-		
+
 		// FIXME DELETE FROM list<Widget*>
 		// FIXME DELETE FROM map<shortcut, Widget*>
 	}
@@ -84,23 +103,23 @@ namespace hwidgets
 	Widget* Widget::mouseMotion(Event &event)
 	{
 		Event::Mouse &mouse = event.mouse;
-		Widget* wid = findWidget(mouse.x, mouse.y);
+		hover_widget = findWidget(mouse.x, mouse.y);
 		stringstream msg;
-		if (wid)
+		if (hover_widget)
 		{
-			msg << wid->name;
+			msg << hover_widget->name;
 
-			wid->mouseMove(event);
+			hover_widget->mouseMove(event);
 
-			msg << ' ' << (mouse.x - wid->rect()->x1()) << ' ' << (mouse.y - wid->rect()->y1());
+			msg << ' ' << (mouse.x - hover_widget->rect()->x1()) << ' ' << (mouse.y - hover_widget->rect()->y1());
 		}
 		else
 			msg << "root";
-		msg << ' ' << mouse.x <<  ' ' << mouse.y;
+		msg << ' ' << mouse.x << ' ' << mouse.y;
 		pushEvent("mousemove", msg.str());
 		return 0;
 	}
-	
+
 	void Widget::registerShortcut(Shortcut &a, Widget* w)
 	{
 		auto it = shortcuts.find(a);
@@ -120,7 +139,7 @@ namespace hwidgets
 		Shortcut k;
 		k.mod = key.mod;
 		k.key = key.key;
-		cout << "KEY " << k.mod << "," << (int) k.key << endl;
+		cout << "KEY " << k.mod << "," << (int)k.key << endl;
 		auto it = shortcuts.find(k);
 		if (it != shortcuts.end())
 		{
@@ -158,43 +177,45 @@ namespace hwidgets
 
 	void Widget::handleResize(int w, int h)
 	{
-		screen_width = w;
-		screen_height = h;
+		WidRect* s = getScreen();
+		s->setX2(w);
+		s->setY2(h);
 		pushEvent("resize", StringUtil::to_string(w) + ' ' + StringUtil::to_string(h));
 	}
 
-	Widget* Widget::factory(string& infos)
+	Widget* Widget::factory(string& infos, Widget* parent)
 	{
 		Widget* w = 0;
 
-		string type = StringUtil::getWord(infos);
-		if (type == "help" || type == "")
+		string wid_class = StringUtil::getWord(infos);
+
+		if (wid_class == "help" || wid_class == "")
 		{
 			pushMessage("widget help:");
-			pushMessage("  widget {type} name {args}      type=button");
+			pushMessage("  widget name {rectangle} {class} {args}      class=button");
 			pushMessage("  widget {type} help        help on widget {type}");
 			pushMessage("  widget var name=value");
 		}
-		else if (type == "var")
+		else if (wid_class == "var")
 		{
 			setVar(infos);
 			infos = "";
 		}
-		else if (type == "button")
+		else if (mapRegisteredWidgets && (mapRegisteredWidgets->find(wid_class) != mapRegisteredWidgets->end()))
 		{
+			cout << "BUILDING " << wid_class << " WITH FACTORY" << endl;
 			string name = StringUtil::getIdentifier(infos);
+			auto it = mapRegisteredWidgets->find(wid_class);
 
 			if (name == "help")
-			{
-				Button::factory(name);
-			}
+				it->second.factory(name);
 			else
 			{
-				Rectangle* rect = Rectangle::factory(infos);
+				WidRect* rect = WidRect::factory(infos, parent ? parent->mrect : 0);
 
 				if (rect)
 				{
-					w = Button::factory(infos);
+					w = it->second.factory(infos);
 					if (w)
 					{
 						w->mrect = rect;
@@ -205,32 +226,9 @@ namespace hwidgets
 				}
 			}
 		}
-		else if (type == "console")
-		{
-			Rectangle* rect = Rectangle::factory(infos);
-
-			if (rect)
-			{
-				Console* cons = Console::factory(infos);
-				if (cons)
-				{
-					cons->mrect = rect;
-					w = cons;
-				}
-				else
-				{
-					cerr << "console cons is null" << endl;
-					delete cons;
-				}
-			}
-			else
-			{
-				cerr << "console rect is null" << endl;
-			}
-		}
 		else
 		{
-			cerr << "ERROR WIDGET FACTORY " << type << endl;
+			cerr << "ERROR WIDGET FACTORY " << wid_class << endl;
 		}
 		if (w)
 		{
@@ -239,20 +237,20 @@ namespace hwidgets
 		}
 		else
 		{
-			cerr << "ERROR WIDGET FACTORY " << type << " w is null" << endl;
+			cerr << "ERROR WIDGET FACTORY " << wid_class << " w is null" << endl;
 		}
 		return w;
 	}
 
 	long Widget::render(long ticks)
 	{
-		if (mrect) mrect->render();
+		if (mrect) mrect->render(this==hover_widget);
 		return this->_render(ticks);
 	}
 
 	long Widget::renderAll()
 	{
-		GLfloat normal[4] = { 0.5f, 0.5f, 0.5f, 1.0f };
+		GLfloat normal[4] = {0.5f, 0.5f, 0.5f, 1.0f};
 		glDisable(GL_LIGHTING);
 		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, normal);
 		static auto t_start = std::chrono::high_resolution_clock::now();
@@ -286,8 +284,8 @@ namespace hwidgets
 			if ((*it)->name == cmd)
 			{
 				if (cmd.find((*it)->name) != string::npos)
-					cerr << "Warning, widget name used as macro, but cmd contains the name (possible loop)" << endl;
-				pushEvent("mousedown", cmd + " -1 " + (*it)->data    );
+					cerr << "Warning, widget name: " << (*it)->name << ", used as macro, but cmd (" << cmd << ") contains the name (possible loop)" << endl;
+				pushEvent("mousedown", cmd + " -1 " + (*it)->data);
 				ret = true;
 			}
 			ret |= (*it)->script(cmd);
@@ -295,32 +293,48 @@ namespace hwidgets
 		return ret;
 	}
 
+	float Coord::getParentWidth() const
+	{
+		if (parent)
+			return parent->width();
+		else
+			return getScreen()->width();
+	}
+
+	float Coord::getParentHeight() const
+	{
+		if (parent)
+			return parent->height();
+		else
+			return getScreen()->height();
+	}
+
 	float Coord::getPercentX() const
 	{
-		return getPercent(x, Widget::screenWidth());
+		return getPercent(x, percent ? getParentWidth() : 0);
 	}
 
 	float Coord::getPercentY() const
 	{
-		return getPercent(y, Widget::screenHeight());
+		return getPercent(y, getParentHeight());
 	}
 
 	float Coord::getPercent(float coord, int size) const
 	{
 		if (size)
-			return coord * 100.0 / (float) size;
+			return coord * 100.0 / (float)size;
 		else
 			return 0;
 	}
 
 	int Coord::getAbsoluteX() const
 	{
-		return absolute(x, Widget::screenWidth());
+		return (parent ? parent->x1() : 0) + absolute(x, percent ? getParentWidth() : 0);
 	}
 
 	int Coord::getAbsoluteY() const
 	{
-		return absolute(y, Widget::screenHeight());
+		return (parent ? parent->y1() : 0) + absolute(y, percent ? getParentHeight() : 0);
 	}
 
 	void Coord::setAbsoluteX(int newx)
@@ -328,7 +342,9 @@ namespace hwidgets
 		if (percent == false)
 			x = newx;
 		else
-			x = absoluteToPercent(newx, Widget::screenWidth());
+			x = absoluteToPercent(newx, percent ? getParentWidth() : 0);
+		if (parent)
+			x -= parent->x1();
 	}
 
 	void Coord::setAbsoluteY(int newy)
@@ -336,7 +352,9 @@ namespace hwidgets
 		if (percent == false)
 			y = newy;
 		else
-			y = absoluteToPercent(newy, Widget::screenHeight());
+			y = absoluteToPercent(newy, percent ? getParentHeight() : 0);
+		if (parent)
+			y -= parent->y1();
 	}
 
 	int Coord::absolute(float coord, int size) const
@@ -349,7 +367,7 @@ namespace hwidgets
 
 	float Coord::absoluteToPercent(float coord, int size)
 	{
-		return coord / ((float) size)*100.0;
+		return coord / ((float)size)*100.0;
 	}
 
 	bool Coord::xge(int x) const
@@ -378,7 +396,7 @@ namespace hwidgets
 		return false;
 	}
 
-	Coord* Coord::factory(string& data)
+	Coord* Coord::factory(string& data, WidRect* rect_parent)
 	{
 		static int x = 0;
 		static int y = 0;
@@ -399,7 +417,7 @@ namespace hwidgets
 		string sOrg = data;
 		bool mix_percent = false;
 
-		Coord* c = new Coord();
+		Coord* c = new Coord(rect_parent);
 
 		// X
 		relative = (data[0] == '+' || data[0] == '-');
@@ -466,52 +484,6 @@ namespace hwidgets
 			x += c->x;
 			y += c->y;
 		}
-	}
-
-	Rectangle* Rectangle::factory(string &infos)
-	{
-		Rectangle* rect;
-
-		if (infos.substr(0, 4) == "help")
-		{
-			Widget::pushMessage("rectangle help");
-			Widget::pushMessage(" top_left_coord top_right_coord");
-			Coord::factory(infos); // Help for coord
-		}
-		else
-		{
-			rect = new Rectangle;
-			rect->c1 = Coord::factory(infos);
-			rect->c2 = Coord::factory(infos);
-			rect->color = Color::factory(infos);
-			if (rect->c1 && rect->c2)
-			{
-			}
-			else
-			{
-				cerr << "bad rectangle" << endl;
-				delete rect;
-				rect = 0;
-			}
-		}
-		return rect;
-	}
-
-	bool Rectangle::render() const
-	{
-		glBegin(GL_QUADS);
-		if (color)
-			color->render();
-		else
-			Color::dark_gray.render();
-		int x(c1->getAbsoluteX());
-		int y(c1->getAbsoluteY());
-		glVertex2i(x, y);
-		glVertex2i(x + c2->getAbsoluteX(), y);
-		glVertex2i(x + c2->getAbsoluteX(), y + c2->getAbsoluteY());
-		glVertex2i(x, y + c2->getAbsoluteY());
-		glEnd();
-		return false;
 	}
 
 	void Widget::filtersOp(string events, bool filtered)
@@ -595,7 +567,7 @@ namespace hwidgets
 			EventHandler::connect(Widget::mouseHandler, Event::Type::EVT_MOUSE_ALL);
 			EventHandler::connect(Widget::handleKeypress, Event::Type::EVT_KEYBD_DOWN);
 		}
-		done=true;
+		done = true;
 	}
 
 	void Widget::mouseHandler(Event &evt)
@@ -605,4 +577,39 @@ namespace hwidgets
 		if (wid)
 			wid->mouseClick(evt);
 	}
+
+	void Widget::registerWidgetClass(const string& name, helpFun help, factoryFun factory)
+	{
+		cerr << "REGISTERING WIDGET CLASS " << name << endl;
+		if (mapRegisteredWidgets == 0)
+			mapRegisteredWidgets = new map<const string, widgetFuns>;
+		if (mapRegisteredWidgets->find(name) != mapRegisteredWidgets->end())
+			cerr << "WIDGET ERROR, CLASS " << name << " REGISTERED TWICE (OR MORE)" << endl;
+		(*mapRegisteredWidgets)[name] = {help, factory};
+	}
+
+	int Widget::screenWidth(WidRect* parent)
+	{
+		if (parent == 0)
+			parent = getScreen();
+		return parent->width();
+	}
+
+	int Widget::screenHeight(WidRect* parent)
+	{
+		if (parent == 0)
+			parent = getScreen();
+		return parent->height();
+	}
+
+	int Widget::width()
+	{
+		return mrect->width();
+	}
+
+	int Widget::height()
+	{
+		return mrect->height();
+	}
+
 }

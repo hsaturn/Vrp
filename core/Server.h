@@ -1,6 +1,7 @@
 #ifndef SERVER_H
 #define SERVER_H
 #include <mutex>
+#include <atomic>
 #include <string>
 #include <list>
 #include <thread>
@@ -31,7 +32,7 @@ class Server
 	class ServerThread
 	{
 	  public:
-		ServerThread(Server* p, int sock) : mparent(p), msock(sock) {}
+		ServerThread(Server* p, int sock) : mparent(p), msock(sock), thr(0) {}
 		~ServerThread();
 		
 		void stop();
@@ -40,6 +41,7 @@ class Server
 		
 	  private:
 		static void loop(ServerThread*);
+		bool isok() const;
 		
 		Server* mparent;
 		int msock;
@@ -54,7 +56,7 @@ class Server
 		mutex	mtx;
 		void run();
 		string sIncoming;
-		int		portno;
+		atomic<int>		portno;
 		int sockfd;
 		int newsockfd;
 		std::thread*	thr;

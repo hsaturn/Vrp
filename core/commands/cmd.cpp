@@ -6,7 +6,6 @@
  */
 
 #include "cmd.hpp"
-#include "ansi_colors.hpp"
 #include <../Server.h>
 #include <iostream>
 #include <fstream>
@@ -30,6 +29,7 @@ namespace core
 
   void cmd::registerSyntax(const char* name, const char* args, const char* desc)
   {
+	  cout << Ansi::blue() << "  ... SYNTAX " << name << Ansi::reset() << endl;
 	  if (mapCmd == 0)
 	  {
 		  mapCmd = new map<string, cmd*>;
@@ -55,6 +55,7 @@ namespace core
 	  }
 	  else
 		  cerr << Ansi::red() << "Unknown command : " << sCmd << Ansi::reset() << endl;
+	  
 	  if (psvr)
 	  {
 		  psvr->send(output.str());
@@ -87,6 +88,8 @@ namespace core
 		  bool bEcho(true);
 		  string sArgs(sLine);
 		  string sCmd = StringUtil::getWord(sArgs);
+		  
+		  if (sCmd.length()==0) continue;
 
 		  if (sCmd[0] != '@')
 		  {

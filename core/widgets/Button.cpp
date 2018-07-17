@@ -11,6 +11,8 @@
 #include <GL/glut.h>
 #include <GL/freeglut_std.h>
 
+#include "WidRect.hpp"
+
 namespace hwidgets
 {
 
@@ -46,10 +48,7 @@ namespace hwidgets
 				string key = StringUtil::getWord(infos);
 				Shortcut shortcut;
 				if (shortcut.set(key))
-				{
-					cout << "Registering shortcut " << shortcut.mod << ',' << (int)shortcut.key << endl;
 					registerShortcut( shortcut, w);
-				}
 			}
 		}
 		return w;
@@ -59,7 +58,6 @@ namespace hwidgets
 	{
 		float x = rect()->x1() + width() / 2;
 		float y = rect()->y2();
-
 
 		string textr(text);
 		replaceVars(textr);
@@ -94,7 +92,7 @@ namespace hwidgets
 		Event::Mouse &mouse = event.mouse;
 		if (mouse.button == mouse.BTN_LEFT)
 		{
-			cout << "click left button on wid button" << endl;
+			cerr << "click left button on wid button  " << this->getName() << endl;
 			string sevent = "mouseup";
 			if (event.type == Event::EVT_MOUSE_DOWN)
 				sevent = "mousedown";

@@ -25,12 +25,11 @@ class Vrp : public Application {
 public:
 	Vrp(const string& name, string &incoming);
 
-	virtual ~Vrp() {
-	};
+	~Vrp() override {}
 
-	virtual bool _render(bool resetTimer);
-	virtual Application::ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);
-	virtual void _help(Help&);
+	bool _render(bool resetTimer) override;
+	Application::ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&) override;
+	void _help(Help&) override;
 	void best(Server*);
 	void pop();
 	

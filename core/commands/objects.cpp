@@ -20,7 +20,7 @@ namespace core
 
   bool objects::run(Server* server, string &sCmd, string& sArgs, stringstream& out, stringstream& err)
   {
-	  server->send(ObjectBuilder::listAll());
+	  server->send(ApplicationBuilder::listAll());
 
 	  return true;
   }

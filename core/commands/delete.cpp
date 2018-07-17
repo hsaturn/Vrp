@@ -11,7 +11,7 @@ using namespace std;
 
 namespace core
 {
-  delete_cmd delete_cmd_instance;
+  static delete_cmd delete_cmd_instance;
 
   delete_cmd::delete_cmd()
   {
@@ -25,7 +25,7 @@ namespace core
 	  while (sArgs.length())
 	  {
 		  string name(StringUtil::getWord(sArgs));
-		  if (ObjectBuilder::destroyInstance(name))
+		  if (ApplicationBuilder::destroyInstance(name))
 			  psvr->send("#OK " + name + " deleted.");
 		  else
 		  {

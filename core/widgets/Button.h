@@ -25,7 +25,7 @@ namespace hwidgets
 		void mouseClick(Event&) override;
 
 	  protected:
-		virtual long _render(long);
+		long _render(long ms) override;
 
 	  private:
 

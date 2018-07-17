@@ -10,19 +10,19 @@
 #include "Help.h"
 #include "StringUtil.hpp"
 #include "Server.h"
+#include <sys/stat.h>
 
-
-Object* ObjectBuilder::buildInstance(const string& sClass, string& incoming)
+Application* ApplicationBuilder::buildInstance(const string& sClass, string& incoming)
 {
 	string orgi(sClass + ' ' + incoming);
 
 	auto it = builders().find(sClass);
-	Object* object = 0;
+	Application* application = 0;
 	if (it != builders().end())
 	{
 		// Comput name
 		string base_obj_name = orgi;
-		base_obj_name=sClass;
+		base_obj_name = sClass;
 		StringUtil::trim(base_obj_name);
 		while (base_obj_name.find(' ') != string::npos) base_obj_name[base_obj_name.find(' ')] = '_';
 		int counter = 1;
@@ -34,14 +34,23 @@ Object* ObjectBuilder::buildInstance(const string& sClass, string& incoming)
 		}
 
 		// Enregistrer l'objet dans une map
-		object = it->second->build(obj_name, incoming);
-		if (object)
-			instances()[obj_name] = object;
+		application = it->second->build(obj_name, incoming);
+		if (application)
+		{
+			instances()[obj_name] = application;
+			application->builder = it->second;
+			application->init();
+		}
 	}
-	return object;
+	return application;
 }
 
-Object* ObjectBuilder::getInstance(const string& name)
+const string ApplicationBuilder::getAppClass() const
+{
+	return appclass;
+}
+
+Application* ApplicationBuilder::getInstance(const string& name)
 {
 	for (auto it : instances())
 	{
@@ -50,33 +59,33 @@ Object* ObjectBuilder::getInstance(const string& name)
 	return 0;
 }
 
-Object::ExecResult ObjectBuilder::execute(Server* server, string cmd, string incoming, const string& org, CmdQueue& queue)
+Application::ExecResult ApplicationBuilder::execute(Server* server, string cmd, string incoming, const string& org, CmdQueue& queue)
 {
-	Object::ExecResult ret;
+	Application::ExecResult ret;
 
 	for (auto it : instances())
 	{
 		ret = it.second->execute(server, cmd, incoming, org, queue);
-		if (ret ==Object::EXEC_UNKNOWN)
+		if (ret == Application::EXEC_UNKNOWN)
 			continue;
-		else if (ret == Object::EXEC_BUSY)
+		else if (ret == Application::EXEC_BUSY)
 		{
 			queue.push_front(org);
-			return Object::EXEC_BUSY;
+			return Application::EXEC_BUSY;
 		}
 		else
 			return ret;
 	}
-	return Object::EXEC_UNKNOWN;
+	return Application::EXEC_UNKNOWN;
 }
 
-void ObjectBuilder::renderHud()
+void ApplicationBuilder::renderHud()
 {
 	for (auto it : instances())
 		it.second->renderHud();
 }
 
-bool ObjectBuilder::render(bool bResetTimer)
+bool ApplicationBuilder::render(bool bResetTimer)
 {
 	bool bRet = false;
 	for (auto it : instances())
@@ -84,19 +93,19 @@ bool ObjectBuilder::render(bool bResetTimer)
 	return bRet;
 }
 
-void ObjectBuilder::help(Help& help)
+void ApplicationBuilder::help(Help& help)
 {
 	for (auto it : instances())
 		it.second->help(help);
 }
 
-bool ObjectBuilder::destroyInstance(const string& name)
+bool ApplicationBuilder::destroyInstance(const string& name)
 {
 	bool bRet = false;
-	auto it=instances().find(name);
-	if (it!=instances().end())
+	auto it = instances().find(name);
+	if (it != instances().end())
 	{
-		Object* p(it->second);
+		Application * p(it->second);
 		instances().erase(it);
 		delete p;
 		bRet = true;
@@ -104,33 +113,50 @@ bool ObjectBuilder::destroyInstance(const string& name)
 	return bRet;
 }
 
-string ObjectBuilder::listAll()
+string ApplicationBuilder::listAll()
 {
 	string list;
-	for(auto it: instances())
+	for (auto it : instances())
 	{
-		list += it.first+' ';
+		list += it.first + ' ';
 	}
 	return list;
 }
 
-ObjectBuilder::ObjectBuilder(
-const string& sClass)
+ApplicationBuilder::ApplicationBuilder(const string& sClass)
 {
-	cout << "         --- NEW CLASS REGISTERED : " << sClass << endl;
+	appclass = sClass;
+	if (builders().find(sClass) != builders().end())
+		throw "Application class " + sClass + " already registered.";
+
+	appclass = sClass;
+	cout << "         --- NEW APPLICATION CLASS REGISTERED : " << sClass << endl;
 	if (sClass.length())
 		builders()[sClass] = this;
 }
 
-map<string, ObjectBuilder*>& ObjectBuilder::builders()
+string ApplicationBuilder::getRsrcFileName(const string rel) const
 {
-	static map<string, ObjectBuilder*> buildersMap;
+	string filename = "data/apps/" + appclass + "/" + rel;
+
+	string::size_type sl = filename.find('/');
+	while (sl != string::npos)
+	{
+		mkdir(filename.substr(0, sl).c_str(), 0766);
+		sl = filename.find('/', sl + 1);
+	}
+	return filename;
+}
+
+map<string, ApplicationBuilder*>& ApplicationBuilder::builders()
+{
+	static map<string, ApplicationBuilder*> buildersMap;
 	return buildersMap;
 }
 
-map<string, Object*>& ObjectBuilder::instances()
+map<string, Application*>& ApplicationBuilder::instances()
 {
-	static map<string, Object*> instancesMap;
+	static map<string, Application*> instancesMap;
 	return instancesMap;
 }
-	
+

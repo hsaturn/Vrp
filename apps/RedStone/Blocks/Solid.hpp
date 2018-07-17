@@ -19,9 +19,9 @@ namespace RedStone
 class Solid : public Block {
 public:
 	Solid(string& incoming);
-	virtual ~Solid(){};
+	~Solid() override {}
 	
-	virtual void render(Coord c, const RedMap*);
+	void render(Coord c, const RedMap*) override;
 
 private:
 	Solid(const Solid& orig);

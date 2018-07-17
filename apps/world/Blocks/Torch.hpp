@@ -16,9 +16,9 @@ namespace World {
 		
 	public:
 		Torch(string &incoming);
-		virtual ~Torch(){};
+		~Torch() override {}
 		
-		virtual void render(Coord c, const World*);
+		void render(Coord c, const World*) override;
 		
 	private:
 		Torch(const Torch& orig);

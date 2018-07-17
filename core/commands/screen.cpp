@@ -5,6 +5,7 @@
  */
 
 #include "screen.hpp"
+#include "widget.hpp"
 #include <GL/glut.h>
 
 using namespace std;
@@ -28,6 +29,7 @@ namespace core
 	  if (sizey < 100) sizey = 100;
 	  if (sizex > 4000) sizex = 4000;
 	  if (sizey > 4000) sizey = 4000;
+	  
 	  glutReshapeWindow(sizex, sizey);
 
 	  return bRet;

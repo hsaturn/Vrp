@@ -24,11 +24,11 @@ namespace RedStone
 	  public:
 		RedStone(const string& name, string& incoming);
 
-		virtual ~RedStone() { }
+		~RedStone() override { }
 
-		virtual bool _render(bool resetTimer);
-		virtual ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);
-		virtual void _help(Help&);
+		bool _render(bool resetTimer) override;
+		ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&) override;
+		void _help(Help&) override;
 
 	  private:
 		RedStone(const RedStone& orig);

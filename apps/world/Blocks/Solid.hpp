@@ -19,9 +19,9 @@ namespace World
 class Solid : public Block {
 public:
 	Solid(string& incoming);
-	virtual ~Solid(){};
+	~Solid() override {}
 	
-	virtual void render(Coord c, const World*);
+	void render(Coord c, const World*) override;
 
 private:
 	Solid(const Solid& orig);

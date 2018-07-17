@@ -13,10 +13,13 @@
 #include "ClipBoard.h"
 #include "Draggable.hpp"
 #include "Event.hpp"
+#include "WidRect.hpp"
 
 extern string getWord(string& s, const string &sSeparators = " ");
 namespace hwidgets
 {
+	WIDGET_REGISTER("console", Console);
+	
 	static bool bEvents = true;
 	static bool bErrors = true;
 	static bool bCommands = true;
@@ -24,6 +27,8 @@ namespace hwidgets
 	static bool bHidden = false;
 
 	list<string> Console::display;
+	
+	Console::Console()	{}
 
 	void Console::listener(const string& send)
 	{

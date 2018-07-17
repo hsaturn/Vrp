@@ -1,6 +1,7 @@
 #include "Draggable.hpp"
 #include "Event.hpp"
 #include <GL/freeglut_std.h>
+#include "WidRect.hpp"
 
 namespace hwidgets
 {
@@ -32,8 +33,8 @@ namespace hwidgets
 		if (state == STATE_MOVING)
 		{
 			Event::Mouse &mouse = event.mouse;
-			mrect->setX(mouse.x + offset_x);
-			mrect->setY(mouse.y + offset_y);
+			mrect->setX1(mouse.x + offset_x);
+			mrect->setY1(mouse.y + offset_y);
 		}
 	}
 

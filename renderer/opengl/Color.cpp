@@ -60,6 +60,16 @@ void Color::render(float alpha) const
 	glColor4f(mr,mv,mb,alpha);
 }
 
+void Color::renderHighlight(float f) const
+{
+	glColor4f(mr*f,mv*f,mb*f,ma);
+}
+
+void Color::renderHighlight(float f, float alpha) const
+{
+	glColor4f(mr*f,mv*f,mb*f,alpha);
+}
+
 Color*	Color::Duplicate()	const
 {
 	return	new Color(mr,mv,mb,ma);

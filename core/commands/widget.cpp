@@ -10,7 +10,7 @@
 using namespace std;
 
 namespace core {
-	widget widget_instance;
+	static widget widget_instance;
 
 	widget::widget() {
 		registerSyntax("widget", "", "Commande de widget");
@@ -26,7 +26,7 @@ namespace core {
 			else
 				server->send("#KO widget");
 		} catch (const char* p) {
-			cerr << "CATCH " << p << endl;
+			cerr << "CATCH " << p << ", Command=" << sCmd << " ... " << sArgs << endl;
 			server->send(string("#KO widget ") + p);
 		} catch (...) {
 			cerr << "CATCH DURING WIDGET::FACTORY" << endl;

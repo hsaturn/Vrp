@@ -36,9 +36,9 @@ private:
 class Individual : public AbstractIndividual {
 public:
 	Individual();
-	virtual ~Individual() {};
+	~Individual() override {};
 	
-	virtual void render(int quality);
+	void render(int quality) override;
 	
 	bool hasPlanet(Planet*) const;
 	
@@ -57,8 +57,8 @@ public:
 	// TODO ? in abstract class ?
 	void addGene(shared_ptr<Gene> g) { genes.push_back(g); }
 	
-	virtual void dump(ostream&) const;
-	virtual void mutate();
+	void dump(ostream&) const override;
+	void mutate()             override;
 	virtual void createGenes(Galaxy*);
 
 protected:

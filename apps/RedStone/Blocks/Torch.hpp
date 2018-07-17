@@ -16,9 +16,9 @@ namespace RedStone {
 		
 	public:
 		Torch(string &incoming);
-		virtual ~Torch(){};
+		~Torch() override {}
 		
-		virtual void render(Coord c, const RedMap*);
+		void render(Coord c, const RedMap*) override;
 		
 	private:
 		Torch(const Torch& orig);

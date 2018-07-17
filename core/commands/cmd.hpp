@@ -12,6 +12,8 @@
 #include <StringUtil.hpp>
 #include "Commands.hpp"
 #include <String.hpp>
+#include "ansi_colors.hpp"
+#include <SaturnLib/cfileparser.hpp>
 
 // TODO à déplacer dans la nouvelle classe SearchServer
 extern unsigned long giMaxThreads;
@@ -22,7 +24,8 @@ namespace core
 {
 	// oCommands.addCommand("stats"	, ""												, "Affiche quelques stats");
 	
-	class cmd {
+	class cmd
+	{
 	public:
 		
 		cmd();
@@ -46,7 +49,6 @@ namespace core
 		
 	private:
 		static Commands* commands;
-		
 	};
 
 }

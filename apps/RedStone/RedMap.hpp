@@ -26,11 +26,11 @@ namespace RedStone {
 	  public:
 		RedMap(const string &name, string& incoming);
 
-		virtual ~RedMap() ;
+		~RedMap() override;
 
-		virtual bool _render(bool resetTimer);
-		virtual ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);
-		virtual void _help(Help&);
+		bool _render(bool resetTimer) override;
+		ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&) override;
+		void _help(Help&) override;
 		
 		/** return 0 or a Block */
 		Block* getTile(const Coord&) const;

@@ -40,14 +40,14 @@ public:
 	const Planet* nearestPlanet(const Point&, float& computedDistance);
 	const Planet* getPlanet(const string& planetName) const;
 	
-	virtual ~Galaxy() {};
+	~Galaxy() override {};
 	
 	int size() const { return mcont.size(); }
 	
-	virtual ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);
+	ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&) override;
 
 protected:
-	virtual bool _render(bool resetTimer);
+	bool _render(bool resetTimer) override;
 
 private:
 	container mcont;

@@ -19,9 +19,9 @@ class GeneLink : public AbstractGene {
 public:
 	GeneLink();
 	GeneLink(const GeneLink& orig);
-	virtual ~GeneLink();
+	~GeneLink() override;
 	
-	virtual void render();
+	void render() override;
 
 private:
 	Planet* planetStart;

@@ -19,7 +19,6 @@ namespace core
 		virtual ~new_cmd(){};
 
 		virtual bool run(Server* psvr, string &sCmd, string& sArgs, stringstream& out, stringstream& err);
-
 	};
 
 }

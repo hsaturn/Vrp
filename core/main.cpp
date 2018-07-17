@@ -26,7 +26,7 @@
 #include <ansi_colors.hpp>
 #include "core/arcball.h"
 #include "core/commands/cmd.hpp"
-
+#include "renderer/opengl/Axis.hpp"
 #include "StringUtil.hpp"
 #include "Background.h"
 #include "Help.h"
@@ -57,7 +57,7 @@ LightElement ambientColor(1.0f, 1.0f, 1.0f, 0.8f, false);
 LightElement specular(1.0f, 1.0f, 1.0f, 1.0f, true);
 LightElement material(0,0,0,0,true);
 LightElement shininess(10.0, 0,0,0,true);
-Light light(5, 5, -3, 1, false);
+Light light(5, 5, 3, 1, false);
 
 long lastUpdateWidget = 0;
 
@@ -80,7 +80,7 @@ int translateStartY = 0;
 
 using namespace std;
 GLint cube_server;
-bool bAxis = false;
+Axis axis;
 Server* server;
 GLuint program;
 list<string> cmdQueue;
@@ -116,7 +116,7 @@ map<string, string> macros;
 
 Cube* getCube()
 {
-	return (Cube*) ObjectBuilder::getInstance("cube");
+	return (Cube*) ApplicationBuilder::getInstance("cube");
 }
 
 #define cube getCube()
@@ -330,7 +330,7 @@ void drawHud()
 
 		glRasterPos2f(2, SCREEN_HEIGHT - 2);
 		glPushMatrix();
-		ObjectBuilder::renderHud();
+		ApplicationBuilder::renderHud();
 		glPopMatrix();
 		
 		glTranslatef(0, 0, -1.0);
@@ -360,17 +360,14 @@ void drawScene()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+
 	glTranslatef(translateX, translateY, translateZ);
-	background.render();
-//	glTranslatef( eye.x, eye.y, eye.z ); //glTranslatef(cubex, cubey, cubez);
-	// git grrr
+	if (light.render())
+		redisplayAsked = true;
 
     arcball_rotate();
-//	glMultMatrixf(glm::value_ptr(orient));
+	axis.render();
 	
-	glScalef(scale, scale, scale);
-	glRotatef(_anglex, 1.0, 0.0, 0.0);
-	glRotatef(_angley, 0.0, 1.0, 0.0);
 	if (material)
 	{
 		glEnable(GL_COLOR_MATERIAL);
@@ -380,14 +377,20 @@ void drawScene()
 	else
 		glDisable(GL_COLOR_MATERIAL);
 	
-	if (light.render())
-		redisplayAsked = true;
-	
 	if (specular)
 	{
 		redisplayAsked |= !specular.isReady();
 		glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,specular.getFloatArray());
 	}
+	background.render();
+//	glTranslatef( eye.x, eye.y, eye.z ); //glTranslatef(cubex, cubey, cubez);
+	// git grrr
+
+//	glMultMatrixf(glm::value_ptr(orient));
+
+	glScalef(scale, scale, scale);
+	//glRotatef(_anglex, 1.0, 0.0, 0.0);
+	//glRotatef(_angley, 0.0, 1.0, 0.0);
 	
 	if (ambientColor)
 	{
@@ -401,7 +404,7 @@ void drawScene()
 	//glUniformMatrix4fv(cube_server, 1, GL_FALSE, glm::value_ptr(orient));
 	glPushMatrix();
 	glScalef(1.0, -1.0, 1.0);
-	redisplayAsked |= ObjectBuilder::render(false);
+	redisplayAsked |= ApplicationBuilder::render(false);
 	glPopMatrix();
 	
 		  glEnable(GL_BLEND);
@@ -409,10 +412,8 @@ void drawScene()
     glColor4f(0.7, 0.0, 0.0, 0.40);  /* 40% dark red floor color */
 	Decor::render(600, 0, 600, 30);
 	glDisable(GL_BLEND);
-	redisplayAsked |= ObjectBuilder::render(false);
-#else
-	redisplayAsked |= ObjectBuilder::render(false);
 #endif
+	redisplayAsked |= ApplicationBuilder::render(false);
 	
 	if (false) {
 		static GLUquadricObj *quadric = 0;
@@ -423,24 +424,6 @@ void drawScene()
 			gluQuadricDrawStyle(quadric, GLU_FILL );
 		}
 		gluSphere( quadric , 2 , 36 , 18 );
-	}
-
-	if (bAxis)
-	{
-		glBegin(GL_LINES);
-		// draw line for x axis
-		glColor3f(1.0, 0.0, 0.0); // X ROUGE
-		glVertex3f(0.0, 0.0, 0.0);
-		glVertex3f(5.0, 0.0, 0.0);
-		// draw line for y axis
-		glColor3f(0.0, 1.0, 0.0); // Y VERT
-		glVertex3f(0.0, 0.0, 0.0);
-		glVertex3f(0.0, 5.0, 0.0);
-		// draw line for Z axis
-		glColor3f(0.0, 0.0, 1.0); // Z BLEU
-		glVertex3f(0.0, 0.0, 0.0);
-		glVertex3f(0.0, 0.0, 5.0);
-		glEnd();
 	}
 
 	resetTimer = false;
@@ -598,25 +581,29 @@ void update(int value)
 
 			//if (StringUtil::match("[a-zA-Z]+[a-zA-Z0-9]*.[a-zA-Z]+[a-zA-Z0-9]+=", cmd))
 			
-			if (StringUtil::preg_match("^[a-zA-Z]+[a-zA-Z0-9_]*\\.[a-zA-Z]+[a-zA-Z0-9_]*", cmd, false))
+			if (cmd.length() && (cmd[0]=='#' || cmd.substr(0,2)=="//"))
+			{
+				
+			}
+			else if (StringUtil::preg_match("^[a-zA-Z]+[a-zA-Z0-9_]*\\.[a-zA-Z]+[a-zA-Z0-9_]*", cmd, false))
 			{
 				string name=StringUtil::getWord(cmd, '.');
-				Object* object=ObjectBuilder::getInstance(name);
+				Application* object=ApplicationBuilder::getInstance(name);
 				if (object)
 				{
-					Object::ExecResult ret = object->execute(server, cmd, incoming, org, cmdQueue);
+					Application::ExecResult ret = object->execute(server, cmd, incoming, org, cmdQueue);
 					switch (ret)
 					{
-						case Object::EXEC_OK:
+						case Application::EXEC_OK:
 							server->send("#OK "+name+'.'+cmd);
 							break;
-						case Object::EXEC_UNKNOWN:
+						case Application::EXEC_UNKNOWN:
 							server->send("#Unknown command "+name+'.'+cmd);
 							break;
-						case Object::EXEC_FAILED:
+						case Application::EXEC_FAILED:
 							server->send("#KO "+name+'.'+cmd);
 							break;
-						case Object::EXEC_BUSY:
+						case Application::EXEC_BUSY:
 						{
 							cmdQueue.push_front(org);
 						}
@@ -651,7 +638,7 @@ void update(int value)
 				help.add("var var=value");
 				help.add("light [on|off|x y z t]");
 
-				ObjectBuilder::help(help);
+				ApplicationBuilder::help(help);
 
 				int count=0;
 				// TODO modify widget with new help style
@@ -721,8 +708,8 @@ void update(int value)
 			}
 			else if (cmd == "axis")
 			{
-				bAxis = !bAxis;
-				server->send("#OK axis RGB=XYZ");
+				axis.toggle();
+				server->send(string("#OK axis RGB=XYZ ")+(axis.isActive() ? "ON" : "OFF"));
 			}
 			else if (cmd == "event")
 			{
@@ -887,9 +874,9 @@ void update(int value)
 				cmdQueue.push_back("find green");
 				cmdQueue.push_back("find red");
 			}
-			else if (ObjectBuilder::execute(server, cmd, incoming, org, cmdQueue) != Object::EXEC_UNKNOWN)
+			else if (ApplicationBuilder::execute(server, cmd, incoming, org, cmdQueue) != Application::EXEC_UNKNOWN)
 			{
-				// cerr << "Ok ObjectBuilder.execute " << cmd << endl;
+				cerr << "Ok// c ObjectBuilder.execute " << cmd << endl;
 			}
 			else if (Widget::onCommand(org_row))
 				goto horrible; // @FIXME PTDR, un GOTO dans un code c++ Mouarf
@@ -897,7 +884,7 @@ void update(int value)
 			{
 				cmdQueue.push_front("@macro exec " + cmd + " " + incoming);
 			}
-			else
+			else if (cmd.length())
 			{
 				if (core::cmd::execute(cmd, incoming, server))
 				{

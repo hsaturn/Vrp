@@ -17,17 +17,19 @@ using namespace std;
 
 class Server;
 
-class ObjectBuilder {
+class ApplicationBuilder {
 public:
-	virtual Object* build(const string& name, string& incoming) = 0;
+	virtual Application* build(const string& name, string& incoming) = 0;
+	const string getAppClass() const;
+	virtual ~ApplicationBuilder(){};
 
-	static Object* buildInstance(const string& sClass, string&);
+	static Application* buildInstance(const string& sClass, string&);
 
 	static bool destroyInstance(const string& name);
 
-	static Object* getInstance(const string& name);
+	static Application* getInstance(const string& name);
 
-	static Object::ExecResult execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);
+	static Application::ExecResult execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);
 
 	static bool render(bool resetTimer);
 	
@@ -36,15 +38,19 @@ public:
 	static void help(Help& help);
 
 	static string listAll();
+	
+	string getRsrcFileName(const string rel) const;
 
 protected:
-	ObjectBuilder(const string& name);
+	ApplicationBuilder(const string& app_class);
 
 private:
-	ObjectBuilder(const ObjectBuilder& orig);
+	ApplicationBuilder(const ApplicationBuilder& orig);
 
-	static map<string, ObjectBuilder*>& builders();
-	static map<string, Object*>& instances();
+	static map<string, ApplicationBuilder*>& builders();
+	static map<string, Application*>& instances();
+	
+	string appclass;
 	
 };
 

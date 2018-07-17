@@ -6,88 +6,123 @@
  */
 
 #ifndef OBJECT_H
-#define	OBJECT_H
+#    define OBJECT_H
 
-#include "Server.h"
-#include <string>
-#include <list>
-#include "Color.h"
-#include "Help.h"
-#include <StringUtil.hpp>
+#    include "Server.h"
+#    include <string>
+#    include <list>
 
-#include <map>
+#    include "Color.h"
+#    include "Help.h"
+#    include <StringUtil.hpp>
+
+#    include <map>
+#    include "application/Renderable.hpp"
+#    include "Vars.hpp"
 
 using namespace std;
 
-typedef list<string> CmdQueue;
+class ApplicationBuilder;
 
-class Object {
-public:
-	typedef enum ExecResult
-	{
-		EXEC_UNKNOWN,	// Unknown
-		EXEC_FAILED,	// Known, execution failed
-		EXEC_OK,	// Execution ok
-		EXEC_BUSY	// Known but cannot run now
-	} ExecResult;
-	
-	Object(const string& name) : mname(name){};
-	virtual ~Object(){};
-	
+class Application : public Renderable
+{
+  public:
+	friend class ApplicationBuilder;
+
+	Application(const string& name) : mname(name) { };
+
+	virtual void init() {};
+	~Application() override { };
+
 	/**
 	 * 
 	 * @return true if need to redisplay next frame
 	 */
 	bool render(bool resetTimer);
-	virtual void renderHud(){};
-	
+
+	virtual void renderHud() { };
+
 	ExecResult execute(Server*, string cmd, string incoming, const string& org, CmdQueue& cmdQueue);
 	void help(Help&);
-	
-	const string& getName() const { return mname; }
-	
-	float getFloat(const string& name, float fdefault=0) const;
-	float eatFloat(string& buf) const;
-	long getLong(const string& name) const;
-	const string& getString(const string& name) const;
-	
-	void glSetMatrix();
-	
-	int getQuality() const;
-	
-	template<class T>
-	void setVar(const string& name, const T value)
+
+	const string& getName() const
 	{
-		if (name.length())
-			mapVars[name]=StringUtil::to_string(value);
-		else
-			cerr << "Cannot assign var with empty name to value : " << value << endl;
+		return mname;
 	}
 
-	bool isVisible();
-	
-	bool saveVars(ostream&) const;
-	bool loadVars(istream&);
-protected:
-	virtual ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&)=0;
-	virtual void _help(Help&){};
-	
-	/**
-	 * @return true if need to redisplay asap
-	 */
-	virtual bool _render(bool resetTimer) = 0;
+	float getFloat(const string& name, float fdefault = 0) const
+	{
+		return vars.getFloat(name, fdefault);
+	}
 
-	void drawHudText(const string& txt) const;
-	
-private:
-	Object(const Object& orig);
+	float eatFloat(string& buf) const;
+
+	long getLong(const string& name) const
+	{
+		return vars.getLong(name);
+	}
+
+	const string& getString(const string& name, const string &deflt = "") const
+	{
+		return vars.getString(name, deflt);
+	}
+
+	void glSetMatrix();
+
+	int getQuality() const;
+
+	bool isVisible();
+
+	bool saveVars(ostream& out)
+	{
+		vars.set("name", mname);
+		return vars.save(out);
+	}
+
+	bool loadVars(istream& in)
+	{
+		bool ret = vars.load(in);
+		if (ret)
+			mname = vars.getString("name");
+		return ret;
+	}
+
+	template<class T>
+	void setVar(const string name, const T v)
+	{
+		if (vars.set(name, v))
+		{
+			_onVarChanged(name, vars.getString(name));
+		}
+	}
+
+	string getAppRsrcFileName(const string rel) const;
+	string getRsrcFileName(const string rel) const;
+
+  protected:
+
+	void drawHudText(const string & txt) const;
+
+  private:
+	Application(const Application & orig);
 	string mname;
-	map<string,string> mapVars;
+	Vars vars;
+	ApplicationBuilder* builder; // Mainly to keep track of application class
 
 };
+
+#    define APPLICATION_BUILDER(appname, wclass) \
+		class wclass##Builder : public ApplicationBuilder\
+		{\
+			public:\
+				wclass##Builder() : ApplicationBuilder(appname) {}\
+				Application* build(const string& name, string& incoming)\
+				{ return new wclass(name, incoming); }\
+		};
+
 
 extern const Color* getColor(string& incoming);
 extern string getWord(string& s, const string &sSeparators = " ");
 extern list<string> cmdQueue;
-#endif	/* OBJECT_H */
+#endif /* OBJECT_H */
 

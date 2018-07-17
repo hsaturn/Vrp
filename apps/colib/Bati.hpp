@@ -22,6 +22,7 @@ namespace Colib
 	{
 		static const int FACTOR=2;
 		static const int MAX_SPEED=8*FACTOR;
+		
 	public:
 		Bati(const Colib*);
 		~Bati();
@@ -38,12 +39,12 @@ namespace Colib
 		// Is something moving somewhere ?
 		bool isAllStopped();
 		
-		float getHeight() const;	// Hauteur des traverses (cm)
+		float getHeight   () const;	// Hauteur des traverses (cm)
 		float getTopHeight() const;	// Hauteur des traverses + ep.
-		float getLength() const;
-		float getXLeft() const;
-		float getXRight() const;
-		float getCenterX() const;
+		float getLength   () const;
+		float getXLeft    () const;
+		float getXRight   () const;
+		float getCenterX  () const;
 		
 		Application::ExecResult moveTo(int col_nr, int h, bool back);
 		static const int THICKNESS = 10;
