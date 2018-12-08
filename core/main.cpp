@@ -672,7 +672,7 @@ void update(int value)
 					else if (what=="z")
 						calcTranslate(incoming, translateZ);
 					else
-						server->send("x,y or z expedcted instead of "+what);
+						server->send("x,y or z expected instead of "+what);
 				}
 			}
 			else if (cmd == "scale")
