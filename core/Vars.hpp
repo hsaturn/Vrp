@@ -17,6 +17,7 @@
 #    include <map>
 
 #    include "StringUtil.hpp"
+#include <functional>
 
 using namespace std;
 

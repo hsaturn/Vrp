@@ -1,8 +1,46 @@
-# Rubiks Cube Solver, Genetic tests.
+# Opengl application with remote server control
+  This piece of software is hard to describe.
+
+  It was initially a rubik's cube solver written for the challenge.
+  I had the ability to connect to the software through a socket, allowing to control it remotely.
+  Then I decide to use this opengl core to test the vrp algo
+  Later I added a generic algorithm to have better results
+  I've planned to write a 3D printer slicer with it.
+
+  The software embeds micro applications (under the apps folder).
+  Any app can be loaded dynamically and can benefit of the opengl kernel.
+
+  Existing apps
+	- Rubik cube solver (with php solver)
+	- Redstone (not yet finished, and probably will never be)
+	- Vrp (Best path algorithm, with genetic solve)
+	- colib (...) : a great engine simulation for a startup
+	- slicer, early dev. Not sure I will continue it a day, cura becomes more powerfull every day and have solved some issues I've planned to solve (walls, holes etc). But there are still some important one to be handled that cura does not today (diamond, onion textures ...)
+	- world : What is that, I even don't remember. A simutrans very poor clone
+
 
 ## Compilation
 
-Lol
+makefile based compilation.
+
+You'll need to instal libglew
+
+Kubuntu dependencies
+sudo apt-get install libglew-dev
+sudo apt-get install freeglut3-dev
+sudo apt-get install libsfml-dev
+sudo apt-get install libglfw3-dev
+
+
+SaturnLibs : git clone https://github.com/hsaturn/SaturnLib.git
+	cmake .
+	make
+	sudo make install
+
+libsynth : git clone https://github.com/hsaturn/synth.git
+	cmake .
+	make
+	sudo make install
 
 ## Usage
 
