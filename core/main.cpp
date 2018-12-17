@@ -964,14 +964,13 @@ int main(int argc, char** argv)
 	glfwSetErrorCallback(glfw_error_callback);
 	GLFWwindow* mainWindow = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, (string("CS ")+sPort).c_str(), nullptr, nullptr);
 	currentWindow = mainWindow;
+	glfwMakeContextCurrent(mainWindow);
 	
-#if 0 // TODO
 	if (glewInit())
 	{
 		cerr << "Failed to initialize GLEW" << endl;
 		exit(1);
 	}
-#endif
 	initRendering();
 
 	// TODO glutReshapeFunc(handleResize);
