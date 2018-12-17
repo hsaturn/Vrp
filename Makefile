@@ -7,7 +7,7 @@ LIBS=-lsynthetizer -lX11
 OPT:=${OPT} -DHAVE_SYNTH -g
 endif
 
-LIBS:=${LIBS} -lsfml-graphics
+LIBS:=${LIBS} -lsfml-graphics -lglfw
 APPS_FOLDERS:=$(wildcard apps/*)
 APPS:=$(APPS_FOLDERS) apps/RedStone/Blocks  apps/Cube/commands apps/world/Blocks
 PARTS = core core/model core/widgets core/genetic core/commands $(APPS)

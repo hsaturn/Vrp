@@ -1,11 +1,10 @@
-#ifndef Cube_H
-#    define Cube_H
+#pragma once
 
-#    include "Face.h"
-#    include <string>
+#include "Face.h"
+#include <string>
 
-#    include <Object.h>
-#    include <ObjectBuilder.hpp>
+#include <Object.h>
+#include <ObjectBuilder.hpp>
 
 using namespace std;
 
@@ -126,4 +125,3 @@ class Cube : public Application
 	string lastState;
 };
 
-#endif

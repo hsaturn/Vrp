@@ -16,7 +16,6 @@
 
 #include <string>
 #include <DynamicFloat.hpp>
-#include <GL/gl.h>
 
 using namespace std;
 

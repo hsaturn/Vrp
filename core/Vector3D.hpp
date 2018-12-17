@@ -9,6 +9,7 @@
 #define	VECTOR3D_HPP
 
 #include <math.h>
+#include <GL/glew.h>
 
 #define sqr(a) (a*a)
 

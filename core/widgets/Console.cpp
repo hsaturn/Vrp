@@ -156,7 +156,7 @@ namespace hwidgets
 
 		}
 
-		glutPostRedisplay();
+		// TODO glutPostRedisplay();
 		setVar("_cmdline=\"" + cmd + "\"");
 		cout << "CUBE_SERVER> " << cmd << "                      \r" << flush;
 	}

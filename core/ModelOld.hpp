@@ -13,7 +13,7 @@
 
 #pragma once
 
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <string>
 #include <vector>
 #include <map>

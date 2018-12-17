@@ -1,12 +1,13 @@
 /***************************************************************************
 	vim:tabstop=4
  */
+
 #pragma once
 
 #include <iostream>
 #include <string>
 #include <map>
-#include <GL/gl.h>
+#include <GL/glew.h>
 
 using namespace std;
 

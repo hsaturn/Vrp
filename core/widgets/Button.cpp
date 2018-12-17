@@ -77,7 +77,9 @@ namespace hwidgets
 		glRasterPos2f(x, y);
 
 		for (auto it = textr.begin(); it != textr.end(); it++)
-			glutBitmapCharacter(GLUT_BITMAP_8_BY_13, *it);
+		{
+			// TODO glutBitmapCharacter(GLUT_BITMAP_8_BY_13, *it);
+		}
 		glTranslatef(0.0, 0.0, -1.0);
 		return 0;
 	}

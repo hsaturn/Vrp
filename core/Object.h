@@ -4,21 +4,20 @@
  *
  * Created on 20 novembre 2015, 00:09
  */
+#pragma once
 
-#ifndef OBJECT_H
-#    define OBJECT_H
+#include <GL/glew.h>
+#include "Server.h"
+#include <string>
+#include <list>
 
-#    include "Server.h"
-#    include <string>
-#    include <list>
+#include "Color.h"
+#include "Help.h"
+#include <StringUtil.hpp>
 
-#    include "Color.h"
-#    include "Help.h"
-#    include <StringUtil.hpp>
-
-#    include <map>
-#    include "application/Renderable.hpp"
-#    include "Vars.hpp"
+#include <map>
+#include "application/Renderable.hpp"
+#include "Vars.hpp"
 
 using namespace std;
 
@@ -124,5 +123,4 @@ class Application : public Renderable
 extern const Color* getColor(string& incoming);
 extern string getWord(string& s, const string &sSeparators = " ");
 extern list<string> cmdQueue;
-#endif /* OBJECT_H */
 

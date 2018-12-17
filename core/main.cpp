@@ -9,9 +9,10 @@
 #include <string>
 #include <list>
 
-#include <GLFW/glfw3.h>
 #include <X11/Xlib.h>
 #include <apps/Cube/Cube.h>
+#include <GLFW/glfw3.h>
+#include <GL/glew.h>
 #include <Server.h>
 #include <unistd.h>
 #include <sys/signal.h>

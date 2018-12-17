@@ -12,6 +12,7 @@
  */
 
 #include "Axis.hpp"
+#include <GL/glew.h>
 
 Axis::~Axis() { }
 

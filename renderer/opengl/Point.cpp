@@ -7,6 +7,7 @@
 
 #include "Point.hpp"
 #include <math.h>
+#include <GL/glew.h>
 
 void Point::render() const
 {

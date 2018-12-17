@@ -11,13 +11,13 @@
  * Created on 3 février 2017, 00:44
  */
 
-#ifndef MODEL_HPP
-#define MODEL_HPP
+#pragma once
 
 #include <string>
 #include <vector>
 #include <map>
 #include <glm/glm.hpp>
+#include <GL/glew.h>
 #include "tiny_obj_loader.h"
 #include <glm.hpp>
 #include "Triangle.hpp"
@@ -78,6 +78,3 @@ class Model
 		void main();
 		
 };
-
-#endif /* MODEL_HPP */
-

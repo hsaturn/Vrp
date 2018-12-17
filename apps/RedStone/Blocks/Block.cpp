@@ -5,6 +5,9 @@
  * Created on 5 avril 200.9996, 20:29
  */
 
+#include <Block.hpp>
+#include <GL/glew.h>
+
 namespace RedStone {
 
 	Block::Block() {

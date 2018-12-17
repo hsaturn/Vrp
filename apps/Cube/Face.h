@@ -1,5 +1,4 @@
-#ifndef Face_H
-#define Face_H
+#pragma once
 #include <Color.h>
 
 class Cube;
@@ -89,4 +88,3 @@ class Face
 		void fillAdjacentArray(Color* nc, Dir*, const Cube*) const;
 };
 
-#endif

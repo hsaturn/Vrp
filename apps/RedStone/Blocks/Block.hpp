@@ -5,8 +5,7 @@
  * Created on 5 avril 2016, 20:35
  */
 
-#ifndef BLOCK_HPP
-#define	BLOCK_HPP
+#pragma once
 
 #include <Coord.hpp>
 
@@ -45,6 +44,4 @@ namespace RedStone {
 
 	};
 }
-
-#endif	/* BLOCK_HPP */
 

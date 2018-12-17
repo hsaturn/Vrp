@@ -47,8 +47,7 @@ void Application::drawHudText(const string& txt) const
 
 	while (*message)
 	{
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *message);
-		//glutStrokeCharacter(GLUT_STROKE_ROMAN,*message);
+		// TODO glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *message);
 		message++;
 	}
 }
