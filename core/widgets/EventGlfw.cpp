@@ -25,7 +25,7 @@ namespace hwidgets
 	{
 		if (init == false && instance == 0)
 		{
-			readEvt("Glfw_buttons", mapButtons);
+			readEvt("glfw_buttons", mapButtons);
 
 			init = true ;
 			instance = new EventGlfw;
