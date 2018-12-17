@@ -202,7 +202,7 @@ string getWord(string& s, const string &sSeparators)
 	return StringUtil::getWord(s, sSeparators);
 }
 
-void handleResize(int w, int h)
+void handleResize(GLFWwindow* window, int w, int h)
 {
 	SCREEN_WIDTH = w;
 	SCREEN_HEIGHT = h;
@@ -973,7 +973,7 @@ int main(int argc, char** argv)
 	}
 	initRendering();
 
-	// TODO glutReshapeFunc(handleResize);
+	glfwSetWindowSizeCallback(mainWindow, handleResize);
 
 	Event::init(EventGlfw::getInstance(mainWindow));
 	EventHandler::connect(mouseEvent, Event::EVT_MOUSE_ALL);
