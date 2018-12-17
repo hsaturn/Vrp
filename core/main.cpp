@@ -32,7 +32,7 @@
 #include "Help.h"
 #include "EventHandler.hpp"
 #include <Widget.h>
-#include <EventGlut.hpp>
+#include <EventGlfw.hpp>
 
 int SCREEN_WIDTH = 200;
 int SCREEN_HEIGHT = 200;
@@ -974,7 +974,7 @@ int main(int argc, char** argv)
 
 	// TODO glutReshapeFunc(handleResize);
 
-	Event::init(EventGlut::getInstance());
+	Event::init(EventGlfw::getInstance(mainWindow));
 	EventHandler::connect(mouseEvent, Event::EVT_MOUSE_ALL);
 	atexit(onclose);
 
