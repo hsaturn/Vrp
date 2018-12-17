@@ -15,7 +15,6 @@
 #define LIGHTELEMENT_H
 
 #include <string>
-#include <GL/glew.h>
 #include <DynamicFloat.hpp>
 #include <GL/gl.h>
 

@@ -1,6 +1,6 @@
 HAVE_SYNTH=1
 OPT_LEVEL=-g
-OPT:=-std=c++14 -Wall ${OPT_LEVEL}
+OPT:=-std=c++17 -Wall ${OPT_LEVEL}
 
 ifeq ($(HAVE_SYNTH),1)
 LIBS=-lsynthetizer -lX11

@@ -8,7 +8,6 @@
 #include "Column.hpp"
 #include "Color.h"
 #include "StringUtil.hpp"
-#include <GL/glew.h>
 #include <model/Model.hpp>
 #include <libsynth.hpp>
 #include "MotorSpeedHook.hpp"

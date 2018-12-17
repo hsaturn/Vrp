@@ -10,7 +10,6 @@
  * 
  * Created on 3 janvier 2017, 13:20
  */
-#include <GL/glew.h>
 #include <Color.h>
 #include "Map.h"
 #include <iostream>

@@ -5,7 +5,6 @@
  * Created on 5 avril 2016, 20:47
  */
 
-#include <GL/glew.h>
 
 #include "Blocks/blocks.hpp"
 #include "RedMap.hpp"

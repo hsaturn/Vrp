@@ -1,6 +1,5 @@
 #include "Bati.hpp"
 #include "Colib.hpp"
-#include <GL/glew.h>
 #include <Color.h>
 #include <StringUtil.hpp>
 #include "Navette.hpp"

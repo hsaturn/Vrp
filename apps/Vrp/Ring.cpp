@@ -8,7 +8,6 @@
 #include "Ring.hpp"
 #include "Planet.hpp"
 #include <math.h>
-#include <GL/glew.h>
 #include <Color.h>
 #include <map>
 

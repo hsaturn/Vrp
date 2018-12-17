@@ -8,7 +8,6 @@
 #include "Individual.hpp"
 #include "Galaxy.hpp"
 #include "Planet.hpp"
-#include <GL/glew.h>
 #include <algorithm>
 #include "glm.hpp"
 #include "glm/gtx/rotate_vector.hpp"

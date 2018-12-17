@@ -5,7 +5,6 @@
  * Created on 23 novembre 2015, 19:46
  */
 
-#include <GL/glew.h>
 
 #include "GeneLink.hpp"
 #include "Planet.hpp"

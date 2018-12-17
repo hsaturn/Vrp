@@ -7,9 +7,6 @@
 
 #include "Button.h"
 #include "Event.hpp"
-#include <GL/glew.h>
-#include <GL/glut.h>
-#include <GL/freeglut_std.h>
 
 #include "WidRect.hpp"
 

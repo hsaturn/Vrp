@@ -9,7 +9,6 @@
 #define	TEXTURE_HPP
 
 #include "imageloader.h"
-#include <GL/glew.h>
 GLuint loadTexture(Image* image);
 
 #endif	/* TEXTURE_HPP */

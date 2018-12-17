@@ -6,7 +6,6 @@
  */
 
 #include "Torch.hpp"
-#include <GL/glew.h>
 
 namespace World
 {

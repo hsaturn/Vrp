@@ -18,7 +18,6 @@
 #include <vector>
 #include <map>
 #include <glm/glm.hpp>
-#include <GL/glew.h>
 #include "tiny_obj_loader.h"
 #include <glm.hpp>
 #include "Triangle.hpp"

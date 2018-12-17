@@ -9,14 +9,13 @@
 #include <string>
 #include <list>
 
+#include <GLFW/glfw3.h>
 #include <X11/Xlib.h>
 #include <apps/Cube/Cube.h>
 #include <Server.h>
 #include <unistd.h>
 #include <sys/signal.h>
 #include <sys/wait.h>
-#include <GL/glew.h>
-#include <GL/glut.h>
 #include "LightElement.h"
 #define GLM_FORCE_RADIANS 
 #include <glm/glm.hpp>  
@@ -288,7 +287,7 @@ void drawText(const char * message)
 	 */
 	while (*message)
 	{
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *message);
+		// TODO with queso	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *message);
 		//glutStrokeCharacter(GLUT_STROKE_ROMAN,*message);
 		message++;
 	}
@@ -300,7 +299,7 @@ void drawScene();
 void widgetUpdate(int value)
 {
 	lastUpdateWidget = 0;
-	drawScene();
+	// drawScene();
 }
 
 void drawHud()
@@ -342,7 +341,7 @@ void drawHud()
 		if (lastUpdateWidget == 0 || (redisplay < lastUpdateWidget))
 		{
 			lastUpdateWidget = redisplay;
-			glutTimerFunc(redisplay, widgetUpdate, 0);
+			// TODO glutTimerFunc(redisplay, widgetUpdate, 0);
 		}
 	}
 
@@ -351,7 +350,7 @@ void drawHud()
 	glMatrixMode(GL_MODELVIEW);
 }
 
-void drawScene()
+void drawScene(GLFWwindow* window)
 {
 	/*if (!server->running())
 	  exit(1);
@@ -428,7 +427,7 @@ void drawScene()
 
 	resetTimer = false;
 	drawHud();
-	glutSwapBuffers();
+	glfwSwapBuffers(window);
 }
 
 void calcTranslate(string& incoming, float& v)
@@ -454,7 +453,7 @@ void mouse_motion_new(Event &event, Event::Mouse mouse)
 		translateStartX = mouse.x;
 		translateStartY = mouse.y;
 	}
-	glutPostRedisplay();
+	// TODO glutPostRedisplay();
 }
 
 void mouse_button_click(Event &event, Event::Mouse &mouse)
@@ -901,12 +900,12 @@ horrible:
 	if (redisplay || redisplayAsked)
 	{
 		redisplayAsked = false;
-		glutPostRedisplay();
+		// TODO glutPostRedisplay();
 	}
 	else
 		resetTimer = true;
 
-	glutTimerFunc(10, update, 0);
+	// TODO glutTimerFunc(10, update, 0);
 }
 
 
@@ -929,6 +928,12 @@ glm::vec3 get_arcball_vector(int x, int y) {
   return P;
 }
 
+void glfw_error_callback(int error, const char* desc)
+{
+	cerr << "ERROR: [GLFW] " << error << "," << desc << endl;
+}
+
+
 int main(int argc, char** argv)
 {
 	XInitThreads();
@@ -936,7 +941,11 @@ int main(int argc, char** argv)
 	//cmdQueue.push_back("rotate x");
 	arcball_reset();
 	
-	glutInit(&argc, argv);
+	if (!glfwInit())
+	{
+		cerr << "Unable to initialize glfw :-(" << endl;
+		return 1;
+	}
 	Widget::init();
 	Widget::setCmdQueue(&cmdQueue);
 	reboot();
@@ -950,27 +959,30 @@ int main(int argc, char** argv)
 
 	Widget::setVar("port=" + std::to_string(lPort));
 	server = new Server(lPort);
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH | GLUT_MULTISAMPLE);
-	glEnable(GL_MULTISAMPLE_SGIS);
-	glutInitWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-	glutCreateWindow((string("CS ") + sPort).c_str());
+	glfwSetErrorCallback(glfw_error_callback);
+	GLFWwindow* mainWindow = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, (string("CS ")+sPort).c_str(), nullptr, nullptr);
 	
+#if 0 // TODO
 	if (glewInit())
 	{
 		cerr << "Failed to initialize GLEW" << endl;
 		exit(1);
 	}
+#endif
 	initRendering();
 
-	glutDisplayFunc(drawScene);
-	glutReshapeFunc(handleResize);
+	// TODO glutReshapeFunc(handleResize);
 
 	Event::init(EventGlut::getInstance());
 	EventHandler::connect(mouseEvent, Event::EVT_MOUSE_ALL);
-	glutTimerFunc(25, update, 0);
 	atexit(onclose);
 
-	glutMainLoop();
+	while(!glfwWindowShouldClose(mainWindow))
+	{
+		// TODO glutTimerFunc(25, update, 0);
+		drawScene(mainWindow);
+		glfwPollEvents();
+	}
 
 	return 0;
 

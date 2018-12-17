@@ -7,8 +7,6 @@
 
 #include "Console.h"
 #include "Server.h"
-#include <GL/glew.h>
-#include <GL/glut.h>
 #include <sys/socket.h>
 #include "ClipBoard.h"
 #include "Draggable.hpp"

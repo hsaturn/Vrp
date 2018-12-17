@@ -2,8 +2,6 @@
 #include <Color.h>
 #include <Face.h>
 #include <iostream>
-#include <GL/glew.h>
-#include <GL/glut.h>
 #include <chrono>
 #include <list>
 #include "StringUtil.hpp"

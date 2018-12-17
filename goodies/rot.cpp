@@ -1,5 +1,4 @@
 // Working OpenGL3.3 Context with GLFW Window showing a colored rectangle with Kitten 
-#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "glm/glm.hpp"
 #include <glm/gtc/matrix_transform.hpp>

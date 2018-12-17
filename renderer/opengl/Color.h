@@ -1,12 +1,12 @@
 /***************************************************************************
 	vim:tabstop=4
  */
-#ifndef _Color_
-#    define _Color_
-#    include <GL/glew.h>
-#    include <iostream>
-#    include <string>
-#    include <map>
+#pragma once
+
+#include <iostream>
+#include <string>
+#include <map>
+#include <GL/gl.h>
 
 using namespace std;
 
@@ -143,4 +143,3 @@ class Color
 
 };
 
-#endif

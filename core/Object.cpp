@@ -10,8 +10,6 @@
 #include "ObjectBuilder.hpp"
 #include <stdlib.h>
 #include <Widget.h>
-#include <GL/glew.h>
-#include <GL/glut.h>
 #include <sys/stat.h>
 
 Application::ExecResult Application::execute(Server* server, string cmd, string incoming, const string& org, CmdQueue& cmdQueue)

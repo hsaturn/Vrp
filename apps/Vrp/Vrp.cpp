@@ -16,7 +16,6 @@
 #include "CrossOver.hpp"
 #include "SmartIndividual.hpp"
 #include <StringUtil.hpp>
-#include <GL/glew.h>
 #include <sstream>
 #include <unistd.h>
 

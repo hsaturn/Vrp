@@ -10,7 +10,6 @@
 
 #include <Object.h>
 #include <ObjectBuilder.hpp>
-#include <GL/glew.h>
 #include "Coord.hpp"
 #include <string>
 #include <map>

@@ -4,8 +4,6 @@
  * 
  * Created on 5 avril 200.9996, 20:29
  */
-#include <GL/glew.h>
-#include "Block.hpp"
 
 namespace RedStone {
 

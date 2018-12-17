@@ -1,6 +1,5 @@
 #include <SFML/Graphics.hpp>
 #include "TextureLoader.hpp"
-#include <GL/glew.h>
 #include <iostream>
 
 using namespace std;

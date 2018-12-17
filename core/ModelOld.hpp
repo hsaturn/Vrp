@@ -11,14 +11,13 @@
  * Created on 3 février 2017, 00:44
  */
 
-#ifndef MODELOLD_HPP
-#define MODELOLD_HPP
+#pragma once
 
+#include <GL/gl.h>
 #include <string>
 #include <vector>
 #include <map>
 #include <glm/glm.hpp>
-#include <GL/glew.h>
 
 using namespace std;
 
@@ -43,6 +42,3 @@ class ModelOld
 		GLuint vbo_id;
 		
 };
-
-#endif /* MODEL_HPP */
-
