@@ -33,6 +33,7 @@ namespace hwidgets
 			glfwSetKeyCallback(window, KeyboardFunc);
 			glfwSetMouseButtonCallback(window, MouseFunc);
 			glfwSetCursorPosCallback(window, MotionFunc);
+			glfwSetScrollCallback(window, MotionScroll);
 		}
 		return instance;
 	}
@@ -68,6 +69,7 @@ namespace hwidgets
 
 	void EventGlfw::MouseFunc(GLFWwindow* window, int button, int action, int mods)
 	{
+		cout << "MOUSE " << button << ", " << action << ", mods=" << mods << endl;
 		if (!init) return;
 
 		static Event evt;
@@ -109,6 +111,21 @@ namespace hwidgets
 		}
 		processEvent(evt);
 	}
+
+	void EventGlfw::MotionScroll(GLFWwindow* window, double x, double y)
+	{
+		if (y>0)
+		{
+			MouseFunc(window, 100, GLFW_PRESS, last);
+			MouseFunc(window, 100, GLFW_RELEASE, last);
+		}
+		else if (y<0)
+		{
+			MouseFunc(window, 101, GLFW_PRESS, last);
+			MouseFunc(window, 101, GLFW_RELEASE, last);
+		}
+	}
+
 
 	void EventGlfw::MotionFunc(GLFWwindow*, double x, double y)
 	{

@@ -32,6 +32,7 @@ namespace hwidgets
 		static void KeyboardFunc(GLFWwindow*,int key, int scan, int action, int mods);
 		static void MouseFunc(GLFWwindow*, int button, int action, int mods);
 		static void MotionFunc(GLFWwindow*, double, double);
+		static void MotionScroll(GLFWwindow*, double, double);
 
 		static Modifier getModifiers(int mods);
 
