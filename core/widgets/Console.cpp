@@ -13,7 +13,6 @@
 #include "Event.hpp"
 #include "WidRect.hpp"
 
-extern string getWord(string& s, const string &sSeparators = " ");
 namespace hwidgets
 {
 	WIDGET_REGISTER("console", Console);

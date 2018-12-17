@@ -38,6 +38,7 @@ int SCREEN_WIDTH = 200;
 int SCREEN_HEIGHT = 200;
 
 BackgroundStars background;
+GLFWwindow* currentWindow;
 
 const vec eye( 0.0f, 0.0f, -20.0f );
 const vec centre( 0.0f, 0.0f, 0.0f );
@@ -962,6 +963,7 @@ int main(int argc, char** argv)
 	server = new Server(lPort);
 	glfwSetErrorCallback(glfw_error_callback);
 	GLFWwindow* mainWindow = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, (string("CS ")+sPort).c_str(), nullptr, nullptr);
+	currentWindow = mainWindow;
 	
 #if 0 // TODO
 	if (glewInit())
@@ -978,8 +980,17 @@ int main(int argc, char** argv)
 	EventHandler::connect(mouseEvent, Event::EVT_MOUSE_ALL);
 	atexit(onclose);
 
+	const double update_interval=0.025;
+	double next_update=glfwGetTime() + update_interval;
+
 	while(!glfwWindowShouldClose(mainWindow))
 	{
+		double curtime = glfwGetTime();
+		if (curtime > next_update)
+		{
+			update(25);
+			next_update += update_interval;
+		}
 		// TODO glutTimerFunc(25, update, 0);
 		drawScene(mainWindow);
 		glfwPollEvents();

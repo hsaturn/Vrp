@@ -5,31 +5,34 @@
  * Created on 7 juillet 2015, 17:42
  */
 
-#ifndef FONTRENDERER_H
-#define	FONTRENDERER_H
+#pragma once
 
 #include <string>
+#include <map>
+
 using namespace std;
 
+extern string getWord(string& s, const string &sSeparators = " ");
 class FontRenderer
 {
-  public:
-	
-	/**
-	 * 
-     * @param data
-     * @return a font renderer (always not null)
-     */
-	static FontRenderer* factory(string& data);
-	
-	void render(int x, int y, const string& text);
-	
-	int height() { return font_height; }
-	
-  private:
-	void* font;
-	int font_height;
-};
+	public:
 
-#endif	/* FONTRENDERER_H */
+		/**
+		 * 
+		 * @param data
+		 * @return a font renderer (always not null)
+		 */
+		static FontRenderer* factory(string& data);
+
+		virtual void render(int x, int y, const string& text) const=0;
+
+		virtual int height() const { return font_height; } // TODO ugly
+		
+	protected:
+
+		int font_height;
+
+	private:
+		map<string, FontRenderer*>	mRenderers;
+};
 
