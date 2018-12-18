@@ -15,8 +15,10 @@ namespace hwidgets
 {
 	bool EventGlfw::init = false;
 	map<uint16_t, uint16_t> EventGlfw::mapButtons;
+	map<uint16_t, uint16_t> EventGlfw::mapKeys;
 	Event::Mouse::Buttons EventGlfw::curr_buttons;
 	int EventGlfw::last=0;
+	Event* EventGlfw::key_evt=nullptr;
 	
 
 	EventGlfw::EventGlfw() { }
@@ -26,6 +28,7 @@ namespace hwidgets
 		if (init == false && instance == 0)
 		{
 			readEvt("glfw_buttons", mapButtons);
+			Event::readMap("glfw.kmap", mapKeys);
 
 			init = true ;
 			instance = new EventGlfw;
@@ -34,6 +37,7 @@ namespace hwidgets
 			glfwSetMouseButtonCallback(window, MouseFunc);
 			glfwSetCursorPosCallback(window, MotionFunc);
 			glfwSetScrollCallback(window, MotionScroll);
+			glfwSetCharCallback(window, CharCallback);
 		}
 		return instance;
 	}
@@ -49,22 +53,42 @@ namespace hwidgets
 
 	void EventGlfw::update() { }
 
+	void EventGlfw::CharCallback(GLFWwindow* window, unsigned int c)
+	{
+		if (key_evt)
+		{
+			key_evt->key = c;
+			processEvent(*key_evt);
+			delete key_evt;
+		}
+	}
+
 	void EventGlfw::KeyboardFunc(GLFWwindow* window, int keyc, int scan, int action, int mods)
 	{
 		if (init == false) return;
 
-		static Event key;
+		key_evt = new Event;
 		if (action == GLFW_PRESS)
-			key.type = Event::Type::EVT_KEYBD_DOWN;
+			key_evt->type = Event::Type::EVT_KEYBD_DOWN;
 		else
-			key.type = Event::Type::EVT_KEYBD_UP;
-		key.mod = getModifiers(mods);
-		key.key = (Key) keyc;
+			key_evt->type = Event::Type::EVT_KEYBD_UP;
+		key_evt->mod = getModifiers(mods);
 		double x,y;
 		glfwGetCursorPos(window, &x, &y);
-		key.mouse.x = x;
-		key.mouse.y = y;
-		processEvent(key);
+		key_evt->mouse.x = x;
+		key_evt->mouse.y = y;
+		auto it=mapKeys.find(keyc);
+		if (it != mapKeys.end())
+		{
+			key_evt->key = (Key) it->second;
+			processEvent(*key_evt);
+			delete key_evt;
+		}
+		else
+		{
+			// Workaround here, the event will be processed later in CharCallBack
+			// processEvent(*key_evt);
+		}
 	}
 
 	void EventGlfw::MouseFunc(GLFWwindow* window, int button, int action, int mods)

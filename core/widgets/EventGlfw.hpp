@@ -30,6 +30,7 @@ namespace hwidgets
 		
 		// Glfw events handlers
 		static void KeyboardFunc(GLFWwindow*,int key, int scan, int action, int mods);
+		static void CharCallback(GLFWwindow*, unsigned int);
 		static void MouseFunc(GLFWwindow*, int button, int action, int mods);
 		static void MotionFunc(GLFWwindow*, double, double);
 		static void MotionScroll(GLFWwindow*, double, double);
@@ -38,7 +39,10 @@ namespace hwidgets
 
 		static bool init;
 		static map<uint16_t, uint16_t>	mapButtons;
+		static map<uint16_t, uint16_t>	mapKeys;
 		static Mouse::Buttons curr_buttons;
 		static int last;
+
+		static Event* key_evt;	// workaround for upper case chars problem in glfw
 	};
 }

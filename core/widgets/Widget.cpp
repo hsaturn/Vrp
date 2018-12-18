@@ -136,7 +136,6 @@ namespace hwidgets
 		Shortcut k;
 		k.mod = key.mod;
 		k.key = key.key;
-		cout << "KEY " << k.mod << "," << (int)k.key << endl;
 		auto it = shortcuts.find(k);
 		if (it != shortcuts.end())
 		{
