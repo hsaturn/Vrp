@@ -1012,7 +1012,6 @@ bool StringUtil::isIso(const char* p)
 bool StringUtil::startsWith(string&s, const string& start, bool remove)
 {
 	string::size_type ps = 0;
-	string::size_type pstart = 0;
 
 	while (s.length() > ps && s[ps] == ' ') ps++;
 
