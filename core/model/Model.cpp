@@ -387,7 +387,7 @@ bool Model::loadObjAndConvert(const string& file, vector<Triangle>* triangles)
 				normals.push_back(gz+n[kk][2]);
 			}
 			
-			cout << "ormals " << normals.size() << endl;
+			cout << "Normals " << normals.size() << endl;
 
 			o.vb = 0;
 			o.numTriangles = 0;
