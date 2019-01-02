@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <sys/types.h> 
+#include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <thread>
@@ -42,7 +42,7 @@ void Server::thread(Server* svr)
 bool Server::incoming(const string* buffer)
 {
 	bool result = false;
-	
+
 	mtx.lock();
 	if (buffer)
 	{
@@ -106,7 +106,7 @@ void Server::run()
 	socklen_t clilen;
 	struct sockaddr_in serv_addr, cli_addr;
 	sockfd = socket(AF_INET, SOCK_STREAM, 0);
-	if (sockfd < 0) 
+	if (sockfd < 0)
 		error("ERROR opening socket");
 	bzero((char *) &serv_addr, sizeof(serv_addr));
 	serv_addr.sin_family = AF_INET;
@@ -122,8 +122,8 @@ void Server::run()
 	{
 		try
 		{
-			int newsockfd = accept(sockfd, 
-					(struct sockaddr *) &cli_addr, 
+			int newsockfd = accept(sockfd,
+					(struct sockaddr *) &cli_addr,
 					&clilen);
 			if (newsockfd < 0)
 				error("ERROR on accept");
