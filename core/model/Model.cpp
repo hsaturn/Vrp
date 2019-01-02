@@ -211,7 +211,7 @@ bool Model::loadObjAndConvert(const string& file, vector<Triangle>* triangles)
 			DrawObject o;
 			vector<float> vb; // pos(3float), normal(3float), color(3float)
 			cout << "shapes[" << s << "].mesh.indices.size()=" << shapes[s].mesh.indices.size() << endl;
-			
+
 			for (size_t f = 0; f < shapes[s].mesh.indices.size() / 3; f++)
 			{
 				tinyobj::index_t idx0 = shapes[s].mesh.indices[3 * f + 0];
@@ -307,7 +307,7 @@ bool Model::loadObjAndConvert(const string& file, vector<Triangle>* triangles)
 					n[2][1] = n[0][1];
 					n[2][2] = n[0][2];
 				}
-				
+
 				float gx=0,gy=0,gz=0;
 
 				for (int k = 0; k < 3; k++)
@@ -316,7 +316,7 @@ bool Model::loadObjAndConvert(const string& file, vector<Triangle>* triangles)
 					vb.push_back(v[k][0]);
 					vb.push_back(v[k][1]);
 					vb.push_back(v[k][2]);
-					
+
 					gx += v[k][0];
 					gy += v[k][1];
 					gz += v[k][2];
@@ -380,13 +380,13 @@ bool Model::loadObjAndConvert(const string& file, vector<Triangle>* triangles)
 				normals.push_back(gx);
 				normals.push_back(gy);
 				normals.push_back(gz);
-				
+
 				int kk=0;
 				normals.push_back(gx+n[kk][0]);
 				normals.push_back(gy+n[kk][1]);
 				normals.push_back(gz+n[kk][2]);
 			}
-			
+
 			cout << "Normals " << normals.size() << endl;
 
 			o.vb = 0;
@@ -405,9 +405,9 @@ bool Model::loadObjAndConvert(const string& file, vector<Triangle>* triangles)
 
 			if (vb.size() > 0)
 			{
-				glGenBuffers(1, &o.vb);
-				glBindBuffer(GL_ARRAY_BUFFER, o.vb);
-				glBufferData(GL_ARRAY_BUFFER, vb.size() * sizeof (float), &vb.at(0),
+				glGenBuffersARB(1, &o.vb);
+				glBindBufferARB(GL_ARRAY_BUFFER, o.vb);
+				glBufferDataARB(GL_ARRAY_BUFFER, vb.size() * sizeof (float), &vb.at(0),
 							GL_STATIC_DRAW);
 				o.numTriangles = vb.size() / ((3 + 3 + 3 + 2) * 3);
 				cout << "shape[" << s << "], triangles: " << o.numTriangles << endl;
@@ -468,7 +468,7 @@ void Model::render(bool bnormals) const
 		if (o.vb < 1)
 			continue;
 
-		glBindBuffer(GL_ARRAY_BUFFER, o.vb);
+		glBindBufferARB(GL_ARRAY_BUFFER, o.vb);
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glEnableClientState(GL_NORMAL_ARRAY);
 		glEnableClientState(GL_COLOR_ARRAY);
@@ -503,7 +503,7 @@ void Model::render(bool bnormals) const
 		glDrawArrays(GL_TRIANGLES, 0, 3 * o.numTriangles);
 		glColor3f(1.0, 1.0, 1.0);
 		glBegin(GL_LINES);
-		
+
 		if (bnormals)
 		{
 			auto it = normals.begin();
@@ -522,7 +522,7 @@ void Model::render(bool bnormals) const
 				glVertex3f(x, y, z);
 			}
 		}
-		
+
 		glEnd();
 
 		CheckErrors("Model::draw");

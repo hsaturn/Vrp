@@ -243,6 +243,8 @@ void initRendering()
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	auto glError = glGetError();
+	cout << "GlError = " << glError << endl;
 }
 
 float getFloat(string& incoming)
@@ -961,18 +963,24 @@ int main(int argc, char** argv)
 
 	Widget::setVar("port=" + std::to_string(lPort));
 	server = new Server(lPort);
+	initRendering();
 
 	glfwSetErrorCallback(glfw_error_callback);
 	GLFWwindow* mainWindow = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, (string("CS ")+sPort).c_str(), nullptr, nullptr);
 	currentWindow = mainWindow;
 	glfwMakeContextCurrent(mainWindow);
+	glewExperimental = GL_TRUE;
 
-	if (glewInit())
+	GLenum err = glewInit();
+   if (GLEW_OK != err)
 	{
-		cerr << "Failed to initialize GLEW" << endl;
+		cerr << "Failed to initialize GLEW " << glewGetErrorString(err) << endl;
 		exit(1);
 	}
-	initRendering();
+	else
+	{
+		cout << "Glew init ok" << endl;
+	}
 
 	glfwSetWindowSizeCallback(mainWindow, handleResize);
 
