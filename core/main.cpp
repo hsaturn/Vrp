@@ -18,9 +18,9 @@
 #include <sys/signal.h>
 #include <sys/wait.h>
 #include "LightElement.h"
-#define GLM_FORCE_RADIANS 
-#include <glm/glm.hpp>  
-#include <glm/gtc/matrix_transform.hpp> 
+#define GLM_FORCE_RADIANS
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "Random.hpp"
 #include <ansi_colors.hpp>
@@ -217,7 +217,7 @@ void handleResize(GLFWwindow* window, int w, int h)
     gluLookAt(
         eye.x, eye.y, eye.z,
         centre.x, centre.y, centre.z,
-        up.x, up.y, up.z );	
+        up.x, up.y, up.z );
 	arcball_setzoom( SPHERE_RADIUS, eye, up );
 	/* if (w <= h)
 	   glOrtho(-2.0, 2.0, -2.0 * (GLfloat) h / (GLfloat) w,
@@ -319,7 +319,7 @@ void drawHud()
 		//glPushMatrix();        ----Not sure if I need this
 		glLoadIdentity();
 		glTranslatef(translateX, translateY,translateZ);
-		
+
 		glDisable(GL_CULL_FACE);
 
 		glClear(GL_DEPTH_BUFFER_BIT);
@@ -333,7 +333,7 @@ void drawHud()
 		glPushMatrix();
 		ApplicationBuilder::renderHud();
 		glPopMatrix();
-		
+
 		glTranslatef(0, 0, -1.0);
 	}
 	glLoadIdentity();
@@ -368,7 +368,7 @@ void drawScene(GLFWwindow* window)
 
     arcball_rotate();
 	axis.render();
-	
+
 	if (material)
 	{
 		glEnable(GL_COLOR_MATERIAL);
@@ -377,7 +377,7 @@ void drawScene(GLFWwindow* window)
 	}
 	else
 		glDisable(GL_COLOR_MATERIAL);
-	
+
 	if (specular)
 	{
 		redisplayAsked |= !specular.isReady();
@@ -392,14 +392,14 @@ void drawScene(GLFWwindow* window)
 	glScalef(scale, scale, scale);
 	//glRotatef(_anglex, 1.0, 0.0, 0.0);
 	//glRotatef(_angley, 0.0, 1.0, 0.0);
-	
+
 	if (ambientColor)
 	{
 		redisplayAsked |= !ambientColor.isReady();
 		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor.getFloatArray());
 	}
 
-	
+
 	// Tentative désespérée de réflection ...
 #if REFLEXION
 	//glUniformMatrix4fv(cube_server, 1, GL_FALSE, glm::value_ptr(orient));
@@ -407,7 +407,7 @@ void drawScene(GLFWwindow* window)
 	glScalef(1.0, -1.0, 1.0);
 	redisplayAsked |= ApplicationBuilder::render(false);
 	glPopMatrix();
-	
+
 		  glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glColor4f(0.7, 0.0, 0.0, 0.40);  /* 40% dark red floor color */
@@ -415,7 +415,7 @@ void drawScene(GLFWwindow* window)
 	glDisable(GL_BLEND);
 #endif
 	redisplayAsked |= ApplicationBuilder::render(false);
-	
+
 	if (false) {
 		static GLUquadricObj *quadric = 0;
 		Color::cyan.render();
@@ -442,7 +442,7 @@ void calcTranslate(string& incoming, float& v)
 void mouse_motion_new(Event &event, Event::Mouse mouse)
 {
 	Widget::mouseMotion(event);	// FIXME Widget has to register events
-	
+
 	if (buttonRotate)
 	{
 		int invert_y = (SCREEN_HEIGHT - mouse.y) - 1;
@@ -543,7 +543,7 @@ void update(int value)
 			static string last;
 			string incoming = server->getIncoming();
 
-			if (incoming[0] == '.')
+			if (incoming[0] == '.')	// TODO fix redundancy below with row/last
 				incoming = last;
 			else
 				last = incoming;
@@ -554,7 +554,7 @@ void update(int value)
 		if (cmdQueue.size())
 		{
 			static string last;
-			
+
 			redisplay = 499;
 			string row = cmdQueue.front();
 			string org_row = row;
@@ -564,7 +564,7 @@ void update(int value)
 			while (row[0] == '@')
 				row.erase(0, 1);
 			string org = row;
-			
+
 			if (row == "!")
 				row = last;
 			else
@@ -581,10 +581,10 @@ void update(int value)
 			// cout << "CMD=[" << cmd << "] incoming=[" << incoming << "]" << endl;
 
 			//if (StringUtil::match("[a-zA-Z]+[a-zA-Z0-9]*.[a-zA-Z]+[a-zA-Z0-9]+=", cmd))
-			
+
 			if (cmd.length() && (cmd[0]=='#' || cmd.substr(0,2)=="//"))
 			{
-				
+
 			}
 			else if (StringUtil::preg_match("^[a-zA-Z]+[a-zA-Z0-9_]*\\.[a-zA-Z]+[a-zA-Z0-9_]*", cmd, false))
 			{
@@ -942,7 +942,7 @@ int main(int argc, char** argv)
 	//cmdQueue.push_back("rotate left 9000");
 	//cmdQueue.push_back("rotate x");
 	arcball_reset();
-	
+
 	if (!glfwInit())
 	{
 		cerr << "Unable to initialize glfw :-(" << endl;
@@ -961,11 +961,12 @@ int main(int argc, char** argv)
 
 	Widget::setVar("port=" + std::to_string(lPort));
 	server = new Server(lPort);
+
 	glfwSetErrorCallback(glfw_error_callback);
 	GLFWwindow* mainWindow = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, (string("CS ")+sPort).c_str(), nullptr, nullptr);
 	currentWindow = mainWindow;
 	glfwMakeContextCurrent(mainWindow);
-	
+
 	if (glewInit())
 	{
 		cerr << "Failed to initialize GLEW" << endl;
