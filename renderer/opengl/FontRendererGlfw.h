@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   FontRendererGlfw.h
  * Author: francois
  *
@@ -8,11 +8,24 @@
 #pragma once
 
 #include "FontRenderer.h"
+#include "GLShader.hpp"
+
+#include <glm/glm.hpp>
 #include <string>
+#include <map>
+
 using namespace std;
 
 class FontRendererGlfw : public FontRenderer
 {
+	class Character
+	{
+		GLuint textureID;
+		glm::ivec2 size;
+		glm::ivec2 bearing;
+		GLuint advance;
+	};
+
 	public:
 		static FontRenderer* factory(string& data);
 
@@ -23,5 +36,8 @@ class FontRendererGlfw : public FontRenderer
 	private:
 		void* font;
 		int font_height;
+		map<char, Character> mCharacters;
+		GLShader shader;
+		GLuint VAO, VBO;
 };
 

@@ -28,6 +28,7 @@ You'll need to instal libglew
 Kubuntu dependencies
 sudo apt-get install libglew-dev
 sudo apt-get install freeglut3-dev
+sudo apt-get install libfreetype6-dev
 sudo apt-get install libsfml-dev
 sudo apt-get install libglfw3-dev
 

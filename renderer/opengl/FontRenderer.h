@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   FontRenderer.h
  * Author: francois
  *
@@ -12,13 +12,15 @@
 
 using namespace std;
 
+// TODO ugly
 extern string getWord(string& s, const string &sSeparators = " ");
+
 class FontRenderer
 {
 	public:
 
 		/**
-		 * 
+		 *
 		 * @param data
 		 * @return a font renderer (always not null)
 		 */
@@ -27,7 +29,7 @@ class FontRenderer
 		virtual void render(int x, int y, const string& text) const=0;
 
 		virtual int height() const { return font_height; } // TODO ugly
-		
+
 	protected:
 
 		int font_height;

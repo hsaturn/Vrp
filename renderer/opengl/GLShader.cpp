@@ -6,6 +6,7 @@
 #include <vector>
 #include <algorithm>
 
+class glCreateShader;
 map<string, GLuint> GLShader::shaders;
 
 std::string GLShader::readFile(string filePath)

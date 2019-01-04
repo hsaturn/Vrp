@@ -1,17 +1,20 @@
-/* 
+/*
  * File:   FontRenderer.cpp
  * Author: francois
- * 
+ *
  */
 
+#include <iostream>
 #include "Color.h"
 #include "FontRendererGlfw.h"
+#include <freetype2/ft2build.h>
+
 FontRenderer* FontRendererGlfw::factory(string& data)
 {
 	FontRendererGlfw* pFont=new FontRendererGlfw;
-	
+
 	pFont->font=0;
-		
+
 	string data2(data);
 	string font = getWord(data2);
 	string size = getWord(data2);
@@ -55,14 +58,14 @@ FontRenderer* FontRendererGlfw::factory(string& data)
 	{
 		// TODO pFont->font=GLUT_BITMAP_TIMES_ROMAN_10;
 		pFont->font_height = 10;
-		
+
 		if (size=="24")
 		{
 			// TODO pFont->font=GLUT_BITMAP_TIMES_ROMAN_24;
 			pFont->font_height=24;
 		}
 	}
-		
+
 		if (pFont->font == 0)
 	{
 		// Default font
@@ -73,7 +76,7 @@ FontRenderer* FontRendererGlfw::factory(string& data)
 	{
 		data=data2;
 	}
-	
+
 	return pFont;
 }
 

@@ -21,7 +21,7 @@ BUILD_DIR=build
 OBJS=$(addprefix $(BUILD_DIR)/,$(SRCE:.cpp=.o))
 DEPS=$(addprefix $(BUILD_DIR)/,$(SRCE:.cpp=.d))
 INC_DIRS=core core/widgets core/genetic ../SaturnLib/include
-INCLUDES:=$(addprefix -I,$(INC_DIRS))
+INCLUDES:=$(addprefix -I,$(INC_DIRS)) -I/usr/include/freetype2
 
 .PHONY:	build_dir
 
