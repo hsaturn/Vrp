@@ -26,7 +26,9 @@ public:
 	static Application* buildInstance(const string& sClass, string&);
 
 	static bool destroyInstance(const string& name);
-
+   
+   static bool destroyAll();
+   
 	static Application* getInstance(const string& name);
 
 	static Application::ExecResult execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);

@@ -48,8 +48,7 @@ namespace slicer
 
 		SlicerApp(const SlicerApp& orig);
 
-		Printer* printer;
-
+		Printer* printer = nullptr;
 	};
 }
 

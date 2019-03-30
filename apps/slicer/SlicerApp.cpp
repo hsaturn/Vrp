@@ -8,7 +8,7 @@ namespace slicer
 	SlicerApp::SlicerAppBuilder SlicerApp::builder;
 	
 	SlicerApp::SlicerApp(const string& name, string& incoming)
-	: Application(name), printer(0)
+	: Application(name)
 	{
 	}
 	

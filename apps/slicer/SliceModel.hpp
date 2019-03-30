@@ -26,7 +26,7 @@ class SliceModel
 {
   public:
 	SliceModel(const Model*);
-	SliceModel(const SliceModel& orig);
+	SliceModel(const SliceModel& orig)  = delete;
 	virtual ~SliceModel() {};
 	
 	Application::ExecResult load(string& incoming);

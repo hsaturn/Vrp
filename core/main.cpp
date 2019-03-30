@@ -190,6 +190,7 @@ bool run(const string& sFileName)
 
 void reboot()
 {
+   ApplicationBuilder::destroyAll();
 	macros.clear();
 	Widget::clear();
 
