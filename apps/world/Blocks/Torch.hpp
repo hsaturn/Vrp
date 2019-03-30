@@ -18,7 +18,7 @@ namespace World {
 		Torch(string &incoming);
 		~Torch() override {}
 		
-		void render(Coord c, const World*) override;
+		void render(Coord c, const WorldApp*) override;
 		
 	private:
 		Torch(const Torch& orig);

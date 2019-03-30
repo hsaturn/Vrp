@@ -21,7 +21,7 @@ public:
 	Solid(string& incoming);
 	~Solid() override {}
 	
-	void render(Coord c, const World*) override;
+	void render(Coord c, const WorldApp*) override;
 
 private:
 	Solid(const Solid& orig);

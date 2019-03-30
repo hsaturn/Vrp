@@ -27,14 +27,14 @@ namespace slicer
 {
 	class Printer;
 
-	class Slicer : public Application
+	class SlicerApp : public Application
 	{
-		APPLICATION_BUILDER("slicer", Slicer);
+		APPLICATION_BUILDER("slicer", SlicerApp);
 		
 	  public:
-		Slicer(const string& name, string &incoming);
+		SlicerApp(const string& name, string &incoming);
 		void init() override;
-		~Slicer() override;
+		~SlicerApp() override;
 
 		bool _render(bool resetTimer) override;
 		Application::ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&) override;
@@ -46,9 +46,7 @@ namespace slicer
 
 		bool slice();
 
-		static SlicerBuilder appclass;
-
-		Slicer(const Slicer& orig);
+		SlicerApp(const SlicerApp& orig);
 
 		Printer* printer;
 

@@ -51,7 +51,6 @@ protected:
 
 private:
 	container mcont;
-	static GalaxyBuilder builder;
 };
 
 #endif	/* GALAXY_HPP */

@@ -11,7 +11,7 @@
 #include <Coord.hpp>
 
 namespace World {
-	class World;
+	class WorldApp;
 
 	// A block is rendered at coord c
 	// from c.x, c.y, c.z to c.x+1, c.y+1, c.z+1
@@ -37,7 +37,7 @@ namespace World {
 		// Draw a simple cube
 		void cubeRender(const Coord &c, bool borders = false) const;
 
-		virtual void render(Coord c, const World*) = 0;
+		virtual void render(Coord c, const WorldApp*) = 0;
 
 	private:
 

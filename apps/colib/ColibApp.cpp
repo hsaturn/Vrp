@@ -7,7 +7,7 @@
 
 #include <fstream>
 
-#include "Colib.hpp"
+#include "ColibApp.hpp"
 #include "StringUtil.hpp"
 #include "Bati.hpp"
 #include "Navette.hpp"
@@ -24,22 +24,22 @@ namespace Colib
 	int vert=0;
 	bool back=true;
 		
-	Colib::ColibBuilder Colib::builder;
-	bool Colib::gRenderBoundingBoxes=false;
+	ColibApp::ColibBuilder ColibApp::builder;
+	bool ColibApp::gRenderBoundingBoxes=false;
 	
-	Application* Colib::ColibBuilder::build(const string& name, string& incoming)
+	Application* ColibApp::ColibBuilder::build(const string& name, string& incoming)
 	{
-		Colib* pcolib;
+		ColibApp* pcolib;
 		string sheight = StringUtil::getWord(incoming);
 		if (StringUtil::is_integer(sheight))
 		{
-			 pcolib = new Colib(name, atoi(sheight.c_str()));
+			 pcolib = new ColibApp(name, atoi(sheight.c_str()));
 			 cout << sheight << " is int." << endl;
 		}
 		else
 		{
 			cout << "Reading colib from file " << sheight << endl;
-			pcolib = new Colib(name, 200);
+			pcolib = new ColibApp(name, 200);
 			if (!pcolib->restore(sheight))
 			{
 				delete pcolib;
@@ -51,7 +51,7 @@ namespace Colib
 		return pcolib;
 	}
 	
-	Colib::Colib(const string& name, int initial_height)
+	ColibApp::ColibApp(const string& name, int initial_height)
 	: Application(name), height(initial_height)
 	{
 		last_ready = false;
@@ -69,13 +69,13 @@ namespace Colib
 		bati = new Bati(this);
 	}
 	
-	Colib::~Colib()
+	ColibApp::~ColibApp()
 	{
 		cout << "DELETING COLIB" << endl;
 		delete bati;
 	}
 
-	bool Colib::_render(bool resetTimer)
+	bool ColibApp::_render(bool resetTimer)
 	{
 		glPushMatrix();
 		glTranslatef(width_x/2,0,length_z/2);
@@ -130,7 +130,7 @@ namespace Colib
 		return brender;
 	}
 	
-	void Colib::renderColumns(vector<Column*>& columns, int x1, bool bCloisons)
+	void ColibApp::renderColumns(vector<Column*>& columns, int x1, bool bCloisons)
 	{
 		if (columns.size())
 		{
@@ -191,7 +191,7 @@ namespace Colib
 		}
 	}
 
-	Application::ExecResult Colib::_execute(Server* server, string cmd, string incoming, const string& org, CmdQueue&)
+	Application::ExecResult ColibApp::_execute(Server* server, string cmd, string incoming, const string& org, CmdQueue&)
 	{
 		string error="";
 		ExecResult ret = EXEC_OK;
@@ -447,20 +447,20 @@ namespace Colib
 		return ret;
 	}
 	
-	void Colib::center()
+	void ColibApp::center()
 	{
 		setVar("dx" , -width_x/20);
 		setVar("dz", -length_z/20);
 		cout << "dx=" << -width_x/20 << ", dz=" << -length_z/20 << endl;
 	}
 	
-	void Colib::autosave()
+	void ColibApp::autosave()
 	{
 		if (getString("autosave")=="on")
 			save(getString("last_save"));
 	}
 	
-	bool Colib::save(string file)
+	bool ColibApp::save(string file)
 	{
 		if (file.length())
 		{
@@ -481,7 +481,7 @@ namespace Colib
 		return false;
 	}
 	
-	bool Colib::restore(string file)
+	bool ColibApp::restore(string file)
 	{
 		try
 		{
@@ -535,7 +535,7 @@ namespace Colib
 	}
 	
 	
-	void Colib::_help(Help& help)
+	void ColibApp::_help(Help& help)
 	{
 		help.add("go column, height%");
 		help.add("next/prev col/cell/side");
@@ -550,7 +550,7 @@ namespace Colib
 		help.add("add [back|front] size");
 	}
 	
-	Column* Colib::getColumn(unsigned int nr, bool back) const
+	Column* ColibApp::getColumn(unsigned int nr, bool back) const
 	{
 		const vector<Column*>* p = (back ? &columns_back : &columns_front);
 		if (nr<p->size())
@@ -576,14 +576,14 @@ namespace Colib
 		return length;
 	}
 	
-	int Colib::getHeight(unsigned int etage) const
+	int ColibApp::getHeight(unsigned int etage) const
 	{
 		if (etage<heights.size())
 			return heights[etage];
 		return -1;
 	}
 	
-	float Colib::getCenterOfColumnX(bool back) const
+	float ColibApp::getCenterOfColumnX(bool back) const
 	{
 		float x = 0;
 		if (!back)
@@ -592,7 +592,7 @@ namespace Colib
 	}
 
 	
-	float Colib::getCenterOfColumnZ(unsigned int col_nr, bool back) const
+	float ColibApp::getCenterOfColumnZ(unsigned int col_nr, bool back) const
 	{
 		const vector<Column*>* pcolumns;
 		
@@ -624,7 +624,7 @@ namespace Colib
 	}
 
 	
-	void Colib::sizeHasChanged() {
+	void ColibApp::sizeHasChanged() {
 		int widths = 2;
 		// length = colCount*COL_WIDTH+(colCount-1)*Cloison::THICKNESS;
 		
@@ -660,7 +660,7 @@ namespace Colib
 			center();
 	}
 	
-	const char* Colib::collideVertical(int h1, int h2, bool back) const
+	const char* ColibApp::collideVertical(int h1, int h2, bool back) const
 	{
 		const char* reason = 0;
 		//  @todo /back & forbidden area (guichet)

@@ -8,14 +8,14 @@
 
 using namespace std;
 
-class Cube : public Application
+class CubeApp : public Application
 {
-	APPLICATION_BUILDER("cube", Cube);
+	APPLICATION_BUILDER("cube", CubeApp);
 
   public:
-	Cube(const string& name, string& incoming);
+	CubeApp(const string& name, string& incoming);
 
-	~Cube() override { }
+	~CubeApp() override { }
 
 
 	void renderFlat(float size = 0.7);
@@ -120,8 +120,6 @@ class Cube : public Application
 	bool flat;
 	float flatx, flaty, flatz, flats;
 
-
-	static CubeBuilder builder;
 	string lastState;
 };
 

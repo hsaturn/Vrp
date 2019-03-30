@@ -117,7 +117,8 @@ class Application : public Renderable
 				wclass##Builder() : ApplicationBuilder(appname) {}\
 				Application* build(const string& name, string& incoming)\
 				{ return new wclass(name, incoming); }\
-		};
+		}; \
+		static wclass##Builder builder;
 
 
 extern const Color* getColor(string& incoming);

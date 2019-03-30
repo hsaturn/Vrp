@@ -10,7 +10,7 @@
 #include <list>
 
 #include <X11/Xlib.h>
-#include <apps/Cube/Cube.h>
+#include <apps/Cube/CubeApp.h>
 #include <GLFW/glfw3.h>
 #include <GL/glew.h>
 #include <Server.h>
@@ -115,9 +115,9 @@ float hudb = hudb_org;
 
 map<string, string> macros;
 
-Cube* getCube()
+CubeApp* getCube()
 {
-	return (Cube*) ApplicationBuilder::getInstance("cube");
+	return (CubeApp*) ApplicationBuilder::getInstance("cube");
 }
 
 #define cube getCube()

@@ -1,10 +1,10 @@
 #include "Column.hpp"
-#include "Colib.hpp"
+#include "ColibApp.hpp"
 
 class Model;
 namespace Colib
 {
-	Column::Column(Colib* colib, int width)
+	Column::Column(ColibApp* colib, int width)
 		:
 		mwidth_z(width),
 		pcolib(colib)
@@ -12,7 +12,7 @@ namespace Colib
 		
 	}
 	
-	Column::Column(Colib* colib, istream& in, int center_x)
+	Column::Column(ColibApp* colib, istream& in, int center_x)
 		: pcolib(colib)
 	{
 		string s;
@@ -83,7 +83,7 @@ namespace Colib
 		return true;
 	}
 	
-	bool Column::restore(Colib* pcolib, vector<Column*>& cols, istream& in, int center_x)
+	bool Column::restore(ColibApp* pcolib, vector<Column*>& cols, istream& in, int center_x)
 	{
 		for(auto it: cols)
 			delete it;

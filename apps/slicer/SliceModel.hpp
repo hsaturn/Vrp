@@ -22,7 +22,6 @@ class Model;
 namespace slicer
 {
 	
-
 class SliceModel
 {
   public:

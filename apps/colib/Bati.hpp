@@ -13,7 +13,7 @@
 
 namespace Colib
 {
-	class Colib;
+	class ColibApp;
 	class Navette;
 	class Plateau;
 	class MotorSpeedHook;
@@ -24,7 +24,7 @@ namespace Colib
 		static const int MAX_SPEED=8*FACTOR;
 		
 	public:
-		Bati(const Colib*);
+		Bati(const ColibApp*);
 		~Bati();
 		
 		/**
@@ -62,7 +62,7 @@ namespace Colib
 		 */
 		void changeSound(string incoming);
 		
-		const Colib* pcolib;
+		const ColibApp* pcolib;
 		
 	private:
 		void pilier(int x, int z);

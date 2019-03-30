@@ -23,12 +23,12 @@ using namespace std;
 namespace slicer
 {
 
-	class Slicer;
+	class SlicerApp;
 
 	class Printer : public Renderable
 	{
 	  public:
-		Printer(Slicer* parent, string config);
+		Printer(SlicerApp* parent, string config);
 		~Printer() override;
 
 		Application::ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&) override;

@@ -16,7 +16,7 @@ namespace World
 	{
 	}
 	
-	void Solid::render(Coord c, const World*)
+	void Solid::render(Coord c, const WorldApp*)
 	{
 		Color::dark_green.render();
 		

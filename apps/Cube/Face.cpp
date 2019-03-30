@@ -1,7 +1,7 @@
 #include <Face.h>
 #include <GL/glut.h>
 #include <Color.h>
-#include <Cube.h>
+#include <CubeApp.h>
 
 
 const float Face::size = 1.0;
@@ -27,7 +27,7 @@ void Face::fill(const Color c)
 		colors[i] = c;
 }
 
-void Face::renderFlat(float size, Cube* c)
+void Face::renderFlat(float size, CubeApp* c)
 {
 	size /=3.2;
 	const float coeff = 0.9;
@@ -84,7 +84,7 @@ void Face::renderFlat(float size, Cube* c)
 }
 
 
-void Face::render(Cube* c)
+void Face::render(CubeApp* c)
 {
 	int sens = epsilon();
 	const float coeff = 0.9;
@@ -212,7 +212,7 @@ bool Face::isUniform() const
 	return bUniform;
 }
 
-string Face::find(const Color* c1, const Color* c2, const Cube* cube) const
+string Face::find(const Color* c1, const Color* c2, const CubeApp* cube) const
 {
 	Color	adj[12];
 	Dir		dirs[4];
@@ -239,7 +239,7 @@ string Face::find(const Color* c1, const Color* c2, const Cube* cube) const
 	return where;
 }
 
-string Face::find(const Color* c1, const Color* c2, const Color* c3, const Cube* cube) const
+string Face::find(const Color* c1, const Color* c2, const Color* c3, const CubeApp* cube) const
 {
 	Color adj[12];
 	Dir		dirs[4];
@@ -279,7 +279,7 @@ string Face::find(const Color* c1, const Color* c2, const Color* c3, const Cube*
 	return "";
 }
 
-void Face::fillAdjacentArray(Color* nc, Dir* dirs, const Cube* cube) const
+void Face::fillAdjacentArray(Color* nc, Dir* dirs, const CubeApp* cube) const
 {
 	// 2 - Fill contour
 	switch (mDir)
@@ -444,7 +444,7 @@ void Face::swapFaces(bool left_right)
 	//colors[0]=Color::dark_gray;
 }
 
-void Face::rotateFaces(bool clockWise, Cube* cube)
+void Face::rotateFaces(bool clockWise, CubeApp* cube)
 {
 	Color nc[12];
 
@@ -593,7 +593,7 @@ void Face::rotateFaces(bool clockWise, Cube* cube)
 	}
 }
 
-void Face::glRotateFace(int i, Cube* c)
+void Face::glRotateFace(int i, CubeApp* c)
 {
 	const Face* face1 = 0;
 	const Face* face2 = 0;
@@ -778,7 +778,7 @@ void Face::rotate(float a)
 	angle_target = a;
 }
 
-void Face::update(Cube* cube, float time)
+void Face::update(CubeApp* cube, float time)
 {
 	if (angle_target && (time>0))
 	{

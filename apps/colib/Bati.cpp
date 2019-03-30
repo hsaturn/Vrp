@@ -1,5 +1,5 @@
 #include "Bati.hpp"
-#include "Colib.hpp"
+#include "ColibApp.hpp"
 #include <Color.h>
 #include <StringUtil.hpp>
 #include "Navette.hpp"
@@ -10,7 +10,7 @@
 
 namespace Colib {
 	
-	Bati::Bati(const Colib* p)
+	Bati::Bati(const ColibApp* p)
 	:
 	pcolib(p),
 	h(0)

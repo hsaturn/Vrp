@@ -18,14 +18,14 @@ using namespace genetic;
 
 class Galaxy;
 
-class Vrp : public Application {
+class VrpApp : public Application {
 
-	APPLICATION_BUILDER("vrp", Vrp);
+	APPLICATION_BUILDER("vrp", VrpApp);
 	
 public:
-	Vrp(const string& name, string &incoming);
+	VrpApp(const string& name, string &incoming);
 
-	~Vrp() override {}
+	~VrpApp() override {}
 
 	bool _render(bool resetTimer) override;
 	Application::ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&) override;
@@ -39,9 +39,7 @@ private:
 	bool solve();
 	void reset();
 
-	Vrp(const Vrp& orig);
-
-	static VrpBuilder builder;
+	VrpApp(const VrpApp& orig);
 
 	string mgalaxyName;
 	Galaxy* galaxyPtr;	// Detect ptr modification
