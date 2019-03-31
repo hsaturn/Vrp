@@ -22,7 +22,7 @@ namespace hwidgets
 	
 	void EventHandler::dispatch(Event &e)
 	{
-		for(auto it : handlers)
+		for(const auto& it : handlers)
 		{
 			if (e.type & it.second.event_mask)
 				it.first(e);

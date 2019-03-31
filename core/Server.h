@@ -19,20 +19,23 @@ class Server
 		string getIncoming();
 
 		static void send(string);
+		typedef void (*sendListener)(const string&);
 
 		bool running() { return portno!=0; }
 		
 		void stop();
-		
-		typedef void (*sendListener)(const string&);
+      
 		static void addListener(sendListener);
 		
   private:
+     
 	
 	class ServerThread
 	{
 	  public:
-		ServerThread(Server* p, int sock) : mparent(p), msock(sock), thr(0) {}
+		ServerThread(Server* p, int sock) : mparent(p), msock(sock) {}
+      ServerThread(const ServerThread&) = delete;
+      
 		~ServerThread();
 		
 		void stop();
@@ -40,14 +43,17 @@ class Server
 		void send(string);
 		
 	  private:
-		static void loop(ServerThread*);
+		void loop();
+      friend class Server;
+      
 		bool isok() const;
 		
 		Server* mparent;
 		int msock;
-		std::thread*	thr;
+		std::thread*	thr = nullptr;
 		bool connect;
 	};
+   static void ServerThreadLoop(ServerThread*);
 	
   protected:
 	void remove(ServerThread*);
@@ -56,10 +62,10 @@ class Server
 		mutex	mtx;
 		void run();
 		string sIncoming;
-		atomic<int>		portno;
+		atomic<int>    portno;
 		int sockfd;
 		int newsockfd;
-		std::thread*	thr;
+		std::thread*   thr;
 
 		static void thread(Server*);
 		static list<ServerThread*> threads;

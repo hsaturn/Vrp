@@ -589,8 +589,10 @@ void CubeApp::_help(Help& help) {
 	help.add("reset");
 
 	stringstream builder;
-	for(auto s: patterns)
-		builder << s.first << ' ';
+   
+	for(const auto& [pattern_name, pattern]: patterns)
+		builder << pattern_name << ' ';
+   
 	help.add(builder.str());
 }
 

@@ -609,7 +609,7 @@ namespace Colib
 		}
 
 		float z = Bati::THICKNESS;
-		for(auto column: *pcolumns)
+		for(const auto& column: *pcolumns)
 		{
 			if (col_nr==0)
 			{

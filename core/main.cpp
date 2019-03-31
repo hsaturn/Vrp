@@ -185,6 +185,11 @@ bool run(const string& sFileName)
 		}
 		cmdQueue.push_back("echo END OF SCRIPT: " + sFileName);
 	}
+   else
+   {
+      cmdQueue.push_back("echo ERROR WITH SCRIPT: " + sFileName);
+      cerr << "run: Unable to open [" << sFileName << "]" << endl;
+   }
 	return ret;
 }
 
@@ -274,9 +279,9 @@ void onclose()
 {
 	delete server;
 	server = 0;
-	for (auto it = exec_list.begin(); it != exec_list.end(); it++)
-		if ((*it)->thr->joinable())
-			(*it)->thr->join();
+   for(thr_info* thread_info : exec_list)
+      if (thread_info->thr->joinable())
+         thread_info->thr->join();
 }
 
 void drawText(const char * message)
@@ -647,14 +652,14 @@ void update(int value)
 				int count=0;
 				// TODO modify widget with new help style
 				Widget::help(incoming);
-				for (auto it : help.get())
-				{
-					if (incoming.length()==0 || it.first.find(incoming)!=string::npos)
+            for (const auto& help_item : help.get())
+            {
+					if (incoming.length()==0 || help_item.find(incoming)!=string::npos)
 					{
 						count++;
-						server->send(it.first);
+						server->send(help_item);
 					}
-				}
+            }
 				if (count==0)
 					server->send("No other help on '"+incoming+"'");
 
@@ -850,9 +855,7 @@ void update(int value)
 			{
 				cout << "QUIT !" << endl;
 				server->stop();
-				usleep(1000000);
-
-				onclose();
+            exit(1);
 			}
 			else if (cmd == "reboot")
 			{

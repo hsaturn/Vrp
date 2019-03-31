@@ -80,7 +80,7 @@ Galaxy::Galaxy(const string& name, string& incoming) : Application(name) {
 				if (Random::rand1() > 0.85)
 					t->setRing(new RainbowRing());
 				tries = 0;
-				mcont.push_back(t);
+				planets.push_back(t);
 				num_planets--;
 			}
 		}
@@ -90,12 +90,12 @@ Galaxy::Galaxy(const string& name, string& incoming) : Application(name) {
 		cerr << "EXCEPTION :-(" << flush << endl;
 	}
 
-	cout << "New galaxy created, number of planets : " << mcont.size() << endl;
+	cout << "New galaxy created, number of planets : " << planets.size() << endl;
 }
 
 Planet* Galaxy::getRandomPlanet() const {
 	if (size())
-		return mcont[rand() % size()];
+		return planets[rand() % size()];
 	else
 		return 0;
 }
@@ -104,7 +104,7 @@ const Planet* Galaxy::nearestPlanet(const Point& pos, float& computedDistance) {
 	const Planet* nearest = 0;
 	computedDistance = 9.99e9;
 
-	for (const Planet* p : mcont) {
+	for (const Planet* p : planets) {
 		float d = pos.distance(p->pos());
 		if (d < computedDistance) {
 			nearest = p;
@@ -128,7 +128,7 @@ bool Galaxy::_render(bool resetTimer) {
 const Planet* Galaxy::getPlanet(const string& planetName) const
 {
 	cout << "Searching planet (" << planetName << ")" << endl;
-	for(Planet* p: mcont)
+	for(const Planet* p: planets)
 		if (p->getName()==planetName)
 			return p;
 	return 0;

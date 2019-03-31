@@ -9,17 +9,18 @@
 #define	HELP_H
 
 #include <string>
-#include <map>
+#include <set>
 
 using namespace std;
 
 class Help {
 public:
-	typedef map<string,int> container;
+	typedef set<string> container;
 	Help(){};
 	
-	void add(string s) { m[s]=1; }
+	void add(string s) { m.insert(s); }
 	const container& get() const { return m; }
+  
 private:
 	Help(const Help& orig);
 	container m;
