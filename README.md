@@ -1,4 +1,4 @@
-# Opengl application with remote server control
+ # Opengl application with remote server control
   This piece of software is hard to describe.
 
   It was initially a rubik's cube solver written for the challenge.
@@ -61,7 +61,7 @@ We will there delete all running objects (created by startup.cub for example)
 Then we can create a new galaxy
 
 > new galaxy
-# OK new galaxy : galaxy  <- The name of the object created
+ # OK new galaxy : galaxy  <- The name of the object created
 
 Now create a vrp and connect it to the previous object
 
@@ -80,7 +80,7 @@ First, let move and scale the previous galaxy
 Then create a new (sphere or flat) galaxy
 
 > new galaxy sphere 100
-# OK new galaxy : galaxy_1
+ # OK new galaxy : galaxy_1
 > galaxy_1.scale=0.5
 > galaxy_1.dx=-20
 
@@ -88,7 +88,7 @@ Create a new vrp and attach it to galaxy_1
 this vrp will have another solve initial algorithm (smart)
 
 > new vrp galaxy_1 smart
-# OK new vrp : vrp_1
+ # OK new vrp : vrp_1
 > vrp_1.solve
 
 Just for fun
