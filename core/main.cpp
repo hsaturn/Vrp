@@ -324,8 +324,6 @@ void drawHud()
 		glLoadIdentity();
 		glOrtho(0.0, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0, -1.0, 10.0);
 		glMatrixMode(GL_MODELVIEW);
-		//glPushMatrix();        ----Not sure if I need this
-		glLoadIdentity();
 		glTranslatef(translateX, translateY,translateZ);
 
 		glDisable(GL_CULL_FACE);
@@ -338,12 +336,13 @@ void drawHud()
 		glTranslatef(0, 0, 1.0);
 
 		glRasterPos2f(2, SCREEN_HEIGHT - 2);
-		glPushMatrix();
+		//glPushMatrix();
 		ApplicationBuilder::renderHud();
 		glPopMatrix();
 
-		glTranslatef(0, 0, -1.0);
+		//glTranslatef(0, 0, -1.0);
 	}
+   glPushMatrix();
 	glLoadIdentity();
 	long redisplay = Widget::renderAll();
 	if (redisplay)
@@ -374,7 +373,7 @@ void drawScene(GLFWwindow* window)
 	if (light.render())
 		redisplayAsked = true;
 
-    arcball_rotate();
+   arcball_rotate();
 	axis.render();
 
 	if (material)
@@ -406,7 +405,6 @@ void drawScene(GLFWwindow* window)
 		redisplayAsked |= !ambientColor.isReady();
 		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor.getFloatArray());
 	}
-
 
 	// Tentative désespérée de réflection ...
 #if REFLEXION
@@ -935,6 +933,7 @@ glm::vec3 get_arcball_vector(int x, int y) {
     P = glm::normalize(P);  // nearest point
   return P;
 }
+
 
 void glfw_error_callback(int error, const char* desc)
 {

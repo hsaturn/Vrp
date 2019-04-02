@@ -176,8 +176,8 @@ namespace hwidgets
 		else
 			Color::white.render();
 
+      glPushMatrix();
 		glTranslatef(0.0, 0.0, 1.0);
-
 
 		font->render(x, y, cmdt);
 		y -= font->height();
@@ -244,7 +244,7 @@ namespace hwidgets
 
 			y -= font->height();
 		}
-		glTranslatef(0.0, 0.0, -1.0);
+		glPopMatrix();
 
 		return 200;
 	}

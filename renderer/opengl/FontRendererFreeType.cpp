@@ -115,6 +115,16 @@ FontRenderer* FontRendererFreeType::factory(string& data)
    initGl();
    
    const string fontName(getWord(data));
+   const string fontSize(getWord(data));
+   
+   if (atoi(fontSize.c_str())==0)
+   {
+      cerr << "Error in Font size (" << fontName << ',' << fontSize << ")" << endl;
+   }
+   else
+   {
+      pRenderer->font_height = atoi(fontSize.c_str());
+   }
    
    pRenderer->face = loadFont(fontName);
    
@@ -127,27 +137,71 @@ FontRendererFreeType::FontRendererFreeType()
 {
    
 }
-
-void FontRendererFreeType::render(int x, int y, const string& text) const
+   class xy
+   {
+   public:
+      xy() = default;
+      xy(int x, int y):mx(x), my(y){}
+      bool operator==(const xy& right)
+      {
+         return right.mx==mx && right.my==my;
+      }
+   private:
+      int mx;
+      int my;
+   };
+void FontRendererFreeType::render(int xx, int yy, const string& text) const
 {
-   if (face == nullptr) return;
-   if (shader == 0) return;
+
+   static unordered_map<string, xy> previous;
+   if (previous.find(text) == previous.end())
+   {
+      previous[text] = xy(xx,yy);
+      cout << xx << '-' << yy << " : (" << text << ')' << endl;
+   }
+   
+   static int frames=0;
+   if (frames++<100)
+   {
+      return;
+   }
+   frames=0;
+   if (face == nullptr || shader==0)
+   {
+      cerr << "Face or Shader == 0 " << endl;
+      return;
+   }
+   
+   glPushMatrix();
+   glLoadIdentity();
+   glUseProgram(shader);
    
    extern int SCREEN_WIDTH;
    extern int SCREEN_HEIGHT;
    
-   // TODO multiply by real font size
-   float sx= 8.0 * 2.0 / (float)SCREEN_WIDTH;
-   float sy = 15.0 *  2.0 / (float)SCREEN_HEIGHT;
-
-
-	FT_GlyphSlot g = (*face)->glyph;
+   float sx= 2.0 / (float)SCREEN_WIDTH;
+   float sy = 2.0 / (float)SCREEN_HEIGHT;
+   float x=xx * sx -1;
+   float y=yy * sy -1;
+   
+   // TODO VRAC
+   glGetError();
+   glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+   
+   GLfloat black[4] = { 0, 0, 0, 1 };
+   GLfloat white[4] = { 1, 1, 1, 1 };
+   FT_Set_Pixel_Sizes(*face, 0, font_height); // TODO
+	glUniform4fv(uniform_color, 1, white);
+   
+   FT_GlyphSlot g = (*face)->glyph;
 
 	/* Create a texture that will be used to hold one "glyph" */
 	GLuint tex;
 
 	glActiveTexture(GL_TEXTURE0);
 	glGenTextures(1, &tex);
+   glDisable(GL_DEPTH_TEST);
 	glBindTexture(GL_TEXTURE_2D, tex);
 	glUniform1i(uniform_tex, 0);
 
@@ -178,7 +232,7 @@ void FontRendererFreeType::render(int x, int y, const string& text) const
       
 		/* Calculate the vertex and texture coordinates */
 		float x2 = x + g->bitmap_left * sx;
-		float y2 = -y - g->bitmap_top * sy;
+		float y2 = y - g->bitmap_top * sy;
 		float w = g->bitmap.width * sx;
 		float h = g->bitmap.rows * sy;
 
@@ -200,4 +254,11 @@ void FontRendererFreeType::render(int x, int y, const string& text) const
 
 	glDisableVertexAttribArray(attribute_coord);
 	glDeleteTextures(1, &tex);
+   glUseProgram(0);
+   glPopMatrix();
+   auto er=glGetError();
+   if (er)
+   {
+      cerr << "ERR GL : " << er << endl;
+   }
 }

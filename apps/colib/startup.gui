@@ -45,11 +45,11 @@ var quality=10
 # world.scale=10
 # world.read ouessant.txt
 
-# light on
+light on
 
-# angley 90
-# anglex -10
-# translate y -1.2
+angley 90
+anglex -10
+translate y -1.2
 
 //new colib machine
 //colib.center
