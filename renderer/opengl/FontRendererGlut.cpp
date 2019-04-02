@@ -7,7 +7,6 @@
 
 #include "Color.h"
 #include <GL/freeglut_std.h>
-
 #include "FontRendererGlut.h"
 
 FontRenderer* FontRendererGlut::factory(string& data)

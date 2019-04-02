@@ -31,6 +31,7 @@
 #include "Background.h"
 #include "Help.h"
 #include "EventHandler.hpp"
+#include "FontRenderer.h"
 #include <Widget.h>
 #include <EventGlfw.hpp>
 
@@ -637,6 +638,7 @@ void update(int value)
 				help.add("new {object}");
 				help.add("macro");
 				help.add("quit");
+            help.add("font_path");  // TODO, should be in font renderer class
 				help.add("reboot");
 				help.add("scale s");
 				help.add("screen x y");
@@ -849,6 +851,10 @@ void update(int value)
 				if (a == "y")
 					animy = getFloat(incoming);
 			}
+         else if (cmd == "font_path")
+         {
+            FontRenderer::setFontPath(incoming);
+         }
 			else if (cmd == "quit")
 			{
 				cout << "QUIT !" << endl;

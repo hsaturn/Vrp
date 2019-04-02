@@ -12,6 +12,7 @@
 #include "Draggable.hpp"
 #include "Event.hpp"
 #include "WidRect.hpp"
+#include "Object.h" //  TODO for getWord :-(
 
 namespace hwidgets
 {

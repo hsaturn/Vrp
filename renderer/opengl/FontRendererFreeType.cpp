@@ -12,6 +12,7 @@
 
 #include <unordered_map>
 #include <iostream>
+#include <freetype2/freetype/ftimage.h>
 
 using namespace std;
 
@@ -86,19 +87,28 @@ void FontRendererFreeType::initGl()
 
 FT_Face* FontRendererFreeType::loadFont(const string& fontName)
 {
+   static string defaultFont="data/fonts/FreeSans.ttf";
+   
    auto it=faces.find(fontName);
    if (it != faces.end())
    {
       return &(it->second);
    }
-   string fontFile = "data/fonts/"+fontName+".ttf";
+   string fontFile = fontPath + fontName+".ttf";
    
    if (FT_New_Face(ft, fontFile.c_str(), 0, &faces[fontName]))
    {
       cerr << "Unable to open font " << fontFile << endl;
-      auto it=faces.find(fontName);
-      faces.erase(it);
-      return nullptr;
+      if (FT_New_Face(ft, defaultFont.c_str(), 0, &faces[fontName]))
+      {
+         auto it=faces.find(fontName);
+         faces.erase(it);
+         return nullptr;
+      }
+      else
+      {
+         cerr << "... loading default font instead." << endl;
+      }
    }
    else
    {
@@ -146,29 +156,24 @@ FontRendererFreeType::FontRendererFreeType()
       {
          return right.mx==mx && right.my==my;
       }
+      bool operator!=(const xy& right)
+      {
+         return !operator==(right);
+      }
    private:
       int mx;
       int my;
    };
 void FontRendererFreeType::render(int xx, int yy, const string& text) const
 {
-
-   static unordered_map<string, xy> previous;
-   if (previous.find(text) == previous.end())
-   {
-      previous[text] = xy(xx,yy);
-      cout << xx << '-' << yy << " : (" << text << ')' << endl;
-   }
-   
-   static int frames=0;
-   if (frames++<100)
-   {
-      return;
-   }
-   frames=0;
    if (face == nullptr || shader==0)
    {
-      cerr << "Face or Shader == 0 " << endl;
+      static bool printed=false;
+      if (printed==false)
+      {
+         printed=true;
+         cerr << "ERROR: FontRenderer Face or Shader == 0 " << endl;
+      }
       return;
    }
    

@@ -33,7 +33,8 @@ screen 800 600
 event filter mousemove mouseup resize
 var c=off
 var _cmdline=
-widget console main 2%,70% 96%,25% #F804 white #AAAA freetype FreeSans 15
+font_path /usr/share/fonts/truetype
+widget console main 2%,70% 96%,25% #F804 white #AAAA freetype noto/NotoSansMono-Regulzar 11
 translate 0 0 0
 # new galaxy flat 10
 
@@ -54,8 +55,8 @@ var quality=10
 //new colib machine
 //colib.center
 
-new slicer test.sql
-load colored_cube_high
+#new slicer test.sql
+#load colored_cube_high
 //load singe
 slicer.scale=10
 axis

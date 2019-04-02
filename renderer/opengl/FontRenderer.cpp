@@ -12,6 +12,16 @@
 #include "FontRendererGlfw.h"
 #include "FontRendererFreeType.h"
 
+string FontRenderer::fontPath = "data/fonts/";
+
+void FontRenderer::setFontPath(string& data)
+{
+   if (data.length() && data[data.length()-1]!='/')
+      data += '/';
+   fontPath = data;
+   data="";
+}
+
 FontRenderer* FontRenderer::factory(string& data)
 {
    const string font_renderer_type(getWord(data));
