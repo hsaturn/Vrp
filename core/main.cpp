@@ -239,8 +239,6 @@ void handleResize(GLFWwindow* window, int w, int h)
 
 void initRendering()
 {
-	glEnable(GL_DEPTH_TEST);
-
 	//	float lpos[] = { 50, 50, 50, 0 };
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_COLOR_MATERIAL);
@@ -365,6 +363,7 @@ void drawScene(GLFWwindow* window)
 	/*if (!server->running())
 	  exit(1);
 	 */
+   glEnable(GL_DEPTH_TEST);
 	glMateriali(GL_FRONT_AND_BACK,GL_SHININESS,10);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
