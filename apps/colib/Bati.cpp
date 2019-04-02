@@ -85,7 +85,7 @@ namespace Colib {
 	}
 
 	bool Bati::render() {
-		glUseProgram(GLShader::loadGlsl("phong"));
+		glUseProgram(GLShader::loadGlsl("phong"));   // TODO : perf !
 		Color::red.render();
 		h.update();
 		

@@ -77,7 +77,7 @@ GLuint GLShader::load(string vertex_path, string fragment_path, string key)
 		if (fragment_path.length() == 0)
 			fragment_path = vertex_path + ".frag";
 		else
-			fragment_path = vertex_path + ".frag";
+			fragment_path = vertex_path + ".frag"; // TODO Heu ... LOL
 		vertex_path = vertex_path + ".vert";
 	}
 	else if (key.length() == 0)
@@ -87,6 +87,7 @@ GLuint GLShader::load(string vertex_path, string fragment_path, string key)
 		return shaders[key];
 
 	// Read shaders
+   cout << "  " << vertex_path << endl << "  " << fragment_path << endl;
 	std::string vertShaderStr = readFile(vertex_path);
 	std::string fragShaderStr = readFile(fragment_path);
 
@@ -97,7 +98,7 @@ GLuint GLShader::load(string vertex_path, string fragment_path, string key)
 	int logLength;
 
 	// Compile vertex shader
-	std::cout << "Compiling vertex shader " << key << vertex_path << std::endl;
+	std::cout << "Compiling vertex shader " << key << ':' << vertex_path << std::endl;
 	glShaderSource(vertShader, 1, &vertShaderSrc, NULL);
 	glCompileShader(vertShader);
 

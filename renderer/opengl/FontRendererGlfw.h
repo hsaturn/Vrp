@@ -31,11 +31,8 @@ class FontRendererGlfw : public FontRenderer
 
 		virtual void render(int x, int y, const string& text) const override;
 
-		virtual int height() const { return font_height; }
-
 	private:
 		void* font;
-		int font_height;
 		map<char, Character> mCharacters;
 		GLShader shader;
 		GLuint VAO, VBO;
