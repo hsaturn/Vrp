@@ -43,8 +43,8 @@ const string& Vars::getString(const string& name, const string &dflt) const
 
 void Vars::iterate(function<void(const string&, const string&)> hook)
 {
-	for(auto it: mapVars)
-		hook(it.first, it.second);
+	for(const auto& [name, value]: mapVars)
+		hook(name, value);
 }
 
 bool Vars::save(ostream& out) const

@@ -7,7 +7,6 @@
 
 #include "Background.h"
 #include <iostream>
-#include <GL/glew.h>
 #include "Random.hpp"
 #include "Color.h"
 #include <map>

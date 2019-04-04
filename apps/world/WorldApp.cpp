@@ -5,10 +5,9 @@
  * Created on 5 avril 2016, 20:47
  */
 
-#include <GL/glew.h>
 
 #include "Blocks/blocks.hpp"
-#include "World.hpp"
+#include "WorldApp.hpp"
 #include "StringUtil.hpp"
 #include "Map.h"
 
@@ -17,9 +16,9 @@ namespace World
 	int X=4;
 	int Z=4;
 
-	World::WorldBuilder World::builder;
+	WorldApp::WorldAppBuilder WorldApp::builder;
 	
-	World::World(const string& name, string &incoming)
+	WorldApp::WorldApp(const string& name, string &incoming)
 	: Application(name)
 	{
 		int width = StringUtil::getLong(incoming);
@@ -38,19 +37,19 @@ namespace World
 		cerr << "WORLD scale = " << scale << endl;
 	}
 	
-	World::~World()
+	WorldApp::~WorldApp()
 	{
 		delete m_map;
 	}
 
-	bool World::_render(bool resetTimer)
+	bool WorldApp::_render(bool resetTimer)
 	{
 		bool bRet;
 		bRet = m_map->render();
 		return bRet;
 	}
 	
-	Application::ExecResult World::_execute(Server*, string cmd, string incoming, const string& org, CmdQueue&)
+	Application::ExecResult WorldApp::_execute(Server*, string cmd, string incoming, const string& org, CmdQueue&)
 	{
 		ExecResult ret = EXEC_UNKNOWN;
 		
@@ -64,7 +63,7 @@ namespace World
 		return ret;
 	}
 	
-	void World::_help(Help& help)
+	void WorldApp::_help(Help& help)
 	{
 		//help.add("world.add block_type ...");
 	}

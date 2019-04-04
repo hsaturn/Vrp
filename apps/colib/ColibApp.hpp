@@ -10,7 +10,6 @@
 
 #include <Object.h>
 #include <ObjectBuilder.hpp>
-#include <GL/glew.h>
 #include "Coord.hpp"
 #include <string>
 #include <map>
@@ -35,7 +34,7 @@ namespace Colib {
 	class Bati;
 	class Column;
 	
-	class Colib : public Application {
+	class ColibApp : public Application {
 
 		class ColibBuilder : public ApplicationBuilder {
 		public:
@@ -56,9 +55,9 @@ namespace Colib {
 	public:
 		static const int CLO_THICK=2;	// Epaisseur cloison en cm
 		
-		Colib(const string &name, int height);
+		ColibApp(const string &name, int height);
 
-		~Colib() override;
+		~ColibApp() override;
 
 		bool _render(bool resetTimer) override;
 		ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);

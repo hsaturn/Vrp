@@ -30,11 +30,11 @@ public:
 	typedef container::iterator iterator;
 
 	const_iterator begin() const {
-		return mcont.begin();
+		return planets.begin();
 	}
 
 	const_iterator end() const {
-		return mcont.end();
+		return planets.end();
 	}
 
 	const Planet* nearestPlanet(const Point&, float& computedDistance);
@@ -42,7 +42,7 @@ public:
 	
 	~Galaxy() override {};
 	
-	int size() const { return mcont.size(); }
+	int size() const { return planets.size(); }
 	
 	ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&) override;
 
@@ -50,8 +50,7 @@ protected:
 	bool _render(bool resetTimer) override;
 
 private:
-	container mcont;
-	static GalaxyBuilder builder;
+	container planets;
 };
 
 #endif	/* GALAXY_HPP */

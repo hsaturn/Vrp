@@ -1,10 +1,10 @@
 #include "Column.hpp"
-#include "Colib.hpp"
+#include "ColibApp.hpp"
 
 class Model;
 namespace Colib
 {
-	Column::Column(Colib* colib, int width)
+	Column::Column(ColibApp* colib, int width)
 		:
 		mwidth_z(width),
 		pcolib(colib)
@@ -12,7 +12,7 @@ namespace Colib
 		
 	}
 	
-	Column::Column(Colib* colib, istream& in, int center_x)
+	Column::Column(ColibApp* colib, istream& in, int center_x)
 		: pcolib(colib)
 	{
 		string s;
@@ -59,16 +59,16 @@ namespace Colib
 	
 	Column::~Column()
 	{
-		for(auto it: alveoles)
-			if (it.second)
-				delete it.second;
+		for(const auto& plateau: alveoles)
+			if (plateau.second)
+				delete plateau.second;
 	}
 	
 	bool Column::save(const string name, const vector<Column*>& cols, ostream &out)
 	{
 		out << name <<  " {" << endl;
-		for(auto it : cols)
-			it->save(out);
+		for(const auto& col : cols)
+			col->save(out);
 		out << "}" << endl;
 		return true;
 	}
@@ -76,17 +76,18 @@ namespace Colib
 	bool Column::save(ostream& out) const
 	{
 		out << "  width " << mwidth_z << " { ";
-		for(auto it : alveoles)
-			if (it.second)
-				out << it.first << " " << it.second->getContent() << ' ';
+		for(const auto& [num_cellule, plateau] : alveoles)
+			if (plateau)
+				out << num_cellule << " " << plateau->getContent() << ' ';
 		out << '}' << endl;
 		return true;
 	}
 	
-	bool Column::restore(Colib* pcolib, vector<Column*>& cols, istream& in, int center_x)
+	bool Column::restore(ColibApp* pcolib, vector<Column*>& cols, istream& in, int center_x)
 	{
-		for(auto it: cols)
-			delete it;
+		for(const auto& colPtr: cols)
+			delete colPtr;
+      
 		cols.clear();
 		
 		string s;
@@ -130,14 +131,14 @@ namespace Colib
 		if (pcolib->collideVertical(h1, h2, false))		// @FIXME, false ??? we should use back flag
 			return false;
 		
-		for(auto it: alveoles)
+		for(const auto& it: alveoles)
 		{
-			Plateau* p=it.second;
-			if (p)
+			Plateau* plateau=it.second;
+			if (plateau)
 			{
 				bool collide = false;
 				int h = pcolib->getHeight(it.first);
-				int hp = h + p->getHeight();
+				int hp = h + plateau->getHeight();
 				
 				if (h >= h1 && h<=h2)
 					collide = true;
@@ -147,10 +148,10 @@ namespace Colib
 					collide = true;
 				if (collide)
 				{
-					cerr << "Collision avec le plateau de l'étage " << it.first << ", " << p->getContent() << endl;
+					cerr << "Collision avec le plateau de l'étage " << it.first << ", " << plateau->getContent() << endl;
 					return false;
 				}
-				cout << "Pas de collision avec " << p->getContent() << " " << pcolib->getHeight(it.first) << " to " << h << endl;
+				cout << "Pas de collision avec " << plateau->getContent() << " " << pcolib->getHeight(it.first) << " to " << h << endl;
 			}
 		}		
 		
@@ -178,9 +179,9 @@ namespace Colib
 
 	void Column::render(int x1, int x2, int z)
 	{
-		for(auto it: alveoles)
-			if (it.second)
-				it.second->renderAtCenter(pcolib->getHeight(it.first), z);
+		for(const auto& [cell, plateau]: alveoles)
+			if (plateau)
+				plateau->renderAtCenter(pcolib->getHeight(cell), z);
 	}
 
 }

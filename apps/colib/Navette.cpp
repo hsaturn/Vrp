@@ -1,4 +1,3 @@
-#include <GL/glew.h>
 
 #include "Navette.hpp"
 #include "Bati.hpp"
@@ -6,7 +5,7 @@
 #include "Column.hpp"
 #include "MotorSpeedHook.hpp"
 #include <StringUtil.hpp>
-#include "Colib.hpp"
+#include "ColibApp.hpp"
 #include "Wings.hpp"
 
 namespace Colib

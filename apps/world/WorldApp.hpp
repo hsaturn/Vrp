@@ -20,14 +20,14 @@ using namespace std;
 namespace World {
 
 	class Map;
-	class World : public Application {
+	class WorldApp : public Application {
 		
-		APPLICATION_BUILDER("world", World);
+		APPLICATION_BUILDER("world", WorldApp);
 
 	public:
-		World(const string &name, string& incoming);
+		WorldApp(const string &name, string& incoming);
 
-		~World() override;
+		~WorldApp() override;
 
 		bool _render(bool resetTimer);
 		ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&) override;
@@ -35,7 +35,6 @@ namespace World {
 		
 	private:
 
-		static WorldBuilder builder;
 		Map* m_map;
 	};
 }

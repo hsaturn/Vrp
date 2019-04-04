@@ -1,9 +1,8 @@
-#ifndef GLSHADER_H
-#define GLSHADER_H
+#pragma once
 
-#include "GL/glew.h"
 #include <map>
 #include <string>
+#include <GL/glew.h>
 
 using namespace std;
 
@@ -32,4 +31,3 @@ class GLShader
 		static map<string, GLuint> shaders;	// map vertex_fragment => program
 };
 
-#endif

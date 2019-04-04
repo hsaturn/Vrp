@@ -5,7 +5,7 @@
  * Created on 20 novembre 2015, 15:23
  */
 
-#include "Vrp.hpp"
+#include "VrpApp.hpp"
 
 #include <iostream>
 #include "Galaxy.hpp"
@@ -16,15 +16,14 @@
 #include "CrossOver.hpp"
 #include "SmartIndividual.hpp"
 #include <StringUtil.hpp>
-#include <GL/glew.h>
 #include <sstream>
 #include <unistd.h>
 
 using namespace std;
 
-Vrp::VrpBuilder Vrp::builder;
+VrpApp::VrpAppBuilder VrpApp::builder;
 
-Vrp::Vrp(const string& name, string& incoming)
+VrpApp::VrpApp(const string& name, string& incoming)
 : Application(name),
 algo(0)
 {
@@ -34,7 +33,7 @@ algo(0)
 	cout << "New vrp on galaxy #" << mgalaxyName << " with solve params : " << solveParams << endl;
 }
 
-Galaxy* Vrp::galaxy()
+Galaxy* VrpApp::galaxy()
 {
 	Galaxy* g = dynamic_cast<Galaxy*> (ApplicationBuilder::getInstance(mgalaxyName));
 	if (g == 0)
@@ -42,7 +41,7 @@ Galaxy* Vrp::galaxy()
 	return g;
 }
 
-void Vrp::_help(Help& help)
+void VrpApp::_help(Help& help)
 {
 	help.add("vrp.solve    Search best path");
 	help.add("vrp.reset    Delete genetic algo");
@@ -51,7 +50,7 @@ void Vrp::_help(Help& help)
 	help.add("vrp vars : fast");
 }
 
-Application::ExecResult Vrp::_execute(Server* server, string cmd, string incoming, const string& org, CmdQueue&)
+Application::ExecResult VrpApp::_execute(Server* server, string cmd, string incoming, const string& org, CmdQueue&)
 {
 	ExecResult ret = EXEC_OK;
 	if (cmd == "solve")
@@ -77,7 +76,7 @@ Application::ExecResult Vrp::_execute(Server* server, string cmd, string incomin
 	return ret;
 }
 
-void Vrp::best(Server* server)
+void VrpApp::best(Server* server)
 {
 	if (algo)
 	{
@@ -95,7 +94,7 @@ void Vrp::best(Server* server)
 		server->send("#KO Not solving...");
 }
 
-void Vrp::pop()
+void VrpApp::pop()
 {
 	if (algo)
 	{
@@ -103,7 +102,7 @@ void Vrp::pop()
 	}
 }
 
-void Vrp::reset()
+void VrpApp::reset()
 {
 	if (algo)
 	{
@@ -112,7 +111,7 @@ void Vrp::reset()
 	}
 }
 
-bool Vrp::solve()
+bool VrpApp::solve()
 {
 	cout << "SOLVING " << solveParams << endl;
 	if (galaxy())
@@ -142,7 +141,7 @@ bool Vrp::solve()
 extern bool redisplayAsked;
 extern Server* server;
 
-bool Vrp::_render(bool resetTimer)
+bool VrpApp::_render(bool resetTimer)
 {
 	if (algo && galaxy())
 	{

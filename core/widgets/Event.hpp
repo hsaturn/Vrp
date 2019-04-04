@@ -120,7 +120,7 @@ namespace hwidgets
 			R_CTRL = 32,
 			CTRL = 48,
 			MENU = 64,
-			WINDOW = 128
+			WINDOW = 128,
 		} Modifier;
 
 		Modifier mod;
@@ -165,7 +165,7 @@ namespace hwidgets
 			KEY_ALT = 0x203,
 			KEY_MENU = 0x240,
 			KEY_WINDOW = 0x280,
-		} ;
+		};
 
 		uint16_t key; // ascii or const (see below)
 

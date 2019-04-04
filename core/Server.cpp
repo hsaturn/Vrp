@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <sys/types.h> 
+#include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <thread>
@@ -42,7 +42,7 @@ void Server::thread(Server* svr)
 bool Server::incoming(const string* buffer)
 {
 	bool result = false;
-	
+
 	mtx.lock();
 	if (buffer)
 	{
@@ -106,7 +106,7 @@ void Server::run()
 	socklen_t clilen;
 	struct sockaddr_in serv_addr, cli_addr;
 	sockfd = socket(AF_INET, SOCK_STREAM, 0);
-	if (sockfd < 0) 
+	if (sockfd < 0)
 		error("ERROR opening socket");
 	bzero((char *) &serv_addr, sizeof(serv_addr));
 	serv_addr.sin_family = AF_INET;
@@ -122,16 +122,16 @@ void Server::run()
 	{
 		try
 		{
-			int newsockfd = accept(sockfd, 
-					(struct sockaddr *) &cli_addr, 
+			int newsockfd = accept(sockfd,
+					(struct sockaddr *) &cli_addr,
 					&clilen);
 			if (newsockfd < 0)
 				error("ERROR on accept");
 			else
 			{
-				cout << "NEW CLIENT ON SOCKET #" << newsockfd << " (" << threads.size()+1 << " client(s)" << endl;
 				ServerThread* thr=new ServerThread(this, newsockfd);
 				mtx.lock();
+				cout << "NEW CLIENT ON SOCKET #" << newsockfd << " " << threads.size()+1 << " client(s)" << endl;
 				threads.push_back(thr);
 				mtx.unlock();
 				thr->run();
@@ -149,30 +149,38 @@ void Server::run()
 void Server::stop()
 {
 	cout << "STOPPING ALL THREADS" << endl;
-	for(auto it=threads.begin(); it!=threads.end(); it++)
-	{
-		Server::ServerThread* thr=*it;
-		thr->stop();
-	}
+   
+   for(Server::ServerThread* thread : threads)
+   {
+      thread->stop();
+   }
+   
 	cout << "OK" << endl;
 	portno=0;
 	cout << "JOIN" << endl;
-	thr->detach();
-	cout << "OK2" << endl;
+   try
+   {
+      thr->detach();
+   	cout << "OK2" << endl;
+   }
+   catch(...)
+   {
+      cerr << "KO2" << endl;
+   }
 }
 
 void Server::send(string s)
 {
 	static mutex mtx;
 	mtx.lock();
-	for(auto it=threads.begin(); it!=threads.end(); it++)
-	{
-		(*it)->send(s);
-	}
-	for(auto it=listeners.begin(); it!=listeners.end(); it++)
-	{
-		(*(*it))(s);
-	}
+   for(Server::ServerThread* thread : threads)
+   {
+      thread->send(s);
+   }
+   for(Server::sendListener listener: listeners)
+   {
+      listener(s);
+   }
 	mtx.unlock();
 }
 
@@ -186,9 +194,14 @@ void Server::ServerThread::send(string s)
 	}
 }
 
+void Server::ServerThreadLoop(Server::ServerThread *pServerThread)
+{
+   pServerThread->loop();
+}
+
 void Server::ServerThread::run()
 {
-	thr=new std::thread(Server::ServerThread::loop, this);
+	thr=new std::thread(Server::ServerThreadLoop, this);
 }
 
 void Server::ServerThread::stop()
@@ -213,33 +226,33 @@ void Server::remove(Server::ServerThread* thr)
 {
 	mtx.lock();
 	threads.remove(thr);
+	cout << "CLIENT GONE " << threads.size() << " client(s) left." << endl;
 	mtx.unlock();
 }
 
-void Server::ServerThread::loop(Server::ServerThread* thr)
+void Server::ServerThread::loop()
 {
 	char buffer[256];
 	int n;
-	thr->send("Welcome to cube server v0.0");
-	thr->connect=true;
-	while(thr->connect)
+	send("Welcome to cube server v0.0");
+	connect=true;
+	while(connect)
 	{
 		bzero(buffer,256);
-		n = read(thr->msock,buffer,255);
+		n = read(msock,buffer,255);   // TODO blocking read is bad when "quit" command is issued by telnet
 		if (n < 0)
 		{
 			error("ERROR reading from socket");
-			thr->connect=false;
+			connect=false;
 		}
 		else if (n>0)
 		{
 			string income(buffer,n);
 			if (income.substr(0,4)=="exit") break;
-			thr->mparent->incoming(&income);
+			mparent->incoming(&income);
 		}
 	}
-	close(thr->msock);
-	thr->msock=-1;
-	thr->mparent->remove(thr);
-	cout << "CLIENT GONE " << threads.size() << " client(s) left." << endl;
+	close(msock);
+	msock=-1;
+	mparent->remove(this);
 }

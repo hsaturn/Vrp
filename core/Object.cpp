@@ -10,8 +10,6 @@
 #include "ObjectBuilder.hpp"
 #include <stdlib.h>
 #include <Widget.h>
-#include <GL/glew.h>
-#include <GL/glut.h>
 #include <sys/stat.h>
 
 Application::ExecResult Application::execute(Server* server, string cmd, string incoming, const string& org, CmdQueue& cmdQueue)
@@ -49,8 +47,7 @@ void Application::drawHudText(const string& txt) const
 
 	while (*message)
 	{
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *message);
-		//glutStrokeCharacter(GLUT_STROKE_ROMAN,*message);
+		// TODO glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *message);
 		message++;
 	}
 }

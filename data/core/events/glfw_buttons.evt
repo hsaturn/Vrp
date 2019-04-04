@@ -1,0 +1,8 @@
+# GLFW BUTTON => Event Button
+0		1	 # LEFT
+1		4	 # RIGHT
+2		2	 # MIDDLE
+100	8	 # WHEEL UP  (managed by scroll)
+101	16	 # WHEEL DOWN (managed by scroll)
+3		128 # BUTTON 7
+4		256 # BUTTON 8

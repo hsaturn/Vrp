@@ -8,11 +8,10 @@
 #include "Column.hpp"
 #include "Color.h"
 #include "StringUtil.hpp"
-#include <GL/glew.h>
 #include <model/Model.hpp>
 #include <libsynth.hpp>
 #include "MotorSpeedHook.hpp"
-#include "Colib.hpp"
+#include "ColibApp.hpp"
 
 namespace Colib
 {
@@ -136,7 +135,7 @@ namespace Colib
 			glTranslatef(x+offset_model[0], cy+offset_model[1]+0.1, cz+offset_model[2]);
 			
 			pmodel->render();
-			if (Colib::renderBoundingBoxes())
+			if (ColibApp::renderBoundingBoxes())
 			{
 				Color::red.render();
 				pmodel->renderBoundingBox();

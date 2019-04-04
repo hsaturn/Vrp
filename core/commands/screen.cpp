@@ -6,9 +6,12 @@
 
 #include "screen.hpp"
 #include "widget.hpp"
-#include <GL/glut.h>
+#include <GLFW/glfw3.h>
+#include <iostream>
+
 
 using namespace std;
+extern GLFWwindow* currentWindow;
 
 namespace core
 {
@@ -30,7 +33,8 @@ namespace core
 	  if (sizex > 4000) sizex = 4000;
 	  if (sizey > 4000) sizey = 4000;
 	  
-	  glutReshapeWindow(sizex, sizey);
+	  glfwSetWindowSize(currentWindow, sizex, sizey);
+	  cerr << "Screen resized to " << sizex << " x " << sizey << endl;
 
 	  return bRet;
   }

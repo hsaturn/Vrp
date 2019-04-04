@@ -7,15 +7,13 @@
 
 #include "Console.h"
 #include "Server.h"
-#include <GL/glew.h>
-#include <GL/glut.h>
 #include <sys/socket.h>
 #include "ClipBoard.h"
 #include "Draggable.hpp"
 #include "Event.hpp"
 #include "WidRect.hpp"
+#include "Object.h" //  TODO for getWord :-(
 
-extern string getWord(string& s, const string &sSeparators = " ");
 namespace hwidgets
 {
 	WIDGET_REGISTER("console", Console);
@@ -158,7 +156,7 @@ namespace hwidgets
 
 		}
 
-		glutPostRedisplay();
+		// TODO glutPostRedisplay();
 		setVar("_cmdline=\"" + cmd + "\"");
 		cout << "CUBE_SERVER> " << cmd << "                      \r" << flush;
 	}
@@ -179,8 +177,8 @@ namespace hwidgets
 		else
 			Color::white.render();
 
+      glPushMatrix();
 		glTranslatef(0.0, 0.0, 1.0);
-
 
 		font->render(x, y, cmdt);
 		y -= font->height();
@@ -247,7 +245,7 @@ namespace hwidgets
 
 			y -= font->height();
 		}
-		glTranslatef(0.0, 0.0, -1.0);
+		glPopMatrix();
 
 		return 200;
 	}

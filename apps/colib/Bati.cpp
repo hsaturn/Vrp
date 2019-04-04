@@ -1,6 +1,5 @@
 #include "Bati.hpp"
-#include "Colib.hpp"
-#include <GL/glew.h>
+#include "ColibApp.hpp"
 #include <Color.h>
 #include <StringUtil.hpp>
 #include "Navette.hpp"
@@ -11,7 +10,7 @@
 
 namespace Colib {
 	
-	Bati::Bati(const Colib* p)
+	Bati::Bati(const ColibApp* p)
 	:
 	pcolib(p),
 	h(0)
@@ -86,7 +85,7 @@ namespace Colib {
 	}
 
 	bool Bati::render() {
-		glUseProgram(GLShader::loadGlsl("phong"));
+		glUseProgram(GLShader::loadGlsl("phong"));   // TODO : perf !
 		Color::red.render();
 		h.update();
 		

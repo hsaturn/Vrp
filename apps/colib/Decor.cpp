@@ -1,5 +1,4 @@
 #include "Decor.hpp"
-#include <GL/glew.h>
 #include <model/TextureLoader.hpp>
 #include <iostream>
 #include <Color.h>

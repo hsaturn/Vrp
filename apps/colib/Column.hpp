@@ -23,7 +23,7 @@ using namespace std;
 
 namespace Colib
 {
-	class Colib;
+	class ColibApp;
 	
 	class Column
 	{
@@ -32,8 +32,8 @@ namespace Colib
 		static const int ALVEOLE_SPLIT_FROST = 40;	// en %
 		static const int DEPTH_X=60;	// Profondeur d'une colonne en cm
 		
-		Column(Colib*, int width);
-		Column(Colib*, istream&, int center_x);
+		Column(ColibApp*, int width);
+		Column(ColibApp*, istream&, int center_x);
 		~Column();
 		
 		// Rendu des plateaux uniquement
@@ -51,14 +51,14 @@ namespace Colib
 		void insertPlateau(shared_ptr<Plateau>, int alveole);
 		
 		bool save(ostream&) const;
-		bool restore(ifstream& in, Colib* pcolib) const;
+		bool restore(ifstream& in, ColibApp* pcolib) const;
 		
 		static bool save(const string name, const vector<Column*>&, ostream& out);
-		static bool restore(Colib* pcolib, vector<Column*>&, istream& in, int center_x);
+		static bool restore(ColibApp* pcolib, vector<Column*>&, istream& in, int center_x);
 			
 	private:
 		int mwidth_z;
-		Colib* pcolib;
+		ColibApp* pcolib;
 		map<int, Plateau*> alveoles;	// Map num cellule / plateau
 	};
 }

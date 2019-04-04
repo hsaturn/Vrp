@@ -1,8 +1,7 @@
-#ifndef Face_H
-#define Face_H
+#pragma once
 #include <Color.h>
 
-class Cube;
+class CubeApp;
 
 class Face
 {
@@ -26,9 +25,9 @@ class Face
 		void reset(Dir, Color);
 		void fill(const Color);
 		
-		void update(Cube*, float time);
-		void render(Cube*);
-		void renderFlat(float size, Cube*);
+		void update(CubeApp*, float time);
+		void render(CubeApp*);
+		void renderFlat(float size, CubeApp*);
 		
 		bool isReady() const { return angle_target==0; }
 		
@@ -46,7 +45,7 @@ class Face
 		
 		void rotate(float angle);
 		
-		void rotateFaces(bool clockWise, Cube*);
+		void rotateFaces(bool clockWise, CubeApp*);
 		void swapFaces(bool left_right=false);
 		
 		static string dirToString(Dir);
@@ -56,10 +55,10 @@ class Face
 		static float fRotationSpeed;
 		
 		// find a slice
-		string find(const Color* c1, const Color* c2, const Cube* cube) const;
+		string find(const Color* c1, const Color* c2, const CubeApp* cube) const;
 		
 		// find a corner
-		string find(const Color* c1, const Color* c2, const Color* c3, const Cube* cube) const;
+		string find(const Color* c1, const Color* c2, const Color* c3, const CubeApp* cube) const;
 		
 		bool isUniform() const;
 		
@@ -78,7 +77,7 @@ class Face
 		void glRotateFlat();
 		
 		/* Rotation selon la/les faces adjacentes */
-		void glRotateFace(int iface, Cube*);
+		void glRotateFace(int iface, CubeApp*);
 		
 		/* Translate selon la direction de la face*/
 		void glTranslate();
@@ -86,7 +85,6 @@ class Face
 		/* Retourne l'epsilone pour la case noir sous une facette */
 		int epsilon() const;
 		
-		void fillAdjacentArray(Color* nc, Dir*, const Cube*) const;
+		void fillAdjacentArray(Color* nc, Dir*, const CubeApp*) const;
 };
 
-#endif

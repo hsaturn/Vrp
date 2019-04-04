@@ -11,6 +11,7 @@
 #include "StringUtil.hpp"
 #include "Server.h"
 #include <sys/stat.h>
+#include <set>
 
 Application* ApplicationBuilder::buildInstance(const string& sClass, string& incoming)
 {
@@ -95,8 +96,24 @@ bool ApplicationBuilder::render(bool bResetTimer)
 
 void ApplicationBuilder::help(Help& help)
 {
-	for (auto it : instances())
+	for (const auto& it : instances())
 		it.second->help(help);
+}
+
+bool ApplicationBuilder::destroyAll()
+{
+   bool bRet = true;
+   set<string> names;
+   for(const auto& [name, instance] : instances())
+   {
+      names.insert(name);
+   }
+   
+   for(const auto& name: names)
+   {
+      bRet &= destroyInstance(name);
+   }
+   return bRet;
 }
 
 bool ApplicationBuilder::destroyInstance(const string& name)

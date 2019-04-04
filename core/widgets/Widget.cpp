@@ -7,9 +7,6 @@
 
 #include "Widget.h"
 
-#include <GL/glew.h>
-#include <GL/glut.h>
-
 #include <chrono>
 #include <iostream>
 #include <sstream>
@@ -139,7 +136,6 @@ namespace hwidgets
 		Shortcut k;
 		k.mod = key.mod;
 		k.key = key.key;
-		cout << "KEY " << k.mod << "," << (int)k.key << endl;
 		auto it = shortcuts.find(k);
 		if (it != shortcuts.end())
 		{
@@ -253,15 +249,16 @@ namespace hwidgets
 		GLfloat normal[4] = {0.5f, 0.5f, 0.5f, 1.0f};
 		glDisable(GL_LIGHTING);
 		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, normal);
+      
 		static auto t_start = std::chrono::high_resolution_clock::now();
 		auto t_now = std::chrono::high_resolution_clock::now();
 		long redisplay = 0;
 
 		long ticks = std::chrono::duration<double, std::milli>(t_now - t_start).count();
 
-		for (auto it = widgets.begin(); it != widgets.end(); it++)
+		for (const auto& widget : widgets)
 		{
-			long asked = (*it)->render(ticks);
+			long asked = widget->render(ticks);
 			if (asked < 0) asked = 0;
 			if (redisplay == 0 || (asked < redisplay))
 				redisplay = asked;
@@ -272,23 +269,23 @@ namespace hwidgets
 
 	void Widget::help(const string &what)
 	{
-		for (auto it = widgets.begin(); it != widgets.end(); it++)
-			(*it)->_help(what);
+		for (const auto& widget : widgets)
+			widget->_help(what);
 	}
 
 	bool Widget::onCommand(const string& cmd)
 	{
 		bool ret = false;
-		for (auto it = widgets.begin(); it != widgets.end(); it++)
+		for (const auto& widget : widgets)
 		{
-			if ((*it)->name == cmd)
+			if (widget->name == cmd)
 			{
-				if (cmd.find((*it)->name) != string::npos)
-					cerr << "Warning, widget name: " << (*it)->name << ", used as macro, but cmd (" << cmd << ") contains the name (possible loop)" << endl;
-				pushEvent("mousedown", cmd + " -1 " + (*it)->data);
+				if (cmd.find(widget->name) != string::npos)
+					cerr << "Warning, widget name: " << widget->name << ", used as macro, but cmd (" << cmd << ") contains the name (possible loop)" << endl;
+				pushEvent("mousedown", cmd + " -1 " + widget->data);
 				ret = true;
 			}
-			ret |= (*it)->script(cmd);
+			ret |= widget->script(cmd);
 		}
 		return ret;
 	}

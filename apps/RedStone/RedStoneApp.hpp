@@ -17,23 +17,21 @@ using namespace std;
 namespace RedStone
 {
 
-	class RedStone : public Application
+	class RedStoneApp : public Application
 	{
-		APPLICATION_BUILDER("redstone", RedStone);
+		APPLICATION_BUILDER("redstone", RedStoneApp);
 
 	  public:
-		RedStone(const string& name, string& incoming);
+		RedStoneApp(const string& name, string& incoming);
 
-		~RedStone() override { }
+		~RedStoneApp() override { }
 
 		bool _render(bool resetTimer) override;
 		ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&) override;
 		void _help(Help&) override;
 
 	  private:
-		RedStone(const RedStone& orig);
-
-		static RedStoneBuilder builder;
+		RedStoneApp(const RedStoneApp& orig);
 
 	};
 

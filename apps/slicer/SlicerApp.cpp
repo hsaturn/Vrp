@@ -1,23 +1,25 @@
-#include "Slicer.hpp"
+#include "SlicerApp.hpp"
 #include <model/Model.hpp>
 #include "fstream"
 #include "Printer.hpp"
+#include "AutoDetect.hpp"
 
 namespace slicer
 {
-	Slicer::SlicerBuilder Slicer::appclass;
+	SlicerApp::SlicerAppBuilder SlicerApp::builder;
 	
-	Slicer::Slicer(const string& name, string& incoming)
-	: Application(name), printer(0)
+	SlicerApp::SlicerApp(const string& name, string& incoming)
+	: Application(name)
 	{
+      AutoDetect printers;
 	}
 	
-	void Slicer::init()
+	void SlicerApp::init()
 	{
 		printer = new Printer(this, getString("printer", "default"));
 	}
 	
-	bool Slicer::_render(bool resetTimer)
+	bool SlicerApp::_render(bool resetTimer)
 	{
 		bool ret = false;
 		if (printer)
@@ -25,7 +27,7 @@ namespace slicer
 		return ret;	// true if render asap
 	}
 	
-	Application::ExecResult Slicer::_execute(Server* svr, string cmd, string incoming, const string& org, CmdQueue& queue)
+	Application::ExecResult SlicerApp::_execute(Server* svr, string cmd, string incoming, const string& org, CmdQueue& queue)
 	{
 		Application::ExecResult result = Application::EXEC_UNKNOWN;
 		
@@ -34,14 +36,14 @@ namespace slicer
 		return result;
 	}
 	
-	void Slicer::_help(Help& help)
+	void SlicerApp::_help(Help& help)
 	{
 		help.add("load objfile");
 	}
 	
-	Slicer::~Slicer()
+	SlicerApp::~SlicerApp()
 	{
-		string file = appclass.getRsrcFileName("setup/slicer.vars");
+		string file = builder.getRsrcFileName("setup/slicer.vars");
 		ofstream setup(file);
 		saveVars(setup);
 		

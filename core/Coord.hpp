@@ -10,7 +10,6 @@
 
 #include "Object.h"
 #include <iostream>
-#include <GL/glew.h>
 
 /**
  Class used to store coordinates that can be used as key (for maps etc.) */

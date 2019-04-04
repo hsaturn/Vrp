@@ -1,5 +1,4 @@
 #include "ModelOld.hpp"
-#include <GL/glew.h>
 #include <iostream>
 #include "objloader.hpp"
 

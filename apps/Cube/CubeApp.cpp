@@ -1,9 +1,7 @@
-#include <Cube.h>
+#include <CubeApp.h>
 #include <Color.h>
 #include <Face.h>
 #include <iostream>
-#include <GL/glew.h>
-#include <GL/glut.h>
 #include <chrono>
 #include <list>
 #include "StringUtil.hpp"
@@ -31,17 +29,17 @@ void fillPatterns()
 	}
 }
 
-Cube::CubeBuilder Cube::builder;
+CubeApp::CubeAppBuilder CubeApp::builder;
 
 const float flatx_org = 2.5;
 const float flaty_org = 4.8;
 const float flatz_org = 4.0;
 const float flats_org = 1.0;
 
-Cube::Cube(const string& name, string& incoming) : Application(name) {
+CubeApp::CubeApp(const string& name, string& incoming) : Application(name) {
 	fillPatterns();
 	backward = true;
-	
+
 	// backward position & scale
 	back_x = 4.1;
 	back_y = 4.1;
@@ -57,7 +55,8 @@ Cube::Cube(const string& name, string& incoming) : Application(name) {
 	reset();
 }
 
-void Cube::reset() {
+void CubeApp::reset()
+{
 	total_moves = 0;
 	slearn = "";
 	learn = false;
@@ -87,7 +86,8 @@ void Cube::reset() {
 	redir[Face::BACK] = Face::BACK;
 }
 
-void Cube::renderHud() {
+void CubeApp::renderHud()
+{
 	string state;
 	if (!isValid())
 	{
@@ -96,7 +96,7 @@ void Cube::renderHud() {
 	}
 	else
 		state = "scrambled";
-	
+
 	if (isMade())
 	{
 		Color::green.render();
@@ -114,7 +114,8 @@ void Cube::renderHud() {
 	drawHudText(buf.str().c_str());
 }
 
-void Cube::renderFlat(float size) {
+void CubeApp::renderFlat(float size)
+{
 	glPushMatrix();
 	glTranslatef(-size, 0, 0);
 	faces[redir[Face::LEFT]].renderFlat(size, this);
@@ -131,7 +132,8 @@ void Cube::renderFlat(float size) {
 	glPopMatrix();
 }
 
-bool Cube::_render(bool resetTimer) {
+bool CubeApp::_render(bool resetTimer)
+{
 	static long wait = 0;
 	static int angle = 0;
 	static auto t_start = std::chrono::high_resolution_clock::now();
@@ -161,7 +163,7 @@ bool Cube::_render(bool resetTimer) {
 	updateAngle(anglez_target, anglez, time);
 
 	renderCube(time);
-	
+
 	if (backward)
 	{
 		glLoadIdentity();
@@ -182,7 +184,7 @@ bool Cube::_render(bool resetTimer) {
 	return !isReady();
 }
 
-void Cube::renderCube(float time)
+void CubeApp::renderCube(float time)
 {
 	glRotatef(anglex, 1.0, 0.0, 0.0);
 	glRotatef(angley, 0.0, 1.0, 0.0);
@@ -193,20 +195,25 @@ void Cube::renderCube(float time)
 	for (int i = 0; i < 6; i++) faces[i].render(this);
 }
 
-void Cube::updateAngle(int& target, float& angle, float time) {
+void CubeApp::updateAngle(int& target, float& angle, float time)
+{
 	float delta = Face::getRotationSpeed() * time;
 	int end = 0;
 
-	if (angle < target) {
+	if (angle < target)
+	{
 		moving = true;
 		angle += delta;
-		if (angle >= target) {
+		if (angle >= target)
+		{
 			if (areFacesReady())
 				end = 1;
 			else
 				angle -= delta;
 		}
-	} else if (angle > target) {
+	}
+	else if (angle > target)
+	{
 		moving = true;
 		angle -= delta;
 		if (angle <= target) {
@@ -221,30 +228,39 @@ void Cube::updateAngle(int& target, float& angle, float time) {
 		if (!areFacesReady())
 			cout << "************* ERREUR FACES ARE NOT READY **************";
 		list<Face::Dir> l;
-		if (&angle == &anglex) {
+		if (&angle == &anglex)
+		{
 			l.push_back(redir[Face::BACK]);
 			l.push_back(redir[Face::BOTTOM]);
 			l.push_back(redir[Face::FRONT]);
 			l.push_back(redir[Face::TOP]);
-		} else if (&angle == &angley) {
+		}
+		else if (&angle == &angley)
+		{
 			l.push_back(redir[Face::RIGHT]);
 			l.push_back(redir[Face::FRONT]);
 			l.push_back(redir[Face::LEFT]);
 			l.push_back(redir[Face::BACK]);
-		} else if (&angle == &anglez) {
+		}
+		else if (&angle == &anglez)
+		{
 			l.push_back(redir[Face::TOP]);
 			l.push_back(redir[Face::RIGHT]);
 			l.push_back(redir[Face::BOTTOM]);
 			l.push_back(redir[Face::LEFT]);
 		}
-		if (end > 0) {
+		if (end > 0)
+		{
 			l.push_back(l.front());
 			l.pop_front();
-		} else {
+		}
+		else
+		{
 			l.push_front(l.back());
 			l.pop_back();
 		}
-		if (&angle == &anglex) {
+		if (&angle == &anglex)
+		{
 			cout << "REDIR X " << end << endl;
 			redir[Face::BACK] = l.front();
 			l.pop_front();
@@ -261,10 +277,13 @@ void Cube::updateAngle(int& target, float& angle, float time) {
 			faces[redir[Face::FRONT]].setDir(Face::FRONT);
 			faces[redir[Face::TOP]].setDir(Face::TOP);
 
-			if (end > 0) {
+			if (end > 0)
+			{
 				faces[redir[Face::TOP]].swapFaces();
 				faces[redir[Face::BOTTOM]].swapFaces();
-			} else {
+			}
+			else
+			{
 				faces[redir[Face::FRONT]].swapFaces();
 				faces[redir[Face::BACK]].swapFaces();
 			}
@@ -272,7 +291,9 @@ void Cube::updateAngle(int& target, float& angle, float time) {
 			faces[redir[Face::RIGHT]].rotateFaces(end > 0, 0);
 
 			//faces[redir[Face::TOP]].setDir(Face::TOP);
-		} else if (&angle == &angley) {
+		}
+		else if (&angle == &angley)
+		{
 			cout << "ENDY" << endl;
 			redir[Face::RIGHT] = l.front();
 			l.pop_front();
@@ -292,16 +313,21 @@ void Cube::updateAngle(int& target, float& angle, float time) {
 			faces[redir[Face::TOP]].rotateFaces(end > 0, 0);
 			faces[redir[Face::BACK]].rotateFaces(end < 0, 0);
 			faces[redir[Face::RIGHT]].rotateFaces(true, 0);
-			if (end > 0) {
+			if (end > 0)
+			{
 				faces[redir[Face::LEFT]].swapFaces();
 				faces[redir[Face::RIGHT]].swapFaces();
-			} else {
+			}
+			else
+			{
 				faces[redir[Face::FRONT]].swapFaces();
 				faces[redir[Face::BACK]].swapFaces();
 			}
 			faces[redir[Face::FRONT]].rotateFaces(true, 0);
 			faces[redir[Face::BOTTOM]].rotateFaces(end < 0, 0);
-		} else if (&angle == &anglez) {
+		}
+		else if (&angle == &anglez)
+		{
 			cout << "ENDZ" << endl;
 			redir[Face::TOP] = l.front();
 			l.pop_front();
@@ -325,13 +351,14 @@ void Cube::updateAngle(int& target, float& angle, float time) {
 			//faces[redir[Face::LEFT]].swapFaces(true);
 			//faces[redir[Face::RIGHT]].rotateFaces(end>0,0);
 			//faces[redir[Face::LEFT]].rotateFaces(end<0,0);
-			if (end > 0) {
+			if (end > 0)
+			{
 				faces[redir[Face::RIGHT]].swapFaces(true);
 				faces[redir[Face::BOTTOM]].swapFaces(true);
 				faces[redir[Face::TOP]].swapFaces(true);
-			} else
+			}
+			else
 				faces[redir[Face::LEFT]].swapFaces(true);
-
 		}
 
 		/*for (int d = (int) Face::TOP; d<Face::NONE; d++)
@@ -348,38 +375,46 @@ void Cube::updateAngle(int& target, float& angle, float time) {
 	}
 }
 
-bool Cube::rotate(Face::Dir dir, float angle) {
-	if (dir != Face::NONE) {
+bool CubeApp::rotate(Face::Dir dir, float angle)
+{
+	if (dir != Face::NONE)
+	{
 		faces[redir[dir]].rotate(angle);
 		return true;
 	} else
 		return false;
 }
 
-bool Cube::isReady() const {
+bool CubeApp::isReady() const
+{
 	if (moving)
 		return false;
 
 	return areFacesReady();
 }
 
-bool Cube::areFacesReady() const {
+bool CubeApp::areFacesReady() const
+{
 	bool ready = true;
 	for (int i = 0; i < 6; i++ && ready)
 		ready &= faces[i].isReady();
 	return ready;
 }
 
-string Cube::find(const Color* center) const {
-	for (int i = 0; i < 6; i++) {
+string CubeApp::find(const Color* center) const
+{
+	for (int i = 0; i < 6; i++)
+	{
 		if (faces[i].get(4) == *center)
 			return Face::dirToString((faces[i].mDir));
 	}
 	return "";
 }
 
-string Cube::find(const Color* c1, const Color* c2) const {
-	for (int i = 0; i < 6; i++) {
+string CubeApp::find(const Color* c1, const Color* c2) const
+{
+	for (int i = 0; i < 6; i++)
+	{
 		string where = faces[i].find(c1, c2, this);
 		if (where.length())
 			return where;
@@ -387,8 +422,10 @@ string Cube::find(const Color* c1, const Color* c2) const {
 	return "";
 }
 
-string Cube::find(const Color* c1, const Color* c2, const Color* c3) const {
-	for (int i = 0; i < 6; i++) {
+string CubeApp::find(const Color* c1, const Color* c2, const Color* c3) const
+{
+	for (int i = 0; i < 6; i++)
+	{
 		string where = faces[i].find(c1, c2, c3, this);
 		if (where.length())
 			return where;
@@ -396,7 +433,8 @@ string Cube::find(const Color* c1, const Color* c2, const Color* c3) const {
 	return "";
 }
 
-void Cube::rotatex(bool clockwise) {
+void CubeApp::rotatex(bool clockwise)
+{
 	cout << "rotate x;" << endl;
 	if (clockwise)
 		anglex_target -= 90;
@@ -405,7 +443,8 @@ void Cube::rotatex(bool clockwise) {
 	moving = true;
 }
 
-void Cube::rotatey(bool clockwise) {
+void CubeApp::rotatey(bool clockwise)
+{
 	if (clockwise)
 		angley_target -= 90;
 	else
@@ -413,7 +452,8 @@ void Cube::rotatey(bool clockwise) {
 	moving = true;
 }
 
-void Cube::rotatez(bool clockwise) {
+void CubeApp::rotatez(bool clockwise)
+{
 	if (clockwise)
 		anglez_target += 90;
 	else
@@ -421,14 +461,16 @@ void Cube::rotatez(bool clockwise) {
 	moving = true;
 }
 
-bool Cube::isMade() const {
+bool CubeApp::isMade() const
+{
 	bool bMade = true;
 	for (int i = 0; i < 6; i++)
 		bMade = bMade && faces[i].isUniform();
 	return bMade;
 }
 
-bool Cube::isValid() const {
+bool CubeApp::isValid() const
+{
 	return has(Color::white) && has(Color::blue) && has(Color::orange) &&
 		has(Color::yellow) && has(Color::red) && has(Color::green) &&
 
@@ -449,26 +491,26 @@ bool Cube::isValid() const {
 		has(Color::yellow, Color::green, Color::red);
 }
 
-bool Cube::has(const Color& c) const {
+bool CubeApp::has(const Color& c) const {
 	return find(&c).length() != 0;
 }
 
-bool Cube::has(const Color& c1, const Color& c2) const {
+bool CubeApp::has(const Color& c1, const Color& c2) const {
 	return find(&c1, &c2).length() != 0;
 }
 
-bool Cube::has(const Color& c1, const Color& c2, const Color &c3) const {
+bool CubeApp::has(const Color& c1, const Color& c2, const Color &c3) const {
 	return find(&c1, &c2, &c3).length() != 0;
 }
 
-string Cube::desc(Face::Dir d) const {
+string CubeApp::desc(Face::Dir d) const {
 	if (d >= Face::TOP && d <= Face::BACK) {
 		return faces[redir[d]].desc();
 	}
 	return "?";
 }
 
-string Cube::getColors(char sep) const {
+string CubeApp::getColors(char sep) const {
 	string colors;
 	for (int face = 0; face < 6; face++) {
 		colors += faces[redir[face]].desc(true);
@@ -480,7 +522,7 @@ string Cube::getColors(char sep) const {
 	return colors;
 }
 
-bool Cube::setColors(const string& colors) {
+bool CubeApp::setColors(const string& colors) {
 	bool ret = true;
 
 	if (colors.length() == 54 || colors.length() == 59) {
@@ -514,7 +556,7 @@ bool Cube::setColors(const string& colors) {
 	return ret;
 }
 
-bool Cube::check(const Color* c, string& s) {
+bool CubeApp::check(const Color* c, string& s) {
 	string where = find(c);
 	string found = getWord(s);
 	cout << "check where=" << where << " found=" << found << endl;
@@ -525,7 +567,7 @@ bool Cube::check(const Color* c, string& s) {
 
 list<string> stack; // stack of colors
 
-void Cube::_help(Help& help) {
+void CubeApp::_help(Help& help) {
 	help.add("algo rotate {axes} {algo}");
 	help.add("backward [x y z [scale]]");
 	help.add("color dir                  (dir=top bottom left right front back");
@@ -545,14 +587,16 @@ void Cube::_help(Help& help) {
 	help.add("top color");
 	help.add("rspeed  n                  (deg/sec)");
 	help.add("reset");
-	
+
 	stringstream builder;
-	for(auto s: patterns)
-		builder << s.first << ' ';
+   
+	for(const auto& [pattern_name, pattern]: patterns)
+		builder << pattern_name << ' ';
+   
 	help.add(builder.str());
 }
 
-Face::Dir Cube::getDir(string& incoming, string& dir)
+Face::Dir CubeApp::getDir(string& incoming, string& dir)
 {
 	dir = getWord(incoming);
 	if (dir == "top") return Face::TOP;
@@ -567,12 +611,12 @@ Face::Dir Cube::getDir(string& incoming, string& dir)
 	return Face::NONE;
 }
 
-Application::ExecResult Cube::_execute(Server* server, string cmd, string incoming, const string& org, CmdQueue& cmdQueue) {
+Application::ExecResult CubeApp::_execute(Server* server, string cmd, string incoming, const string& org, CmdQueue& cmdQueue) {
 	if (!isReady())
 		return EXEC_BUSY;
-	
+
 	ExecResult ret = EXEC_OK;
-	
+
 	string prefix=getName()+'.';
 	string prefixa='@'+getName()+'.';
 
@@ -843,7 +887,7 @@ Application::ExecResult Cube::_execute(Server* server, string cmd, string incomi
 		}
 		if (invalid.length())
 			server->send("#ERROR: Invalid direction [" + invalid + "]");
-	}	
+	}
 	else if (cmd == "find")
 	{
 		const Color* c1 = getColor(incoming);

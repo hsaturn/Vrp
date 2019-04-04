@@ -13,12 +13,12 @@
 
 #include "Printer.hpp"
 #include "Object.h"
-#include "Slicer.hpp"
+#include "SlicerApp.hpp"
 
 namespace slicer
 {
 
-	Printer::Printer(Slicer* parent, string config)
+	Printer::Printer(SlicerApp* parent, string config)
 	{
 		cerr << "NEW PRINTER " << config << endl;
 		string file = parent->getRsrcFileName("printers/"+config);

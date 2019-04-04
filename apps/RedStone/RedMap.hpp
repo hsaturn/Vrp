@@ -36,9 +36,7 @@ namespace RedStone {
 		Block* getTile(const Coord&) const;
 
 	private:
-
-		static RedMapBuilder builder;
-		map<Coord, Block*>	tiles;
+		map<Coord, Block*> tiles;
 		map<Coord, Block*> ground;
 	};
 }

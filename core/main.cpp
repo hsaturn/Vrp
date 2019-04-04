@@ -10,17 +10,17 @@
 #include <list>
 
 #include <X11/Xlib.h>
-#include <apps/Cube/Cube.h>
+#include <apps/Cube/CubeApp.h>
+#include <GLFW/glfw3.h>
+#include <GL/glew.h>
 #include <Server.h>
 #include <unistd.h>
 #include <sys/signal.h>
 #include <sys/wait.h>
-#include <GL/glew.h>
-#include <GL/glut.h>
 #include "LightElement.h"
-#define GLM_FORCE_RADIANS 
-#include <glm/glm.hpp>  
-#include <glm/gtc/matrix_transform.hpp> 
+#define GLM_FORCE_RADIANS
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "Random.hpp"
 #include <ansi_colors.hpp>
@@ -31,13 +31,15 @@
 #include "Background.h"
 #include "Help.h"
 #include "EventHandler.hpp"
+#include "FontRenderer.h"
 #include <Widget.h>
-#include <EventGlut.hpp>
+#include <EventGlfw.hpp>
 
 int SCREEN_WIDTH = 200;
 int SCREEN_HEIGHT = 200;
 
 BackgroundStars background;
+GLFWwindow* currentWindow;
 
 const vec eye( 0.0f, 0.0f, -20.0f );
 const vec centre( 0.0f, 0.0f, 0.0f );
@@ -114,9 +116,9 @@ float hudb = hudb_org;
 
 map<string, string> macros;
 
-Cube* getCube()
+CubeApp* getCube()
 {
-	return (Cube*) ApplicationBuilder::getInstance("cube");
+	return (CubeApp*) ApplicationBuilder::getInstance("cube");
 }
 
 #define cube getCube()
@@ -184,11 +186,17 @@ bool run(const string& sFileName)
 		}
 		cmdQueue.push_back("echo END OF SCRIPT: " + sFileName);
 	}
+   else
+   {
+      cmdQueue.push_back("echo ERROR WITH SCRIPT: " + sFileName);
+      cerr << "run: Unable to open [" << sFileName << "]" << endl;
+   }
 	return ret;
 }
 
 void reboot()
 {
+   ApplicationBuilder::destroyAll();
 	macros.clear();
 	Widget::clear();
 
@@ -201,7 +209,7 @@ string getWord(string& s, const string &sSeparators)
 	return StringUtil::getWord(s, sSeparators);
 }
 
-void handleResize(int w, int h)
+void handleResize(GLFWwindow* window, int w, int h)
 {
 	SCREEN_WIDTH = w;
 	SCREEN_HEIGHT = h;
@@ -216,7 +224,7 @@ void handleResize(int w, int h)
     gluLookAt(
         eye.x, eye.y, eye.z,
         centre.x, centre.y, centre.z,
-        up.x, up.y, up.z );	
+        up.x, up.y, up.z );
 	arcball_setzoom( SPHERE_RADIUS, eye, up );
 	/* if (w <= h)
 	   glOrtho(-2.0, 2.0, -2.0 * (GLfloat) h / (GLfloat) w,
@@ -231,8 +239,6 @@ void handleResize(int w, int h)
 
 void initRendering()
 {
-	glEnable(GL_DEPTH_TEST);
-
 	//	float lpos[] = { 50, 50, 50, 0 };
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_COLOR_MATERIAL);
@@ -242,6 +248,8 @@ void initRendering()
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	auto glError = glGetError();
+	cout << "GlError = " << glError << endl;
 }
 
 float getFloat(string& incoming)
@@ -270,9 +278,9 @@ void onclose()
 {
 	delete server;
 	server = 0;
-	for (auto it = exec_list.begin(); it != exec_list.end(); it++)
-		if ((*it)->thr->joinable())
-			(*it)->thr->join();
+   for(thr_info* thread_info : exec_list)
+      if (thread_info->thr->joinable())
+         thread_info->thr->join();
 }
 
 void drawText(const char * message)
@@ -288,7 +296,7 @@ void drawText(const char * message)
 	 */
 	while (*message)
 	{
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *message);
+		// TODO with queso	glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *message);
 		//glutStrokeCharacter(GLUT_STROKE_ROMAN,*message);
 		message++;
 	}
@@ -300,7 +308,7 @@ void drawScene();
 void widgetUpdate(int value)
 {
 	lastUpdateWidget = 0;
-	drawScene();
+	// drawScene();
 }
 
 void drawHud()
@@ -315,10 +323,8 @@ void drawHud()
 		glLoadIdentity();
 		glOrtho(0.0, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0, -1.0, 10.0);
 		glMatrixMode(GL_MODELVIEW);
-		//glPushMatrix();        ----Not sure if I need this
-		glLoadIdentity();
 		glTranslatef(translateX, translateY,translateZ);
-		
+
 		glDisable(GL_CULL_FACE);
 
 		glClear(GL_DEPTH_BUFFER_BIT);
@@ -329,12 +335,13 @@ void drawHud()
 		glTranslatef(0, 0, 1.0);
 
 		glRasterPos2f(2, SCREEN_HEIGHT - 2);
-		glPushMatrix();
+		//glPushMatrix();
 		ApplicationBuilder::renderHud();
 		glPopMatrix();
-		
-		glTranslatef(0, 0, -1.0);
+
+		//glTranslatef(0, 0, -1.0);
 	}
+   glPushMatrix();
 	glLoadIdentity();
 	long redisplay = Widget::renderAll();
 	if (redisplay)
@@ -342,7 +349,7 @@ void drawHud()
 		if (lastUpdateWidget == 0 || (redisplay < lastUpdateWidget))
 		{
 			lastUpdateWidget = redisplay;
-			glutTimerFunc(redisplay, widgetUpdate, 0);
+			// TODO glutTimerFunc(redisplay, widgetUpdate, 0);
 		}
 	}
 
@@ -351,11 +358,12 @@ void drawHud()
 	glMatrixMode(GL_MODELVIEW);
 }
 
-void drawScene()
+void drawScene(GLFWwindow* window)
 {
 	/*if (!server->running())
 	  exit(1);
 	 */
+   glEnable(GL_DEPTH_TEST);
 	glMateriali(GL_FRONT_AND_BACK,GL_SHININESS,10);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
@@ -365,9 +373,9 @@ void drawScene()
 	if (light.render())
 		redisplayAsked = true;
 
-    arcball_rotate();
+   arcball_rotate();
 	axis.render();
-	
+
 	if (material)
 	{
 		glEnable(GL_COLOR_MATERIAL);
@@ -376,7 +384,7 @@ void drawScene()
 	}
 	else
 		glDisable(GL_COLOR_MATERIAL);
-	
+
 	if (specular)
 	{
 		redisplayAsked |= !specular.isReady();
@@ -391,14 +399,13 @@ void drawScene()
 	glScalef(scale, scale, scale);
 	//glRotatef(_anglex, 1.0, 0.0, 0.0);
 	//glRotatef(_angley, 0.0, 1.0, 0.0);
-	
+
 	if (ambientColor)
 	{
 		redisplayAsked |= !ambientColor.isReady();
 		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor.getFloatArray());
 	}
 
-	
 	// Tentative désespérée de réflection ...
 #if REFLEXION
 	//glUniformMatrix4fv(cube_server, 1, GL_FALSE, glm::value_ptr(orient));
@@ -406,7 +413,7 @@ void drawScene()
 	glScalef(1.0, -1.0, 1.0);
 	redisplayAsked |= ApplicationBuilder::render(false);
 	glPopMatrix();
-	
+
 		  glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glColor4f(0.7, 0.0, 0.0, 0.40);  /* 40% dark red floor color */
@@ -414,7 +421,7 @@ void drawScene()
 	glDisable(GL_BLEND);
 #endif
 	redisplayAsked |= ApplicationBuilder::render(false);
-	
+
 	if (false) {
 		static GLUquadricObj *quadric = 0;
 		Color::cyan.render();
@@ -428,7 +435,7 @@ void drawScene()
 
 	resetTimer = false;
 	drawHud();
-	glutSwapBuffers();
+	glfwSwapBuffers(window);
 }
 
 void calcTranslate(string& incoming, float& v)
@@ -441,7 +448,7 @@ void calcTranslate(string& incoming, float& v)
 void mouse_motion_new(Event &event, Event::Mouse mouse)
 {
 	Widget::mouseMotion(event);	// FIXME Widget has to register events
-	
+
 	if (buttonRotate)
 	{
 		int invert_y = (SCREEN_HEIGHT - mouse.y) - 1;
@@ -454,7 +461,7 @@ void mouse_motion_new(Event &event, Event::Mouse mouse)
 		translateStartX = mouse.x;
 		translateStartY = mouse.y;
 	}
-	glutPostRedisplay();
+	// TODO glutPostRedisplay();
 }
 
 void mouse_button_click(Event &event, Event::Mouse &mouse)
@@ -542,7 +549,7 @@ void update(int value)
 			static string last;
 			string incoming = server->getIncoming();
 
-			if (incoming[0] == '.')
+			if (incoming[0] == '.')	// TODO fix redundancy below with row/last
 				incoming = last;
 			else
 				last = incoming;
@@ -553,7 +560,7 @@ void update(int value)
 		if (cmdQueue.size())
 		{
 			static string last;
-			
+
 			redisplay = 499;
 			string row = cmdQueue.front();
 			string org_row = row;
@@ -563,7 +570,7 @@ void update(int value)
 			while (row[0] == '@')
 				row.erase(0, 1);
 			string org = row;
-			
+
 			if (row == "!")
 				row = last;
 			else
@@ -580,10 +587,10 @@ void update(int value)
 			// cout << "CMD=[" << cmd << "] incoming=[" << incoming << "]" << endl;
 
 			//if (StringUtil::match("[a-zA-Z]+[a-zA-Z0-9]*.[a-zA-Z]+[a-zA-Z0-9]+=", cmd))
-			
+
 			if (cmd.length() && (cmd[0]=='#' || cmd.substr(0,2)=="//"))
 			{
-				
+
 			}
 			else if (StringUtil::preg_match("^[a-zA-Z]+[a-zA-Z0-9_]*\\.[a-zA-Z]+[a-zA-Z0-9_]*", cmd, false))
 			{
@@ -630,6 +637,7 @@ void update(int value)
 				help.add("new {object}");
 				help.add("macro");
 				help.add("quit");
+            help.add("font_path");  // TODO, should be in font renderer class
 				help.add("reboot");
 				help.add("scale s");
 				help.add("screen x y");
@@ -643,14 +651,14 @@ void update(int value)
 				int count=0;
 				// TODO modify widget with new help style
 				Widget::help(incoming);
-				for (auto it : help.get())
-				{
-					if (incoming.length()==0 || it.first.find(incoming)!=string::npos)
+            for (const auto& help_item : help.get())
+            {
+					if (incoming.length()==0 || help_item.find(incoming)!=string::npos)
 					{
 						count++;
-						server->send(it.first);
+						server->send(help_item);
 					}
-				}
+            }
 				if (count==0)
 					server->send("No other help on '"+incoming+"'");
 
@@ -842,13 +850,15 @@ void update(int value)
 				if (a == "y")
 					animy = getFloat(incoming);
 			}
+         else if (cmd == "font_path")
+         {
+            FontRenderer::setFontPath(incoming);
+         }
 			else if (cmd == "quit")
 			{
 				cout << "QUIT !" << endl;
 				server->stop();
-				usleep(1000000);
-
-				onclose();
+            exit(1);
 			}
 			else if (cmd == "reboot")
 			{
@@ -901,12 +911,12 @@ horrible:
 	if (redisplay || redisplayAsked)
 	{
 		redisplayAsked = false;
-		glutPostRedisplay();
+		// TODO glutPostRedisplay();
 	}
 	else
 		resetTimer = true;
 
-	glutTimerFunc(10, update, 0);
+	// TODO glutTimerFunc(10, update, 0);
 }
 
 
@@ -929,14 +939,25 @@ glm::vec3 get_arcball_vector(int x, int y) {
   return P;
 }
 
+
+void glfw_error_callback(int error, const char* desc)
+{
+	cerr << "ERROR: [GLFW] " << error << "," << desc << endl;
+}
+
+
 int main(int argc, char** argv)
 {
 	XInitThreads();
 	//cmdQueue.push_back("rotate left 9000");
 	//cmdQueue.push_back("rotate x");
 	arcball_reset();
-	
-	glutInit(&argc, argv);
+
+	if (!glfwInit())
+	{
+		cerr << "Unable to initialize glfw :-(" << endl;
+		return 1;
+	}
 	Widget::init();
 	Widget::setCmdQueue(&cmdQueue);
 	reboot();
@@ -950,27 +971,46 @@ int main(int argc, char** argv)
 
 	Widget::setVar("port=" + std::to_string(lPort));
 	server = new Server(lPort);
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH | GLUT_MULTISAMPLE);
-	glEnable(GL_MULTISAMPLE_SGIS);
-	glutInitWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-	glutCreateWindow((string("CS ") + sPort).c_str());
-	
-	if (glewInit())
-	{
-		cerr << "Failed to initialize GLEW" << endl;
-		exit(1);
-	}
 	initRendering();
 
-	glutDisplayFunc(drawScene);
-	glutReshapeFunc(handleResize);
+	glfwSetErrorCallback(glfw_error_callback);
+	GLFWwindow* mainWindow = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, (string("CS ")+sPort).c_str(), nullptr, nullptr);
+	currentWindow = mainWindow;
+	glfwMakeContextCurrent(mainWindow);
+	glewExperimental = GL_TRUE;
 
-	Event::init(EventGlut::getInstance());
+	GLenum err = glewInit();
+   if (GLEW_OK != err)
+	{
+		cerr << "Failed to initialize GLEW " << glewGetErrorString(err) << endl;
+		exit(1);
+	}
+	else
+	{
+		cout << "Glew init ok" << endl;
+	}
+
+	glfwSetWindowSizeCallback(mainWindow, handleResize);
+
+	Event::init(EventGlfw::getInstance(mainWindow));
 	EventHandler::connect(mouseEvent, Event::EVT_MOUSE_ALL);
-	glutTimerFunc(25, update, 0);
 	atexit(onclose);
 
-	glutMainLoop();
+	const double update_interval=0.025;
+	double next_update=glfwGetTime() + update_interval;
+
+	while(!glfwWindowShouldClose(mainWindow))
+	{
+		double curtime = glfwGetTime();
+		if (curtime > next_update)
+		{
+			update(25);
+			next_update += update_interval;
+		}
+		// TODO glutTimerFunc(25, update, 0);
+		drawScene(mainWindow);
+		glfwPollEvents();
+	}
 
 	return 0;
 

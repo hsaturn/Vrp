@@ -2,5 +2,12 @@
 /m
 /result
 /t
-/toto
 /.*.swp
+.Session.vim
+.gdb_history
+core.vrp
+nbproject/
+vrp
+vrp.old
+
+vrp.glut

@@ -6,7 +6,6 @@
  */
 
 #include "Solid.hpp"
-#include <GL/glew.h>
 #include <iostream>
 
 using namespace std;
@@ -17,7 +16,7 @@ namespace World
 	{
 	}
 	
-	void Solid::render(Coord c, const World*)
+	void Solid::render(Coord c, const WorldApp*)
 	{
 		Color::dark_green.render();
 		

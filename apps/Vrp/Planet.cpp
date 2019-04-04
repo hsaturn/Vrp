@@ -6,7 +6,6 @@
  */
 
 #include "Planet.hpp"
-#include "GL/glew.h"
 #include "Color.h"
 #include <math.h>
 

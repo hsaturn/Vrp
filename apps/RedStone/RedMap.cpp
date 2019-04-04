@@ -5,7 +5,6 @@
  * Created on 5 avril 2016, 20:47
  */
 
-#include <GL/glew.h>
 
 #include "Blocks/blocks.hpp"
 #include "RedMap.hpp"
@@ -39,15 +38,15 @@ namespace RedStone
 	
 	RedMap::~RedMap()
 	{
-		for(auto it: tiles)
+		for(const auto& it: tiles)
 			delete it.second;
 	}
 
 	bool RedMap::_render(bool resetTimer)
 	{
-		for(auto it : ground)
+		for(const auto& it : ground)
 			it.second->render(it.first, this);
-		for(auto it : tiles)
+		for(const auto& it : tiles)
 			it.second->render(it.first, this);
 		return false;
 		

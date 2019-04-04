@@ -7,7 +7,6 @@
 
 
 #include "arcball.h"
-#include <GL/gl.h>
 #include <GL/glu.h>
 
 GLfloat ab_quat[16] = {1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1};

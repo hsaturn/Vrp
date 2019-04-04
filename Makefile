@@ -1,16 +1,16 @@
 HAVE_SYNTH=1
 OPT_LEVEL=-g
-OPT:=-std=c++14 -Wall ${OPT_LEVEL}
+OPT:=-std=c++17 -Wall ${OPT_LEVEL}
 
 ifeq ($(HAVE_SYNTH),1)
-LIBS=-lsynthetizer -lX11
-OPT:=${OPT} -DHAVE_SYNTH -g
+LIBS=-lsynthetizer
+OPT:=${OPT} -DHAVE_SYNTH
 endif
 
-LIBS:=${LIBS} -lsfml-graphics
+LIBS:=${LIBS} -lX11 -lSDL -lglut -lGL -lGLU -lGLEW -lsfml-graphics -lglfw -lfreetype -lusb-1.0
 APPS_FOLDERS:=$(wildcard apps/*)
 APPS:=$(APPS_FOLDERS) apps/RedStone/Blocks  apps/Cube/commands apps/world/Blocks
-PARTS = core core/model core/widgets core/genetic core/commands $(APPS)
+PARTS = core core/model core/widgets core/genetic core/commands core/usb $(APPS)
 RENDERER:=renderer/opengl
 CXX=g++
 
@@ -21,7 +21,7 @@ BUILD_DIR=build
 OBJS=$(addprefix $(BUILD_DIR)/,$(SRCE:.cpp=.o))
 DEPS=$(addprefix $(BUILD_DIR)/,$(SRCE:.cpp=.d))
 INC_DIRS=core core/widgets core/genetic ../SaturnLib/include
-INCLUDES:=$(addprefix -I,$(INC_DIRS))
+INCLUDES:=$(addprefix -I,$(INC_DIRS)) -I/usr/include/freetype2
 
 .PHONY:	build_dir
 
@@ -29,7 +29,7 @@ all: build_dir vrp
 
 vrp: $(OBJS)
 	@echo "Linking $@"
-	$(CXX) $(OPT) $^ -lSDL -lglut -lGL -lGLU -lGLEW $(LIBS) -o $@ -pthread
+	$(CXX) $(OPT) $^ $(LIBS) -o $@ -pthread
 
 build_dir:
 	@mkdir -p $(BUILD_DIR)

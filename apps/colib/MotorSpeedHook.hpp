@@ -10,8 +10,7 @@
  *
  * Created on 10 février 2017, 02:14
  */
-#ifndef MOTORSPEEDHOOK_HPP
-#define MOTORSPEEDHOOK_HPP
+#pragma once
 
 #include <atomic>
 #include <string>
@@ -49,4 +48,3 @@ namespace Colib
 	};
 }
 
-#endif /* MOTORSPEEDHOOK_HPP */

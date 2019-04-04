@@ -35,14 +35,14 @@ int CrossOver::crossOver(Population::type &pa1, Population::type &pa2)
 		for(auto it=p1->begin(); it!=p1->begin()+i; it++)
 			new1->addGene(*it);
 		
-		for(auto it : *p2)
+		for(const auto& it : *p2)
 			if (!new1->hasPlanet(it->getPlanet()))
 				new1->addGene(it);
 		
 		for(auto it=p2->begin(); it!=p2->begin()+i; it++)
 			new2->addGene(*it);
 		
-		for(auto it : *p1)
+		for(const auto& it : *p1)
 			if (!new2->hasPlanet(it->getPlanet()))
 				new2->addGene(it);
 		

@@ -6,7 +6,6 @@
  */
 
 #include "Torch.hpp"
-#include <GL/glew.h>
 
 namespace World
 {
@@ -14,7 +13,7 @@ namespace World
   Torch::Torch(string& incoming)
   : side(SOUTH) { }
 
-  void Torch::render(Coord c, const World*)
+  void Torch::render(Coord c, const WorldApp*)
   {
 	  const float d = 0.1;
 	  Color::red.render();

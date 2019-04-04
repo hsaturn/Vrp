@@ -1,6 +1,5 @@
 #include "Cloison.hpp"
 #include "Plateau.hpp"
-#include <GL/glew.h>
 #include <Color.h>
 
 namespace Colib

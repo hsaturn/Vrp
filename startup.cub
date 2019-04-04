@@ -2,38 +2,39 @@ screen 200 200
 color btn_back=#F808
 widget button stop    =10,=25  100,15 btn_back  "New galaxy"  btn_text=white              : world.read ouessant.txt
 widget button stop    +0,+20   100,15 btn_back  "New cube"    btn_text=white              : new cube
-widget button back    +0,+20    47,15 btn_back        "Back"        btn_text                    : backward
-widget button cflat   +53,+0    47,15 btn_back        "Flat"        btn_text                    : flat
-widget button demo    -53,+20   47,15 btn_back        "Add B"       btn_text                    : colib.add back 60
-widget button solve   +53,+0    47,15 btn_back        "Add F"       btn_text                    : colib.add front 60
-widget button demo    -53,+20   47,15 btn_back        "Add B"       btn_text                    : colib.add back 30
-widget button solve   +53,+0    47,15 btn_back        "Add F"       btn_text                    : colib.add front 30
-widget button anon    -53,+20   47,15 btn_back        "Anim"        btn_text                    : anim x 0.03; anim y 0.028
-widget button anoff   +53,+0    47,15 btn_back        "$c"          btn_text                    : anim x 0; anim y 0
-widget button nxt_col -53,+20   47,15 btn_back        "<"           btn_text short=0x111        : colib.next col
-widget button prv_col +53,+0    47,15 btn_back        ">"           btn_text short=0x113        : colib.prev col
-widget button prv_cel -53,+20   47,15 btn_back        "v"           btn_text short=0x112        : colib.prev cell
-widget button nxt_cel +53,+0    47,15 btn_back        "^"           btn_text short=0x110        : colib.next cell
-widget button switch  -53,+20  100,15 btn_back        "switch"      btn_text                    : colib.next side
-widget button cput    +0,+20    47,15 btn_back         "put"        btn_text short=0x114        : colib.put
-widget button cget    +53,+0    47,15 btn_back        "get"         btn_text short=0x115        : colib.get
-widget button cdog    -53,+20   47,15 btn_back        "sac"         btn_text                    : colib.load sac
-widget button cdon    +53,+0    47,15 btn_back        "sac 60"      btn_text ='d'               : colib.load sac2_60
-widget button cbtl    -53,+20   47,15 btn_back        "bouts."      btn_text hort='B'      : colib.load bouteilles
-widget button cbts    +53,+0    47,15 btn_back        "bout."       btn_text hort='b'      : colib.load bouteille
-widget button cbtl    -53,+20   47,15 btn_back        "sac2 60"     btn_text hort='s'      : colib.load sac3_60
-widget button cbts    +53,+0    47,15 btn_back        "pommes"      btn_text hort='p'      : colib.load pommes
+widget button back    +0,+20    47,15 btn_back        "Back"        btn_text              : backward
+widget button cflat   +53,+0    47,15 btn_back        "Flat"        btn_text              : flat
+widget button demo    -53,+20   47,15 btn_back        "Add B"       btn_text              : colib.add back 60
+widget button solve   +53,+0    47,15 btn_back        "Add F"       btn_text              : colib.add front 60
+widget button demo    -53,+20   47,15 btn_back        "Add B"       btn_text              : colib.add back 30
+widget button solve   +53,+0    47,15 btn_back        "Add F"       btn_text              : colib.add front 30
+widget button anon    -53,+20   47,15 btn_back        "Anim"        btn_text              : anim x 0.03; anim y 0.028
+widget button anoff   +53,+0    47,15 btn_back        "$c"          btn_text              : anim x 0; anim y 0
+widget button nxt_col -53,+20   47,15 btn_back        "<"           btn_text short=0x111  : colib.next col
+widget button prv_col +53,+0    47,15 btn_back        ">"           btn_text short=0x113  : colib.prev col
+widget button prv_cel -53,+20   47,15 btn_back        "v"           btn_text short=0x112  : colib.prev cell
+widget button nxt_cel +53,+0    47,15 btn_back        "^"           btn_text short=0x110  : colib.next cell
+widget button switch  -53,+20  100,15 btn_back        "switch"      btn_text              : colib.next side
+widget button cput    +0,+20    47,15 btn_back         "put"        btn_text short=0x114  : colib.put
+widget button cget    +53,+0    47,15 btn_back        "get"         btn_text short=0x115  : colib.get
+widget button cdog    -53,+20   47,15 btn_back        "sac"         btn_text              : colib.load sac
+widget button cdon    +53,+0    47,15 btn_back        "sac 60"      btn_text ='d'         : colib.load sac2_60
+widget button cbtl    -53,+20   47,15 btn_back        "bouts."      btn_text hort='B'     : colib.load bouteilles
+widget button cbts    +53,+0    47,15 btn_back        "bout."       btn_text hort='b'     : colib.load bouteille
+widget button cbtl    -53,+20   47,15 btn_back        "sac2 60"     btn_text hort='s'     : colib.load sac3_60
+widget button cbts    +53,+0    47,15 btn_back        "pommes"      btn_text hort='p'     : colib.load pommes
 widget button remv    -53,+20   47,15 btn_back        "X"           btn_text hort='x'	   : colib.remove
-widget button bpan    +53,+0    47,15 btn_back        "Empty"       btn_text hort='c'      : colib.load !empty
-widget button wcan    -53,+20   47,15 btn_back        "can"	        btn_text hort='w'          : colib.load wateringcan
-widget button cbag    +53,+0    47,15 btn_back        "bag"         btn_text hort='s'          : load bag
+widget button bpan    +53,+0    47,15 btn_back        "Empty"       btn_text hort='c'     : colib.load !empty
+widget button wcan    -53,+20   47,15 btn_back        "can"	        btn_text hort='w'     : colib.load wateringcan
+widget button cbag    +53,+0    47,15 btn_back        "bag"         btn_text hort='s'     : load bag
 
 widget button cmdline  4,4  200,15 #00F1          left  "> $_cmdline_"   white
 screen 800 600
 event filter mousemove mouseup resize
 var c=off
 var _cmdline=
-widget console main 2%,70% 96%,25% #F804 white #AAAA helvetica 10
+font_path /usr/share/fonts/truetype
+widget console main 2%,70% 96%,25% #F804 white #AAAA freetype noto/NotoSansMono-Regular 25
 translate 0 0 0
 # new galaxy flat 10
 
@@ -45,20 +46,22 @@ var quality=10
 # world.scale=10
 # world.read ouessant.txt
 
-light on
+# light on
 
-angley 90
-anglex -10
-translate y -1.2
+# angley 90
+# anglex -10
+# translate y -1.2
 
 //new colib machine
 //colib.center
 
-new slicer test.sql
-load colored_cube_high
+#new slicer test.sql
+#load colored_cube_high
 //load singe
 slicer.scale=10
 axis
 
 ambient 0.5
+
+new slicer
 //specular off
