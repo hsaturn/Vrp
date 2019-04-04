@@ -3,14 +3,14 @@ OPT_LEVEL=-g
 OPT:=-std=c++17 -Wall ${OPT_LEVEL}
 
 ifeq ($(HAVE_SYNTH),1)
-LIBS=-lsynthetizer 
+LIBS=-lsynthetizer
 OPT:=${OPT} -DHAVE_SYNTH
 endif
 
-LIBS:=${LIBS} -lX11 -lSDL -lglut -lGL -lGLU -lGLEW -lsfml-graphics -lglfw -lfreetype
+LIBS:=${LIBS} -lX11 -lSDL -lglut -lGL -lGLU -lGLEW -lsfml-graphics -lglfw -lfreetype -lusb-1.0
 APPS_FOLDERS:=$(wildcard apps/*)
 APPS:=$(APPS_FOLDERS) apps/RedStone/Blocks  apps/Cube/commands apps/world/Blocks
-PARTS = core core/model core/widgets core/genetic core/commands $(APPS)
+PARTS = core core/model core/widgets core/genetic core/commands core/usb $(APPS)
 RENDERER:=renderer/opengl
 CXX=g++
 

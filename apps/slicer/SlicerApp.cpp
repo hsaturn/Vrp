@@ -2,6 +2,7 @@
 #include <model/Model.hpp>
 #include "fstream"
 #include "Printer.hpp"
+#include "AutoDetect.hpp"
 
 namespace slicer
 {
@@ -10,6 +11,7 @@ namespace slicer
 	SlicerApp::SlicerApp(const string& name, string& incoming)
 	: Application(name)
 	{
+      AutoDetect printers;
 	}
 	
 	void SlicerApp::init()
