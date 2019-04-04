@@ -194,10 +194,9 @@ void FontRendererFreeType::render(int xx, int yy, const string& text) const
    glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
    
-   GLfloat black[4] = { 0, 0, 0, 1 };
    GLfloat white[4] = { 1, 1, 1, 1 };
    FT_Set_Pixel_Sizes(*face, 0, font_height); // TODO
-	glUniform4fv(uniform_color, 1, white);
+	glUniform4fv(uniform_color, 1, white); // TODO this is the foreground color !
    
    FT_GlyphSlot g = (*face)->glyph;
 
