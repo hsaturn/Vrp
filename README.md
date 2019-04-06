@@ -1,4 +1,6 @@
- # Opengl application with remote server control
+I could compare this code to a code nursery :-). Not sure of what you can do with this.
+
+# Opengl application with remote server control
  
   This piece of software is hard to describe.
 
@@ -18,9 +20,6 @@ Existing apps
 * colib (...) : a great engine simulation for a startup
 * slicer, early dev. Not sure I will continue it a day, cura becomes more powerfull every day and have solved some issues I've planned to solve (walls, holes etc). But there are still some important one to be handled that cura does not today (diamond, onion textures ...)
 * world : What is that, I even don't remember. A simutrans very poor clone
-
-  So I would compare this code to a code nursery :-)
-  Not sure of what you can do with this.
 
 ## Compilation
 
