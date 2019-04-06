@@ -589,10 +589,10 @@ void CubeApp::_help(Help& help) {
 	help.add("reset");
 
 	stringstream builder;
-   
+
 	for(const auto& [pattern_name, pattern]: patterns)
 		builder << pattern_name << ' ';
-   
+
 	help.add(builder.str());
 }
 
@@ -937,10 +937,13 @@ Application::ExecResult CubeApp::_execute(Server* server, string cmd, string inc
 			where = find(c1);
 		} else if (c3 == 0) {
 			where = find(c1, c2);
-		} else {
+		}
+      else
+      {
 			where = find(c1, c2, c3);
 		}
-		if (where.length()) {
+		if (where.length())
+      {
 			string where2(where);
 			cout << "found (" << where << ")" << endl;
 
@@ -953,16 +956,22 @@ Application::ExecResult CubeApp::_execute(Server* server, string cmd, string inc
 				server->send("#OK " + org + "=" + where2);
 			else
 				server->send("#KO " + org + "=" + where2);
-		} else {
+		}
+      else
+      {
 			cout << "not found !" << endl;
 			server->send("#KO " + org);
 		}
 		cout << "---------------" << endl;
 
-	} else if (cmd == "push") {
+	}
+   else if (cmd == "push")
+   {
 		stack.push_back(StringUtil::to_string(total_moves) + " " + getColors() + " " + incoming);
 		server->send("#OK push, stk_size=" + StringUtil::to_string(stack.size()));
-	} else if (cmd == "stack") {
+	}
+   else if (cmd == "stack")
+   {
 		if (incoming == "clear")
 			cmdQueue.clear();
 		else {
@@ -973,18 +982,25 @@ Application::ExecResult CubeApp::_execute(Server* server, string cmd, string inc
 			server->send("-----");
 			server->send("size: " + StringUtil::to_string(stack.size()));
 		}
-	} else if (cmd == "pop" || cmd == "peek") {
-		if (stack.size()) {
+	}
+   else if (cmd == "pop" || cmd == "peek")
+   {
+		if (stack.size())
+      {
 			string pop = stack.back();
 			total_moves = atol(getWord(pop).c_str());
 			setColors(getWord(pop));
 			if (cmd == "pop") stack.pop_back();
 			server->send("#OK " + cmd + ", stk_size=" + StringUtil::to_string(stack.size()));
-		} else
+		}
+      else
 			server->send("#KO " + cmd + ": empty stack");
-	} else if (cmd == "_reset_counter") {
+	}
+   else if (cmd == "_reset_counter") {
 		total_moves = 0;
-	} else if (cmd == "colors") {
+	}
+   else if (cmd == "colors")
+   {
 		char sep;
 		bool bOk = true;
 		StringUtil::trim(incoming);
@@ -1049,7 +1065,9 @@ Application::ExecResult CubeApp::_execute(Server* server, string cmd, string inc
 		cmdQueue.push_front('@' + cmd);
 		if (reset) cmdQueue.push_front("@reset");
 		server->send("#OK " + number + cmd);
-	} else if (cmd == "move" || cmd == "reverse") {
+	}
+   else if (cmd == "move" || cmd == "reverse")
+   {
 		int local_moves = 0;
 		bool bReverse = cmd == "reverse";
 		bool bAlgo = incoming.substr(0, 4) == "algo";
@@ -1079,25 +1097,30 @@ Application::ExecResult CubeApp::_execute(Server* server, string cmd, string inc
 			else if (c == 'e') face = "top bottom y"; // + rotate cube
 			else if (c == 's') face = "back front z"; // + rotate cube
 
-			if (bAlgo && c == ' ') {
+			if (bAlgo && c == ' ')
+         {
 				bAlgo2 = true;
 			}
-			if (face.length()) {
+			if (face.length())
+         {
 				move += c;
 				local_moves++;
 				int angle = 90;
 				if (bReverse)
 					angle = -90;
 				bool loop = true;
-				while (loop && incoming.length()) {
+				while (loop && incoming.length())
+            {
 					loop = false;
 					char c = incoming[0];
-					if (c == '\'') {
+					if (c == '\'')
+               {
 						move += c;
 						loop = true;
 						angle *= -1;
 					}
-					if (c >= '0' && c <= '9') {
+					if (c >= '0' && c <= '9')
+               {
 						move += c;
 						loop = true;
 						angle *= (c - '0');
@@ -1105,7 +1128,8 @@ Application::ExecResult CubeApp::_execute(Server* server, string cmd, string inc
 					if (loop) incoming.erase(0, 1);
 				}
 
-				if (bAlgo) {
+				if (bAlgo)
+            {
 					if (move.find('\'') == string::npos)
 						move += '\'';
 					else
@@ -1117,7 +1141,8 @@ Application::ExecResult CubeApp::_execute(Server* server, string cmd, string inc
 				}
 
 				string cmd = string("@rotate ");
-				while (face.length()) {
+				while (face.length())
+            {
 					string f = getWord(face);
 					cmd += f + " " + StringUtil::to_string(angle) + " ";
 					angle = -angle;
@@ -1127,44 +1152,63 @@ Application::ExecResult CubeApp::_execute(Server* server, string cmd, string inc
 				else
 					cmdInt.push_back(cmd);
 				cout << "pushing cmd [" << cmd << "]" << endl;
-			} else if (c == ' ') {
-			} else
+			}
+         else if (c == ' ')
+         {
+			}
+         else
 				server->send(string("#ERROR Unknown face [") + StringUtil::to_string((int) c) + "]");
 		}
-		if (bAlgo) {
+		if (bAlgo)
+      {
 			string algo = moves + sReverse + sReverse2;
 			while (algo.find(' ') != string::npos) algo.erase(algo.find(' '), 1);
 			server->send("# ALGO " + algo);
 			cmdQueue.push_front("@move " + algo);
-		} else {
+		}
+      else
+      {
 			total_moves += local_moves;
 			server->send("#OK move (" + StringUtil::to_string(local_moves) + "/" + StringUtil::to_string(total_moves) + ") ");
 			cmdQueue.push_front("@is_valid");
-			while (cmdInt.size()) {
+			while (cmdInt.size())
+         {
 				string cmd = cmdInt.back();
 				cmdQueue.push_front('@' + cmd);
 				cmdInt.pop_back();
 			}
 		}
-		if (learn) {
+		if (learn)
+      {
 			slearn += moves;
 		}
-	} else if (cmd == "mark") {
+	}
+   else if (cmd == "mark")
+   {
 		Face::toggleMark();
-	} else if (cmd == "learn") {
-		if (incoming == "end") {
+	}
+   else if (cmd == "learn")
+   {
+		if (incoming == "end")
+      {
 			learn = false;
 			server->send("#OK learn " + slearn);
-		} else {
+		}
+      else
+      {
 			learn = true;
 			slearn = "";
 		}
-	} else if (cmd == "rspeed") {
+	}
+   else if (cmd == "rspeed")
+   {
 		float f = atof(incoming.c_str());
-		if (f >= 10) {
+		if (f >= 10)
+      {
 			Face::setRotationSpeed(f);
 			server->send("#OK rspeed");
-		} else
+		}
+      else
 			server->send("#KO rspeed");
 	}
 	else if (patterns.find(cmd) != patterns.end())
