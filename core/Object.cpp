@@ -96,12 +96,12 @@ float Application::eatFloat(string& buf) const
 	string name = StringUtil::getWord(buf);
 	if (name.length())
 	{
-		const string& v = vars.getString(name);
+		const string& v = vars.getString(name, name);
 		if (v[0]=='.' || v[0]=='-' || v[0]=='+' || (v[0]>='0' && v[0]<='9'))
 			return atof(v.c_str());
-		cerr << "Not a float : " << v << endl;
+		cerr << "Not a float : " << v << endl; // TODO not visible in consoles
 	}
-	cerr << "Application::eatFloat, float expected" << endl;
+	cerr << "Application::eatFloat, float expected (was parsing " << name << ") end of chain (" << buf << ")" << endl; // TODO not visible in console
 	return 0;
 }
 
