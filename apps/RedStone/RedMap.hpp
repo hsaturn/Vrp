@@ -5,8 +5,7 @@
  * Created on 5 avril 2016, 20:47
  */
 
-#ifndef REDMAP_HPP
-#define	REDMAP_HPP
+#pragma once
 
 #include <Object.h>
 #include <ObjectBuilder.hpp>
@@ -40,5 +39,3 @@ namespace RedStone {
 		map<Coord, Block*> ground;
 	};
 }
-#endif	/* REDMAP_HPP */
-

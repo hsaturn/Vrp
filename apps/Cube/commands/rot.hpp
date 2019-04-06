@@ -5,8 +5,7 @@
  * Created on 8 avril 2016, 23:29
  */
 
-#ifndef ROT_HPP
-#define	ROT_HPP
+#pragma once
 
 class rot {
 public:
@@ -16,6 +15,3 @@ public:
 private:
 
 };
-
-#endif	/* ROT_HPP */
-

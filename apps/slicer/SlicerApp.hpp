@@ -11,15 +11,15 @@
  * Created on 15 août 2017, 07:11
  */
 
-#ifndef SLICER_HPP
-#    define SLICER_HPP
+#pragma once
 
-#    include <Object.h>
-#    include <ObjectBuilder.hpp>
-#    include <string>
-#    include <vector>
 
-#    include "SlicerModels.hpp"
+#include <Object.h>
+#include <ObjectBuilder.hpp>
+#include <string>
+#include <vector>
+
+#include "SlicerModels.hpp"
 
 using namespace std;
 
@@ -51,7 +51,3 @@ namespace slicer
 		Printer* printer = nullptr;
 	};
 }
-
-
-#endif /* SLICER_HPP */
-

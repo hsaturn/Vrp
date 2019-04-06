@@ -1011,9 +1011,10 @@ Application::ExecResult CubeApp::_execute(Server* server, string cmd, string inc
 			server->send("#OK colors = " + getColors(sep) + " key=" + StringUtil::to_string(key));
 		else
 			server->send("#KO colors (length must be 54");
-	} else if (cmd == "shuffle") {
-
-		string what = incoming;
+	}
+   else if (cmd == "shuffle")
+   {
+   	string what = incoming;
 		string number = "";
 
 		static int seed = 0;

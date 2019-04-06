@@ -11,8 +11,7 @@
  * Created on 2 février 2017, 11:59
  */
 
-#ifndef COLUMN_HPP
-#define COLUMN_HPP
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -62,7 +61,3 @@ namespace Colib
 		map<int, Plateau*> alveoles;	// Map num cellule / plateau
 	};
 }
-
-
-#endif /* COLUMN_HPP */
-

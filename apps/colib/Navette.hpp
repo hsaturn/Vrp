@@ -11,8 +11,7 @@
  * Created on 23 janvier 2017, 10:28
  */
 
-#ifndef NAVETTE_HPP
-#define NAVETTE_HPP
+#pragma once
 
 #include <Object.h>
 #include <DynamicFloat.hpp>
@@ -78,6 +77,3 @@ namespace Colib
 			Wings* wings;
 	};
 }
-
-#endif /* NAVETTE_HPP */
-

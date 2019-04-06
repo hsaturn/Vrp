@@ -5,8 +5,7 @@
  * Created on 24 novembre 2015, 02:28
  */
 
-#ifndef INDIVIDUAL_HPP
-#define	INDIVIDUAL_HPP
+#pragma once
 
 #include <AbstractIndividual.hpp>
 #include <vector>
@@ -68,6 +67,3 @@ private:
 	Individual(const Individual& orig);
 
 };
-
-#endif	/* INDIVIDUAL_HPP */
-

@@ -5,8 +5,7 @@
  * Created on 24 novembre 2015, 11:42
  */
 
-#ifndef CROSSOVER_HPP
-#define	CROSSOVER_HPP
+#pragma once
 
 #include <genetic.hpp>
 
@@ -24,6 +23,3 @@ private:
 	CrossOver(const CrossOver& orig);
 
 };
-
-#endif	/* CROSSOVER_HPP */
-

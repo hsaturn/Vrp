@@ -5,8 +5,7 @@
  * Created on 2 février 2017, 14:49
  */
 
-#ifndef CLOISON_HPP
-#define CLOISON_HPP
+#pragma once
 
 #include <vector>
 using namespace std;
@@ -22,8 +21,3 @@ namespace Colib
 		static void render(int x1, int x2, int height, int z, const vector<int>& heights);
 	};
 }
-
-
-
-#endif /* CLOISON_HPP */
-

@@ -11,8 +11,8 @@
  * Created on 15 août 2017, 11:55
  */
 
-#ifndef SLICERMODELS_HPP
-#    define SLICERMODELS_HPP
+#pragma once
+
 #include "core/Object.h"
 #include "SliceModel.hpp"
 
@@ -36,7 +36,4 @@ namespace slicer
 		map<int, SliceModel*> models;
 	};
 }
-
-
-#endif /* SLICERMODELS_HPP */
 
