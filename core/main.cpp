@@ -9,6 +9,7 @@
 #include <string>
 #include <list>
 
+#include <usb/UsbManager.h>
 #include <X11/Xlib.h>
 #include <apps/Cube/CubeApp.h>
 #include <GLFW/glfw3.h>
@@ -1010,6 +1011,7 @@ int main(int argc, char** argv)
 		// TODO glutTimerFunc(25, update, 0);
 		drawScene(mainWindow);
 		glfwPollEvents();
+      core::UsbManager::update();
 	}
 
 	return 0;
