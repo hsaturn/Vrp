@@ -1,7 +1,7 @@
-/* 
+/*
  * File:   UsbHotplugObserver.cpp
  * Author: hsaturn
- * 
+ *
  * Created on 4 avril 2019, 22:31
  */
 
@@ -17,17 +17,17 @@ namespace core
       : mVendorProduct(vp)
    {
       auto& usb=core::UsbManager::getInstance();
-      
+
       if (usb.isOk())
       {
          UsbManager::registerHotplug(this);
       }
    }
-   
+
    UsbHotplugObserver::~UsbHotplugObserver()
    {
       auto& usb=core::UsbManager::getInstance();
-      
+
       if (usb.isOk())
       {
          UsbManager::unregisterHotplug(this);
