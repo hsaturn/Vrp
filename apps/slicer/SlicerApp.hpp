@@ -20,6 +20,7 @@
 #include <vector>
 
 #include "SlicerModels.hpp"
+#include "AutoDetect.hpp"
 
 using namespace std;
 
@@ -49,5 +50,6 @@ namespace slicer
 		SlicerApp(const SlicerApp& orig);
 
 		Printer* printer = nullptr;
+      AutoDetect printerDetection;
 	};
 }
