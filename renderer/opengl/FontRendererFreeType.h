@@ -14,7 +14,7 @@
 class FontRendererFreeType : public FontRenderer
 {
    public:
-      FontRendererFreeType();
+      FontRendererFreeType() = default;
       virtual ~FontRendererFreeType() = default;
       
       void render(int x, int y, const string& text) const override;

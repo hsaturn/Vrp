@@ -13,7 +13,7 @@ using namespace std;
 namespace core
 {
    bool UsbManager::mbInit=false;
-   libusb_device **UsbManager::devs;
+   libusb_device** UsbManager::devs=nullptr;
    
    UsbManager::UsbManager()
    {
@@ -22,28 +22,32 @@ namespace core
       if (r < 0)
       {
          cerr << "ERROR: UsbManager, unable to init usb." << endl;   // TODO
-         return;
       }
       
-      auto cnt = libusb_get_device_list(NULL, &devs);
-      if (cnt < 0)
-      {
-         cerr << "Error: UsbManager, unable to enumerate usb devices (" << cnt << ")" << endl;
-         libusb_exit(NULL);
-         return;
-      }
       mbInit=true;
       cout << "UsbManager init ok." << endl;
    }
    
-   
+   libusb_device** UsbManager::getDevices() {
+      if (devs == nullptr)
+      {
+         auto cnt = libusb_get_device_list(NULL, &devs);
+         if (cnt < 0)
+         {
+            cerr << "Error: UsbManager, unable to enumerate usb devices (" << cnt << ")" << endl;
+         }
+      }
+      return devs;
+   }
+
    
    UsbManager::~UsbManager()
    {
       if (mbInit)
       {
-         libusb_free_device_list(devs, 1);
+         if (devs) libusb_free_device_list(devs, 1);
          libusb_exit(NULL);
+         cout << "UsbManager shutdown." << endl;
       }
    }
    

@@ -34,7 +34,7 @@ event filter mousemove mouseup resize
 var c=off
 var _cmdline=
 font_path /usr/share/fonts/truetype
-widget console main 2%,70% 96%,25% #F804 white #AAAA freetype noto/NotoSansMono-Regular 25
+widget console main 2%,70% 96%,25% #F804 white #AAAA freetype noto/NotoSansMono-Regular 16
 translate 0 0 0
 # new galaxy flat 10
 
@@ -63,5 +63,5 @@ axis
 
 ambient 0.5
 
-new slicer
+# new slicer
 //specular off

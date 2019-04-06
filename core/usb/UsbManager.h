@@ -16,7 +16,7 @@ namespace core
          UsbManager(const UsbManager& orig) = delete;
          virtual ~UsbManager();
          
-         libusb_device ** getDevices() { return devs; }
+         libusb_device ** getDevices();
          static UsbManager& getInstance();
          
       private:
