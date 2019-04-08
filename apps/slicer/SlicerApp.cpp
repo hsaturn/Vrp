@@ -27,9 +27,9 @@ namespace slicer
 		return ret;	// true if render asap
 	}
 
-	Application::ExecResult SlicerApp::_execute(Server* svr, string cmd, string incoming, const string& org, CmdQueue& queue)
+	IRunnable::ExecResult SlicerApp::_execute(Server* svr, string cmd, string incoming, const string& org, CmdQueue& queue)
 	{
-		Application::ExecResult result = Application::EXEC_UNKNOWN;
+		IRunnable::ExecResult result = IRunnable::EXEC_UNKNOWN;
 
       string sName(cmd);
       sName = getWord(sName, ".");
@@ -39,7 +39,7 @@ namespace slicer
 			result = printer->_execute(svr, cmd, incoming, org, queue);
       }
 
-      if (result == Application::EXEC_UNKNOWN)
+      if (result == IRunnable::EXEC_UNKNOWN)
          result = printer->_execute(svr, cmd, incoming, org, queue);
 
 		return result;

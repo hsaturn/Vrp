@@ -60,24 +60,24 @@ Application* ApplicationBuilder::getInstance(const string& name)
 	return 0;
 }
 
-Application::ExecResult ApplicationBuilder::execute(Server* server, string cmd, string incoming, const string& org, CmdQueue& queue)
+IRunnable::ExecResult ApplicationBuilder::execute(Server* server, string cmd, string incoming, const string& org, CmdQueue& queue)
 {
-	Application::ExecResult ret;
+	IRunnable::ExecResult ret;
 
 	for (auto it : instances())
 	{
 		ret = it.second->execute(server, cmd, incoming, org, queue);
-		if (ret == Application::EXEC_UNKNOWN)
+		if (ret == IRunnable::EXEC_UNKNOWN)
 			continue;
-		else if (ret == Application::EXEC_BUSY)
+		else if (ret == IRunnable::EXEC_BUSY)
 		{
 			queue.push_front(org);
-			return Application::EXEC_BUSY;
+			return IRunnable::EXEC_BUSY;
 		}
 		else
 			return ret;
 	}
-	return Application::EXEC_UNKNOWN;
+	return IRunnable::EXEC_UNKNOWN;
 }
 
 void ApplicationBuilder::renderHud()

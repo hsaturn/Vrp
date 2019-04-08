@@ -30,11 +30,11 @@ class SliceModel
 	SliceModel(const SliceModel& orig)  = delete;
 	virtual ~SliceModel() {};
 	
-	Application::ExecResult load(string& incoming);
+	IRunnable::ExecResult load(string& incoming);
    void _help(Help&);
 	
 	void render(bool resetTimer, bool draw_normals=false);
-   Application::ExecResult execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);
+   IRunnable::ExecResult execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);
 	
 	string file() const;
 	

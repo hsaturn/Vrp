@@ -186,7 +186,7 @@ bool CubeApp::_render(bool resetTimer)
 
 void CubeApp::renderCube(float time)
 {
-	glRotatef(anglex, 1.0, 0.0, 0.0);
+	glRotatef(anglex, 1.0, 0.0, 0.0);   // TODO shouldn't it be from renderable
 	glRotatef(angley, 0.0, 1.0, 0.0);
 	glRotatef(anglez, 0.0, 0.0, 1.0);
 
@@ -611,7 +611,7 @@ Face::Dir CubeApp::getDir(string& incoming, string& dir)
 	return Face::NONE;
 }
 
-Application::ExecResult CubeApp::_execute(Server* server, string cmd, string incoming, const string& org, CmdQueue& cmdQueue) {
+IRunnable::ExecResult CubeApp::_execute(Server* server, string cmd, string incoming, const string& org, CmdQueue& cmdQueue) {
 	if (!isReady())
 		return EXEC_BUSY;
 

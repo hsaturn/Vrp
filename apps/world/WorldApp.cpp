@@ -49,7 +49,7 @@ namespace World
 		return bRet;
 	}
 	
-	Application::ExecResult WorldApp::_execute(Server*, string cmd, string incoming, const string& org, CmdQueue&)
+	IRunnable::ExecResult WorldApp::_execute(Server*, string cmd, string incoming, const string& org, CmdQueue&)
 	{
 		ExecResult ret = EXEC_UNKNOWN;
 		

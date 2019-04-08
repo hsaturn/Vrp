@@ -17,7 +17,7 @@ namespace RedStone
 		
 	}
 	
-	Application::ExecResult RedStoneApp::_execute(Server*, string cmd, string incoming, const string& org, CmdQueue&)
+	IRunnable::ExecResult RedStoneApp::_execute(Server*, string cmd, string incoming, const string& org, CmdQueue&)
 	{
 		return EXEC_UNKNOWN;
 	}

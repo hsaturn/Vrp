@@ -191,7 +191,7 @@ namespace Colib
 		}
 	}
 
-	Application::ExecResult ColibApp::_execute(Server* server, string cmd, string incoming, const string& org, CmdQueue&)
+	IRunnable::ExecResult ColibApp::_execute(Server* server, string cmd, string incoming, const string& org, CmdQueue&)
 	{
 		string error="";
 		ExecResult ret = EXEC_OK;
@@ -413,7 +413,7 @@ namespace Colib
 					error = "Position courante incorrecte";
 			}
 			else
-				ret = Application::EXEC_BUSY;
+				ret = IRunnable::EXEC_BUSY;
 		}
 		else if (cmd=="drop" || cmd=="remove")
 		{

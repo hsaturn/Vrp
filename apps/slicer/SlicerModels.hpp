@@ -26,12 +26,12 @@ namespace slicer
 	  public:
 		SlicerModels() {};
 		
-		Application::ExecResult load(string &incoming);
-		Application::ExecResult unload(string &incoming);
+		IRunnable::ExecResult load(string &incoming);
+		IRunnable::ExecResult unload(string &incoming);
 		
 		void render(bool resetTimer, bool draw_normals=false);
 		
-		Application::ExecResult execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);
+		IRunnable::ExecResult execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);
       
       // remove spaces special chars, append a number if needed etc.
       string buildUniqueName(string sFileName);

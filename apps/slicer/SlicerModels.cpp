@@ -36,29 +36,29 @@ namespace slicer
 		out << "BOX MIN" << model->getModel()->getMinCoord() << " MAX"  << model->getModel()->getMaxCoord() << endl;
 	}
 
-   Application::ExecResult SlicerModels::unload(string &incoming)
+   IRunnable::ExecResult SlicerModels::unload(string &incoming)
    {
-		Application::ExecResult result = Application::EXEC_FAILED;
+		IRunnable::ExecResult result = Application::EXEC_FAILED;
 
       string name=getWord(incoming);
       if (models.find(name) != models.end())
       {
          models.erase(name);
-         result = Application::EXEC_OK;
+         result = IRunnable::EXEC_OK;
       }
       return result;
    }
 
-	Application::ExecResult SlicerModels::load(string &incoming)
+	IRunnable::ExecResult SlicerModels::load(string &incoming)
 	{
-		Application::ExecResult result = Application::EXEC_FAILED;
+		IRunnable::ExecResult result = Application::EXEC_FAILED;
 
 		const Model* pmodel = Model::get(incoming);
 		if (pmodel)
 		{
 			SliceModel* psm = new SliceModel(pmodel);
 			models[buildUniqueName(pmodel->getShortName())] = psm;
-         result = Application::EXEC_OK;
+         result = IRunnable::EXEC_OK;
 		}
 
 		return result;
@@ -94,9 +94,9 @@ namespace slicer
       }
 	}
 
-	Application::ExecResult SlicerModels::execute(Server* psvr, string cmd, string incoming, const string& org, CmdQueue& queue)
+	IRunnable::ExecResult SlicerModels::execute(Server* psvr, string cmd, string incoming, const string& org, CmdQueue& queue)
 	{
-		Application::ExecResult result = Application::EXEC_UNKNOWN;
+		IRunnable::ExecResult result = IRunnable::EXEC_UNKNOWN;
 		function<void(const string& name, SliceModel* model, ostream & out) > each;
 
 		stringstream out;
@@ -120,10 +120,10 @@ namespace slicer
 
 			psvr->send(out.str());
 			cout << out.str();
-			result = Application::EXEC_OK;
+			result = IRunnable::EXEC_OK;
 		}
 
-      if (result == Application::EXEC_UNKNOWN)
+      if (result == IRunnable::EXEC_UNKNOWN)
       {
          string sModel(cmd);
          sModel = getWord(sModel,".");

@@ -186,7 +186,7 @@ namespace Colib {
 		return false;
 	}
 	
-	Application::ExecResult Bati::moveTo(int col_dest, int etage, bool back)
+	IRunnable::ExecResult Bati::moveTo(int col_dest, int etage, bool back)
 	{
 		if (navette->isReady())
 		{
@@ -208,12 +208,12 @@ namespace Colib {
 			if (z==-1)
 				return Application::EXEC_FAILED;
 			navette->centerOn(z, back);
-			return Application::EXEC_OK;
+			return IRunnable::EXEC_OK;
 		}
 		else
 		{
 			cout << "Navette not ready" << endl;
-			return Application::EXEC_BUSY;
+			return IRunnable::EXEC_BUSY;
 		}
 		
 		return Application::EXEC_FAILED;

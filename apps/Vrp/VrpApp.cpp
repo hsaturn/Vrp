@@ -50,7 +50,7 @@ void VrpApp::_help(Help& help)
 	help.add("vrp vars : fast");
 }
 
-Application::ExecResult VrpApp::_execute(Server* server, string cmd, string incoming, const string& org, CmdQueue&)
+IRunnable::ExecResult VrpApp::_execute(Server* server, string cmd, string incoming, const string& org, CmdQueue&)
 {
 	ExecResult ret = EXEC_OK;
 	if (cmd == "solve")

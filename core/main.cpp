@@ -599,19 +599,19 @@ void update(int value)
 				Application* object=ApplicationBuilder::getInstance(name);
 				if (object)
 				{
-					Application::ExecResult ret = object->execute(server, cmd, incoming, org, cmdQueue);
+					IRunnable::ExecResult ret = object->execute(server, cmd, incoming, org, cmdQueue);
 					switch (ret)
 					{
-						case Application::EXEC_OK:
+						case IRunnable::EXEC_OK:
 							server->send("#OK "+name+'.'+cmd);
 							break;
-						case Application::EXEC_UNKNOWN:
+						case IRunnable::EXEC_UNKNOWN:
 							server->send("#Unknown command "+name+'.'+cmd);
 							break;
 						case Application::EXEC_FAILED:
 							server->send("#KO "+name+'.'+cmd);
 							break;
-						case Application::EXEC_BUSY:
+						case IRunnable::EXEC_BUSY:
 						{
 							cmdQueue.push_front(org);
 						}
@@ -886,7 +886,7 @@ void update(int value)
 				cmdQueue.push_back("find green");
 				cmdQueue.push_back("find red");
 			}
-			else if (ApplicationBuilder::execute(server, cmd, incoming, org, cmdQueue) != Application::EXEC_UNKNOWN)
+			else if (ApplicationBuilder::execute(server, cmd, incoming, org, cmdQueue) != IRunnable::EXEC_UNKNOWN)
 			{
 				cerr << "Ok// c ObjectBuilder.execute " << cmd << endl;
 			}

@@ -75,7 +75,7 @@ namespace RedStone
 		return false;
 	}
 	
-	Application::ExecResult RedMap::_execute(Server*, string cmd, string incoming, const string& org, CmdQueue&)
+	IRunnable::ExecResult RedMap::_execute(Server*, string cmd, string incoming, const string& org, CmdQueue&)
 	{
 		ExecResult ret = EXEC_UNKNOWN;
 		

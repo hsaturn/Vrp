@@ -26,9 +26,9 @@ namespace slicer
 		translate.z = -model->getMinCoord().z;
 	}
 
-   Application::ExecResult SliceModel::execute(Server* svr, string cmd, string incoming, const string& org, CmdQueue& queue)
+   IRunnable::ExecResult SliceModel::execute(Server* svr, string cmd, string incoming, const string& org, CmdQueue& queue)
    {
-      Application::ExecResult result(Application::EXEC_UNKNOWN);
+      IRunnable::ExecResult result(IRunnable::EXEC_UNKNOWN);
       if (cmd == "translate")
       {
          svr->send("NYI SliceModel::translate");

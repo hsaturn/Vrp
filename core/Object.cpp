@@ -12,19 +12,19 @@
 #include <Widget.h>
 #include <sys/stat.h>
 
-Application::ExecResult Application::execute(Server* server, string cmd, string incoming, const string& org, CmdQueue& cmdQueue)
+IRunnable::ExecResult Application::execute(Server* server, string cmd, string incoming, const string& org, CmdQueue& cmdQueue)
 {
 	if (StringUtil::preg_match("^[a-zA-Z]+[a-zA-Z0-9_]*=", cmd, false))
 	{
 		string name = StringUtil::getWord(cmd, '=');
 		setVar(name, cmd);
-		return EXEC_OK;
+		return IRunnable::EXEC_OK;
 	}
 	else if (StringUtil::preg_match("^[a-zA-Z][a-zA-Z0-9_]*\\?", cmd))
 	{
 		cmd.erase(cmd.length() - 1, 1);
 		server->send("#OK " + getName() + '.' + cmd + "=" + getString(cmd));
-		return EXEC_OK;
+		return IRunnable::EXEC_OK;
 	}
 	else if (cmd == "vars")
 	{
@@ -35,7 +35,7 @@ Application::ExecResult Application::execute(Server* server, string cmd, string 
 
 		vars.iterate(func);
 		server->send("Vars count : " + StringUtil::to_string(vars.size()));
-		return EXEC_OK;
+		return IRunnable::EXEC_OK;
 	}
 	else
 		return _execute(server, cmd, incoming, org, cmdQueue);

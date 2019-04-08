@@ -26,16 +26,16 @@ namespace slicer
 
 	Printer::~Printer() { }
 
-	Application::ExecResult Printer::_execute(Server* svr, string cmd, string incoming, const string& org, CmdQueue& queue)
+	IRunnable::ExecResult Printer::_execute(Server* svr, string cmd, string incoming, const string& org, CmdQueue& queue)
 	{
-		Application::ExecResult result = Application::EXEC_UNKNOWN;
+		IRunnable::ExecResult result = IRunnable::EXEC_UNKNOWN;
 
 		if (cmd == "load")
 			result = models.load(incoming);
       else if (cmd == "unload")
          result = models.unload(incoming);
 
-		if (result == Application::EXEC_UNKNOWN)
+		if (result == IRunnable::EXEC_UNKNOWN)
 		{
 			result = models.execute(svr, cmd, incoming, org, queue);
 		}

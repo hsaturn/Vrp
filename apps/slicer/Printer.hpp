@@ -25,13 +25,13 @@ namespace slicer
 
 	class SlicerApp;
 
-	class Printer : public Renderable
+	class Printer : public IRenderable, IRunnable
 	{
       public:
          Printer(SlicerApp* parent, string config);
          ~Printer() override;
 
-         Application::ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&) override;
+         IRunnable::ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&) override;
          void _help(Help&)			  override;
          bool _render(bool resetTimer) override;
 		
