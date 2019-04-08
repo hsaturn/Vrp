@@ -567,7 +567,8 @@ bool CubeApp::check(const Color* c, string& s) {
 
 list<string> stack; // stack of colors
 
-void CubeApp::_help(Help& help) {
+void CubeApp::_help(Help& help) const
+{
 	help.add("algo rotate {axes} {algo}");
 	help.add("backward [x y z [scale]]");
 	help.add("color dir                  (dir=top bottom left right front back");

@@ -1,7 +1,7 @@
-/* 
+/*
  * File:   Colib.cpp
  * Author: hsaturn
- * 
+ *
  * Created on 5 avril 2016, 20:47
  */
 
@@ -15,18 +15,18 @@
 #include "Cloison.hpp"
 #include "Decor.hpp"
 
-	
+
 namespace Colib
 {
 	map<const char*, string> last;
-	
+
 	int col=-1;
 	int vert=0;
 	bool back=true;
-		
+
 	ColibApp::ColibBuilder ColibApp::builder;
 	bool ColibApp::gRenderBoundingBoxes=false;
-	
+
 	Application* ColibApp::ColibBuilder::build(const string& name, string& incoming)
 	{
 		ColibApp* pcolib;
@@ -47,10 +47,10 @@ namespace Colib
 				cerr << "Error while restoring Colib from " << sheight << " file." << endl;
 			}
 		}
-		
+
 		return pcolib;
 	}
-	
+
 	ColibApp::ColibApp(const string& name, int initial_height)
 	: Application(name), height(initial_height)
 	{
@@ -61,14 +61,14 @@ namespace Colib
 			height = 100;
 		if (height>500)
 			height = 500;
-		
+
 		sizeHasChanged();
-		
+
 		setVar("scale", "0.1");
-		
+
 		bati = new Bati(this);
 	}
-	
+
 	ColibApp::~ColibApp()
 	{
 		cout << "DELETING COLIB" << endl;
@@ -81,7 +81,7 @@ namespace Colib
 		glTranslatef(width_x/2,0,length_z/2);
 		Decor::render(30*((width_x+200)/30), 0, 30*((length_z+200)/30), 30);
 		glPopMatrix();
-		
+
 		/*
 		Model::get("pan")->render();
 		glTranslatef(0, 0, -40);
@@ -92,7 +92,7 @@ namespace Colib
 		Model::get("caisse")->render();
 		return false;
 		*/
-		
+
 		Color::dark_green.render();
 		glBegin(GL_TRIANGLE_FAN);
 		glNormal3i(0, 1, 0);
@@ -101,26 +101,26 @@ namespace Colib
 		glVertex3f(width_x, -0.01, length_z);
 		glVertex3f(0, -0.01, length_z);
 		glEnd();
-		
+
 		if (list_columns == 0)
 		{
 			list_columns = glGenLists(1);
 			if (list_columns)
 				glNewList(list_columns, GL_COMPILE);
-			
+
 			// Rendu des cloisons uniquement
 			renderColumns(columns_back, 0, true);
 			renderColumns(columns_front, 2*(Column::DEPTH_X + Cloison::THICKNESS_Z), true);
-			
+
 			glEndList();
 		}
 		if (list_columns)
 			glCallList(list_columns);
-		
+
 		// Pour les plateaux uniquement
 		renderColumns(columns_back, 0, false);
 		renderColumns(columns_front, 2*(Column::DEPTH_X + Cloison::THICKNESS_Z), false);
-		
+
 		bool brender = bati->render();
 		if (brender != last_ready)
 		{
@@ -129,14 +129,14 @@ namespace Colib
 		}
 		return brender;
 	}
-	
+
 	void ColibApp::renderColumns(vector<Column*>& columns, int x1, bool bCloisons)
 	{
 		if (columns.size())
 		{
 			int x2 = x1 + Column::DEPTH_X;
 			int z=Bati::THICKNESS - Cloison::THICKNESS_Z + Cloison::HOLLOW_Z;
-			
+
 			if (bCloisons)
 			{
 				// Cloison, Jupes et tablier
@@ -170,13 +170,13 @@ namespace Colib
 				z += column->getWidth()/2 + Cloison::THICKNESS_Z-Cloison::HOLLOW_Z;
 				if (!bCloisons)
 					column->render(x1,x2,z);
-				
+
 				z += column->getWidth()/2  - Cloison::HOLLOW_Z;
-				
+
 				if (bCloisons)
 					Cloison::render(x1, x2, getHeight(), z, heights);
 			}
-			
+
 			if (bCloisons && last_frozen)
 			{
 				Color::light_gray.render();
@@ -195,21 +195,21 @@ namespace Colib
 	{
 		string error="";
 		ExecResult ret = EXEC_OK;
-		
+
 		if (cmd=="go" || cmd=="next" || cmd=="prev")
 		{
 			if (!bati->isReady())
 				return EXEC_BUSY;
 			int revcol = col;
 			int revvert= vert;
-			
+
 			if (cmd=="next" || cmd=="prev")
 			{
 				int dir=1;
 				string what = StringUtil::getWord(incoming);
 
 				if (cmd=="prev") dir=-1;
-				
+
 				if (what=="col")
 					col += dir;
 				else if (what=="cell")
@@ -223,7 +223,7 @@ namespace Colib
 			{
 				col = StringUtil::getLong(incoming);	// Colonne
 				vert = StringUtil::getLong(incoming);	// Cellule verticale
-				
+
 				if (incoming.substr(0,5)=="front")
 				{
 					back=false;
@@ -232,21 +232,21 @@ namespace Colib
 				else
 					back = true;
 			}
-			
+
 			if (getHeight(vert)==-1)
 			{
 				cout << "ERREUR cellule" << endl;
 				vert=revvert;
 				return EXEC_FAILED;
 			}
-			
+
 			if (getCenterOfColumnZ(col, back)==-1)
 			{
 				cout << "ERREUR column";
 				col=revcol;
 				return EXEC_FAILED;
 			}
-			
+
 			stringstream out;
 			ret = bati->moveTo(col,vert,back);
 			if (ret == EXEC_OK)
@@ -436,7 +436,7 @@ namespace Colib
 		}
 		else
 			ret = EXEC_UNKNOWN;
-		
+
 		if (error.length())
 		{
 			server->send("ERROR : " + error);
@@ -446,20 +446,20 @@ namespace Colib
 		}
 		return ret;
 	}
-	
+
 	void ColibApp::center()
 	{
 		setVar("dx" , -width_x/20);
 		setVar("dz", -length_z/20);
 		cout << "dx=" << -width_x/20 << ", dz=" << -length_z/20 << endl;
 	}
-	
+
 	void ColibApp::autosave()
 	{
 		if (getString("autosave")=="on")
 			save(getString("last_save"));
 	}
-	
+
 	bool ColibApp::save(string file)
 	{
 		if (file.length())
@@ -480,7 +480,7 @@ namespace Colib
 		}
 		return false;
 	}
-	
+
 	bool ColibApp::restore(string file)
 	{
 		try
@@ -533,9 +533,9 @@ namespace Colib
 		}
 		return true;
 	}
-	
-	
-	void ColibApp::_help(Help& help)
+
+
+	void ColibApp::_help(Help& help) const
 	{
 		help.add("go column, height%");
 		help.add("next/prev col/cell/side");
@@ -549,7 +549,7 @@ namespace Colib
 		help.add("sound");
 		help.add("add [back|front] size");
 	}
-	
+
 	Column* ColibApp::getColumn(unsigned int nr, bool back) const
 	{
 		const vector<Column*>* p = (back ? &columns_back : &columns_front);
@@ -558,31 +558,31 @@ namespace Colib
 		cerr << "Bad column number " << nr << " for " << back << " size=" <<  p->size() << endl;
 		return 0;
 	}
-	
+
 	int computeLength(vector<Column*>& columns)
 	{
 		if (columns.size()==0)
 			return 0;
-		
+
 		int length= 0;
 		for(auto column : columns)
 			length += column->getWidth();
-		
+
 		int ep = Cloison::THICKNESS_Z - 2*Cloison::HOLLOW_Z;
-		
+
 		if (columns.size() > 1)
 			length += ep * (columns.size()-1);
-				
+
 		return length;
 	}
-	
+
 	int ColibApp::getHeight(unsigned int etage) const
 	{
 		if (etage<heights.size())
 			return heights[etage];
 		return -1;
 	}
-	
+
 	float ColibApp::getCenterOfColumnX(bool back) const
 	{
 		float x = 0;
@@ -591,17 +591,17 @@ namespace Colib
 		return x+Column::DEPTH_X/2.0;
 	}
 
-	
+
 	float ColibApp::getCenterOfColumnZ(unsigned int col_nr, bool back) const
 	{
 		const vector<Column*>* pcolumns;
-		
+
 		if (back)
 			pcolumns = &columns_back;
 		else
 			pcolumns = &columns_front;
-		
-		
+
+
 		if (col_nr >= pcolumns->size())
 		{
 			cerr << "Column out of range (max is " << pcolumns->size() << ')' << endl;
@@ -623,25 +623,25 @@ namespace Colib
 		return z;
 	}
 
-	
+
 	void ColibApp::sizeHasChanged() {
 		int widths = 2;
 		// length = colCount*COL_WIDTH+(colCount-1)*Cloison::THICKNESS;
-		
+
 		// Calcul distance entre bati (plus proches faces)
-		
+
 		int length_back = computeLength(columns_back);
 		int length_front = computeLength(columns_front);
-		
+
 		if (length_front)
 			widths=3;
-		
+
 		length_z = 2*Bati::THICKNESS + (length_back > length_front ? length_back : length_front);
 		width_x =  widths * Column::DEPTH_X+(widths-1)*Cloison::THICKNESS_Z;
 		cout << "New length_z : " << length_z << endl;
 		heights.clear();
 		// FIXME plateaux.clear()
-		
+
 		int h=Navette::HEIGHT_Y + Bati::THICKNESS;
 		last_frozen=0;
 		while(h<getHeight())
@@ -659,7 +659,7 @@ namespace Colib
 		if (getString("autocenter")=="on")
 			center();
 	}
-	
+
 	const char* ColibApp::collideVertical(int h1, int h2, bool back) const
 	{
 		const char* reason = 0;

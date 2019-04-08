@@ -29,7 +29,7 @@ public:
 
 	bool _render(bool resetTimer) override;
 	IRunnable::ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&) override;
-	void _help(Help&) override;
+	void _help(Help&) const override;
 	void best(Server*);
 	void pop();
 	

@@ -149,7 +149,7 @@ IRunnable::ExecResult Galaxy::_execute(Server* svr, string cmd, string incoming,
 	return EXEC_UNKNOWN;
 }
 
-void Galaxy::_help(Help& help)
+void Galaxy::_help(Help& help) const
 {
    help.add("distance");
 }

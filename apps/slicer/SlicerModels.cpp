@@ -94,7 +94,18 @@ namespace slicer
       }
 	}
 
-	IRunnable::ExecResult SlicerModels::execute(Server* psvr, string cmd, string incoming, const string& org, CmdQueue& queue)
+   void SlicerModels::_help(Help& help) const
+   {
+      help.add("list");
+      help.add("box");
+      for(const auto& it: models)
+      {
+         it.second->_help(help);
+         break;
+      }
+   }
+
+	IRunnable::ExecResult SlicerModels::_execute(Server* psvr, string cmd, string incoming, const string& org, CmdQueue& queue)
 	{
 		IRunnable::ExecResult result = IRunnable::EXEC_UNKNOWN;
 		function<void(const string& name, SliceModel* model, ostream & out) > each;

@@ -1,7 +1,7 @@
-/* 
+/*
  * File:   RedMap.cpp
  * Author: hsaturn
- * 
+ *
  * Created on 5 avril 2016, 20:47
  */
 
@@ -15,7 +15,7 @@ namespace RedStone
 	int Z=4;
 
 	RedMap::RedMapBuilder RedMap::builder;
-	
+
 	RedMap::RedMap(const string& name, string &incoming)
 	: Application(name)
 	{
@@ -26,16 +26,16 @@ namespace RedStone
 				Coord c(x,0,z);
 				ground[c]=new Solid(s);
 			}
-		
+
 		string s;
 		Coord c(0,1,0);
 		tiles[c]=new Torch(s);
 		tiles[Coord(0,1,1)]=new Solid(s);
 		tiles[Coord(0,2,1)]=new Solid(s);
-		
+
 		cerr << "REDMAP SIZE=" << ground.size() << endl;
 	}
-	
+
 	RedMap::~RedMap()
 	{
 		for(const auto& it: tiles)
@@ -49,7 +49,7 @@ namespace RedStone
 		for(const auto& it : tiles)
 			it.second->render(it.first, this);
 		return false;
-		
+
 		glBegin(GL_QUADS);
 		Color::dark_green.render();
 		glVertex3i(-X,0, Z);
@@ -57,10 +57,10 @@ namespace RedStone
 		glVertex3i( X,0,-Z);
 		glVertex3i(-X,0,-Z);
 		glEnd();
-		
+
 		glBegin(GL_LINES);
 		Color::black.render();
-		
+
 		for(int x=-X; x<X; x++)
 		{
 			glVertex3f(x,0.01,-Z);
@@ -74,28 +74,28 @@ namespace RedStone
 		glEnd();
 		return false;
 	}
-	
+
 	IRunnable::ExecResult RedMap::_execute(Server*, string cmd, string incoming, const string& org, CmdQueue&)
 	{
 		ExecResult ret = EXEC_UNKNOWN;
-		
+
 		if (cmd=="add")
 			ret = EXEC_OK;
 		return ret;
 	}
-	
-	void RedMap::_help(Help& help)
+
+	void RedMap::_help(Help& help) const
 	{
-		help.add("redmap.add block_type ...");
+		help.add("add block_type ...");
 	}
-	
+
 	Block* RedMap::getTile(const Coord& c) const
 	{
 		auto it = tiles.find(c);
 		if (it==tiles.end()) return 0;
 		return it->second;
 	}
-		
+
 }
 
 

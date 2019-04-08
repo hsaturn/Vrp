@@ -15,13 +15,14 @@
 
 #include "core/Object.h"
 #include "SliceModel.hpp"
+#include "application/IRunnable.h"
 
 class Model;
 
 namespace slicer
 {
 
-	class SlicerModels
+	class SlicerModels: public IRunnable
 	{
 	  public:
 		SlicerModels() {};
@@ -31,7 +32,8 @@ namespace slicer
 		
 		void render(bool resetTimer, bool draw_normals=false);
 		
-		IRunnable::ExecResult execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);
+		IRunnable::ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&) override;
+      void _help(Help&) const override;
       
       // remove spaces special chars, append a number if needed etc.
       string buildUniqueName(string sFileName);

@@ -1,7 +1,7 @@
-/* 
+/*
  * File:   Vrp.cpp
  * Author: francois
- * 
+ *
  * Created on 20 novembre 2015, 15:23
  */
 
@@ -41,7 +41,7 @@ Galaxy* VrpApp::galaxy()
 	return g;
 }
 
-void VrpApp::_help(Help& help)
+void VrpApp::_help(Help& help) const
 {
 	help.add("vrp.solve    Search best path");
 	help.add("vrp.reset    Delete genetic algo");
@@ -176,5 +176,5 @@ bool VrpApp::_render(bool resetTimer)
 		//ind.render(10);
 	}
 	return false;	// FIXME shoud return true when algo is running
-	
+
 }

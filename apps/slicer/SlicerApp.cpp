@@ -45,7 +45,7 @@ namespace slicer
 		return result;
 	}
 
-	void SlicerApp::_help(Help& help)
+	void SlicerApp::_help(Help& help) const
 	{
       if (printer)
       {

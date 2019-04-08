@@ -22,5 +22,5 @@ public:
    
 	virtual ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&) = 0;
 
-	virtual void _help(Help&) = 0;
+	virtual void _help(Help&) const = 0;
 };

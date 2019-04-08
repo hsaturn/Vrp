@@ -31,10 +31,11 @@ class SliceModel
 	virtual ~SliceModel() {};
 	
 	IRunnable::ExecResult load(string& incoming);
-   void _help(Help&);
 	
 	void render(bool resetTimer, bool draw_normals=false);
+   
    IRunnable::ExecResult execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);
+   void _help(Help&);
 	
 	string file() const;
 	

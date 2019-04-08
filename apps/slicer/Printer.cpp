@@ -37,13 +37,13 @@ namespace slicer
 
 		if (result == IRunnable::EXEC_UNKNOWN)
 		{
-			result = models.execute(svr, cmd, incoming, org, queue);
+			result = models._execute(svr, cmd, incoming, org, queue);
 		}
 
 		return result;
 	}
 
-	void Printer::_help(Help& help)
+	void Printer::_help(Help& help) const
    {
       help.add("load {model}");
       help.add("list");
