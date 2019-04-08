@@ -11,9 +11,10 @@
  * Created on 15 août 2017, 08:23
  */
 
-#define PRINTER_HPP
+#pragma once
 
 #include "ostream"
+#include <string>
 #include <core/Object.h>
 #include "SlicerModels.hpp"
 
@@ -26,20 +27,23 @@ namespace slicer
 
 	class Printer : public Renderable
 	{
-	  public:
-		Printer(SlicerApp* parent, string config);
-		~Printer() override;
+      public:
+         Printer(SlicerApp* parent, string config);
+         ~Printer() override;
 
-		Application::ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&) override;
-		void _help(Help&)			  override;
-		bool _render(bool resetTimer) override;
+         Application::ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&) override;
+         void _help(Help&)			  override;
+         bool _render(bool resetTimer) override;
 		
-		bool load(string);
-	  private:
-		Printer(const Printer& orig);
+         bool load(string);
+         const string& name() const { return msName; }
+         
+      private:
+         Printer(const Printer& orig);
 
-	  private:
-		SlicerModels models;
+      private:
+         SlicerModels models;
+         string msName;
 
 	};
 

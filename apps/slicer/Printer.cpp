@@ -4,10 +4,10 @@
  * and open the template in the editor.
  */
 
-/* 
+/*
  * File:   Printer.cpp
  * Author: hsaturn
- * 
+ *
  * Created on 15 août 2017, 08:23
  */
 
@@ -18,7 +18,7 @@
 namespace slicer
 {
 
-	Printer::Printer(SlicerApp* parent, string config)
+	Printer::Printer(SlicerApp* parent, string config) : msName(config)
 	{
 		cerr << "NEW PRINTER " << config << endl;
 		string file = parent->getRsrcFileName("printers/"+config);
@@ -29,8 +29,11 @@ namespace slicer
 	Application::ExecResult Printer::_execute(Server* svr, string cmd, string incoming, const string& org, CmdQueue& queue)
 	{
 		Application::ExecResult result = Application::EXEC_UNKNOWN;
+
 		if (cmd == "load")
 			result = models.load(incoming);
+      else if (cmd == "unload")
+         result = models.unload(incoming);
 
 		if (result == Application::EXEC_UNKNOWN)
 		{
@@ -40,7 +43,11 @@ namespace slicer
 		return result;
 	}
 
-	void Printer::_help(Help&) { }
+	void Printer::_help(Help& help)
+   {
+      help.add("load {model}");
+      help.add("list");
+   }
 
 	bool Printer::_render(bool resetTimer)
 	{

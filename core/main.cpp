@@ -652,6 +652,7 @@ void update(int value)
 				int count=0;
 				// TODO modify widget with new help style
 				Widget::help(incoming);
+
             for (const auto& help_item : help.get())
             {
 					if (incoming.length()==0 || help_item.find(incoming)!=string::npos)

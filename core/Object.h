@@ -97,6 +97,8 @@ class Application : public Renderable
 
 	string getAppRsrcFileName(const string rel) const;
 	string getRsrcFileName(const string rel) const;
+   
+   const string& getAppClass() const;
 
   protected:
 

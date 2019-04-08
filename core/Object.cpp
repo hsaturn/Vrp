@@ -1,7 +1,7 @@
-/* 
+/*
  * File:   Object.cpp
  * Author: hsaturn
- * 
+ *
  * Created on 20 novembre 2015, 00:09
  */
 
@@ -77,11 +77,11 @@ void Application::glSetMatrix()
 
 void Application::help(Help& help)
 {
-	help.add("object.var=value   set var");
-	help.add("object.var?        display var");
-	help.add("object.dx/dy/dz    translate object");
-	help.add("object.sx/sy/sz    scale object");
-	help.add("object.vars        display vars of object");
+	help.add("var=value   set var");
+	help.add("var?        display var");
+	help.add("dx/dy/dz    translate object");
+	help.add("sx/sy/sz    scale object");
+	help.add("vars        display vars of object");
 	_help(help);
 }
 
@@ -130,4 +130,9 @@ string Application::getRsrcFileName(const string rel) const
 {
 	string rel2 = mname + '/' + rel;
 	return builder->getRsrcFileName(rel2);
+}
+
+const string& Application::getAppClass() const
+{
+   return builder->getAppClass();
 }

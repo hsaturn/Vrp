@@ -588,7 +588,10 @@ const Model* Model::get(const string& name, bool reload)
 	string file = "data/models/" + name + ".obj";
 	Model* model = new Model;
 	if (model->loadObjAndConvert(file))
+   {
+      model->setShortName(name);
 		models[name] = model;
+   }
 	else
 	{
 		delete model;

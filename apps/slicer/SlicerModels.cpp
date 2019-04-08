@@ -4,10 +4,10 @@
  * and open the template in the editor.
  */
 
-/* 
+/*
  * File:   SlicerModels.cpp
  * Author: hsaturn
- * 
+ *
  * Created on 15 août 2017, 11:55
  */
 
@@ -24,18 +24,31 @@ namespace slicer
 		out << '(' << v.x << ", " << v.y << ", " << v.z << ')';
 		return out;
 	}
-	
-	void cmdList(int index, SliceModel* model, ostream& out)
+
+	void cmdList(const string& name, SliceModel* model, ostream& out)
 	{
-		out << "Model #" << index << ' ' << model->file() << endl;
+		out << "Model #" << name << ' ' << model->file() << endl;
 	}
 
-	void cmdBox(int index, SliceModel* model, ostream& out)
+	void cmdBox(const string& name, SliceModel* model, ostream& out)
 	{
-		cmdList(index, model, out);
+		cmdList(name, model, out);
 		out << "BOX MIN" << model->getModel()->getMinCoord() << " MAX"  << model->getModel()->getMaxCoord() << endl;
 	}
-	
+
+   Application::ExecResult SlicerModels::unload(string &incoming)
+   {
+		Application::ExecResult result = Application::EXEC_FAILED;
+
+      string name=getWord(incoming);
+      if (models.find(name) != models.end())
+      {
+         models.erase(name);
+         result = Application::EXEC_OK;
+      }
+      return result;
+   }
+
 	Application::ExecResult SlicerModels::load(string &incoming)
 	{
 		Application::ExecResult result = Application::EXEC_FAILED;
@@ -44,22 +57,48 @@ namespace slicer
 		if (pmodel)
 		{
 			SliceModel* psm = new SliceModel(pmodel);
-			models[models.size()] = psm;
+			models[buildUniqueName(pmodel->getShortName())] = psm;
+         result = Application::EXEC_OK;
 		}
 
 		return result;
 	}
 
+   string SlicerModels::buildUniqueName(string name)
+   {
+      auto pos=name.rfind('/');
+      if (pos==string::npos) pos=name.rfind('\\');  // TODO should be generic
+      if (pos != string::npos)
+         name.erase(0,pos+1);
+      if (name.length()==0) name="model";
+
+      string basename=name;
+      if (basename[basename.length()-1]!='_') basename += '_';
+
+      int i=0;
+      while (models.find(name)!=models.end())
+      {
+         i++;
+         stringstream s;
+         s << basename << i;
+         name=s.str();
+      }
+      return name;
+   }
+
 	void SlicerModels::render(bool resetTimer, bool normals)
 	{
 		for (auto sliceModels : models)
+      {
 			sliceModels.second->render(resetTimer, normals);
+      }
 	}
 
-	Application::ExecResult SlicerModels::execute(Server* psvr, string cmd, string incoming, const string& org, CmdQueue&)
+	Application::ExecResult SlicerModels::execute(Server* psvr, string cmd, string incoming, const string& org, CmdQueue& queue)
 	{
 		Application::ExecResult result = Application::EXEC_UNKNOWN;
-		function<void(int idx, SliceModel* model, ostream & out) > each;
+		function<void(const string& name, SliceModel* model, ostream & out) > each;
+
 		stringstream out;
 		bool beach = false;
 
@@ -67,13 +106,11 @@ namespace slicer
 		{
 			beach = true;
 			each = cmdList;
-			result = Application::EXEC_OK;
 		}
 		else if (cmd == "box")
 		{
 			beach = true;
 			each = cmdBox;
-			result = Application::EXEC_OK;
 		}
 
 		if (beach)
@@ -83,8 +120,21 @@ namespace slicer
 
 			psvr->send(out.str());
 			cout << out.str();
+			result = Application::EXEC_OK;
 		}
-		
+
+      if (result == Application::EXEC_UNKNOWN)
+      {
+         string sModel(cmd);
+         sModel = getWord(sModel,".");
+         const auto &it=models.find(sModel);
+         if (it != models.end())
+         {
+            getWord(cmd, ".");
+            result = it->second->execute(psvr, cmd, incoming, org, queue);
+         }
+      }
+
 		return result;
 	}
 

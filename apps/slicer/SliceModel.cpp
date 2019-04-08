@@ -4,10 +4,10 @@
  * and open the template in the editor.
  */
 
-/* 
+/*
  * File:   SliceModel.cpp
  * Author: hsaturn
- * 
+ *
  * Created on 15 août 2017, 11:06
  */
 
@@ -25,7 +25,23 @@ namespace slicer
 		translate.y = middle(model,y);
 		translate.z = -model->getMinCoord().z;
 	}
-	
+
+   Application::ExecResult SliceModel::execute(Server* svr, string cmd, string incoming, const string& org, CmdQueue& queue)
+   {
+      Application::ExecResult result(Application::EXEC_UNKNOWN);
+      if (cmd == "translate")
+      {
+         svr->send("NYI SliceModel::translate");
+      }
+      return result;
+   }
+
+   void SliceModel::_help(Help& help)
+   {
+      auto pc=help.pushClass("{model_name}");
+      help.add("translate x[,y[,z]]");
+   }
+
 	void SliceModel::render(bool resetTimer, bool normals)
 	{
 		// TODO translate rotate
@@ -34,7 +50,7 @@ namespace slicer
 		pmodel->render(normals);
 		glPopMatrix();
 	}
-	
+
 	string SliceModel::file() const
 	{
 		return pmodel->getFileName();

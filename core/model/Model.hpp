@@ -42,7 +42,9 @@ class Model
 		float getLengthZ() const { return bmax[2]-bmin[2]; }
 		
 		const string& getFileName() const { return filename; }
-		
+      void setShortName(const string& name) { msShortName = name; }
+      const string& getShortName() const { return msShortName; }
+
 	private:
 		Model();
 		~Model();
@@ -50,7 +52,7 @@ class Model
 		Model& operator=(const Model&);
 		
 		bool loadObjAndConvert(const string&, vector<Triangle>* triangles=0);
-
+      
 		typedef struct {
 		  GLuint vb;  // vertex buffer FIXME opengl memory leak
 		  int numTriangles;
@@ -74,6 +76,7 @@ class Model
 		static std::vector<tinyobj::material_t> materials;
 		static std::map<std::string, GLuint> textures;
 		static map<const string, Model*>	models;
+      string msShortName;
 		
 		void main();
 		

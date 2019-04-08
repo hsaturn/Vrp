@@ -16,6 +16,7 @@
 #include "model/Model.hpp"
 #include "core/Object.h"
 #include "glm/glm.hpp"
+#include <core/Help.h>
 
 class Model;
 
@@ -30,8 +31,10 @@ class SliceModel
 	virtual ~SliceModel() {};
 	
 	Application::ExecResult load(string& incoming);
+   void _help(Help&);
 	
 	void render(bool resetTimer, bool draw_normals=false);
+   Application::ExecResult execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);
 	
 	string file() const;
 	

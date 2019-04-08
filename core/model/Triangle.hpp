@@ -22,10 +22,14 @@ class Triangle
 	Triangle();
 	Triangle(const Triangle& orig);
 	virtual ~Triangle();
+   
+   const glm::vec3 a() const { return m1; }
+   const glm::vec3 b() const { return m2; }
+   const glm::vec3 c() const { return m3; }
 	
   private:
-	glm::vec3 m1,m2,m3;
-	glm::vec3 n1,n2,n3;
+	glm::vec3 m1,m2,m3;  // Points
+	glm::vec3 n1,n2,n3;  // Normals (???)
 };
 
 #endif /* TRIANGLE_HPP */

@@ -1,7 +1,7 @@
-/* 
+/*
  * File:   ObjectBuilder.cpp
  * Author: francois
- * 
+ *
  * Created on 20 novembre 2015, 15:29
  */
 
@@ -46,7 +46,7 @@ Application* ApplicationBuilder::buildInstance(const string& sClass, string& inc
 	return application;
 }
 
-const string ApplicationBuilder::getAppClass() const
+const string& ApplicationBuilder::getAppClass() const
 {
 	return appclass;
 }
@@ -97,7 +97,11 @@ bool ApplicationBuilder::render(bool bResetTimer)
 void ApplicationBuilder::help(Help& help)
 {
 	for (const auto& it : instances())
+   {
+      auto pc=help.pushClass(it.second->getAppClass());
+      cout << "Helped pushed " << endl;
 		it.second->help(help);
+   }
 }
 
 bool ApplicationBuilder::destroyAll()
@@ -108,7 +112,7 @@ bool ApplicationBuilder::destroyAll()
    {
       names.insert(name);
    }
-   
+
    for(const auto& name: names)
    {
       bRet &= destroyInstance(name);

@@ -20,7 +20,7 @@ class Server;
 class ApplicationBuilder {
 public:
 	virtual Application* build(const string& name, string& incoming) = 0;
-	const string getAppClass() const;
+	const string& getAppClass() const;
 	virtual ~ApplicationBuilder(){};
 
 	static Application* buildInstance(const string& sClass, string&);
