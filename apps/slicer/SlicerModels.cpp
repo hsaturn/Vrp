@@ -86,12 +86,14 @@ namespace slicer
       return name;
    }
 
-	void SlicerModels::render(bool resetTimer, bool normals)
+	bool SlicerModels::_render(bool resetTimer)
 	{
+      bool bRet=false;
 		for (auto sliceModels : models)
       {
-			sliceModels.second->render(resetTimer, normals);
+			bRet |= sliceModels.second->_render(resetTimer);
       }
+      return bRet;
 	}
 
    void SlicerModels::_help(Help& help) const
@@ -142,7 +144,7 @@ namespace slicer
          if (it != models.end())
          {
             getWord(cmd, ".");
-            result = it->second->execute(psvr, cmd, incoming, org, queue);
+            result = it->second->_execute(psvr, cmd, incoming, org, queue);
          }
       }
 

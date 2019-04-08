@@ -16,14 +16,15 @@
 #include "model/Model.hpp"
 #include "core/Object.h"
 #include "glm/glm.hpp"
-#include <core/Help.h>
+#include "application/IRunnable.h"
+#include "application/IRenderable.hpp"
 
 class Model;
 
 namespace slicer
 {
 	
-class SliceModel
+class SliceModel: public IRunnable, IRenderable
 {
   public:
 	SliceModel(const Model*);
@@ -32,10 +33,10 @@ class SliceModel
 	
 	IRunnable::ExecResult load(string& incoming);
 	
-	void render(bool resetTimer, bool draw_normals=false);
+	bool _render(bool resetTimer) override;
    
-   IRunnable::ExecResult execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);
-   void _help(Help&);
+   IRunnable::ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&) override;
+   void _help(Help&) const override;
 	
 	string file() const;
 	

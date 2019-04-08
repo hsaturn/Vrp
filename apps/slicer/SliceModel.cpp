@@ -26,7 +26,7 @@ namespace slicer
 		translate.z = -model->getMinCoord().z;
 	}
 
-   IRunnable::ExecResult SliceModel::execute(Server* svr, string cmd, string incoming, const string& org, CmdQueue& queue)
+   IRunnable::ExecResult SliceModel::_execute(Server* svr, string cmd, string incoming, const string& org, CmdQueue& queue)
    {
       IRunnable::ExecResult result(IRunnable::EXEC_UNKNOWN);
       if (cmd == "translate")
@@ -36,19 +36,20 @@ namespace slicer
       return result;
    }
 
-   void SliceModel::_help(Help& help)
+   void SliceModel::_help(Help& help) const
    {
       auto pc=help.pushClass("{model_name}");
       help.add("translate x[,y[,z]]");
    }
 
-	void SliceModel::render(bool resetTimer, bool normals)
+	bool SliceModel::_render(bool resetTimer)
 	{
 		// TODO translate rotate
 		glPushMatrix();
 		glTranslatef(translate.x, translate.y, translate.z);
-		pmodel->render(normals);
+		pmodel->render(false); // TODO
 		glPopMatrix();
+      return false;
 	}
 
 	string SliceModel::file() const

@@ -16,13 +16,14 @@
 #include "core/Object.h"
 #include "SliceModel.hpp"
 #include "application/IRunnable.h"
+#include "application/IRenderable.hpp"
 
 class Model;
 
 namespace slicer
 {
 
-	class SlicerModels: public IRunnable
+	class SlicerModels: public IRunnable, IRenderable
 	{
 	  public:
 		SlicerModels() {};
@@ -30,7 +31,7 @@ namespace slicer
 		IRunnable::ExecResult load(string &incoming);
 		IRunnable::ExecResult unload(string &incoming);
 		
-		void render(bool resetTimer, bool draw_normals=false);
+		bool _render(bool resetTimer) override;
 		
 		IRunnable::ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&) override;
       void _help(Help&) const override;

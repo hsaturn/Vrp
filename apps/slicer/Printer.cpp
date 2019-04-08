@@ -51,8 +51,7 @@ namespace slicer
 
 	bool Printer::_render(bool resetTimer)
 	{
-		models.render(resetTimer);
-		return false;
+		return models._render(resetTimer);
 	}
 
 }
