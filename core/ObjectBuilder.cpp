@@ -90,7 +90,7 @@ bool ApplicationBuilder::render(bool bResetTimer)
 {
 	bool bRet = false;
 	for (auto it : instances())
-		bRet |= it.second->render(false);
+		bRet |= it.second->render(false);   // TODO bResetTimer ?
 	return bRet;
 }
 

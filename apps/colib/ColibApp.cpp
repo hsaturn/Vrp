@@ -121,7 +121,7 @@ namespace Colib
 		renderColumns(columns_back, 0, false);
 		renderColumns(columns_front, 2*(Column::DEPTH_X + Cloison::THICKNESS_Z), false);
 
-		bool brender = bati->render();
+		bool brender = bati->_render(resetTimer);
 		if (brender != last_ready)
 		{
 			last_ready = brender;
