@@ -41,17 +41,23 @@ class Vars
 			string newv = StringUtil::to_string(v);
 			auto it = mapVars.find(name);
 
-			if (it != mapVars.end())
-			{
-				if (newv.length() == 0)
+			if ((it != mapVars.end()) && (newv.length() == 0))
+         {
 					mapVars.erase(it);
 			}
-			else
+			else if (it == mapVars.end())
+         {
+            mapVars[name] = newv;
+            return true;
+         }
+         else
 			{
-				string old = mapVars[name];
-				mapVars [name] = newv;
+				string old = it->second;
 				if (old != newv)
+            {
+   				it->second = newv;
 					return true;
+            }
 			}
 		}
 		else
