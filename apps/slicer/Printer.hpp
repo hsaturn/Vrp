@@ -45,7 +45,6 @@ namespace slicer
       private:
          SlicerModels models;
          string msName;
-
 	};
 
 }

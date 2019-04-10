@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /* 
  * File:   Model.hpp
  * Author: hsaturn
@@ -28,7 +22,7 @@ class Model
 {
 	public:
 		
-		static const Model* get(const string& name, bool reload=false);
+		static const Model* get(const string& name, bool reload=false, vector<Triangle> *triangles=nullptr);
 		void renderWireFrame() const;
 		void render(bool draw_normals=false) const;
 		void renderBoundingBox() const;

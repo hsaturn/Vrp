@@ -51,6 +51,8 @@ namespace slicer
 
 	bool Printer::_render(bool resetTimer)
 	{
+      Color::white.render();
+
 		return models._render(resetTimer);
 	}
 

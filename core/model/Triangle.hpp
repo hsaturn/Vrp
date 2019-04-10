@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /* 
  * File:   Triangle.hpp
  * Author: hsaturn
@@ -11,26 +5,36 @@
  * Created on 15 août 2017, 11:34
  */
 
-#ifndef TRIANGLE_HPP
-#    define TRIANGLE_HPP
+#pragma once
 #include "glm/glm.hpp"
 
+class Normal
+{
+   public:
+      Normal()=default;
+      Normal(glm::vec3 _start, glm::vec3 _norm)
+      : start(_start), norm(_norm)
+      {
+      }
+
+      glm::vec3 start;
+      glm::vec3 norm;
+};
 
 class Triangle
 {
-  public:
-	Triangle();
-	Triangle(const Triangle& orig);
-	virtual ~Triangle();
-   
-   const glm::vec3 a() const { return m1; }
-   const glm::vec3 b() const { return m2; }
-   const glm::vec3 c() const { return m3; }
-	
-  private:
-	glm::vec3 m1,m2,m3;  // Points
-	glm::vec3 n1,n2,n3;  // Normals (???)
-};
+   public:
+      Triangle() = default;
+      Triangle(const Triangle& orig) = default;
+      virtual ~Triangle() = default;
 
-#endif /* TRIANGLE_HPP */
+      glm::vec3& a() { return m1; }
+      glm::vec3& b() { return m2; }
+      glm::vec3& c() { return m3; }
+      Normal& normal() { return m_normal; }
+	
+   private:
+      glm::vec3 m1,m2,m3;  // Points
+      Normal m_normal;
+};
 
