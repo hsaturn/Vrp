@@ -22,10 +22,7 @@ class AutoDetect : public core::UsbHotplugObserver
       void onPlugged() override;
       void onUnplugged() override;
       void onTerminate() override;
-
-      
-   private:
-      
+    
 };
 
 }

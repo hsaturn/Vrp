@@ -1,7 +1,7 @@
-/* 
+/*
  * File:   ObjectBuilder.cpp
  * Author: francois
- * 
+ *
  * Created on 20 novembre 2015, 15:29
  */
 
@@ -46,7 +46,7 @@ Application* ApplicationBuilder::buildInstance(const string& sClass, string& inc
 	return application;
 }
 
-const string ApplicationBuilder::getAppClass() const
+const string& ApplicationBuilder::getAppClass() const
 {
 	return appclass;
 }
@@ -60,24 +60,24 @@ Application* ApplicationBuilder::getInstance(const string& name)
 	return 0;
 }
 
-Application::ExecResult ApplicationBuilder::execute(Server* server, string cmd, string incoming, const string& org, CmdQueue& queue)
+IRunnable::ExecResult ApplicationBuilder::execute(Server* server, string cmd, string incoming, const string& org, CmdQueue& queue)
 {
-	Application::ExecResult ret;
+	IRunnable::ExecResult ret;
 
 	for (auto it : instances())
 	{
 		ret = it.second->execute(server, cmd, incoming, org, queue);
-		if (ret == Application::EXEC_UNKNOWN)
+		if (ret == IRunnable::EXEC_UNKNOWN)
 			continue;
-		else if (ret == Application::EXEC_BUSY)
+		else if (ret == IRunnable::EXEC_BUSY)
 		{
 			queue.push_front(org);
-			return Application::EXEC_BUSY;
+			return IRunnable::EXEC_BUSY;
 		}
 		else
 			return ret;
 	}
-	return Application::EXEC_UNKNOWN;
+	return IRunnable::EXEC_UNKNOWN;
 }
 
 void ApplicationBuilder::renderHud()
@@ -90,14 +90,18 @@ bool ApplicationBuilder::render(bool bResetTimer)
 {
 	bool bRet = false;
 	for (auto it : instances())
-		bRet |= it.second->render(false);
+		bRet |= it.second->render(false);   // TODO bResetTimer ?
 	return bRet;
 }
 
 void ApplicationBuilder::help(Help& help)
 {
 	for (const auto& it : instances())
+   {
+      auto pc=help.pushClass(it.second->getAppClass());
+      cout << "Helped pushed " << endl;
 		it.second->help(help);
+   }
 }
 
 bool ApplicationBuilder::destroyAll()
@@ -108,7 +112,7 @@ bool ApplicationBuilder::destroyAll()
    {
       names.insert(name);
    }
-   
+
    for(const auto& name: names)
    {
       bRet &= destroyInstance(name);

@@ -186,7 +186,7 @@ bool CubeApp::_render(bool resetTimer)
 
 void CubeApp::renderCube(float time)
 {
-	glRotatef(anglex, 1.0, 0.0, 0.0);
+	glRotatef(anglex, 1.0, 0.0, 0.0);   // TODO shouldn't it be from renderable
 	glRotatef(angley, 0.0, 1.0, 0.0);
 	glRotatef(anglez, 0.0, 0.0, 1.0);
 
@@ -567,7 +567,8 @@ bool CubeApp::check(const Color* c, string& s) {
 
 list<string> stack; // stack of colors
 
-void CubeApp::_help(Help& help) {
+void CubeApp::_help(Help& help) const
+{
 	help.add("algo rotate {axes} {algo}");
 	help.add("backward [x y z [scale]]");
 	help.add("color dir                  (dir=top bottom left right front back");
@@ -611,7 +612,7 @@ Face::Dir CubeApp::getDir(string& incoming, string& dir)
 	return Face::NONE;
 }
 
-Application::ExecResult CubeApp::_execute(Server* server, string cmd, string incoming, const string& org, CmdQueue& cmdQueue) {
+IRunnable::ExecResult CubeApp::_execute(Server* server, string cmd, string incoming, const string& org, CmdQueue& cmdQueue) {
 	if (!isReady())
 		return EXEC_BUSY;
 

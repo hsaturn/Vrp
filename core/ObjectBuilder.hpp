@@ -20,7 +20,7 @@ class Server;
 class ApplicationBuilder {
 public:
 	virtual Application* build(const string& name, string& incoming) = 0;
-	const string getAppClass() const;
+	const string& getAppClass() const;
 	virtual ~ApplicationBuilder(){};
 
 	static Application* buildInstance(const string& sClass, string&);
@@ -31,7 +31,7 @@ public:
    
 	static Application* getInstance(const string& name);
 
-	static Application::ExecResult execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);
+	static IRunnable::ExecResult execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);
 
 	static bool render(bool resetTimer);
 	

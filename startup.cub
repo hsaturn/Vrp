@@ -55,13 +55,14 @@ var quality=10
 //new colib machine
 //colib.center
 
-#new slicer test.sql
+new slicer test.sql
 #load colored_cube_high
 //load singe
 slicer.scale=10
+load animal
 axis
 
 ambient 0.5
 
-# new slicer
+
 //specular off

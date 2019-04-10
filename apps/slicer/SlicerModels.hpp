@@ -15,25 +15,32 @@
 
 #include "core/Object.h"
 #include "SliceModel.hpp"
+#include "application/IRunnable.h"
+#include "application/IRenderable.hpp"
 
 class Model;
 
 namespace slicer
 {
 
-	class SlicerModels
+	class SlicerModels: public IRunnable, IRenderable
 	{
 	  public:
 		SlicerModels() {};
 		
-		Application::ExecResult load(string &incoming);
+		IRunnable::ExecResult load(string &incoming);
+		IRunnable::ExecResult unload(string &incoming);
 		
-		void render(bool resetTimer, bool draw_normals=false);
+		bool _render(bool resetTimer) override;
 		
-		Application::ExecResult execute(Server*, string cmd, string incoming, const string& org, CmdQueue&);
+		IRunnable::ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&) override;
+      void _help(Help&) const override;
+      
+      // remove spaces special chars, append a number if needed etc.
+      string buildUniqueName(string sFileName);
 	
 	  private:
-		map<int, SliceModel*> models;
+		map<string, SliceModel*> models;
 	};
 }
 

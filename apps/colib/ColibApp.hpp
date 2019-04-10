@@ -45,7 +45,7 @@ namespace Colib {
 			Application* build(const string& name, string& incoming);
 		};
 		
-		void _help(Help&) override;
+		void _help(Help&) const override;
 		
 		bool save(string file);
 		bool restore(string file);
