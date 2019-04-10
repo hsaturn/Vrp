@@ -321,10 +321,10 @@ bool Model::loadObjAndConvert(const string& file, vector<Triangle>* triangles)
 
                if (triangles)
                {
-                  glm::vec3* p;
-                  if (k==0) p=&t.a();
-                  else if (k==1) p=&t.b();
-                  else p=&t.c();
+                  point* p;
+                  if (k==0) p=&t.a;
+                  else if (k==1) p=&t.b;
+                  else p=&t.c;
 
                   p->x=v[k][0];
                   p->y=v[k][1];
@@ -410,7 +410,7 @@ bool Model::loadObjAndConvert(const string& file, vector<Triangle>* triangles)
                Normal n(
                   {gx,gy,gz},
                   norm);
-               t.normal()=n;
+               t.normal=n;
                triangles->push_back(t);
             }
 
