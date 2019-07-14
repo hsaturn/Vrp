@@ -8,6 +8,7 @@
 #ifndef ANSI_COLORS_HPP_
 #define ANSI_COLORS_HPP_
 
+#include <iostream>
 #include <string>
 #include <sys/ioctl.h>
 #include <map>
