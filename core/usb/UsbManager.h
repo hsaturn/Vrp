@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   UsbManager.h
  * Author: hsaturn
  *
@@ -15,13 +15,13 @@ namespace core
       public:
          UsbManager(const UsbManager& orig) = delete;
          virtual ~UsbManager();
-         
-         libusb_device ** getDevices() { return devs; }
+
+         libusb_device ** getDevices();
          static UsbManager& getInstance();
-         
+
       private:
          UsbManager();
-         
+
          static libusb_device **devs;
          static bool mbInit;
    };

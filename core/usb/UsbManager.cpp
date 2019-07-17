@@ -1,7 +1,7 @@
-/* 
+/*
  * File:   UsbManager.cpp
  * Author: hsaturn
- * 
+ *
  * Created on 4 avril 2019, 21:43
  */
 
@@ -14,7 +14,7 @@ namespace core
 {
    bool UsbManager::mbInit=false;
    libusb_device **UsbManager::devs;
-   
+
    UsbManager::UsbManager()
    {
       cout << "UsbManager initialization..." << endl;
@@ -24,20 +24,27 @@ namespace core
          cerr << "ERROR: UsbManager, unable to init usb." << endl;   // TODO
          return;
       }
-      
+
+      cout << "UsbManager init ok." << endl;
+   }
+
+	libusb_device ** UsbManager::getDevices()
+	{
+		if (mbInit)
+      {
+         libusb_free_device_list(devs, 1);
+		}
       auto cnt = libusb_get_device_list(NULL, &devs);
       if (cnt < 0)
       {
          cerr << "Error: UsbManager, unable to enumerate usb devices (" << cnt << ")" << endl;
          libusb_exit(NULL);
-         return;
+         return nullptr;
       }
       mbInit=true;
-      cout << "UsbManager init ok." << endl;
-   }
-   
-   
-   
+		return devs;
+	}
+
    UsbManager::~UsbManager()
    {
       if (mbInit)
@@ -46,7 +53,7 @@ namespace core
          libusb_exit(NULL);
       }
    }
-   
+
    UsbManager& UsbManager::getInstance()
    {
       static UsbManager instance;
