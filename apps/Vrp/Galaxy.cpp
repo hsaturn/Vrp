@@ -48,7 +48,7 @@ Galaxy::Galaxy(const string& name, string& incoming) : Application(name) {
 	try {
 		long n = 0;
 		cout << "Creating galaxy " << num_planets << endl;
-		long tries;
+		long tries=0;
 
 		while (num_planets) {
 			cout << "  Planets left : " << num_planets << endl;
