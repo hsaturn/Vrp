@@ -875,15 +875,6 @@ void update(int value)
 			{
 				run(incoming);
 			}
-			else if (cmd == "centers")
-			{
-				cmdQueue.push_back("find white");
-				cmdQueue.push_back("find yellow");
-				cmdQueue.push_back("find blue");
-				cmdQueue.push_back("find orange");
-				cmdQueue.push_back("find green");
-				cmdQueue.push_back("find red");
-			}
 			else if (ApplicationBuilder::execute(server, cmd, incoming, org, cmdQueue) != Application::EXEC_UNKNOWN)
 			{
 				cerr << "Ok// c ObjectBuilder.execute " << cmd << endl;

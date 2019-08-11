@@ -627,6 +627,15 @@ Application::ExecResult CubeApp::_execute(Server* server, string cmd, string inc
 		else
 			server->send("#KO is_made");
 	}
+	else if (cmd == "centers")
+	{
+		cmdQueue.push_back("find white");
+		cmdQueue.push_back("find yellow");
+		cmdQueue.push_back("find blue");
+		cmdQueue.push_back("find orange");
+		cmdQueue.push_back("find green");
+		cmdQueue.push_back("find red");
+	}
 	else if (cmd == "top")
 	{
 		bool ok = true;
