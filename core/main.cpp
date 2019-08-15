@@ -581,16 +581,15 @@ void update(int value)
 			if (row.length())
 				cmdQueue.push_front(row);
 
-			Widget::replaceVars(incoming);
+			Widget::replaceVars(incoming);	// Ouch !!!
+
 			// cout << "INCOMMING " << incoming << endl;
 			string cmd = getWord(incoming);
 			// cout << "CMD=[" << cmd << "] incoming=[" << incoming << "]" << endl;
 
-			//if (StringUtil::match("[a-zA-Z]+[a-zA-Z0-9]*.[a-zA-Z]+[a-zA-Z0-9]+=", cmd))
-
 			if (cmd.length() && (cmd[0]=='#' || cmd.substr(0,2)=="//"))
 			{
-
+				// Nothing to do...
 			}
 			else if (StringUtil::preg_match("^[a-zA-Z]+[a-zA-Z0-9_]*\\.[a-zA-Z]+[a-zA-Z0-9_]*", cmd, false))
 			{
