@@ -10,13 +10,10 @@
  *
  * Created on 15 août 2017, 08:23
  */
+#pragma once
 
-#ifndef PRINTER_HPP
-#    define PRINTER_HPP
-
-#    include "ostream"
-#    include <core/Object.h>
-#    include "SlicerModels.hpp"
+#include "ostream"
+#include "SlicerModels.hpp"
 
 using namespace std;
 
@@ -46,5 +43,4 @@ namespace slicer
 
 }
 
-#endif /* PRINTER_HPP */
 

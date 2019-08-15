@@ -4,11 +4,8 @@
  *
  * Created on 5 avril 2016, 20:47
  */
+#pragma once
 
-#ifndef COLIB_HPP
-#define	COLIB_HPP
-
-#include <Object.h>
 #include <ObjectBuilder.hpp>
 #include "Coord.hpp"
 #include <string>
@@ -125,5 +122,3 @@ namespace Colib {
 		bool last_ready;			// pour autosave
 	};
 }
-#endif	/* COLIB_HPP */
-

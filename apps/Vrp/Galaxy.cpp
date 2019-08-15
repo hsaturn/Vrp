@@ -37,7 +37,7 @@ Galaxy::Galaxy(const string& name, string& incoming) : Application(name) {
 	}
 	else
 		setVar("type","normal");
-	long num_planets = atol(getWord(incoming).c_str());
+	long num_planets = atol(StringUtil::getWord(incoming).c_str());
 	if (num_planets == 0)
 		num_planets = 20;
 	else if (num_planets > 1000)

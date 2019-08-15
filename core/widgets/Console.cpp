@@ -12,7 +12,7 @@
 #include "Draggable.hpp"
 #include "Event.hpp"
 #include "WidRect.hpp"
-#include "Object.h" //  TODO for getWord :-(
+#include "StringUtil.hpp"
 
 namespace hwidgets
 {
@@ -71,11 +71,11 @@ namespace hwidgets
 		}
 		string s(cmd);
 		while (s[0] == '@') s.erase(0, 1);
-		string s1 = getWord(s);
+		string s1 = StringUtil::getWord(s);
 		if (s1 == "console")
 		{
-			s1 = getWord(s);
-			string sw = getWord(s);
+			s1 = StringUtil::getWord(s);
+			string sw = StringUtil::getWord(s);
 			bool* b = 0;
 			if (s1 == "events") b = &bEvents;
 			else if (s1 == "commands") b = &bCommands;

@@ -3,7 +3,6 @@
 #include "Face.h"
 #include <string>
 
-#include <Object.h>
 #include <ObjectBuilder.hpp>
 
 using namespace std;

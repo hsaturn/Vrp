@@ -10,11 +10,10 @@
  *
  * Created on 15 août 2017, 11:06
  */
+#pragma once
 
-#ifndef SLICEMODEL_HPP
-#    define SLICEMODEL_HPP
+#include "core/Application.h"
 #include "model/Model.hpp"
-#include "core/Object.h"
 #include "glm/glm.hpp"
 
 class Model;
@@ -44,5 +43,3 @@ class SliceModel
 };
 
 }
-#endif /* SLICEMODEL_HPP */
-

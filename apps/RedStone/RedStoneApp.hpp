@@ -4,13 +4,11 @@
  *
  * Created on 5 avril 2016, 20:36
  */
+#pragma once
 
-#ifndef REDSTONE_HPP
-#    define REDSTONE_HPP
 
-#    include <Object.h>
-#    include <ObjectBuilder.hpp>
-#    include <string>
+#include <ObjectBuilder.hpp>
+#include <string>
 
 using namespace std;
 
@@ -36,6 +34,4 @@ namespace RedStone
 	};
 
 }
-
-#endif /* REDSTONE_HPP */
 

@@ -6,7 +6,6 @@
  */
 
 #include "ObjectBuilder.hpp"
-#include "Object.h"
 #include "Help.h"
 #include "StringUtil.hpp"
 #include "Server.h"

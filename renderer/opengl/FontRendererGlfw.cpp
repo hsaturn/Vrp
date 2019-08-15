@@ -8,6 +8,7 @@
 #include "Color.h"
 #include "FontRendererGlfw.h"
 #include <freetype2/ft2build.h>
+#include "core/StringUtil.hpp"
 
 FontRenderer* FontRendererGlfw::factory(string& data)
 {
@@ -16,9 +17,9 @@ FontRenderer* FontRendererGlfw::factory(string& data)
 	pFont->font=0;
 
 	string data2(data);
-   const string font_type = getWord(data2);
-	const string font = getWord(data2);
-	const string size = getWord(data2);
+   const string font_type = StringUtil::getWord(data2);
+	const string font = StringUtil::getWord(data2);
+	const string size = StringUtil::getWord(data2);
    
    if (font_type != "bitmap")
    {

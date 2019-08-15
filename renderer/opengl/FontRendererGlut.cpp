@@ -8,6 +8,7 @@
 #include "Color.h"
 #include <GL/freeglut_std.h>
 #include "FontRendererGlut.h"
+#include "core/StringUtil.hpp"
 
 FontRenderer* FontRendererGlut::factory(string& data)
 {
@@ -18,8 +19,8 @@ FontRenderer* FontRendererGlut::factory(string& data)
 	pFont->font=0;
 		
 	string data2(data);
-	string font = getWord(data2);
-	string size = getWord(data2);
+	string font = StringUtil::getWord(data2);
+	string size = StringUtil::getWord(data2);
 
 	if (font=="helvetica")
 	{

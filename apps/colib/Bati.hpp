@@ -4,11 +4,9 @@
  *
  * Created on 23 janvier 2017, 11:16
  */
+#pragma once
 
-#ifndef BATI_HPP
-#define BATI_HPP
-
-#include <Object.h>
+#include <core/Application.h>
 #include <DynamicFloat.hpp>
 
 namespace Colib
@@ -83,6 +81,4 @@ namespace Colib
 		MotorSpeedHook* hook_speed;
 	};
 }
-
-#endif /* BATI_HPP */
 

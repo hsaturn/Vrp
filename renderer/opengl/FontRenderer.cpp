@@ -11,6 +11,7 @@
 #include "FontRenderer.h"
 #include "FontRendererGlfw.h"
 #include "FontRendererFreeType.h"
+#include "core/StringUtil.hpp"
 
 string FontRenderer::fontPath = "data/fonts/";
 
@@ -24,7 +25,7 @@ void FontRenderer::setFontPath(string& data)
 
 FontRenderer* FontRenderer::factory(string& data)
 {
-   const string font_renderer_type(getWord(data));
+   const string font_renderer_type(StringUtil::getWord(data));
    
    if (font_renderer_type == "ft" ||
        font_renderer_type == "freetype")
