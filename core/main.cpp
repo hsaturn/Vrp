@@ -154,15 +154,13 @@ void exec(string& cmd)
 								[cmd]()
 								  {
 									system(cmd.c_str());
-								server->send("#EVENT exec end " + cmd);
+								   if (server) server->send("#EVENT exec end " + cmd);
 								  });
 			exec_list.push_back(t);
 			if (!bBackGround)
 			{
 				t->thr->join();
 			}
-			else
-				exec_list.push_back(t);
 		}
 		catch (std::exception &e)
 		{
