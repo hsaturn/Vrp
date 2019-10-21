@@ -34,6 +34,21 @@ sudo apt-get install libfreetype6-dev
 sudo apt-get install libsfml-dev
 sudo apt-get install libglfw3-dev
 
+sudo apt install libglew-dev 
+sudo apt install libusb-dev 
+sudo apt install libsfml-dev 
+sudo apt install libusb-dev 
+sudo apt-get install libusb-1.0-0.dev
+sudo apt-get install freeglut3-dev
+git clone https://github.com/hsaturn/synth.git
+cd synth
+sudo apt install libsdl2-dev 
+sudo apt install libsdl-mixer1.2-dev 
+cmake .
+make
+sudo make install
+cd Vrp
+sudo apt install libfreetype6-dev 
 
 SaturnLibs : git clone https://github.com/hsaturn/SaturnLib.git
 	cmake .
