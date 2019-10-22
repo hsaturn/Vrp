@@ -6,6 +6,7 @@
  */
 #pragma once
 
+#include <Application.h>
 #include <ObjectBuilder.hpp>
 #include "Blocks/Block.hpp"
 #include <Coord.hpp>
@@ -27,7 +28,7 @@ namespace RedStone {
 
 		bool _render(bool resetTimer) override;
 		ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&) override;
-		void _help(Help&) override;
+		void _help(Help&) const override;
 		
 		/** return 0 or a Block */
 		Block* getTile(const Coord&) const;
@@ -37,4 +38,3 @@ namespace RedStone {
 		map<Coord, Block*> ground;
 	};
 }
-

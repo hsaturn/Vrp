@@ -144,27 +144,6 @@ FontRenderer* FontRendererFreeType::factory(string& data)
    return pRenderer;
 }
 
-FontRendererFreeType::FontRendererFreeType()
-{
-   
-}
-   class xy
-   {
-   public:
-      xy() = default;
-      xy(int x, int y):mx(x), my(y){}
-      bool operator==(const xy& right)
-      {
-         return right.mx==mx && right.my==my;
-      }
-      bool operator!=(const xy& right)
-      {
-         return !operator==(right);
-      }
-   private:
-      int mx;
-      int my;
-   };
 void FontRendererFreeType::render(int xx, int yy, const string& text) const
 {
    if (face == nullptr || shader==0)

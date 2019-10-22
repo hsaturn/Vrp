@@ -59,8 +59,6 @@ void Planet::render(int quality) const {
 		mring->render(quality, mray);
 
 	glPopMatrix();
-
-
 }
 
 void Planet::renderName() const {

@@ -1,7 +1,7 @@
-/* 
+/*
  * File:   Country.cpp
  * Author: francois
- * 
+ *
  * Created on 19 novembre 2015, 14:53
  */
 
@@ -58,9 +58,9 @@ Galaxy::Galaxy(const string& name, string& incoming) : Application(name) {
 				float ray=sqrt(range.x()*range.x()+range.y()*range.y()+range.z()*range.z())/2.0;
 				float angle1 = Random::rand(0, M_PI);
 				float angle2 = Random::rand(0, 2*M_PI);
-				
+
 				Point P(sin(angle1)*cos(angle2)*ray, sin(angle1)*sin(angle2)*ray, cos(angle1)*ray);
-				
+
 				t = new Planet(StringUtil::to_string(n), P , min_planet_ray + Random::rand1() * (max_planet_ray - min_planet_ray));
 			}
 			else
@@ -85,7 +85,7 @@ Galaxy::Galaxy(const string& name, string& incoming) : Application(name) {
 			}
 		}
 		setVar("size", n);
-		
+
 	} catch (...) {
 		cerr << "EXCEPTION :-(" << flush << endl;
 	}
@@ -134,8 +134,9 @@ const Planet* Galaxy::getPlanet(const string& planetName) const
 	return 0;
 }
 
-Application::ExecResult Galaxy::_execute(Server* svr, string cmd, string incoming, const string& org, CmdQueue&) {
-	if (cmd == "distance") {
+IRunnable::ExecResult Galaxy::_execute(Server* svr, string cmd, string incoming, const string& org, CmdQueue&) {
+	if (cmd == "distance")
+   {
 		cout << "incoming distance (" << incoming << ")" << endl;
 		const Planet* p1 = getPlanet(StringUtil::getWord(incoming));
 		const Planet* p2 = getPlanet(StringUtil::getWord(incoming));
@@ -146,4 +147,9 @@ Application::ExecResult Galaxy::_execute(Server* svr, string cmd, string incomin
 		return EXEC_OK;
 	}
 	return EXEC_UNKNOWN;
+}
+
+void Galaxy::_help(Help& help) const
+{
+   help.add("distance");
 }

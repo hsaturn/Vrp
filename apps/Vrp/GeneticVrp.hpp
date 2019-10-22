@@ -5,8 +5,7 @@
  * Created on 24 novembre 2015, 15:44
  */
 
-#ifndef GENETICVRP_HPP
-#define	GENETICVRP_HPP
+#pragma once
 
 #include <genetic.hpp>
 
@@ -29,6 +28,3 @@ private:
 	Galaxy* mgalaxy;
 
 };
-
-#endif	/* GENETICVRP_HPP */
-

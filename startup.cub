@@ -33,7 +33,7 @@ event filter mousemove mouseup resize
 var c=off
 var _cmdline=
 font_path /usr/share/fonts/truetype
-widget console main 2%,70% 96%,25% #F804 white #AAAA freetype noto/NotoSansMono-Regular 14
+widget console main 2%,70% 96%,25% #F804 white #AAAA freetype noto/NotoSansMono-Regular 16
 translate 0 0 0
 # new galaxy flat 10
 
@@ -54,13 +54,14 @@ var quality=10
 //new colib machine
 //colib.center
 
-#new slicer test.sql
+new slicer test.sql
 #load colored_cube_high
 //load singe
 slicer.scale=10
+load animal
 axis
 
 ambient 0.5
 
-new slicer
-//specular off
+
+specular off

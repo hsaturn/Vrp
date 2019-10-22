@@ -25,8 +25,8 @@ public:
 	~VrpApp() override {}
 
 	bool _render(bool resetTimer) override;
-	Application::ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&) override;
-	void _help(Help&) override;
+	IRunnable::ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&) override;
+	void _help(Help&) const override;
 	void best(Server*);
 	void pop();
 	

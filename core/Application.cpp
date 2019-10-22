@@ -12,19 +12,19 @@
 #include <Widget.h>
 #include <sys/stat.h>
 
-Application::ExecResult Application::execute(Server* server, string cmd, string incoming, const string& org, CmdQueue& cmdQueue)
+IRunnable::ExecResult Application::execute(Server* server, string cmd, string incoming, const string& org, CmdQueue& cmdQueue)
 {
 	if (StringUtil::preg_match("^[a-zA-Z]+[a-zA-Z0-9_]*=", cmd, false))
 	{
 		string name = StringUtil::getWord(cmd, '=');
 		setVar(name, cmd);
-		return EXEC_OK;
+		return IRunnable::EXEC_OK;
 	}
 	else if (StringUtil::preg_match("^[a-zA-Z][a-zA-Z0-9_]*\\?", cmd))
 	{
 		cmd.erase(cmd.length() - 1, 1);
 		server->send("#OK " + getName() + '.' + cmd + "=" + getString(cmd));
-		return EXEC_OK;
+		return IRunnable::EXEC_OK;
 	}
 	else if (cmd == "vars")
 	{
@@ -35,7 +35,7 @@ Application::ExecResult Application::execute(Server* server, string cmd, string 
 
 		vars.iterate(func);
 		server->send("Vars count : " + StringUtil::to_string(vars.size()));
-		return EXEC_OK;
+		return IRunnable::EXEC_OK;
 	}
 	else
 		return _execute(server, cmd, incoming, org, cmdQueue);
@@ -77,11 +77,11 @@ void Application::glSetMatrix()
 
 void Application::help(Help& help)
 {
-	help.add("object.var=value   set var");
-	help.add("object.var?        display var");
-	help.add("object.dx/dy/dz    translate object");
-	help.add("object.sx/sy/sz    scale object");
-	help.add("object.vars        display vars of object");
+	help.add("var=value   set var");
+	help.add("var?        display var");
+	help.add("dx/dy/dz    translate object");
+	help.add("sx/sy/sz    scale object");
+	help.add("vars        display vars of object");
 	_help(help);
 }
 
@@ -96,12 +96,12 @@ float Application::eatFloat(string& buf) const
 	string name = StringUtil::getWord(buf);
 	if (name.length())
 	{
-		const string& v = vars.getString(name);
+		const string& v = vars.getString(name, name);
 		if (v[0]=='.' || v[0]=='-' || v[0]=='+' || (v[0]>='0' && v[0]<='9'))
 			return atof(v.c_str());
-		cerr << "Not a float : " << v << endl;
+		cerr << "Not a float : " << v << endl; // TODO not visible in consoles
 	}
-	cerr << "Application::eatFloat, float expected" << endl;
+	cerr << "Application::eatFloat, float expected (was parsing " << name << ") end of chain (" << buf << ")" << endl; // TODO not visible in console
 	return 0;
 }
 
@@ -130,4 +130,9 @@ string Application::getRsrcFileName(const string rel) const
 {
 	string rel2 = mname + '/' + rel;
 	return builder->getRsrcFileName(rel2);
+}
+
+const string& Application::getAppClass() const
+{
+   return builder->getAppClass();
 }

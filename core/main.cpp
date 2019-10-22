@@ -9,6 +9,7 @@
 #include <string>
 #include <list>
 
+#include <usb/UsbManager.h>
 #include <X11/Xlib.h>
 #include <apps/Cube/CubeApp.h>
 #include <GLFW/glfw3.h>
@@ -590,19 +591,19 @@ void update(int value)
 				Application* app=ApplicationBuilder::getInstance(name);
 				if (app)
 				{
-					Application::ExecResult ret = app->execute(server, cmd, incoming, org, cmdQueue);
+					IRunnable::ExecResult ret = app->execute(server, cmd, incoming, org, cmdQueue);
 					switch (ret)
 					{
-						case Application::EXEC_OK:
+						case IRunnable::EXEC_OK:
 							server->send("#OK "+name+'.'+cmd);
 							break;
-						case Application::EXEC_UNKNOWN:
+						case IRunnable::EXEC_UNKNOWN:
 							server->send("#Unknown command "+name+'.'+cmd);
 							break;
 						case Application::EXEC_FAILED:
 							server->send("#KO "+name+'.'+cmd);
 							break;
-						case Application::EXEC_BUSY:
+						case IRunnable::EXEC_BUSY:
 						{
 							cmdQueue.push_front(org);
 						}
@@ -643,6 +644,7 @@ void update(int value)
 				int count=0;
 				// TODO modify widget with new help style
 				Widget::help(incoming);
+
             for (const auto& help_item : help.get())
             {
 					if (incoming.length()==0 || help_item.find(incoming)!=string::npos)
@@ -867,7 +869,7 @@ void update(int value)
 			{
 				run(incoming);
 			}
-			else if (ApplicationBuilder::execute(server, cmd, incoming, org, cmdQueue) != Application::EXEC_UNKNOWN)
+			else if (ApplicationBuilder::execute(server, cmd, incoming, org, cmdQueue) != IRunnable::EXEC_UNKNOWN)
 			{
 				cerr << "Ok// c ObjectBuilder.execute " << cmd << endl;
 			}
@@ -993,6 +995,7 @@ int main(int argc, char** argv)
 		// TODO glutTimerFunc(25, update, 0);
 		drawScene(mainWindow);
 		glfwPollEvents();
+      core::UsbManager::update();
 	}
 
 	return 0;

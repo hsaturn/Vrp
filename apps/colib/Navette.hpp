@@ -13,6 +13,7 @@
 #pragma once
 
 #include <Application.h>
+
 #include <DynamicFloat.hpp>
 #include <model/Model.hpp>
 
@@ -76,4 +77,3 @@ namespace Colib
 			Wings* wings;
 	};
 }
-

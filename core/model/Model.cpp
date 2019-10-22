@@ -202,7 +202,7 @@ bool Model::loadObjAndConvert(const string& file, vector<Triangle>* triangles)
 	}
 
 	bmin[0] = bmin[1] = bmin[2] = numeric_limits<float>::max();
-	bmax[0] = bmax[1] = bmax[2] = -numeric_limits<float>::max();
+	bmax[0] = bmax[1] = bmax[2] = numeric_limits<float>::min();
 
 	{
 		cout << "Shape size " << shapes.size() << endl;
@@ -310,12 +310,26 @@ bool Model::loadObjAndConvert(const string& file, vector<Triangle>* triangles)
 
 				float gx=0,gy=0,gz=0;
 
+            Triangle t;
+
 				for (int k = 0; k < 3; k++)
 				{
 					// VERTEX
 					vb.push_back(v[k][0]);
 					vb.push_back(v[k][1]);
 					vb.push_back(v[k][2]);
+
+               if (triangles)
+               {
+                  point* p;
+                  if (k==0) p=&t.a;
+                  else if (k==1) p=&t.b;
+                  else p=&t.c;
+
+                  p->x=v[k][0];
+                  p->y=v[k][1];
+                  p->z=v[k][2];
+               }
 
 					gx += v[k][0];
 					gy += v[k][1];
@@ -327,7 +341,7 @@ bool Model::loadObjAndConvert(const string& file, vector<Triangle>* triangles)
 					vb.push_back(n[k][2]);
 
 					// Combine normal and diffuse to get color.
-					if (false)
+					if (true)
 					{
 						float c[3];
 						float normal_factor = 0.2;
@@ -348,9 +362,12 @@ bool Model::loadObjAndConvert(const string& file, vector<Triangle>* triangles)
 							c[1] /= len;
 							c[2] /= len;
 						}
-						vb.push_back(c[0] * 0.5 + 0.5);
-						vb.push_back(c[1] * 0.5 + 0.5);
-						vb.push_back(c[2] * 0.5 + 0.5);
+                  const float m=0.5;
+                  const float f=1.0-m;
+
+                  vb.push_back(c[0] * f + m);
+						vb.push_back(c[1] * f + m);
+						vb.push_back(c[2] * f + m);
 					}
 					else
 					{
@@ -385,6 +402,18 @@ bool Model::loadObjAndConvert(const string& file, vector<Triangle>* triangles)
 				normals.push_back(gx+n[kk][0]);
 				normals.push_back(gy+n[kk][1]);
 				normals.push_back(gz+n[kk][2]);
+
+            if (triangles)
+            {
+               glm::vec3 start{gx,gy,gz};
+               glm::vec3 norm{n[kk][0], n[kk][1], n[kk][2]};
+               Normal n(
+                  {gx,gy,gz},
+                  norm);
+               t.normal=n;
+               triangles->push_back(t);
+            }
+
 			}
 
 			cout << "Normals " << normals.size() << endl;
@@ -579,7 +608,7 @@ void Model::main()
 	render();
 }
 
-const Model* Model::get(const string& name, bool reload)
+const Model* Model::get(const string& name, bool reload, vector<Triangle>* triangles)
 {
 	if (!reload)
 		if (models.find(name) != models.end())
@@ -587,8 +616,11 @@ const Model* Model::get(const string& name, bool reload)
 
 	string file = "data/models/" + name + ".obj";
 	Model* model = new Model;
-	if (model->loadObjAndConvert(file))
+	if (model->loadObjAndConvert(file, triangles))
+   {
+      model->setShortName(name);
 		models[name] = model;
+   }
 	else
 	{
 		delete model;

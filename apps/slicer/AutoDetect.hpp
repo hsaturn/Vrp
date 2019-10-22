@@ -6,19 +6,23 @@
  */
 
 #pragma once
+#include "usb/UsbHotplugObserver.h"
 
 namespace slicer
 {
    
-class AutoDetect
+class AutoDetect : public core::UsbHotplugObserver
 {
    public:
       AutoDetect();
       AutoDetect(const AutoDetect& orig) = delete;
       
-      virtual ~AutoDetect() = default;
-   private:
-      
+      ~AutoDetect() override = default;
+
+      void onPlugged() override;
+      void onUnplugged() override;
+      void onTerminate() override;
+    
 };
 
 }

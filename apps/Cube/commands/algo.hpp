@@ -5,8 +5,8 @@
  * Created on 6 août 2014, 10:42
  */
 
-#ifndef SVR_TEST_HPP
-#define	SVR_TEST_HPP
+#pragma once
+
 #include <core/commands/cmd.hpp>
 
 namespace core
@@ -22,6 +22,3 @@ namespace core
 	};
 
 }
-
-#endif	/* SVR_TEST_HPP */
-

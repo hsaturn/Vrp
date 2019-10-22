@@ -11,8 +11,7 @@
  * Created on 2 février 2017, 11:58
  */
 
-#ifndef PLATEAU_HPP
-#define PLATEAU_HPP
+#pragma once
 
 #include "DynamicFloat.hpp"
 #include <string>
@@ -67,7 +66,3 @@ namespace Colib {
 		MotorSpeedHook* speed_hook;
 	};
 }
-
-
-#endif /* PLATEAU_HPP */
-

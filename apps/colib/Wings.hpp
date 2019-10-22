@@ -5,8 +5,7 @@
  * Created on 16 février 2017, 19:56
  */
 
-#ifndef WINGS_HPP
-#define WINGS_HPP
+#pragma once
 
 #include <core/DynamicFloat.hpp>
 
@@ -50,6 +49,3 @@ namespace Colib
 			void checkCentered(const Model*, const char* name);
 	};
 }
-
-#endif /* WINGS_HPP */
-

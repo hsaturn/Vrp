@@ -13,11 +13,13 @@
 
 #pragma once
 
+#include <Application.h>
 #include <ObjectBuilder.hpp>
 #include <string>
 #include <vector>
 
 #include "SlicerModels.hpp"
+#include "AutoDetect.hpp"
 
 using namespace std;
 
@@ -35,8 +37,10 @@ namespace slicer
 		~SlicerApp() override;
 
 		bool _render(bool resetTimer) override;
-		Application::ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&) override;
-		void _help(Help&) override;
+      
+		IRunnable::ExecResult _execute(Server*, string cmd, string incoming, const string& org, CmdQueue&) override;
+		void _help(Help&) const override;
+      
 		void best(Server*);
 		void pop();
 
@@ -47,7 +51,6 @@ namespace slicer
 		SlicerApp(const SlicerApp& orig);
 
 		Printer* printer = nullptr;
+      AutoDetect printerDetection;
 	};
 }
-
-

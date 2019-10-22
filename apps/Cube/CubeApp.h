@@ -80,7 +80,7 @@ class CubeApp : public Application
 	void renderHud() override;
 
   protected:
-	void _help(Help&) override;
+	void _help(Help&) const override;
 	ExecResult _execute(Server* server, string cmd, string incoming, const string& org, CmdQueue&) override;
 	bool _render(bool resetTimer) override;
 

@@ -5,8 +5,7 @@
  * Created on 23 novembre 2015, 19:46
  */
 
-#ifndef GENELINK_HPP
-#define	GENELINK_HPP
+#pragma once
 
 #include <genetic.hpp>
 
@@ -28,6 +27,3 @@ private:
 	Planet* planetEnd;
 
 };
-
-#endif	/* GENELINK_HPP */
-

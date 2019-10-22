@@ -5,8 +5,7 @@
  * Created on 5 avril 2016, 21:12
  */
 
-#ifndef SOLID_HPP
-#define	SOLID_HPP
+#pragma once
 
 #include "Block.hpp"
 #include <string>
@@ -29,5 +28,3 @@ private:
 };
 
 }
-#endif	/* SOLID_HPP */
-

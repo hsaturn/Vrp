@@ -5,8 +5,7 @@
  * Created on 6 avril 2016, 15:37
  */
 
-#ifndef TORCH_HPP
-#define	TORCH_HPP
+#pragma once
 
 #include "Block.hpp"
 
@@ -27,6 +26,3 @@ namespace RedStone {
 	};
 
 }
-
-#endif	/* TORCH_HPP */
-

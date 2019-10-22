@@ -5,8 +5,7 @@
  * Created on 24 novembre 2015, 03:19
  */
 
-#ifndef FITNESSSCORE_HPP
-#define	FITNESSSCORE_HPP
+#pragma once
 
 #include <genetic.hpp>
 #include <Individual.hpp>
@@ -25,6 +24,3 @@ public:
 private:
 	FitnessScore(const FitnessScore& orig);
 };
-
-#endif	/* FITNESSSCORE_HPP */
-

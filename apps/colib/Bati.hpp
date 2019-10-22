@@ -8,6 +8,7 @@
 
 #include <core/Application.h>
 #include <DynamicFloat.hpp>
+#include "application/IRenderable.hpp"
 
 namespace Colib
 {
@@ -16,7 +17,7 @@ namespace Colib
 	class Plateau;
 	class MotorSpeedHook;
 	
-	class Bati
+	class Bati: public IRenderable
 	{
 		static const int FACTOR=2;
 		static const int MAX_SPEED=8*FACTOR;
@@ -29,7 +30,7 @@ namespace Colib
 		 * 
 		 * @return true if need to redraw soon
 		 */
-		bool render();
+		bool _render(bool) override;
 		
 		// Is it ready to move somewhere ?
 		bool isReady();
@@ -44,7 +45,7 @@ namespace Colib
 		float getXRight   () const;
 		float getCenterX  () const;
 		
-		Application::ExecResult moveTo(int col_nr, int h, bool back);
+		IRunnable::ExecResult moveTo(int col_nr, int h, bool back);
 		static const int THICKNESS = 10;
 		
 		Plateau* getPlateau();
@@ -81,4 +82,3 @@ namespace Colib
 		MotorSpeedHook* hook_speed;
 	};
 }
-

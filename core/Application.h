@@ -16,14 +16,15 @@
 #include <StringUtil.hpp>
 
 #include <map>
-#include "application/Renderable.hpp"
+#include "application/IRenderable.hpp"
 #include "Vars.hpp"
+#include "core/application/IRunnable.h"
 
 using namespace std;
 
 class ApplicationBuilder;
 
-class Application : public Renderable
+class Application : public IRenderable, public IRunnable
 {
   public:
 	friend class ApplicationBuilder;
@@ -97,6 +98,8 @@ class Application : public Renderable
 
 	string getAppRsrcFileName(const string rel) const;
 	string getRsrcFileName(const string rel) const;
+   
+   const string& getAppClass() const;
 
   protected:
 
