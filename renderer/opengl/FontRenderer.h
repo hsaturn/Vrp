@@ -13,27 +13,39 @@ using namespace std;
 
 class FontRenderer
 {
-	public:
+ public:
+   virtual ~FontRenderer() = default;
 
-		/**
-		 *
-		 * @param data
-		 * @return a font renderer (always not null)
-		 */
-		static FontRenderer* factory(string& data);
+   virtual void render(int x, int y, const string& text) const = 0;
 
-		virtual void render(int x, int y, const string& text) const=0;
+   virtual int height() const { return font_height; } // TODO ugly
 
-		virtual int height() const { return font_height; } // TODO ugly
+   static void setFontPath(string& data);
 
-      static void setFontPath(string& data);
-      
-	protected:
+ protected:
 
-		int font_height;
-      static string fontPath;
+   int font_height;
+   static string fontPath;
+   
+   virtual size_t getHash(size_t prevHash=0) const;
 
-	private:
-		map<string, FontRenderer*>	mRenderers;
+   friend class FontRendererFactory;
+};
+
+class FontRendererFactory
+{
+   public:
+     FontRendererFactory() = delete;
+     
+      /**
+       * @param data
+       * @return a font renderer or null
+       */
+      static const FontRenderer* build(string& data);
+
+   private:
+      // For flyweight pattern
+      static map<size_t, const FontRenderer*> renderers;
+      static map<string, const FontRenderer*> renderers_per_name;
 };
 

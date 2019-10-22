@@ -47,6 +47,7 @@ namespace hwidgets
 				if (shortcut.set(key))
 					registerShortcut( shortcut, w);
 			}
+         
 		}
 		return w;
 	}

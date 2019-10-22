@@ -1,5 +1,6 @@
 screen 800 600
 color btn_back=#F808
+font btn_font freetype noto/NotoSansMono-Regular 12
 widget button stop    =10,=25  100,15 btn_back  "New galaxy"  btn_text=white        : world.read ouessant.txt
 widget button stop    +0,+20   100,15 btn_back  "New cube"    btn_text=white        : new cube
 widget button back    +0,+20    47,15 btn_back  "Back"        btn_text              : backward
@@ -33,7 +34,7 @@ event filter mousemove mouseup resize
 var c=off
 var _cmdline=
 font_path /usr/share/fonts/truetype
-widget console main 2%,70% 96%,25% #F804 white #AAAA freetype noto/NotoSansMono-Regular 16
+widget console main font=console_16 freetype noto/NotoSansMono-Regular 16 2%,70% 96%,25% #F804 white #AAAA 
 translate 0 0 0
 # new galaxy flat 10
 
@@ -58,7 +59,7 @@ new slicer test.sql
 #load colored_cube_high
 //load singe
 slicer.scale=10
-load animal
+# load animal
 axis
 
 ambient 0.5

@@ -5,9 +5,7 @@
  * Created on 23 juin 2015, 23:32
  */
 
-#ifndef WIDGETBUTTON_H
-#define WIDGETBUTTON_H
-
+#pragma once
 #include "Draggable.hpp"
 #include <StringUtil.hpp>
 
@@ -38,6 +36,3 @@ namespace hwidgets
 		const Color* color;
 	} ;
 }
-
-#endif /* WIDBUTTON_H */
-

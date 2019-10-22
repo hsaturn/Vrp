@@ -181,14 +181,14 @@ namespace hwidgets
 
 	Widget* Widget::factory(string& infos, Widget* parent)
 	{
-		Widget* w = 0;
+		Widget* w{nullptr};
 
 		string wid_class = StringUtil::getWord(infos);
 
 		if (wid_class == "help" || wid_class == "")
 		{
 			pushMessage("widget help:");
-			pushMessage("  widget name {rectangle} {class} {args}      class=button");
+			pushMessage("  widget {type} name [font=...] {rectangle} {type args}");
 			pushMessage("  widget {type} help        help on widget {type}");
 			pushMessage("  widget var name=value");
 		}
@@ -207,6 +207,16 @@ namespace hwidgets
 				it->second.factory(name);
 			else
 			{
+            const FontRenderer* pFont{nullptr};
+            if (infos.substr(0,5)=="font=")
+            {
+               pFont = FontRendererFactory::build(infos);
+            }
+            if (pFont == nullptr)
+            {
+               string default_font = "ft helvetica 10"; // TODO WHAT ?
+               pFont = FontRendererFactory::build(default_font);
+            }
 				WidRect* rect = WidRect::factory(infos, parent ? parent->mrect : 0);
 
 				if (rect)
@@ -214,6 +224,7 @@ namespace hwidgets
 					w = it->second.factory(infos);
 					if (w)
 					{
+                  w->mpFont = pFont;
 						w->mrect = rect;
 						w->name = name;
 					}

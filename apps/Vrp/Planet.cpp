@@ -63,7 +63,7 @@ void Planet::render(int quality) const {
 
 void Planet::renderName() const {
 	string n("helvetica 10");
-	static FontRenderer* font = FontRenderer::factory(n);
+	static const FontRenderer* font = FontRendererFactory::build(n);
 	font->render(mpos.x(), mpos.y(), mname);
 
 }

@@ -42,7 +42,6 @@ namespace hwidgets
 		bool redisplay;
 		const Color* cmdcolor;
 		const Color* anscolor;
-		FontRenderer* font;
 		static list<string> display;
 	};
 

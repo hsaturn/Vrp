@@ -120,6 +120,7 @@ FT_Face* FontRendererFreeType::loadFont(const string& fontName)
 
 FontRenderer* FontRendererFreeType::factory(string& data)
 {
+    // TODO lightweight factory
    FontRendererFreeType* pRenderer = new FontRendererFreeType; // Mais quelle conception de merde !
    
    initFreeType();

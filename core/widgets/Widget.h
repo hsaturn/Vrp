@@ -16,6 +16,7 @@
 #include "Color.h"
 #include "Event.hpp"
 #include "Widgets.hpp"
+#include "FontRenderer.h"
 
 using namespace std;
 
@@ -105,6 +106,8 @@ namespace hwidgets
 		}
 		
 		const string& getData() const { return data; }
+      
+      const FontRenderer* font() const { return mpFont; }
 		
 		static void registerWidgetClass(const string& wclass, helpFun, factoryFun);
 
@@ -226,6 +229,7 @@ namespace hwidgets
 		static map<Shortcut, Widget*>	shortcuts;
 		
 		static map<const string, widgetFuns>	*mapRegisteredWidgets;
+      const FontRenderer* mpFont;
 		
 	};
 	
