@@ -50,11 +50,6 @@ sudo make install
 cd Vrp
 sudo apt install libfreetype6-dev 
 
-SaturnLibs : git clone https://github.com/hsaturn/SaturnLib.git
-	cmake .
-	make
-	sudo make install
-
 libsynth : git clone https://github.com/hsaturn/synth.git
 	cmake .
 	make

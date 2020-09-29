@@ -13,7 +13,6 @@
 #include "Commands.hpp"
 #include <String.hpp>
 #include "ansi_colors.hpp"
-#include <SaturnLib/cfileparser.hpp>
 
 // TODO à déplacer dans la nouvelle classe SearchServer
 extern unsigned long giMaxThreads;
