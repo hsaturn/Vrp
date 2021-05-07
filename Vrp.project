@@ -2,6 +2,7 @@
 <CodeLite_Project Name="Vrp" Version="10.0.0" InternalType="">
   <VirtualDirectory Name="renderer">
     <VirtualDirectory Name="opengl">
+      <File Name="renderer/opengl/FontRendererFreeType.cpp"/>
       <File Name="renderer/opengl/GLShader.hpp"/>
       <File Name="renderer/opengl/FontRenderer.cpp"/>
       <File Name="renderer/opengl/FontRendererGlfw.h"/>
@@ -10,6 +11,7 @@
       <File Name="renderer/opengl/Color.cpp"/>
       <File Name="renderer/opengl/texture.cpp"/>
       <File Name="renderer/opengl/Axis.hpp"/>
+      <File Name="renderer/opengl/FontRendererFreeType.h"/>
       <File Name="renderer/opengl/Point.hpp"/>
       <File Name="renderer/opengl/FontRendererGlut.cpp"/>
       <File Name="renderer/opengl/Background.h"/>
@@ -222,6 +224,10 @@
       <File Name="core/widgets/Console.cpp"/>
       <File Name="core/widgets/EventGlut.hpp"/>
     </VirtualDirectory>
+    <VirtualDirectory Name="usb">
+      <File Name="core/usb/UsbManager.cpp"/>
+      <File Name="core/usb/UsbManager.h"/>
+    </VirtualDirectory>
     <VirtualDirectory Name="commands">
       <File Name="core/commands/delete.hpp"/>
       <File Name="core/commands/screen.cpp"/>
@@ -333,9 +339,9 @@
         <File Name="apps/RedStone/Blocks/Solid.hpp"/>
       </VirtualDirectory>
       <File Name="apps/RedStone/RedMap.hpp"/>
-      <File Name="apps/RedStone/RedStone.hpp"/>
-      <File Name="apps/RedStone/RedStone.cpp"/>
+      <File Name="apps/RedStone/RedStoneApp.hpp"/>
       <File Name="apps/RedStone/RedMap.cpp"/>
+      <File Name="apps/RedStone/RedStoneApp.cpp"/>
     </VirtualDirectory>
     <VirtualDirectory Name="Cube">
       <VirtualDirectory Name="commands">
@@ -344,10 +350,10 @@
         <File Name="apps/Cube/commands/rot.cpp"/>
         <File Name="apps/Cube/commands/algo.cpp"/>
       </VirtualDirectory>
-      <File Name="apps/Cube/Cube.h"/>
+      <File Name="apps/Cube/CubeApp.h"/>
       <File Name="apps/Cube/Face.cpp"/>
+      <File Name="apps/Cube/CubeApp.cpp"/>
       <File Name="apps/Cube/Face.h"/>
-      <File Name="apps/Cube/Cube.cpp"/>
     </VirtualDirectory>
     <VirtualDirectory Name="world">
       <VirtualDirectory Name="Blocks">
@@ -360,13 +366,11 @@
         <File Name="apps/world/Blocks/Solid.hpp"/>
       </VirtualDirectory>
       <File Name="apps/world/Map.h"/>
-      <File Name="apps/world/World.cpp"/>
-      <File Name="apps/world/World.hpp"/>
+      <File Name="apps/world/WorldApp.cpp"/>
+      <File Name="apps/world/WorldApp.hpp"/>
       <File Name="apps/world/Map.cpp"/>
     </VirtualDirectory>
     <VirtualDirectory Name="colib">
-      <File Name="apps/colib/Colib.hpp"/>
-      <File Name="apps/colib/Colib.cpp"/>
       <File Name="apps/colib/Wings.cpp"/>
       <File Name="apps/colib/Column.cpp"/>
       <File Name="apps/colib/Decor.cpp"/>
@@ -376,26 +380,30 @@
       <File Name="apps/colib/Cloison.cpp"/>
       <File Name="apps/colib/Bati.hpp"/>
       <File Name="apps/colib/MotorSpeedHook.cpp"/>
+      <File Name="apps/colib/ColibApp.hpp"/>
       <File Name="apps/colib/Navette.cpp"/>
       <File Name="apps/colib/Plateau.hpp"/>
       <File Name="apps/colib/Cloison.hpp"/>
       <File Name="apps/colib/Column.hpp"/>
       <File Name="apps/colib/Wings.hpp"/>
       <File Name="apps/colib/MotorSpeedHook.hpp"/>
+      <File Name="apps/colib/ColibApp.cpp"/>
       <File Name="apps/colib/Decor.hpp"/>
     </VirtualDirectory>
     <VirtualDirectory Name="slicer">
+      <File Name="apps/slicer/AutoDetect.hpp"/>
       <File Name="apps/slicer/Printer.hpp"/>
       <File Name="apps/slicer/SliceModel.hpp"/>
-      <File Name="apps/slicer/Slicer.hpp"/>
-      <File Name="apps/slicer/Slicer.cpp"/>
+      <File Name="apps/slicer/AutoDetect.cpp"/>
       <File Name="apps/slicer/SlicerModels.cpp"/>
+      <File Name="apps/slicer/SlicerApp.cpp"/>
+      <File Name="apps/slicer/SlicerApp.hpp"/>
       <File Name="apps/slicer/Printer.cpp"/>
       <File Name="apps/slicer/SliceModel.cpp"/>
       <File Name="apps/slicer/SlicerModels.hpp"/>
     </VirtualDirectory>
     <VirtualDirectory Name="Vrp">
-      <File Name="apps/Vrp/Vrp.hpp"/>
+      <File Name="apps/Vrp/VrpApp.hpp"/>
       <File Name="apps/Vrp/Planet.hpp"/>
       <File Name="apps/Vrp/SmartIndividual.hpp"/>
       <File Name="apps/Vrp/FitnessScore.cpp"/>
@@ -405,8 +413,8 @@
       <File Name="apps/Vrp/Planet.cpp"/>
       <File Name="apps/Vrp/GeneticVrp.cpp"/>
       <File Name="apps/Vrp/IndividualFactory.hpp"/>
+      <File Name="apps/Vrp/VrpApp.cpp"/>
       <File Name="apps/Vrp/Ring.hpp"/>
-      <File Name="apps/Vrp/Vrp.cpp"/>
       <File Name="apps/Vrp/GeneLink.hpp"/>
       <File Name="apps/Vrp/FitnessScore.hpp"/>
       <File Name="apps/Vrp/Individual.hpp"/>
@@ -421,15 +429,6 @@
   </VirtualDirectory>
   <Description/>
   <Dependencies/>
-  <VirtualDirectory Name="goodies">
-    <File Name="goodies/dinoshade.c"/>
-    <File Name="goodies/Eclair.cpp"/>
-    <File Name="goodies/2d.cpp"/>
-    <File Name="goodies/Eclair.hpp"/>
-    <File Name="goodies/rot.cpp"/>
-    <File Name="goodies/basic.cpp"/>
-    <File Name="goodies/snowman.c"/>
-  </VirtualDirectory>
   <Settings Type="Dynamic Library">
     <GlobalSettings>
       <Compiler Options="" C_Options="" Assembler="">
@@ -443,13 +442,6 @@
     <Configuration Name="Debug" CompilerType="GCC" DebuggerType="GNU gdb debugger" Type="Dynamic Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
       <Compiler Options="-g" C_Options="-g" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
         <IncludePath Value="."/>
-        <IncludePath Value="apps"/>
-        <IncludePath Value="core"/>
-        <IncludePath Value="application"/>
-        <IncludePath Value="commands"/>
-        <IncludePath Value="genetic"/>
-        <IncludePath Value="model"/>
-        <IncludePath Value="widgets"/>
       </Compiler>
       <Linker Options="" Required="yes"/>
       <ResourceCompiler Options="" Required="no"/>
@@ -473,7 +465,7 @@
         <SingleFileCommand/>
         <MakefileGenerationCommand/>
         <ThirdPartyToolName>None</ThirdPartyToolName>
-        <WorkingDirectory>/home/hsaturn/Projets/Vrp</WorkingDirectory>
+        <WorkingDirectory>$(WorkspacePath)</WorkingDirectory>
       </CustomBuild>
       <AdditionalRules>
         <CustomPostBuild/>
@@ -526,4 +518,13 @@
       </Completion>
     </Configuration>
   </Settings>
+  <VirtualDirectory Name="goodies">
+    <File Name="goodies/dinoshade.c"/>
+    <File Name="goodies/Eclair.cpp"/>
+    <File Name="goodies/2d.cpp"/>
+    <File Name="goodies/Eclair.hpp"/>
+    <File Name="goodies/rot.cpp"/>
+    <File Name="goodies/basic.cpp"/>
+    <File Name="goodies/snowman.c"/>
+  </VirtualDirectory>
 </CodeLite_Project>

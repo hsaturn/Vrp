@@ -5,10 +5,9 @@
  * Created on 5 avril 2016, 21:24
  */
 
-#ifndef COORD_HPP
-#define COORD_HPP
+#pragma once
 
-#include "Object.h"
+#include "Application.h"
 #include <iostream>
 
 /**
@@ -66,7 +65,3 @@ private:
 };
 
 typedef CoordType<float> Coord;
-
-
-#endif /* COORD_HPP */
-

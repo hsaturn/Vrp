@@ -9,6 +9,7 @@
 #include <GLShader.hpp>
 
 #include "FontRendererFreeType.h"
+#include "core/StringUtil.hpp"
 
 #include <unordered_map>
 #include <iostream>
@@ -119,13 +120,14 @@ FT_Face* FontRendererFreeType::loadFont(const string& fontName)
 
 FontRenderer* FontRendererFreeType::factory(string& data)
 {
+    // TODO lightweight factory
    FontRendererFreeType* pRenderer = new FontRendererFreeType; // Mais quelle conception de merde !
    
    initFreeType();
    initGl();
    
-   const string fontName(getWord(data));
-   const string fontSize(getWord(data));
+   const string fontName(StringUtil::getWord(data));
+   const string fontSize(StringUtil::getWord(data));
    
    if (atoi(fontSize.c_str())==0)
    {

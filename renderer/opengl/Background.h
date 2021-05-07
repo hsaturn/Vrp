@@ -4,10 +4,7 @@
  *
  * Created on 19 novembre 2015, 23:53
  */
-
-#ifndef BACKGROUND_H
-#define	BACKGROUND_H
-
+#pragma once
 #include <math.h>
 
 class AbstractBackground {
@@ -30,6 +27,4 @@ public:
 	
 	virtual void render();
 };
-
-#endif	/* BACKGROUND_H */
 

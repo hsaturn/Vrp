@@ -10,10 +10,10 @@
  *
  * Created on 23 janvier 2017, 10:28
  */
-
 #pragma once
 
-#include <Object.h>
+#include <Application.h>
+
 #include <DynamicFloat.hpp>
 #include <model/Model.hpp>
 

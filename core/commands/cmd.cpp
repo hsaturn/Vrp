@@ -52,6 +52,8 @@ namespace core
 	  {
 		  it->second->psvr = psvr;
 		  bRet = it->second->run(psvr, sCmd, sArgs, output, err);
+        // TODO what does ->run() should return ?
+        bRet = true; // expect that bRet = true when command found (not exec status)
 	  }
 	  else
 		  cerr << Ansi::red() << "Unknown command : " << sCmd << Ansi::reset() << endl;

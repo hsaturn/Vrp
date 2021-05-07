@@ -9,5 +9,6 @@ core.vrp
 nbproject/
 vrp
 vrp.old
-
+vrp.git
 vrp.glut
+.codelite/

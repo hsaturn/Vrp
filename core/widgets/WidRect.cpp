@@ -69,7 +69,7 @@ namespace hwidgets
 
 	WidRect* WidRect::factory(string &infos, WidRect* rect_parent)
 	{
-		WidRect* rect;
+		WidRect* rect=nullptr;
 
 		if (infos.substr(0, 4) == "help")
 		{
@@ -83,14 +83,11 @@ namespace hwidgets
 			rect->tl = Coord::factory(infos, rect_parent);
 			rect->wh = Coord::factory(infos, rect_parent);
 			rect->color = Color::factory(infos);
-			if (rect->tl && rect->wh)
-			{
-			}
-			else
+			if (rect->tl==0 || rect->wh==0)
 			{
 				cerr << "bad rectangle" << endl;
 				delete rect;
-				rect = 0;
+				rect = nullptr;
 			}
 		}
 		return rect;

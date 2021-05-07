@@ -43,7 +43,7 @@ bool Server::incoming(const string* buffer)
 {
 	bool result = false;
 
-	mtx.lock();
+	lock_guard lck(mtx);
 	if (buffer)
 	{
 		sIncoming += (*buffer);
@@ -55,7 +55,6 @@ bool Server::incoming(const string* buffer)
 		if (sIncoming.length())
 			result=true;
 	}
-	mtx.unlock();
 	return result;
 }
 
@@ -71,7 +70,7 @@ Server::Server(int port)
 string Server::getIncoming()
 {
 	string s;
-	mtx.lock();
+	lock_guard lck(mtx);
 
 	if (sIncoming.length())
 	{
@@ -96,7 +95,6 @@ string Server::getIncoming()
 			sIncoming="";
 		}
 	}
-	mtx.unlock();
 
 	return s;
 }
@@ -130,10 +128,11 @@ void Server::run()
 			else
 			{
 				ServerThread* thr=new ServerThread(this, newsockfd);
-				mtx.lock();
-				cout << "NEW CLIENT ON SOCKET #" << newsockfd << " " << threads.size()+1 << " client(s)" << endl;
-				threads.push_back(thr);
-				mtx.unlock();
+				{
+					lock_guard lck(mtx);
+					cout << "NEW CLIENT ON SOCKET #" << newsockfd << " " << threads.size()+1 << " client(s)" << endl;
+					threads.push_back(thr);
+				}
 				thr->run();
 			}
 		}
@@ -172,7 +171,7 @@ void Server::stop()
 void Server::send(string s)
 {
 	static mutex mtx;
-	mtx.lock();
+	lock_guard lck(mtx);
    for(Server::ServerThread* thread : threads)
    {
       thread->send(s);
@@ -181,7 +180,6 @@ void Server::send(string s)
    {
       listener(s);
    }
-	mtx.unlock();
 }
 
 void Server::ServerThread::send(string s)
@@ -224,10 +222,9 @@ bool Server::ServerThread::isok() const
 
 void Server::remove(Server::ServerThread* thr)
 {
-	mtx.lock();
+	lock_guard lck(mtx);
 	threads.remove(thr);
 	cout << "CLIENT GONE " << threads.size() << " client(s) left." << endl;
-	mtx.unlock();
 }
 
 void Server::ServerThread::loop()

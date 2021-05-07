@@ -10,11 +10,10 @@
  *
  * Created on 15 août 2017, 11:06
  */
-
 #pragma once
 
+#include "core/Application.h"
 #include "model/Model.hpp"
-#include "core/Object.h"
 #include "glm/glm.hpp"
 #include "application/IRunnable.h"
 #include "application/IRenderable.hpp"

@@ -5,8 +5,7 @@
  * Created on 19 novembre 2015, 15:02
  */
 
-#ifndef POINT_HPP
-#define	POINT_HPP
+#pragma once
 #include "glm/glm.hpp"
 
 class Point {
@@ -29,6 +28,4 @@ private:
 	float mz;
 
 };
-
-#endif	/* POINT_HPP */
 

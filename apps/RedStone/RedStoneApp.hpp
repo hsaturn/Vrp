@@ -4,12 +4,9 @@
  *
  * Created on 5 avril 2016, 20:36
  */
-
 #pragma once
 
-#define REDSTONE_HPP
-
-#include <Object.h>
+#include <Application.h>
 #include <ObjectBuilder.hpp>
 #include <string>
 

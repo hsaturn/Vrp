@@ -5,8 +5,8 @@
  * Created on 6 août 2014, 10:42
  */
 
-#ifndef SVR_WIDGET_CMD_HPP
-#define	SVR_WIDGET_CMD_HPP
+#pragma once
+
 #include "cmd.hpp"
 #include <Widget.h>
 
@@ -23,6 +23,4 @@ namespace core
 	};
 
 }
-
-#endif	/* SVR_WIDGET_CMD_HPP */
 

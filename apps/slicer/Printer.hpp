@@ -10,12 +10,13 @@
  *
  * Created on 15 août 2017, 08:23
  */
-
 #pragma once
 
 #include "ostream"
+
+#include "ostream"
 #include <string>
-#include <core/Object.h>
+#include <core/Application.h>
 #include "SlicerModels.hpp"
 
 using namespace std;

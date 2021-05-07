@@ -12,7 +12,7 @@
 #include "Draggable.hpp"
 #include "Event.hpp"
 #include "WidRect.hpp"
-#include "Object.h" //  TODO for getWord :-(
+#include "StringUtil.hpp"
 
 namespace hwidgets
 {
@@ -71,11 +71,11 @@ namespace hwidgets
 		}
 		string s(cmd);
 		while (s[0] == '@') s.erase(0, 1);
-		string s1 = getWord(s);
+		string s1 = StringUtil::getWord(s);
 		if (s1 == "console")
 		{
-			s1 = getWord(s);
-			string sw = getWord(s);
+			s1 = StringUtil::getWord(s);
+			string sw = StringUtil::getWord(s);
 			bool* b = 0;
 			if (s1 == "events") b = &bEvents;
 			else if (s1 == "commands") b = &bCommands;
@@ -107,7 +107,8 @@ namespace hwidgets
 		Console* cons = 0;
 		if (data.substr(0, 4) == "help")
 		{
-			Widget::pushMessage("console coord coord coord coord [bgcolor cmdcolor color eventcolor] [font_family font_size]");
+         // coord coord coord... Contredit widget qui est responsable de ca
+			Widget::pushMessage("console coord coord coord coord [bgcolor cmdcolor color eventcolor]");
 		}
 		else
 		{
@@ -116,7 +117,6 @@ namespace hwidgets
 			cons->setName("console #" + to_string((long long) (++n)));
 			cons->cmdcolor = Color::factory(data);
 			cons->anscolor = Color::factory(data);
-			cons->font = FontRenderer::factory(data);
 		}
 		return cons;
 	}
@@ -180,8 +180,8 @@ namespace hwidgets
       glPushMatrix();
 		glTranslatef(0.0, 0.0, 1.0);
 
-		font->render(x, y, cmdt);
-		y -= font->height();
+		font()->render(x, y, cmdt);
+		y -= font()->height();
 
 		if (bStack && cmdQueue)
 		{
@@ -198,9 +198,9 @@ namespace hwidgets
 				{
 					cmd = "(pending) " + cmd;
 
-					font->render(x, y, cmd);
+					font()->render(x, y, cmd);
 
-					y -= font->height();
+					y -= font()->height();
 				}
 			}
 		}
@@ -241,9 +241,9 @@ namespace hwidgets
 				else
 					Color::cyan.render(0.8);
 			}
-			font->render(x, y, cmdt);
+			font()->render(x, y, cmdt);
 
-			y -= font->height();
+			y -= font()->height();
 		}
 		glPopMatrix();
 

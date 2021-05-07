@@ -1,5 +1,4 @@
-#ifndef SERVER_H
-#define SERVER_H
+#pragma once
 #include <mutex>
 #include <atomic>
 #include <string>
@@ -73,4 +72,3 @@ class Server
 		static list<sendListener>	listeners;
 };
 
-#endif

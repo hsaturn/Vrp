@@ -40,7 +40,7 @@ namespace slicer
    {
 		IRunnable::ExecResult result = Application::EXEC_FAILED;
 
-      string name=getWord(incoming);
+      string name=StringUtil::getWord(incoming);
       if (models.find(name) != models.end())
       {
          models.erase(name);
@@ -139,11 +139,11 @@ namespace slicer
       if (result == IRunnable::EXEC_UNKNOWN)
       {
          string sModel(cmd);
-         sModel = getWord(sModel,".");
+         sModel = StringUtil::getWord(sModel,".");
          const auto &it=models.find(sModel);
          if (it != models.end())
          {
-            getWord(cmd, ".");
+            StringUtil::getWord(cmd, ".");
             result = it->second->_execute(psvr, cmd, incoming, org, queue);
          }
       }

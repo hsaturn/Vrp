@@ -37,7 +37,7 @@ Galaxy::Galaxy(const string& name, string& incoming) : Application(name) {
 	}
 	else
 		setVar("type","normal");
-	long num_planets = atol(getWord(incoming).c_str());
+	long num_planets = atol(StringUtil::getWord(incoming).c_str());
 	if (num_planets == 0)
 		num_planets = 20;
 	else if (num_planets > 1000)
@@ -48,7 +48,7 @@ Galaxy::Galaxy(const string& name, string& incoming) : Application(name) {
 	try {
 		long n = 0;
 		cout << "Creating galaxy " << num_planets << endl;
-		long tries;
+		long tries=0;
 
 		while (num_planets) {
 			cout << "  Planets left : " << num_planets << endl;

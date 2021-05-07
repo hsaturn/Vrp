@@ -4,11 +4,8 @@
  *
  * Created on 20 novembre 2015, 15:23
  */
+#pragma once
 
-#ifndef VRP_HPP
-#define	VRP_HPP
-
-#include <Object.h>
 #include <ObjectBuilder.hpp>
 #include <string>
 #include "genetic.hpp"
@@ -46,6 +43,4 @@ private:
 	AbstractGeneticAlgo* algo;
 	string solveParams;
 };
-
-#endif	/* VRP_HPP */
 

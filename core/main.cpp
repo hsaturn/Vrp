@@ -155,15 +155,13 @@ void exec(string& cmd)
 								[cmd]()
 								  {
 									system(cmd.c_str());
-								server->send("#EVENT exec end " + cmd);
+								   if (server) server->send("#EVENT exec end " + cmd);
 								  });
 			exec_list.push_back(t);
 			if (!bBackGround)
 			{
 				t->thr->join();
 			}
-			else
-				exec_list.push_back(t);
 		}
 		catch (std::exception &e)
 		{
@@ -203,11 +201,6 @@ void reboot()
 
 	run("startup.cub");
 	run("macros.cub");
-}
-
-string getWord(string& s, const string &sSeparators)
-{
-	return StringUtil::getWord(s, sSeparators);
 }
 
 void handleResize(GLFWwindow* window, int w, int h)
@@ -255,7 +248,7 @@ void initRendering()
 
 float getFloat(string& incoming)
 {
-	string f = getWord(incoming);
+	string f = StringUtil::getWord(incoming);
 
 	if (f.length() > 0 && ((f[0] >= '0' && f[0] <= '9') || f[0] == '.' || f[0] == '-'))
 	{
@@ -577,29 +570,28 @@ void update(int value)
 			else
 				last = row;
 
-			string incoming = getWord(row, ";");
+			string incoming = StringUtil::getWord(row, ";");
 			trim(row);
 			if (row.length())
 				cmdQueue.push_front(row);
 
-			Widget::replaceVars(incoming);
-			// cout << "INCOMMING " << incoming << endl;
-			string cmd = getWord(incoming);
-			// cout << "CMD=[" << cmd << "] incoming=[" << incoming << "]" << endl;
+			Widget::replaceVars(incoming);	// Ouch !!!
 
-			//if (StringUtil::match("[a-zA-Z]+[a-zA-Z0-9]*.[a-zA-Z]+[a-zA-Z0-9]+=", cmd))
+			// cout << "INCOMMING " << incoming << endl;
+			string cmd = StringUtil::getWord(incoming);
+			// cout << "CMD=[" << cmd << "] incoming=[" << incoming << "]" << endl;
 
 			if (cmd.length() && (cmd[0]=='#' || cmd.substr(0,2)=="//"))
 			{
-
+				// Nothing to do...
 			}
 			else if (StringUtil::preg_match("^[a-zA-Z]+[a-zA-Z0-9_]*\\.[a-zA-Z]+[a-zA-Z0-9_]*", cmd, false))
 			{
 				string name=StringUtil::getWord(cmd, '.');
-				Application* object=ApplicationBuilder::getInstance(name);
-				if (object)
+				Application* app=ApplicationBuilder::getInstance(name);
+				if (app)
 				{
-					IRunnable::ExecResult ret = object->execute(server, cmd, incoming, org, cmdQueue);
+					IRunnable::ExecResult ret = app->execute(server, cmd, incoming, org, cmdQueue);
 					switch (ret)
 					{
 						case IRunnable::EXEC_OK:
@@ -736,13 +728,13 @@ void update(int value)
 			}
 			else if (cmd == "macro")
 			{
-				string what = getWord(incoming);
+				string what = StringUtil::getWord(incoming);
 				string args = "";
 
 				map<string, string>* container = &macros;
 				if (what == "exec")
 				{
-					what = getWord(incoming);
+					what = StringUtil::getWord(incoming);
 					args = ' ' + incoming;
 					incoming = "";
 				}
@@ -846,7 +838,7 @@ void update(int value)
 			}
 			else if (cmd == "anim")
 			{
-				string a = getWord(incoming);
+				string a = StringUtil::getWord(incoming);
 				if (a == "x")
 					animx = getFloat(incoming);
 				if (a == "y")
@@ -876,15 +868,6 @@ void update(int value)
 			else if (cmd == "run")
 			{
 				run(incoming);
-			}
-			else if (cmd == "centers")
-			{
-				cmdQueue.push_back("find white");
-				cmdQueue.push_back("find yellow");
-				cmdQueue.push_back("find blue");
-				cmdQueue.push_back("find orange");
-				cmdQueue.push_back("find green");
-				cmdQueue.push_back("find red");
 			}
 			else if (ApplicationBuilder::execute(server, cmd, incoming, org, cmdQueue) != IRunnable::EXEC_UNKNOWN)
 			{

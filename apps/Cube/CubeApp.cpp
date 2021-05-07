@@ -558,7 +558,7 @@ bool CubeApp::setColors(const string& colors) {
 
 bool CubeApp::check(const Color* c, string& s) {
 	string where = find(c);
-	string found = getWord(s);
+	string found = StringUtil::getWord(s);
 	cout << "check where=" << where << " found=" << found << endl;
 	if (where.length() == 0) return false;
 	if (where[0] != found[0]) return false;
@@ -599,7 +599,7 @@ void CubeApp::_help(Help& help) const
 
 Face::Dir CubeApp::getDir(string& incoming, string& dir)
 {
-	dir = getWord(incoming);
+	dir = StringUtil::getWord(incoming);
 	if (dir == "top") return Face::TOP;
 	if (dir == "bottom") return Face::BOTTOM;
 	if (dir == "down") return Face::BOTTOM;
@@ -627,6 +627,15 @@ IRunnable::ExecResult CubeApp::_execute(Server* server, string cmd, string incom
 			server->send("#OK is_made CUBE IS PERFECT !");
 		else
 			server->send("#KO is_made");
+	}
+	else if (cmd == "centers")
+	{
+		cmdQueue.push_back("find white");
+		cmdQueue.push_back("find yellow");
+		cmdQueue.push_back("find blue");
+		cmdQueue.push_back("find orange");
+		cmdQueue.push_back("find green");
+		cmdQueue.push_back("find red");
 	}
 	else if (cmd == "top")
 	{
@@ -669,8 +678,8 @@ IRunnable::ExecResult CubeApp::_execute(Server* server, string cmd, string incom
 		string in2(incoming);
 		const Color* c1 = getColor(in2);
 		const Color* c2 = getColor(in2);
-		string sc1 = getWord(incoming);
-		string sc2 = getWord(incoming);
+		string sc1 = StringUtil::getWord(incoming);
+		string sc2 = StringUtil::getWord(incoming);
 
 		cout << c1 << ' ' << c2 << endl;
 
@@ -989,8 +998,8 @@ IRunnable::ExecResult CubeApp::_execute(Server* server, string cmd, string incom
 		if (stack.size())
       {
 			string pop = stack.back();
-			total_moves = atol(getWord(pop).c_str());
-			setColors(getWord(pop));
+			total_moves = atol(StringUtil::getWord(pop).c_str());
+			setColors(StringUtil::getWord(pop));
 			if (cmd == "pop") stack.pop_back();
 			server->send("#OK " + cmd + ", stk_size=" + StringUtil::to_string(stack.size()));
 		}
@@ -1007,7 +1016,7 @@ IRunnable::ExecResult CubeApp::_execute(Server* server, string cmd, string incom
 		StringUtil::trim(incoming);
 		string colors;
 		if (incoming.length() > 1) {
-			colors = getWord(incoming);
+			colors = StringUtil::getWord(incoming);
 
 			reset();
 			bOk = setColors(colors);
@@ -1073,7 +1082,7 @@ IRunnable::ExecResult CubeApp::_execute(Server* server, string cmd, string incom
 		bool bReverse = cmd == "reverse";
 		bool bAlgo = incoming.substr(0, 4) == "algo";
 		bool bAlgo2 = false;
-		if (bAlgo) getWord(incoming);
+		if (bAlgo) StringUtil::getWord(incoming);
 		if (incoming.substr(0, 5) == "learn")
 			incoming = slearn;
 		string moves = incoming;
@@ -1142,9 +1151,8 @@ IRunnable::ExecResult CubeApp::_execute(Server* server, string cmd, string incom
 				}
 
 				string cmd = string("@rotate ");
-				while (face.length())
-            {
-					string f = getWord(face);
+				while (face.length()) {
+					string f = StringUtil::getWord(face);
 					cmd += f + " " + StringUtil::to_string(angle) + " ";
 					angle = -angle;
 				}

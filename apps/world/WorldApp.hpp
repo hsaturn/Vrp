@@ -8,7 +8,6 @@
 #ifndef WORLD_HPP
 #define	WORLD_HPP
 
-#include <Object.h>
 #include <ObjectBuilder.hpp>
 #include "Blocks/Block.hpp"
 #include <Coord.hpp>

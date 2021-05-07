@@ -12,7 +12,6 @@
  */
 
 #include "Printer.hpp"
-#include "Object.h"
 #include "SlicerApp.hpp"
 
 namespace slicer

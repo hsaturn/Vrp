@@ -6,7 +6,7 @@
  */
 #pragma once
 
-#include <Object.h>
+#include <core/Application.h>
 #include <DynamicFloat.hpp>
 #include "application/IRenderable.hpp"
 

@@ -5,13 +5,12 @@
  * Created on 20 novembre 2015, 15:29
  */
 
-#ifndef OBJECTBUILDER_HPP
-#define	OBJECTBUILDER_HPP
+#pragma once
 
 #include "Help.h"
 #include <string>
 #include <list>
-#include "Object.h"
+#include "Application.h"
 
 using namespace std;
 
@@ -55,6 +54,4 @@ private:
 	string appclass;
 	
 };
-
-#endif	/* OBJECTBUILDER_HPP */
 

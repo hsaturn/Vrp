@@ -32,10 +32,10 @@ namespace slicer
 		IRunnable::ExecResult result = IRunnable::EXEC_UNKNOWN;
 
       string sName(cmd);
-      sName = getWord(sName, ".");
+      sName = StringUtil::getWord(sName, ".");
       if (printer && sName == printer->name())
       {
-         getWord(cmd, ".");
+         StringUtil::getWord(cmd, ".");
 			result = printer->_execute(svr, cmd, incoming, org, queue);
       }
 

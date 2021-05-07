@@ -11,8 +11,7 @@
  * Created on 21 août 2017, 10:44
  */
 
-#ifndef AXIS_HPP
-#    define AXIS_HPP
+#pragma once
 
 class Axis
 {
@@ -31,6 +30,4 @@ class Axis
 	float length;
 	bool active;
 };
-
-#endif /* AXIS_HPP */
 

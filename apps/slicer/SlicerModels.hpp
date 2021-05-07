@@ -10,10 +10,9 @@
  *
  * Created on 15 août 2017, 11:55
  */
-
 #pragma once
 
-#include "core/Object.h"
+#include "core/Application.h"
 #include "SliceModel.hpp"
 #include "application/IRunnable.h"
 #include "application/IRenderable.hpp"

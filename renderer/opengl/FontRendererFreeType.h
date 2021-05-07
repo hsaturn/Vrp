@@ -18,8 +18,7 @@ class FontRendererFreeType : public FontRenderer
       virtual ~FontRendererFreeType() = default;
       
       void render(int x, int y, const string& text) const override;
-      
-		static FontRenderer* factory(string& data);
+      static FontRenderer* factory(string& data);
 
    private:
       static bool initFreeType();

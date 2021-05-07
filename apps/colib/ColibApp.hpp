@@ -4,10 +4,8 @@
  *
  * Created on 5 avril 2016, 20:47
  */
-
 #pragma once
 
-#include <Object.h>
 #include <ObjectBuilder.hpp>
 #include "Coord.hpp"
 #include <string>
