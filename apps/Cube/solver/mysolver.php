@@ -194,7 +194,7 @@ function solver()
 	bestTop();
 }
 
-function match($algo, $colors)
+function cube_match($algo, $colors)
 {
 	$algo=str_replace('-','',$algo);
 	$mapping=array();	// Mapping de couleurs
@@ -250,7 +250,7 @@ function runAlgo($c)
 
 				$colors=$server->colors();
 				
-				if (match($algo, $colors))
+				if (cube_match($algo, $colors))
 				{
 					global $amoves;
 					$rotates=$rotates%4;
@@ -261,7 +261,7 @@ function runAlgo($c)
 					$rotates=0;
 
 					$amoves[count($amoves)+1]=$moves;
-					print "  MATCH $algo_row\n";
+					print "  cube_match $algo_row\n";
 					$server->send("move $moves");
 				}
 			}
